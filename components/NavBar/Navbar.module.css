@@ -6,7 +6,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fef9ef;
+  background-color: #1d3557;
+  position: fixed;
+  z-index: 2;
+  color: #fbeee0;
 }
 
 .list {
@@ -40,25 +43,28 @@
 .signIn {
   padding: 10px 1rem;
   border: none;
-  color: #001219;
   background: transparent;
   cursor: pointer;
   font-weight: 600;
+  color: #fbeee0;
   margin-right: 1rem;
 }
 
 .signUp {
-  background-color: #001219;
+  background-color: #005f73;
   padding: 10px 2rem;
   border: none;
-  color: white;
   cursor: pointer;
   border-radius: 1rem;
   font-weight: 600;
+  color: #fbeee0;
 }
 
+.signUp:hover {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
 .logo {
   font-size: 20px;
   font-weight: bold;
-  color: #001219;
+  color: #fbeee0;
 }

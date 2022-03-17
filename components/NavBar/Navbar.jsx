@@ -3,7 +3,7 @@ import styles from "./Navbar.module.css";
 
 const Navbar = () => {
   return (
-    <div className={styles.container}>
+    <navbar className={styles.container}>
       <ul className={styles.list}>
         <li className={styles.left}>
           <h6 className={styles.logo}>Logo</h6>
@@ -18,7 +18,7 @@ const Navbar = () => {
           <button className={styles.signUp}>Üye Ol </button>
         </li>
       </ul>
-    </div>
+    </navbar>
   );
 };
 
