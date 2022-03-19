@@ -3,6 +3,7 @@ import React from "react";
 import styles from "./Jumbotron.module.css";
 import illustration from "../../assets/image/jumbotron-image.svg";
 import TextTransition, { presets } from "react-text-transition";
+import MainMenuButton from "../MainMenuButton/Button";
 
 const TEXTS = [
   "Profesyonel Logo Tasarımı",
@@ -33,7 +34,7 @@ const Jumbotron = () => {
             width: "auto",
           }}
         />
-        <button className={styles.button}>Hemen Başlayın</button>
+        <MainMenuButton>Hemen Başlayın</MainMenuButton>
       </div>
     </div>
   );
