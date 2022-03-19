@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Navbar.module.css";
+import Link from "next/link";
 
 const Navbar = () => {
   return (
@@ -8,14 +9,15 @@ const Navbar = () => {
         <li className={styles.left}>
           <h6 className={styles.logo}>Logo</h6>
           <div className={styles.headers}>
-            <p>Özellikler</p>
-            <p>Fiyatlar</p>
+            <p>Çözümlerimiz</p>
           </div>
         </li>
 
         <li className={styles.right}>
           <button className={styles.signIn}>Giriş Yap</button>
-          <button className={styles.signUp}>Üye Ol </button>
+          <button className={styles.signUp}>
+            <Link href="/register">Üye Ol </Link>
+          </button>
         </li>
       </ul>
     </navbar>

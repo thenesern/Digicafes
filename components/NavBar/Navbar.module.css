@@ -8,7 +8,7 @@
   justify-content: center;
   background-color: #1d3557;
   position: fixed;
-  z-index: 2;
+  z-index: 3;
   color: #fbeee0;
 }
 
@@ -18,7 +18,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 0 3rem;
+  padding: 0 2rem;
 }
 
 .right {

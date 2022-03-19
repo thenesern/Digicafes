@@ -7,7 +7,6 @@ import TextTransition, { presets } from "react-text-transition";
 const TEXTS = [
   "Profesyonel Logo Tasarımı",
   "Yeni Nesil Dijital Menü",
-  "Özel Portfolyo Sitesi",
   "E-Ticaret Çözümleri",
 ];
 
@@ -23,23 +22,18 @@ const Jumbotron = () => {
   }, []);
   return (
     <div className={styles.container}>
-      <div className={styles.left}>
+      <div className={styles.filter}>
         <TextTransition
           text={TEXTS[index % TEXTS.length]}
-          springConfig={presets.wobbly}
+          springConfig={{ stiffness: 50, damping: 20 }}
           className={styles.header}
-          inline="true"
+          noOverflow
+          inline={true}
+          style={{
+            width: "auto",
+          }}
         />
         <button className={styles.button}>Hemen Başlayın</button>
-      </div>
-      <div className={styles.right}>
-        <Image
-          className={styles.image}
-          src={illustration}
-          alt="image"
-          width="600px"
-          height="600px"
-        />
       </div>
     </div>
   );
