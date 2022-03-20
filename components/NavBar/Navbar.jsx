@@ -17,7 +17,6 @@ const Navbar = () => {
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
   }
-  console.log(user);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -29,7 +28,6 @@ const Navbar = () => {
 
   const logoutHandler = () => {
     setAnchorEl(null);
-    console.log("ğ");
     dispatch({ type: "USER_LOGOUT" });
     Cookies.remove("userInfo");
     router.push("/");
@@ -57,9 +55,10 @@ const Navbar = () => {
               style={{ color: "white" }}
             >
               <AccountCircleRounded />
-              <h6 className={styles.username}>
-                {user?.firstName} {user?.lastName}
-              </h6>
+              <div className={styles.username}>
+                <h6>{user?.firstName}</h6>
+                <h6>{user?.lastName}</h6>
+              </div>
             </Button>
             <Menu
               id="fade-menu"
@@ -74,6 +73,8 @@ const Navbar = () => {
                 display: "flex",
                 alingItems: "center",
                 justifyContent: "center",
+                marginTop: "3rem",
+                marginLeft: "2rem",
               }}
             >
               <button className={styles.button}>

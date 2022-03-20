@@ -30,10 +30,12 @@ const Login = () => {
 
   const loginHandler = async ({ email, password }) => {
     closeSnackbar();
+    const signedIn = new Date().toLocaleString();
     try {
       const { data } = await axios.post("/api/auth/login", {
         email,
         password,
+        signedIn
       });
       dispatch({ type: "USER_LOGIN", payload: data });
       Cookies.set("userInfo", JSON.stringify(data));

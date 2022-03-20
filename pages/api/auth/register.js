@@ -19,15 +19,12 @@ handler.post(async (req, res) => {
   });
   const user = await newUser.save();
   await db.disconnect();
-  console.log(user);
   const token = signToken(user);
   res.send({
     firstName: user.firstName,
     lastName: user.lastName,
-    signedIn: user.signedIn,
     email: user.email,
     id: user._id,
-    isAdmin: user.isAdmin,
     token,
   });
 });

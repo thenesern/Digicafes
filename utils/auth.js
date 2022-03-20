@@ -9,19 +9,19 @@ const signToken = (user) => {
       email: user.email,
       isAdmin: user.isAdmin,
     },
-
-    "asdasdasd",
+    process.env.JWT_SEC,
     {
       expiresIn: "30d",
     }
   );
 };
+
 const isAuth = async (req, res, next) => {
   const { authorization } = req.headers;
   if (authorization) {
     // Bearer xxx => xxx
     const token = authorization.slice(7, authorization.length);
-    jwt.verify(token, "asdasdasd", (err, decode) => {
+    jwt.verify(token, process.env.JWT_SEC, (err, decode) => {
       if (err) {
         res.status(401).send({ message: "Token is not valid" });
       } else {
