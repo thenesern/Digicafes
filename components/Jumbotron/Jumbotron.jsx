@@ -6,7 +6,7 @@ import TextTransition, { presets } from "react-text-transition";
 import MainMenuButton from "../MainMenuButton/Button";
 
 const TEXTS = [
-  "Profesyonel Logo Tasarımı",
+  "Logo Tasarımı",
   "Yeni Nesil Dijital Menü",
   "E-Ticaret Çözümleri",
 ];
