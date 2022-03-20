@@ -69,3 +69,62 @@
   color: #fbeee0;
   cursor: pointer;
 }
+
+.dropdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.menu-link {
+  text-decoration: none;
+  color: #252422;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.menu-link:hover {
+  background-color: lightgray;
+}
+.link-item {
+  padding: 4px 10px;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+}
+
+.link-item:hover {
+  background-color: lightgray;
+}
+
+.username {
+  margin-left: 4px;
+}
+
+.icon {
+  font-size: 20px !important;
+}
+
+.button {
+  background: transparent;
+  border: none;
+  width: 7rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
+.dropdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  width: 7rem;
+  gap: 12px;
+}
