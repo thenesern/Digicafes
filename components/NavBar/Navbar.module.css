@@ -87,10 +87,11 @@
   background-color: lightgray;
 }
 .link-item {
-  padding: 4px 10px;
+  padding: 10px;
   width: 100%;
   cursor: pointer;
   display: flex;
+  flex: 1;
   align-items: center;
   justify-content: flex-start;
   gap: 6px;
@@ -116,8 +117,9 @@
 .button {
   background: transparent;
   border: none;
-  width: 7rem;
+  width: 100%;
   padding: 0;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;

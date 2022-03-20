@@ -78,15 +78,15 @@ const Navbar = () => {
               }}
             >
               <button className={styles.button}>
-                <Link href="/profile" className={styles["menu-link"]} passHref>
-                  <div className={styles["link-item"]}>Profile</div>
+                <Link href="/hesabim" className={styles["menu-link"]} passHref>
+                  <div className={styles["link-item"]}>Hesabım</div>
                 </Link>
               </button>
 
               <button className={styles.button} onClick={logoutHandler}>
                 <Link href="/" passHref className={styles["menu-link"]}>
                   <div className={styles["link-item"]}>
-                    <span>Log out</span>
+                    <span>Çıkış Yap</span>
                     <LogoutIcon className={styles.icon} />
                   </div>
                 </Link>
@@ -95,10 +95,10 @@ const Navbar = () => {
           </>
         ) : (
           <li className={styles.right}>
-            <Link href="/login" passHref>
+            <Link href="/giris" passHref>
               <button className={styles.signIn}>Giriş Yap</button>
             </Link>
-            <Link href="/register" passHref>
+            <Link href="/kayit" passHref>
               <button className={styles.signUp}>Üye Ol</button>
             </Link>
           </li>

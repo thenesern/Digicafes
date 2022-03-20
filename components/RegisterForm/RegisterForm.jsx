@@ -76,7 +76,7 @@ const Register = () => {
         <h1 className={styles.title}>Üye Ol</h1>
         <div className={styles.signin}>
           <p>Hesabınız var mı?</p>
-          <Link href="/login" passHref>
+          <Link href="/giris" passHref>
             <span style={{ fontWeight: "600", cursor: "pointer" }}>
               Giriş Yapın
             </span>

@@ -35,7 +35,7 @@ const Login = () => {
       const { data } = await axios.post("/api/auth/login", {
         email,
         password,
-        signedIn
+        signedIn,
       });
       dispatch({ type: "USER_LOGIN", payload: data });
       Cookies.set("userInfo", JSON.stringify(data));
@@ -50,7 +50,7 @@ const Login = () => {
         <h1 className={styles.title}>Giriş Yap</h1>
         <div className={styles.signup}>
           <p>Hesabınız yok mu?</p>
-          <Link href="/register" className={styles.signupLink} passHref>
+          <Link href="/kayit" className={styles.signupLink} passHref>
             <span style={{ fontWeight: "600", cursor: "pointer" }}>
               Üye Olun
             </span>
@@ -101,7 +101,7 @@ const Login = () => {
                     variant="outlined"
                     fullWidth
                     id="password"
-                    label="Password"
+                    label="Şifre"
                     inputProps={{ type: "password" }}
                     error={Boolean(errors.password)}
                     helperText={
