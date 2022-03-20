@@ -1,52 +1,60 @@
 // Dependencies
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, TextField, Checkbox, List, ListItem } from "@material-ui/core";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import Link from "next/link";
-import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { Store } from "../../redux/store";
 // Styles
 import styles from "./RegisterForm.module.css";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 const Register = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [signedIn, setSignedIn] = useState("");
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { state, dispatch } = useContext(Store);
+  const router = useRouter();
+  const { userInfo } = state;
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm();
-  const registerHandler = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (userInfo) {
+      router.push("/");
+    }
+  }, []);
+  const registerHandler = async ({
+    fName,
+    lName,
+    email,
+    password,
+    passwordConfirm,
+  }) => {
     closeSnackbar();
     if (password !== passwordConfirm) {
       return enqueueSnackbar("Şifreler eşleşmiyor", { variant: "error" });
     }
-    setSignedIn(new Date().toLocaleString());
+    const signedIn = new Date().toLocaleString();
 
-    const lowerFirst = firstName?.toLowerCase();
+    const lowerFirst = fName?.toLowerCase();
     const betterFirst = lowerFirst?.replace(
       lowerFirst[0],
       lowerFirst[0]?.toUpperCase()
     );
-    setFirstName(betterFirst);
 
-    const lowerLast = lastName?.toLowerCase();
+    const lowerLast = lName?.toLowerCase();
     const betterLast = lowerLast?.replace(
       lowerLast[0],
       lowerLast[0]?.toUpperCase()
     );
-    setLastName(betterLast);
+    const firstName = betterFirst;
+    const lastName = betterLast;
 
     try {
-      await axios.post("/api/auth/register", {
+      const { data } = await axios.post("/api/auth/register", {
         firstName,
         lastName,
         email,
@@ -54,6 +62,9 @@ const Register = () => {
         passwordConfirm,
         signedIn,
       });
+      dispatch({ type: "USER_LOGIN", payload: data });
+      Cookies.set("userInfo", data);
+      router.push("/");
     } catch (err) {
       enqueueSnackbar(err.message, { variant: "error" });
     }
@@ -76,7 +87,7 @@ const Register = () => {
             <div style={{ display: "flex" }}>
               <ListItem>
                 <Controller
-                  name="name"
+                  name="fName"
                   control={control}
                   defaultValue=""
                   rules={{
@@ -87,13 +98,12 @@ const Register = () => {
                     <TextField
                       variant="outlined"
                       fullWidth
-                      id="name"
+                      id="fName"
                       label="Ad"
-                      onChange={(e) => setFirstName(e.target.value)}
-                      error={Boolean(errors.name)}
+                      error={Boolean(errors.fName)}
                       helperText={
-                        errors.name
-                          ? errors.name.type === "minLength"
+                        errors.fName
+                          ? errors.fName.type === "minLength"
                             ? "Lütfen geçerli bir Ad giriniz"
                             : "Lütfen Adınızı giriniz"
                           : ""
@@ -105,7 +115,7 @@ const Register = () => {
               </ListItem>
               <ListItem>
                 <Controller
-                  name="lastName"
+                  name="lName"
                   control={control}
                   defaultValue=""
                   rules={{
@@ -116,13 +126,12 @@ const Register = () => {
                     <TextField
                       variant="outlined"
                       fullWidth
-                      id="lastName"
+                      id="lName"
                       label="Soyad"
-                      onChange={(e) => setLastName(e.target.value)}
-                      error={Boolean(errors.lastName)}
+                      error={Boolean(errors.lName)}
                       helperText={
-                        errors.lastName
-                          ? errors.lastName.type === "minLength"
+                        errors.lName
+                          ? errors.lName.type === "minLength"
                             ? "Lütfen geçerli bir Soyad giriniz"
                             : "Lütfen Soyadınızı giriniz"
                           : ""
@@ -180,7 +189,6 @@ const Register = () => {
                       label="Şifre"
                       inputProps={{ type: "password" }}
                       error={Boolean(errors.password)}
-                      onChange={(e) => setPassword(e.target.value)}
                       helperText={
                         errors.password
                           ? errors.password.type === "minLength"
@@ -195,7 +203,7 @@ const Register = () => {
               </ListItem>
               <ListItem>
                 <Controller
-                  name="confirmPassword"
+                  name="passwordConfirm"
                   control={control}
                   defaultValue=""
                   rules={{
@@ -205,14 +213,13 @@ const Register = () => {
                   render={({ field }) => (
                     <TextField
                       variant="outlined"
-                      id="confirmPassword"
-                      label="Confirm Password"
-                      inputProps={{ type: "password" }}
-                      onChange={(e) => setPasswordConfirm(e.target.value)}
-                      error={Boolean(errors.confirmPassword)}
+                      id="passwordConfirm"
+                      label="Şifre Onay"
+                      inputProps={{ type: "passwordConfirm" }}
+                      error={Boolean(errors.passwordConfirm)}
                       helperText={
-                        errors.confirmPassword
-                          ? errors.confirmPassword.type === "minLength"
+                        errors.passwordConfirm
+                          ? errors.passwordConfirm.type === "minLength"
                             ? "Şifreniz minimum 5 karakter olmalıdır"
                             : "Lütfen bir şifre giriniz"
                           : ""

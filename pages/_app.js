@@ -1,6 +1,8 @@
 import Navbar from "../components/NavBar/Navbar";
 import "../styles/globals.css";
 import Head from "next/head";
+import { SnackbarProvider } from "notistack";
+import { StoreProvider } from "../redux/store";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -10,7 +12,13 @@ function MyApp({ Component, pageProps }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Navbar />
-      <Component {...pageProps} />
+      <SnackbarProvider
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <StoreProvider>
+          <Component {...pageProps} />
+        </StoreProvider>
+      </SnackbarProvider>
     </>
   );
 }
