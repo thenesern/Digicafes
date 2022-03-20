@@ -4,7 +4,7 @@ import { createContext, useReducer } from "react";
 export const Store = createContext();
 const initialState = {
   userInfo: Cookies.get("userInfo")
-    ? JSON.parse(Cookies.get("userInfo"))
+    ? JSON.stringify(Cookies.get("userInfo"))
     : null,
 };
 

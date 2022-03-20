@@ -1,6 +1,6 @@
 // Dependencies
-import React, { useContext, useEffect, useState } from "react";
-import { Button, TextField, Checkbox, List, ListItem } from "@material-ui/core";
+import React, { useContext, useEffect } from "react";
+import { Button, TextField, List, ListItem } from "@material-ui/core";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import Link from "next/link";
@@ -63,7 +63,7 @@ const Register = () => {
         signedIn,
       });
       dispatch({ type: "USER_LOGIN", payload: data });
-      Cookies.set("userInfo", data);
+      Cookies.set("userInfo", JSON.stringify(data));
       router.push("/");
     } catch (err) {
       enqueueSnackbar(err.message, { variant: "error" });
@@ -215,12 +215,12 @@ const Register = () => {
                       variant="outlined"
                       id="passwordConfirm"
                       label="Şifre Onay"
-                      inputProps={{ type: "passwordConfirm" }}
+                      inputProps={{ type: "password" }}
                       error={Boolean(errors.passwordConfirm)}
                       helperText={
                         errors.passwordConfirm
                           ? errors.passwordConfirm.type === "minLength"
-                            ? "Şifreniz minimum 5 karakter olmalıdır"
+                            ? "Şifreniz minimum 5 karakterden oluşmalıdır"
                             : "Lütfen bir şifre giriniz"
                           : ""
                       }
@@ -279,6 +279,7 @@ const Register = () => {
                 type="submit"
                 fullWidth
                 color="primary"
+                onSubmit={handleSubmit(registerHandler)}
               >
                 Üye Ol
               </Button>
