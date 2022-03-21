@@ -82,6 +82,11 @@ const Navbar = () => {
                   <div className={styles["link-item"]}>Hesabım</div>
                 </Link>
               </button>
+              <button className={styles.button}>
+                <Link href="/panel" className={styles["menu-link"]} passHref>
+                  <div className={styles["link-item"]}>Yönetim Paneli</div>
+                </Link>
+              </button>
 
               <button className={styles.button} onClick={logoutHandler}>
                 <Link href="/" passHref className={styles["menu-link"]}>
