@@ -14,6 +14,8 @@ import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import styles from "./UserDashboard.module.css";
 import { DataGrid } from "@mui/x-data-grid";
+import Image from "next/image";
+import QRCode from "qrcode";
 
 const UserDashboard = () => {
   const [menu, setMenu] = useState();
@@ -23,11 +25,16 @@ const UserDashboard = () => {
   const [price, setPrice] = useState();
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [src, setSrc] = useState("");
   const fetchMenus = async () => {
     try {
-      const storeName = "Aa";
+      setIsLoading(true);
+      const storeName = "demo";
       const { data } = await axios.get(`/api/qr/menus/${storeName}/`);
       setMenu(data);
+      console.log(data);
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -45,6 +52,7 @@ const UserDashboard = () => {
   if (!isThereName) {
     isFirst = false;
   }
+  console.log(menu);
   const [brandName, setBrandName] = useState("Aa");
 
   const submitNameHandler = async (e) => {
@@ -79,12 +87,28 @@ const UserDashboard = () => {
     ...new Set(menu?.menu[0].products.map((product) => product.category)),
   ];
   const columns = [
-    { field: "_id", headerName: "ID", width: 300 },
-    { field: "name", headerName: "Product Name", width: 200 },
-    { field: "price", headerName: "Product Price", width: 200 },
-    { field: "description", headerName: "Product Description", width: 200 },
-    { field: "category", headerName: "Product Category", width: 200 },
+    { field: "_id", headerName: "Ürün Kodu", width: 300 },
+    {
+      field: "name",
+      headerName: "Ürün",
+      width: 300,
+      renderCell: (params) => {
+        return (
+          <div className={styles.product}>
+            <img src={params?.row.image} alt="" className={styles.image} />
+            <p>{params?.row.name}</p>
+          </div>
+        );
+      },
+    },
+    { field: "price", headerName: "Ürün Fiyatı", width: 200 },
+    { field: "description", headerName: "Ürün Açıklaması", width: 200 },
+    { field: "category", headerName: "Ürün Kategorisi", width: 200 },
   ];
+  useEffect(() => {
+    QRCode.toDataURL("localhost:3000/qr/vq/demo").then(setSrc);
+  }, []);
+
   return (
     <div className={styles.container}>
       <div>
@@ -202,17 +226,26 @@ const UserDashboard = () => {
           </List>
         </form>
       </div>
-
       <div>
-        <h3>Menü</h3>
-        <div style={{ height: 400, width: "100%" }}>
-          <DataGrid
-            rows={menu?.menu[0].products}
-            columns={columns}
-            pageSize={5}
-            getRowId={(product) => product._id}
-            rowsPerPageOptions={[5]}
-          />
+        <div>
+          <h6>QR Menü Kodu</h6>
+          <img src={src} alt="" />
+        </div>
+        <div>
+          <h3>Menü</h3>
+          {isLoading ? (
+            <p>Yükleniyor...</p>
+          ) : (
+            <div style={{ height: 500, width: "100%" }}>
+              <DataGrid
+                rows={menu?.menu[0].products}
+                columns={columns}
+                pageSize={5}
+                getRowId={(product) => product._id}
+                rowsPerPageOptions={[5]}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
