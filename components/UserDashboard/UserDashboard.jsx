@@ -12,21 +12,21 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import styles from "./UserDashboard.module.css";
+import { DataGrid } from "@mui/x-data-grid";
 
 const UserDashboard = () => {
-  const [menus, setMenus] = useState();
-  const [store, setStore] = useState();
+  const [menu, setMenu] = useState();
   const products = [];
-  const [name, setName] = useState();
+  const store = menu?.menu[0].storeName;
+  const [name, setName] = useState("");
   const [price, setPrice] = useState();
-  const [description, setDescription] = useState();
+  const [description, setDescription] = useState("");
   const [category, setCategory] = useState();
   const fetchMenus = async () => {
     try {
       const storeName = "Aa";
       const { data } = await axios.get(`/api/qr/menus/${storeName}/`);
-      setMenus(data);
-      setStore(data.menu[0].storeName);
+      setMenu(data);
     } catch (err) {
       console.log(err);
     }
@@ -34,7 +34,6 @@ const UserDashboard = () => {
   useEffect(() => {
     fetchMenus();
   }, []);
-
   const {
     handleSubmit,
     control,
@@ -60,7 +59,6 @@ const UserDashboard = () => {
       console.log(err);
     }
   };
-
   const submitProductsHandler = async (e) => {
     const storeName = "Aa";
     e.preventDefault();
@@ -76,114 +74,140 @@ const UserDashboard = () => {
       console.log(err);
     }
   };
+  const categories = [
+    ...new Set(menu?.menu[0].products.map((product) => product.category)),
+  ];
+  const columns = [
+    { field: "_id", headerName: "ID", width: 70 },
+    { field: "name", headerName: "Product Name", width: 130 },
+    { field: "price", headerName: "Product Price", width: 130 },
+    { field: "description", headerName: "Product Description", width: 130 },
+    { field: "category", headerName: "Product Category", width: 130 },
+  ];
   return (
     <div className={styles.container}>
-      <h3 className={styles.header}>QR Menü Yönetim Paneli</h3>
-      <form onSubmit={submitNameHandler}>
-        <List className={styles.list}>
-          <ListItem>
-            <TextField
-              variant="outlined"
-              fullWidth
-              disabled={isFirst ? false : true}
-              id="brandName"
-              value={store}
-              onChange={(e) => setBrandName(e.target.value)}
-              label={store ? "" : "Dükkan Adı"}
-              helperText={
-                isFirst
-                  ? "İpucu: www.site.com/qr/dükkanadı"
-                  : `www.site.com/qr/${store}`
-              }
-            ></TextField>
-          </ListItem>
-          {isFirst && (
+      <div>
+        <h3 className={styles.header}>QR Menü Yönetim Paneli</h3>
+        <form onSubmit={submitNameHandler}>
+          <List className={styles.list}>
+            <ListItem>
+              <TextField
+                variant="outlined"
+                fullWidth
+                disabled={isFirst ? false : true}
+                id="brandName"
+                value={store}
+                onChange={(e) => setBrandName(e.target.value)}
+                label={store ? "" : "Dükkan Adı"}
+                helperText={
+                  isFirst
+                    ? "İpucu: www.site.com/qr/dükkanadı"
+                    : `www.site.com/qr/${store}`
+                }
+              ></TextField>
+            </ListItem>
+            {isFirst && (
+              <ListItem>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  fullWidth
+                  color="primary"
+                  onSubmit={submitNameHandler}
+                >
+                  Kaydet
+                </Button>
+              </ListItem>
+            )}
+          </List>
+        </form>
+        <form onSubmit={submitProductsHandler}>
+          <List className={styles.list}>
+            <h3 className={styles.header}>Ürün Ekle</h3>
+            <ListItem>
+              <TextField
+                variant="outlined"
+                fullWidth
+                id="category"
+                label="Kategori"
+                inputProps={{ type: "text" }}
+                onChange={(e) => setCategory(e.target.value)}
+                helperText="İpucu: Ana Yemek, Kahvaltılar, Tatlılar"
+              ></TextField>
+            </ListItem>
+            <ListItem>
+              <TextField
+                variant="outlined"
+                fullWidth
+                id="name"
+                onChange={(e) => setName(e.target.value)}
+                label="Ürün Adı"
+                inputProps={{ type: "text" }}
+                helperText="İpucu: Izgara Köfte, Kaşarlı Tost, Sufle"
+              ></TextField>
+            </ListItem>
+            <ListItem>
+              <TextField
+                variant="outlined"
+                fullWidth
+                id="description"
+                label="Ürün Açıklaması"
+                onChange={(e) => setDescription(e.target.value)}
+                inputProps={{ type: "text" }}
+                helperText="İpucu: 200GR Köfte; Patates kızartması, közlenmiş biber, soğan, domates, baharatlar, turşu ile"
+              ></TextField>
+            </ListItem>
+            <ListItem>
+              <TextField
+                variant="outlined"
+                fullWidth
+                id="price"
+                onChange={(e) => setPrice(e.target.value)}
+                label="Fiyat"
+                inputProps={{ type: "number" }}
+                helperText="İpucu: 50"
+              ></TextField>
+            </ListItem>
+            <ListItem>
+              <label htmlFor="icon-button-file">
+                <Input accept="image/*" id="icon-button-file" type="file" />
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                >
+                  <PhotoCamera />
+                </IconButton>
+              </label>
+            </ListItem>
             <ListItem>
               <Button
                 variant="contained"
                 type="submit"
                 fullWidth
                 color="primary"
-                onSubmit={submitNameHandler}
+                onSubmit={submitProductsHandler}
               >
-                Kaydet
+                Ekle
               </Button>
             </ListItem>
-          )}
-        </List>
-      </form>
-      <form onSubmit={submitProductsHandler}>
-        <List className={styles.list}>
-          <h3 className={styles.header}>Ürün Ekle</h3>
-          <ListItem>
-            <TextField
-              variant="outlined"
-              fullWidth
-              id="category"
-              label="Kategori"
-              inputProps={{ type: "text" }}
-              onChange={(e) => setCategory(e.target.value)}
-              helperText="İpucu: Ana Yemek, Kahvaltılar, Tatlılar"
-            ></TextField>
-          </ListItem>
-          <ListItem>
-            <TextField
-              variant="outlined"
-              fullWidth
-              id="name"
-              onChange={(e) => setName(e.target.value)}
-              label="Ürün Adı"
-              inputProps={{ type: "text" }}
-              helperText="İpucu: Izgara Köfte, Kaşarlı Tost, Sufle"
-            ></TextField>
-          </ListItem>
-          <ListItem>
-            <TextField
-              variant="outlined"
-              fullWidth
-              id="description"
-              label="Ürün Açıklaması"
-              onChange={(e) => setDescription(e.target.value)}
-              inputProps={{ type: "text" }}
-              helperText="İpucu: 200GR Köfte; Patates kızartması, közlenmiş biber, soğan, domates, baharatlar, turşu ile"
-            ></TextField>
-          </ListItem>
-          <ListItem>
-            <TextField
-              variant="outlined"
-              fullWidth
-              id="price"
-              onChange={(e) => setPrice(e.target.value)}
-              label="Fiyat"
-              inputProps={{ type: "number" }}
-              helperText="İpucu: 50"
-            ></TextField>
-          </ListItem>
-          <ListItem>
-            <label htmlFor="icon-button-file">
-              <Input accept="image/*" id="icon-button-file" type="file" />
-              <IconButton
-                color="primary"
-                aria-label="upload picture"
-                component="span"
-              >
-                <PhotoCamera />
-              </IconButton>
-            </label>
-          </ListItem>
-          <ListItem>
-            <Button
-              variant="contained"
-              type="submit"
-              fullWidth
-              color="primary"
-              onSubmit={submitProductsHandler}
-            >
-              Ekle
-            </Button>
-          </ListItem>
-        </List>
-      </form>
+          </List>
+        </form>
+      </div>
+
+      <div>
+        <h6>Menü</h6>
+        <div style={{ height: 400, width: "100%" }}>
+          <DataGrid
+            rows={menu?.menu[0].products}
+            columns={columns}
+            pageSize={5}
+            getRowId={(product) => product._id}
+            rowsPerPageOptions={[5]}
+            checkboxSelection
+          />
+        </div>
+      </div>
     </div>
   );
 };
