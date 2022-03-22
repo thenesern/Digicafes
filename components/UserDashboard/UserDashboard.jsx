@@ -229,7 +229,9 @@ const UserDashboard = () => {
       <div>
         <div>
           <h6>QR Menü Kodu</h6>
-          <img src={src} alt="" />
+          <Link href="/qr/v1/demo" passHref>
+            <img src={src} alt="" />
+          </Link>
         </div>
         <div>
           <h3>Menü</h3>
