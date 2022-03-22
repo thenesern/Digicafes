@@ -12,7 +12,6 @@ function MyApp({ Component, pageProps }) {
           <title>Brand Name | Description</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
-        <Navbar />
         <SnackbarProvider
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
