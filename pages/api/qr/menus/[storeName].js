@@ -7,8 +7,12 @@ const handler = nc();
 handler.get(async (req, res) => {
   await db.connect();
   const name = req.query.storeName;
-  const menu = await QRMenu.find({ storeName: `${name}` });
-  res.json({ menu });
+  try {
+    const menu = await QRMenu.find({ storeName: `${name}` });
+    res.json({ menu });
+  } catch (err) {
+    console.log(err.message);
+  }
   await db.disconnect();
 });
 

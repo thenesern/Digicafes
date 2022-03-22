@@ -2,6 +2,7 @@ import {
   Button,
   IconButton,
   Input,
+  Link,
   List,
   ListItem,
   TextField,
@@ -78,16 +79,16 @@ const UserDashboard = () => {
     ...new Set(menu?.menu[0].products.map((product) => product.category)),
   ];
   const columns = [
-    { field: "_id", headerName: "ID", width: 70 },
-    { field: "name", headerName: "Product Name", width: 130 },
-    { field: "price", headerName: "Product Price", width: 130 },
-    { field: "description", headerName: "Product Description", width: 130 },
-    { field: "category", headerName: "Product Category", width: 130 },
+    { field: "_id", headerName: "ID", width: 300 },
+    { field: "name", headerName: "Product Name", width: 200 },
+    { field: "price", headerName: "Product Price", width: 200 },
+    { field: "description", headerName: "Product Description", width: 200 },
+    { field: "category", headerName: "Product Category", width: 200 },
   ];
   return (
     <div className={styles.container}>
       <div>
-        <h3 className={styles.header}>QR Menü Yönetim Paneli</h3>
+        <h2 className={styles.header}>QR Menü Yönetim Paneli</h2>
         <form onSubmit={submitNameHandler}>
           <List className={styles.list}>
             <ListItem>
@@ -100,9 +101,16 @@ const UserDashboard = () => {
                 onChange={(e) => setBrandName(e.target.value)}
                 label={store ? "" : "Dükkan Adı"}
                 helperText={
-                  isFirst
-                    ? "İpucu: www.site.com/qr/dükkanadı"
-                    : `www.site.com/qr/${store}`
+                  isFirst ? (
+                    "İpucu: www.site.com/qr/dükkanadı"
+                  ) : (
+                    <Link
+                      href="localhost:3000/qr/[storeName]"
+                      as={`localhost:3000/qr/${store}`}
+                    >
+                      www.site.com/qr/{store}
+                    </Link>
+                  )
                 }
               ></TextField>
             </ListItem>
@@ -196,7 +204,7 @@ const UserDashboard = () => {
       </div>
 
       <div>
-        <h6>Menü</h6>
+        <h3>Menü</h3>
         <div style={{ height: 400, width: "100%" }}>
           <DataGrid
             rows={menu?.menu[0].products}
@@ -204,7 +212,6 @@ const UserDashboard = () => {
             pageSize={5}
             getRowId={(product) => product._id}
             rowsPerPageOptions={[5]}
-            checkboxSelection
           />
         </div>
       </div>
