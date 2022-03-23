@@ -3,6 +3,7 @@ import styles from "../styles/Home.module.css";
 import Head from "next/head";
 import Navbar from "../components/NavBar/Navbar";
 import QRMenuDescription from "../components/QRMenuDescription/QRMenuDescription";
+import Footer from "../components/Footer/Footer";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <Jumbotron />
         <QRMenuDescription />
       </div>
+      <Footer />
     </>
   );
 }
