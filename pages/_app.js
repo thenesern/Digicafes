@@ -19,7 +19,6 @@ function MyApp({ Component, pageProps }) {
           <Component {...pageProps} />
         </SnackbarProvider>
       </StoreProvider>
-      <Footer />
     </>
   );
 }

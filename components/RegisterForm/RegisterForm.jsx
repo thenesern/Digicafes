@@ -1,21 +1,20 @@
 // Dependencies
-import React, { useContext, useEffect } from "react";
-import { Button, TextField, List, ListItem } from "@material-ui/core";
+import React, { useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import Link from "next/link";
+import axios from "axios";
+import { useSnackbar } from "notistack";
 import { Controller, useForm } from "react-hook-form";
 import { Store } from "../../redux/store";
+import { useRouter } from "next/router";
+
 // Styles
 import styles from "./RegisterForm.module.css";
-import axios from "axios";
-import { useRouter } from "next/router";
-import { useState } from "react";
+import { Button, TextField, List, ListItem } from "@material-ui/core";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
 
 const Register = () => {
   const [visible, setVisible] = useState(false);
-
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { state, dispatch } = useContext(Store);
   const router = useRouter();
@@ -25,11 +24,13 @@ const Register = () => {
     control,
     formState: { errors },
   } = useForm();
+
   useEffect(() => {
     if (userInfo) {
       router.push("/");
     }
   }, []);
+
   const registerHandler = async ({
     fName,
     lName,
@@ -70,8 +71,8 @@ const Register = () => {
       Cookies.set("userInfo", JSON.stringify(data));
       router.push("/");
     } catch (err) {
-      enqueueSnackbar(err.message, { variant: "error" });
       setVisible(false);
+      enqueueSnackbar("E-mail adresi zaten kayıtlı.", { variant: "error" });
     }
   };
 

@@ -16,6 +16,7 @@ export default function Home() {
       <div className={styles.container}>
         <Jumbotron />
         <QRMenuDescription />
+        <Footer />
       </div>
     </>
   );
