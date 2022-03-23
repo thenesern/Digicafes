@@ -2,8 +2,13 @@ import React from "react";
 import { Button } from "@nextui-org/react";
 import confetti from "canvas-confetti";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
-const CustomButton = () => {
+const CustomButton = ({ props }) => {
+  let user;
+  if (Cookies.get("userInfo")) {
+    user = JSON.parse(Cookies.get("userInfo"));
+  }
   const handleConfetti = () => {
     confetti({
       zIndex: 999,
@@ -13,7 +18,7 @@ const CustomButton = () => {
     });
   };
   return (
-    <Link href="/kayit" passHref>
+    <Link href={"/" + user ? "dijital-menu" : "kayit"} passHref>
       <Button
         auto
         rounded

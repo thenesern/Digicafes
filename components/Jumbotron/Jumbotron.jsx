@@ -34,7 +34,7 @@ const Jumbotron = () => {
             width: "auto",
           }}
         />
-        <MainMenuButton>Hemen Başlayın</MainMenuButton>
+        <MainMenuButton />
       </div>
     </div>
   );

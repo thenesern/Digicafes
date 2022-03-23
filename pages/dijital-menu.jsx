@@ -1,11 +1,11 @@
 import React from "react";
 import DigitalMenuPage from "../components/DigitalMenuPage/DigitalMenuPage";
-import Navbar from "../components/NavBar/Navbar";
+import Nav from "../components/Nav/Nav";
 
 const dijitalMenu = () => {
   return (
     <div className>
-      <Navbar />
+      <Nav />
       <div>
         <DigitalMenuPage />
       </div>

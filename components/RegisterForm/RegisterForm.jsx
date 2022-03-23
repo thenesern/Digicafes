@@ -69,6 +69,7 @@ const Register = () => {
       });
       dispatch({ type: "USER_LOGIN", payload: data });
       Cookies.set("userInfo", JSON.stringify(data));
+      setVisible(false);
       router.push("/");
     } catch (err) {
       setVisible(false);

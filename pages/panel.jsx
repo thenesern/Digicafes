@@ -1,10 +1,10 @@
 import React from "react";
 import UserDashboard from "../components/UserDashboard/UserDashboard";
-import Navbar from "../components/NavBar/Navbar";
+import Nav from "../components/Nav/Nav";
 const panel = () => {
   return (
     <>
-      <Navbar />
+      <Nav />
       <div>
         <UserDashboard />
       </div>

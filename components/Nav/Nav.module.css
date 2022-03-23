@@ -141,3 +141,20 @@
   width: 10rem;
   gap: 12px;
 }
+
+.modal {
+  box-shadow: none;
+  width: 24rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 24rem;
+}
+
+.signup {
+  font-size: 14px;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
