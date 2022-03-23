@@ -1,19 +1,30 @@
 .container {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: 5%;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .image {
   object-fit: contain;
-  width: 12rem;
-  height: 12rem;
+  width: auto;
+  height: 26rem;
 }
-
+.image2 {
+  z-index: 2;
+  width: auto;
+  height: 18rem;
+  position: absolute;
+}
+.images {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
 .top {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   gap: 12rem;
   padding: 12rem 0;
@@ -35,4 +46,81 @@
   font-size: 36px;
   letter-spacing: 1px;
   color: #e63946;
+}
+
+.first {
+  padding: 4rem 0;
+  background-color: #e07a5f;
+  width: 100%;
+  height: 100%;
+  gap: 2rem;
+  color: #ffe8d6;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.firstList {
+  line-height: 24px;
+}
+
+.firstDes {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+
+.second {
+  padding: 4rem 0;
+  background-color: #a8dadc;
+  width: 100%;
+  height: 100%;
+  gap: 4rem;
+  color: #14213d;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.secondList {
+  line-height: 24px;
+}
+
+.secondDes {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+}
+
+.firstImage {
+  object-fit: contain;
+  width: auto;
+  height: 30rem;
+}
+.secondImage {
+  object-fit: contain;
+  width: auto;
+  height: 36rem;
 }
