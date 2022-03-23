@@ -2,6 +2,7 @@ import Jumbotron from "../components/Jumbotron/Jumbotron";
 import styles from "../styles/Home.module.css";
 import Head from "next/head";
 import Navbar from "../components/NavBar/Navbar";
+import QRMenuDescription from "../components/QRMenuDescription/QRMenuDescription";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       </Head>
       <div className={styles.container}>
         <Jumbotron />
+        <QRMenuDescription />
       </div>
     </>
   );

@@ -33,7 +33,6 @@ const UserDashboard = () => {
       const storeName = "demo";
       const { data } = await axios.get(`/api/qr/menus/${storeName}/`);
       setMenu(data);
-      console.log(data);
       setIsLoading(false);
     } catch (err) {
       console.log(err);
@@ -52,7 +51,6 @@ const UserDashboard = () => {
   if (!isThereName) {
     isFirst = false;
   }
-  console.log(menu);
   const [brandName, setBrandName] = useState("Aa");
 
   const submitNameHandler = async (e) => {
@@ -72,8 +70,6 @@ const UserDashboard = () => {
     const storeName = "Aa";
     e.preventDefault();
     products.push({ name, price, description, category });
-    console.log(typeof products);
-    console.log(typeof storeName);
     try {
       const { data } = await axios.patch("/api/qr/menus/menu", {
         storeName,

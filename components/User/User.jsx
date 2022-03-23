@@ -10,7 +10,6 @@ const User = () => {
   if (Cookies.get("userInfo")) {
     profile = JSON.parse(Cookies.get("userInfo"));
   }
-  console.log(profile);
   const [firstName, setFirstName] = useState(profile?.firstName);
   const [lastName, setLastName] = useState(profile?.lastName);
   const [isChanged, setIsChanged] = useState(false);

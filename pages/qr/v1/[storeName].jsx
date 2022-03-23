@@ -11,7 +11,6 @@ import Link from "next/link";
 const StoreMenu = ({ menu }) => {
   const router = useRouter();
 
-  console.log(menu);
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
