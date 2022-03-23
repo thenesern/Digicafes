@@ -7,11 +7,15 @@
   align-items: center;
   justify-content: center;
   background-color: #1d3557;
-  position: fixed;
   z-index: 3;
   color: #fbeee0;
+  transition: all 0.3s ease-in-out;
+  position: fixed;
 }
 
+.container.fixed {
+  height: 7vh;
+}
 .list {
   display: flex;
   list-style: none;

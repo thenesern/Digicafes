@@ -15,6 +15,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Fade from "@mui/material/Fade";
 import { Button, TextField, List, ListItem, Menu } from "@material-ui/core";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
+import { useEffect } from "react";
 
 const Nav = () => {
   const [visible, setVisible] = useState(false);
@@ -71,8 +72,24 @@ const Nav = () => {
     }
   };
 
+  const [fix, setFix] = useState(false);
+  function setFixed() {
+    if (window.scrollY >= 392) {
+      setFix(true);
+    } else {
+      setFix(false);
+    }
+  }
+  useEffect(() => {
+    window.addEventListener("scroll", setFixed);
+  });
+
   return (
-    <navbar className={styles.container}>
+    <navbar
+      className={
+        !fix ? `${styles.container}` : `${styles.container} ${styles.fixed}`
+      }
+    >
       <Modal
         closeButton
         className={styles.modal}

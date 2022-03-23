@@ -1,9 +1,8 @@
-import Image from "next/image";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Jumbotron.module.css";
-import illustration from "../../assets/image/jumbotron-image.svg";
 import TextTransition, { presets } from "react-text-transition";
-import MainMenuButton from "../MainMenuButton/Button";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 
 const TEXTS = [
   "Logo Tasarımı",
@@ -12,15 +11,21 @@ const TEXTS = [
 ];
 
 const Jumbotron = () => {
-  const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = useState(0);
+  const router = useRouter();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const intervalId = setInterval(
       () => setIndex((index) => index + 1),
       3000 // every 3 seconds
     );
     return () => clearTimeout(intervalId);
   }, []);
+  let user;
+  if (Cookies.get("userInfo")) {
+    user = JSON.parse(Cookies.get("userInfo"));
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.filter}>
@@ -34,7 +39,15 @@ const Jumbotron = () => {
             width: "auto",
           }}
         />
-        <MainMenuButton />
+        <button
+          className={styles.button}
+          onClick={() => router.push("/dijital-menu")}
+        >
+          <span className={styles.circle} aria-hidden="true">
+            <span className={`${styles.icon} ${styles.arrow}`}></span>
+          </span>
+          <span className={styles.text}>Hemen Başlayın</span>
+        </button>
       </div>
     </div>
   );
