@@ -4,6 +4,7 @@ import Head from "next/head";
 import { SnackbarProvider } from "notistack";
 import { StoreProvider } from "../redux/store";
 import { useRouter } from "next/router";
+import Footer from "../components/Footer/Footer";
 function MyApp({ Component, pageProps }) {
   return (
     <>
@@ -18,6 +19,7 @@ function MyApp({ Component, pageProps }) {
           <Component {...pageProps} />
         </SnackbarProvider>
       </StoreProvider>
+      <Footer />
     </>
   );
 }

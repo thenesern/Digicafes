@@ -1,10 +1,13 @@
 .container {
   display: flex;
+  padding: 0 1rem;
 }
 
 .left {
   flex: 1;
   display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
   flex-direction: column;
   padding: 20px;
 }
@@ -13,11 +16,6 @@
   flex: 1;
   padding: 20px;
   padding-left: 6rem;
-}
-
-.right {
-  flex: 1;
-  padding: 20px;
 }
 
 .description {
@@ -82,4 +80,20 @@
 .link {
   text-decoration: none;
   color: black;
+}
+
+.card {
+  width: 4rem;
+  height: 4rem;
+}
+
+.iyzico {
+  width: 10rem;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }

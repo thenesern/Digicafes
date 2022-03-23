@@ -45,30 +45,32 @@ const Footer = () => {
             </Link>
           </li>
           <li className={styles["list-item"]}>Hakkımızda</li>
+          <li className={styles["list-item"]}>İletişim</li>
         </ul>
       </div>
       <div className={styles.center}>
-        <h3 className={styles.title}>Kurumsal</h3>
+        <h3 className={styles.title}>Hizmetlerimiz</h3>
         <ul className={styles.list}>
           <li className={styles["list-item"]}>
-            <Link href="/" className={styles.link} passHref>
-              Ana Sayfa
+            <Link href="/dijital-menu" className={styles.link} passHref>
+              Dijital Menü
             </Link>
           </li>
-          <li className={styles["list-item"]}>Hakkımızda</li>
         </ul>
       </div>
       <div className={styles.right}>
-        <h3 className={styles.title}>İletişim</h3>
-
-        <div className={styles["contact-item"]}>
-          <MailOutline />
-          <p>contact@mycommerce.com</p>
-        </div>
-        <Payment />
-        <Payment />
-        <Payment />
-        <Payment />
+        <img
+          className={styles.card}
+          src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/master-card.png"
+        />
+        <img
+          className={styles.card}
+          src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/visa.png"
+        />
+        <img
+          className={styles.iyzico}
+          src="https://raw.githubusercontent.com/thenesern/project/969fada3dd5d63aebf5dfcedc97067e21fef98b3/assets/image/iyzico-logo-subbrands-pwi.svg"
+        />
       </div>
     </div>
   );
