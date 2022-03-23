@@ -11,6 +11,8 @@ import { Controller, useForm } from "react-hook-form";
 import { Store } from "../../redux/store";
 // Styles
 import styles from "./Login.module.css";
+import { Loading, Modal, Spacer, Text } from "@nextui-org/react";
+import { useState } from "react";
 
 const Login = () => {
   const {
@@ -32,6 +34,7 @@ const Login = () => {
     closeSnackbar();
     const signedIn = new Date().toLocaleString();
     try {
+      setVisible(true);
       const { data } = await axios.post("/api/auth/login", {
         email,
         password,
@@ -42,10 +45,28 @@ const Login = () => {
       router.push("/");
     } catch (err) {
       enqueueSnackbar(err.message, { variant: "error" });
+      setVisible(false);
     }
   };
+  const [visible, setVisible] = useState(false);
   return (
     <div className={styles.container}>
+      {visible && (
+        <Modal
+          style={{
+            background: "transparent",
+            boxShadow: "none",
+          }}
+          preventClose
+          aria-labelledby="modal-title"
+          open={visible}
+        >
+          <Modal.Body>
+            <Loading size="xl" />
+            <Spacer />
+          </Modal.Body>
+        </Modal>
+      )}
       <div className={styles.wrapper}>
         <h1 className={styles.title}>Giriş Yap</h1>
         <div className={styles.signup}>

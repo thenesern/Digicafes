@@ -10,8 +10,12 @@ import { Store } from "../../redux/store";
 import styles from "./RegisterForm.module.css";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { Loading, Modal, Spacer } from "@nextui-org/react";
 
 const Register = () => {
+  const [visible, setVisible] = useState(false);
+
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { state, dispatch } = useContext(Store);
   const router = useRouter();
@@ -52,8 +56,8 @@ const Register = () => {
     );
     const firstName = betterFirst;
     const lastName = betterLast;
-
     try {
+      setVisible(true);
       const { data } = await axios.post("/api/auth/register", {
         firstName,
         lastName,
@@ -67,11 +71,28 @@ const Register = () => {
       router.push("/");
     } catch (err) {
       enqueueSnackbar(err.message, { variant: "error" });
+      setVisible(false);
     }
   };
 
   return (
     <div className={styles.container}>
+      {visible && (
+        <Modal
+          style={{
+            background: "transparent",
+            boxShadow: "none",
+          }}
+          preventClose
+          aria-labelledby="modal-title"
+          open={visible}
+        >
+          <Modal.Body>
+            <Loading size="xl" />
+            <Spacer />
+          </Modal.Body>
+        </Modal>
+      )}
       <div className={styles.wrapper}>
         <h1 className={styles.title}>Üye Ol</h1>
         <div className={styles.signin}>
