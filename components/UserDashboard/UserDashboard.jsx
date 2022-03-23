@@ -108,7 +108,7 @@ const UserDashboard = () => {
   return (
     <div className={styles.container}>
       <div>
-        <h2 className={styles.header}>QR Menü Yönetim Paneli</h2>
+        <h2 className={styles.header}>Dijital Menü Yönetim Paneli</h2>
         <form onSubmit={submitNameHandler}>
           <List className={styles.list}>
             <ListItem>

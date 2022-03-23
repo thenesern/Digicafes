@@ -40,7 +40,9 @@ const Navbar = () => {
             <h6 className={styles.logo}>Logo</h6>
           </Link>
           <div className={styles.headers}>
-            <Link href="/services">Çözümlerimiz</Link>
+            <Link href="/dijital-menu" passHref>
+              <h5 className={styles.link}>Dijital Menü</h5>
+            </Link>
           </div>
         </li>
         {user ? (

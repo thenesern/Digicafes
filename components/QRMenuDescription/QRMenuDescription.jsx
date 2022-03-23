@@ -17,7 +17,8 @@ const QRMenuDescription = () => {
           <li>
             <h5 className={styles.title}>Menünüz her zaman elinizin altında</h5>
             <p>
-              QR Menü Yönetim Paneli ile menünüzü kolayca düzenleyebilirsiniz.
+              Dijital Menü Yönetim Paneli ile menünüzü kolayca
+              düzenleyebilirsiniz.
             </p>
           </li>
           <li>

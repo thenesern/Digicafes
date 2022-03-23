@@ -100,7 +100,13 @@
 .link-item:hover {
   background-color: lightgray;
 }
-
+.link {
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.link:hover {
+  text-decoration: underline;
+}
 .username {
   display: flex;
   align-items: center;
