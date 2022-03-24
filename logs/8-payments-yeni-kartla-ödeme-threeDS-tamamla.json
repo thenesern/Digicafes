@@ -1,0 +1,8 @@
+{
+    "status": "failure",
+    "errorCode": "5002",
+    "errorMessage": "paymentId gönderilmesi zorunludur",
+    "locale": "tr",
+    "systemTime": 1648128372131,
+    "conversationId": ""
+}
