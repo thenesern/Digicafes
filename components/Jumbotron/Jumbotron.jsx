@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 
 const TEXTS = [
-  "Logo Tasarımı",
+  "Sosyal Medya Yönetimi",
   "Yeni Nesil Dijital Menü",
   "E-Ticaret Çözümleri",
 ];

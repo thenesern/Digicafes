@@ -1,6 +1,7 @@
 import React from "react";
-import DigitalMenuPrices from "../DigitalMenuPrices/DigitalMenuPrices";
+import DigitalMenuPrices from "./DigitalMenuPlans/DigitalMenuPlans";
 import styles from "./DigitalMenuPage.module.css";
+import DigitalMenuStepper from "./DigitalMenuStepper/DigitalMenuStepper";
 
 const DigitalMenuPage = () => {
   return (
@@ -8,7 +9,7 @@ const DigitalMenuPage = () => {
       <div className={styles.top}>
         <div className={styles.topLeft}>
           <h1 className={styles.header}>Dijital Menü</h1>
-          <p>
+          <p className={styles.description}>
             Yönetim Paneliniz üzerinden Menünüzü düzenleyin ve hemen kullanmaya
             başlayın.
           </p>
@@ -39,9 +40,8 @@ const DigitalMenuPage = () => {
             <h2 className={styles.firstHeader}>Dijital Menü Yönetim Paneli</h2>
             <ul className={styles.firstList}>
               <li>İş Yerinize Özel Alt Alan Adı</li>
-              <li>Ürün Ekleme, Çıkarma ve Düzenleme Modülü</li>
+              <li>Ürün Ekleme, Çıkarma ve Güncelleme Modülü</li>
               <li>QR Kod Oluşturma Modülü</li>
-              <li>Otomatik Dijital Menü Oluşturma Modülü</li>
             </ul>
             <p>
               Dijital Menü Yönetim Paneli üzerinden Menünüzü dilediğiniz şekilde
@@ -54,7 +54,7 @@ const DigitalMenuPage = () => {
             <h2 className={styles.secondHeader}>Dijital Menü</h2>
             <ul className={styles.secondList}>
               <li>Ergonomik Menü Tasarımı</li>
-              <li>Çoğu Akıllı Telefon Tarafından Kolayca Ulaşılabilir</li>
+              <li>Çoğu Akıllı Telefon Üzerinden Kolayca Ulaşılabilir</li>
               <li>
                 Temassız Teknolojisi Sayesinde Salgın Hastalıklardan Korunma
                 Avantajı
@@ -72,6 +72,11 @@ const DigitalMenuPage = () => {
               alt=""
               className={styles.secondImage}
             />
+          </div>
+        </article>
+        <article>
+          <div>
+            <DigitalMenuStepper />
           </div>
         </article>
         <article>
