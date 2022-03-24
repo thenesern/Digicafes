@@ -1,0 +1,8 @@
+{
+    "status": "failure",
+    "errorCode": "5122",
+    "errorMessage": "Gönderilen tokena ait ödeme bilgisi bulunamadı",
+    "locale": "tr",
+    "systemTime": 1648129547989,
+    "conversationId": "jfFd8DC65tolMKVY0nEc"
+}

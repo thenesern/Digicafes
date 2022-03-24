@@ -9,6 +9,7 @@ const Logs = require("../../utils/logs.js");
 const Installments = require("./methods/installments.js");
 const PaymentsThreeDS = require("./methods/threeds-payments.js");
 const { createAPayment } = require("./methods/payment.js");
+const { initialize, getFormPayment } = require("./methods/checkouts.js");
 
 const createUserAndCards = () => {
   createUserCard({
@@ -262,4 +263,85 @@ const completeThreeDSPaymet = () => {
     });
 };
 
-completeThreeDSPaymet();
+// completeThreeDSPaymet();
+
+const initializeCheckoutForm = () => {
+  initialize({
+    locale: Iyzipay.LOCALE.TR,
+    conversationId: nanoid(),
+    price: "300",
+    paidPrice: "300",
+    currency: Iyzipay.CURRENCY.TRY,
+    installment: "1",
+    basketId: "A11111",
+    paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
+    paymentGroup: Iyzipay.PAYMENT_GROUP.SUBSCRIPTION,
+    callbackUrl: "https://localhost/api/checkout/complete/payment",
+    paymentCard: {
+      cardHolderName: "John Doe",
+      cardNumber: "5528790000000008",
+      expireMonth: "12",
+      expireYear: "2030",
+      cvc: "123",
+      registerCard: "0",
+    },
+    buyer: {
+      id: "AA111",
+      name: "John",
+      surname: "Doe",
+      gsmNumber: "+905350000000",
+      email: "email@email.com",
+      identityNumber: "00000000000",
+      lastLoginDate: "2020-10-05 12:33:22",
+      registrationDate: "2020-10-05 12:33:22",
+      registrationAddress: "Test Tepe, Test Mah. Test Sok. No:2",
+      ip: "85.34.78.112",
+      city: "Istanbul",
+      country: "Turkey",
+      zipCode: "34732",
+    },
+    billingAddress: {
+      contactName: "John Doe",
+      city: "Istanbul",
+      country: "Turkey",
+      address: "Test Tepe, Test Mah. Test Sok. No:2",
+      zipCode: "34732",
+    },
+    basketItems: [
+      {
+        id: "TT11",
+        name: "Hizmet Adı",
+        category1: "Hizmetler",
+        itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
+        price: "300",
+      },
+    ],
+  })
+    .then((result) => {
+      console.log(result);
+      Logs("13-checkout-form-payments", result);
+    })
+    .catch((err) => {
+      console.log(err);
+      Logs("13-checkout-form-payments-hata", err);
+    });
+};
+
+// initializeCheckoutForm();
+
+const getCheckoutFormPayment = () => {
+  getFormPayment({
+    locale: Iyzipay.LOCALE.TR,
+    conversationId: nanoid(),
+    token: "0e5d9e77-afc7-44b8-9eb2-f56e2685ef89",
+  })
+    .then((result) => {
+      console.log(result);
+      Logs("14-checkout-form-payments-detaylar", result);
+    })
+    .catch((err) => {
+      console.log(err);
+      Logs("14-checkout-form-payments--detaylar-hata", err);
+    });
+};
+getCheckoutFormPayment();
