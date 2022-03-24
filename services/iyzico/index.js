@@ -10,6 +10,8 @@ const Installments = require("./methods/installments.js");
 const PaymentsThreeDS = require("./methods/threeds-payments.js");
 const { createAPayment } = require("./methods/payment.js");
 const { initialize, getFormPayment } = require("./methods/checkouts.js");
+const { cancelPayment } = require("./methods/cancel-payments.js");
+const { refundPayment } = require("./methods/refund-payments.js");
 
 const createUserAndCards = () => {
   createUserCard({
@@ -344,4 +346,49 @@ const getCheckoutFormPayment = () => {
       Logs("14-checkout-form-payments--detaylar-hata", err);
     });
 };
-getCheckoutFormPayment();
+
+// getCheckoutFormPayment();
+
+const cancelPayments = () => {
+  cancelPayment({
+    locale: Iyzipay.LOCALE.TR,
+    conversationId: nanoid(),
+    paymentId: "17252638",
+    ip: "85,34,78,112",
+    reason: Iyzipay.REFUND_REASON.BUYER_REQUEST,
+    description: "Kullanıcı isteği üzerine iptal edildi.",
+  })
+    .then((result) => {
+      console.log(result);
+      Logs("15-cancel-payment", result);
+    })
+    .catch((err) => {
+      console.log(err);
+      Logs("15-cancel-payment-hata", err);
+    });
+};
+
+// cancelPayments();
+
+const refundPayments = () => {
+  refundPayment({
+    locale: Iyzipay.LOCALE.TR,
+    conversationId: nanoid(),
+    paymentTransactionId: "",
+    price: "60",
+    currency: Iyzipay.CURRENCY.TRY,
+    reason: Iyzipay.REFUND_REASON.BUYER_REQUEST,
+    description: "Kullanıcı isteği üzerine geri ödeme yapıldı."
+    ip: "85.34.78.112",
+  })
+    .then((result) => {
+      console.log(result);
+      Logs("15-cancel-payment", result);
+    })
+    .catch((err) => {
+      console.log(err);
+      Logs("15-cancel-payment-hata", err);
+    });
+};
+
+// refundPayments();
