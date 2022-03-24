@@ -378,7 +378,7 @@ const refundPayments = () => {
     price: "60",
     currency: Iyzipay.CURRENCY.TRY,
     reason: Iyzipay.REFUND_REASON.BUYER_REQUEST,
-    description: "Kullanıcı isteği üzerine geri ödeme yapıldı."
+    description: "Kullanıcı isteği üzerine geri ödeme yapıldı.",
     ip: "85.34.78.112",
   })
     .then((result) => {

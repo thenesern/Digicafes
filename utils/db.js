@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-
+import dotenv from "dotenv";
+dotenv.config();
 const connection = {};
 
 async function connect() {
@@ -15,13 +16,10 @@ async function connect() {
     }
     await mongoose.disconnect();
   }
-  const db = await mongoose.connect(
-    "mongodb+srv://enes-eren:Ankara278@cluster0.4wfyg.mongodb.net/project?retryWrites=true&w=majority",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  );
+  const db = await mongoose.connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   console.log("new connection");
   connection.isConnected = db.connections[0].readyState;
 }
