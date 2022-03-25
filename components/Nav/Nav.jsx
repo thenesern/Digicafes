@@ -563,7 +563,7 @@ const Nav = () => {
           <IconButton style={{ padding: "0", margin: "0" }}>
             <MenuIcon
               onClick={() => setOpenMenu(true)}
-              style={{ color: "#ffe8d6" }}
+              className={styles.menuButton}
             />
           </IconButton>
         </Hidden>
