@@ -1,7 +1,7 @@
 import Jumbotron from "../components/Jumbotron/Jumbotron";
 import Head from "next/head";
 import Nav from "../components/Nav/Nav";
-import QRMenuDescription from "../components/QRMenuDescription/QRMenuDescription";
+import DigitalMenuHome from "../components/DigitalMenuHome/DigitalMenuHome";
 import Footer from "../components/Footer/Footer";
 
 export default function Home() {
@@ -13,7 +13,7 @@ export default function Home() {
       </Head>
       <Nav />
       <Jumbotron />
-      <QRMenuDescription />
+      <DigitalMenuHome />
 
       <Footer />
     </div>

@@ -25,15 +25,17 @@
 
 .header {
   color: #e63946;
+  padding-bottom: 2rem;
 }
 .title {
   color: #023047;
+  margin: 0;
+  padding: 0;
 }
 .list {
   list-style: none;
   padding: 0 1rem;
   margin: 0;
-  line-height: 4px;
   gap: 1rem;
   display: flex;
   align-items: flex-start;
@@ -54,4 +56,18 @@
   font-size: 1rem;
   font-weight: 700;
   padding: 10px 2rem;
+}
+
+@media only screen and (max-width: 500px) {
+  .image {
+    height: 20rem;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 0;
+    gap: 0;
+  }
 }

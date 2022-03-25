@@ -1,8 +1,8 @@
 import Link from "next/link";
 import React from "react";
-import styles from "./QRMenuDescription.module.css";
+import styles from "./DigitalMenuHome.module.css";
 
-const QRMenuDescription = () => {
+const DigitalMenuHome = () => {
   return (
     <div className={styles.container}>
       <div className={styles.left}>
@@ -39,4 +39,4 @@ const QRMenuDescription = () => {
   );
 };
 
-export default QRMenuDescription;
+export default DigitalMenuHome;
