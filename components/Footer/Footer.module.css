@@ -97,3 +97,16 @@
   justify-content: center;
   gap: 1rem;
 }
+
+@media only screen and (max-width: 500px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1rem;
+  }
+  .center {
+    display: none;
+  }
+}
