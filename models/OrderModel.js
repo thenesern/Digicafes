@@ -35,7 +35,7 @@ const orderSchema = new mongoose.Schema(
       default: false,
     },
     log: {
-      type: Schema.Types.Mixed,
+      type: mongoose.Schema.Types.Mixed,
       required: true,
     },
   },

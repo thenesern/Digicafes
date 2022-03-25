@@ -24,3 +24,7 @@ const CompletePayment = async (result) => {
     errorMessage: result?.errorMessage,
   });
 };
+
+module.exports = {
+  CompletePayment,
+};

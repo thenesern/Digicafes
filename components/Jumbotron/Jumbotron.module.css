@@ -19,12 +19,12 @@
   padding: 1rem;
   min-width: 24rem;
   margin-bottom: 1rem;
-  color: #001219;
+  color: #2b2d42;
   min-height: 7rem;
 }
 
 .filter {
-  background-color: rgba(255, 232, 214, 0.3);
+  background-color: rgba(239, 214, 255, 0.6);
   z-index: 2;
   width: 100%;
   height: 100%;
@@ -58,7 +58,7 @@
   margin: 0;
   width: 3rem;
   height: 3rem;
-  background: #282936;
+  background: #2b2d42;
   border-radius: 1.625rem;
 }
 
@@ -68,7 +68,7 @@
   top: 0;
   bottom: 0;
   margin: auto;
-  background: #fff;
+  background: #ffe8d6;
 }
 
 .arrow {
@@ -86,8 +86,8 @@
   right: 0.0625rem;
   width: 0.625rem;
   height: 0.625rem;
-  border-top: 0.125rem solid #fff;
-  border-right: 0.125rem solid #fff;
+  border-top: 0.125rem solid #ffe8d6;
+  border-right: 0.125rem solid #ffe8d6;
   transform: rotate(45deg);
 }
 
@@ -100,7 +100,7 @@
   bottom: 0;
   padding: 0.75rem 0;
   margin: 0 0 0 3rem;
-  color: #282936;
+  color: #2b2d42;
   font-weight: 700;
   line-height: 1.6;
   text-align: center;
@@ -112,10 +112,10 @@
 }
 
 .button:hover .arrow {
-  background: #fff;
+  background: #ffe8d6;
   transform: translate(1rem, 0);
 }
 
 .button:hover .text {
-  color: #fff;
+  color: #ffe8d6;
 }

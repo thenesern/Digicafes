@@ -2,6 +2,7 @@ import React from "react";
 import DigitalMenuPrices from "./DigitalMenuPlans/DigitalMenuPlans";
 import styles from "./DigitalMenuPage.module.css";
 import DigitalMenuStepper from "./DigitalMenuStepper/DigitalMenuStepper";
+import Link from "next/link";
 
 const DigitalMenuPage = () => {
   return (
@@ -61,7 +62,9 @@ const DigitalMenuPage = () => {
               Dijital Menü, Kullanıcı Deneyimine odaklı tasarımı sayesinde
               müşteri memnuniyetini artırır.
             </p>
-            <button className={styles.button}>Demo&apos;yu İncele</button>
+            <Link href="/qr/v1/demo" passHref>
+              <button className={styles.button}>Demo&apos;yu İncele</button>
+            </Link>
           </div>
           <div>
             <img

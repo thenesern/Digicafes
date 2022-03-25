@@ -7,6 +7,7 @@ import Router from "next/router";
 import { useSnackbar } from "notistack";
 import axios from "axios";
 import { Controller, useForm } from "react-hook-form";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 
 // Styles
 import styles from "./Nav.module.css";
@@ -16,6 +17,8 @@ import Fade from "@mui/material/Fade";
 import { Button, TextField, List, ListItem, Menu } from "@material-ui/core";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
 import { useEffect } from "react";
+import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
+import MenuIcon from "@material-ui/icons/Menu";
 
 const Nav = () => {
   const [visibleLogin, setVisibleLogin] = useState(false);
@@ -42,7 +45,7 @@ const Nav = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  const [openMenu, setOpenMenu] = useState(false);
   const logoutHandler = () => {
     setAnchorEl(null);
     dispatch({ type: "USER_LOGOUT" });
@@ -76,7 +79,7 @@ const Nav = () => {
 
   const [fix, setFix] = useState(false);
   function setFixed() {
-    if (window.scrollY >= 392) {
+    if (window.scrollY >= 200) {
       setFix(true);
     } else {
       setFix(false);
@@ -541,7 +544,7 @@ const Nav = () => {
             </Menu>
           </>
         ) : (
-          <li className={styles.right}>
+          <li className={styles.rightXL}>
             <button
               className={styles.signIn}
               onClick={() => setVisibleLogin(true)}
@@ -556,7 +559,48 @@ const Nav = () => {
             </button>
           </li>
         )}
+        <Hidden smUp>
+          <IconButton style={{ padding: "0", margin: "0" }}>
+            <MenuIcon
+              onClick={() => setOpenMenu(true)}
+              style={{ color: "#ffe8d6" }}
+            />
+          </IconButton>
+        </Hidden>
       </ul>
+      <SwipeableDrawer
+        anchor="right"
+        open={openMenu}
+        onOpen={() => setOpenMenu(true)}
+        onClose={() => setOpenMenu(false)}
+      >
+        <div>
+          <IconButton>
+            <ChevronRightIcon />
+          </IconButton>
+        </div>
+        <Divider />
+        <div className={styles.right}>
+          <div className={styles.buttons}>
+            <button
+              className={styles.signIn}
+              onClick={() => setVisibleLogin(true)}
+            >
+              Giriş Yap
+            </button>
+            <button
+              className={styles.signUp}
+              onClick={() => setVisibleRegister(true)}
+            >
+              Üye Ol
+            </button>
+          </div>
+
+          <Link href="/dijital-menu" passHref>
+            <h5 className={styles.link}>Dijital Menü</h5>
+          </Link>
+        </div>
+      </SwipeableDrawer>
     </navbar>
   );
 };
