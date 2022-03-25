@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import styles from "./QRMenuDescription.module.css";
 
@@ -26,9 +27,11 @@ const QRMenuDescription = () => {
             <p>Sadece QR Kodunu okutarak, menüye ulaşın.</p>
           </li>
           <li>
-            <button className={styles.button}>
-              <span className={styles.btnText}>Hemen Başlayın</span>
-            </button>
+            <Link href="/dijital-menu" passHref>
+              <button className={styles.button}>
+                <span className={styles.btnText}>İncele</span>
+              </button>
+            </Link>
           </li>
         </ul>
       </div>

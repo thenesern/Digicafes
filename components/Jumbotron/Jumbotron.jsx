@@ -3,6 +3,7 @@ import styles from "./Jumbotron.module.css";
 import TextTransition, { presets } from "react-text-transition";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const TEXTS = [
   "Sosyal Medya Yönetimi",
@@ -39,15 +40,14 @@ const Jumbotron = () => {
             width: "auto",
           }}
         />
-        <button
-          className={styles.button}
-          onClick={() => router.push("/dijital-menu")}
-        >
-          <span className={styles.circle} aria-hidden="true">
-            <span className={`${styles.icon} ${styles.arrow}`}></span>
-          </span>
-          <span className={styles.text}>Hemen Başlayın</span>
-        </button>
+        <Link href="/dijital-menu" passHref>
+          <button className={styles.button}>
+            <span className={styles.circle} aria-hidden="true">
+              <span className={`${styles.icon} ${styles.arrow}`}></span>
+            </span>
+            <span className={styles.text}>Hemen Başlayın</span>
+          </button>
+        </Link>
       </div>
     </div>
   );

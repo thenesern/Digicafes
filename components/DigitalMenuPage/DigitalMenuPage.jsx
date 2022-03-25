@@ -55,16 +55,13 @@ const DigitalMenuPage = () => {
             <ul className={styles.secondList}>
               <li>Ergonomik Menü Tasarımı</li>
               <li>Çoğu Akıllı Telefon Üzerinden Kolayca Ulaşılabilir</li>
-              <li>
-                Temassız Teknolojisi Sayesinde Salgın Hastalıklardan Korunma
-                Avantajı
-              </li>
               <li>Çoklu Dil Desteği</li>
             </ul>
             <p>
               Dijital Menü, Kullanıcı Deneyimine odaklı tasarımı sayesinde
               müşteri memnuniyetini artırır.
             </p>
+            <button className={styles.button}>Demo&apos;yu İncele</button>
           </div>
           <div>
             <img
