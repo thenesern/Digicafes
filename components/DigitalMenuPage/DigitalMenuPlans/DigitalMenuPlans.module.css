@@ -335,25 +335,27 @@
     box-shadow: none;
   }
 }
-/* 
+
 @media screen and (max-width: 960px) {
-  body {
+  .pricingTable {
     font-size: 80%;
   }
 }
 @media screen and (max-width: 776px) {
-  body {
+  .pricingTable {
     font-size: 70%;
   }
 }
 @media screen and (max-width: 496px) {
-  body {
-    font-size: 50%;
+  .pricingTable {
+    font-size: 60%;
+  }
+  .pricingTable > .pricingTable-subtitle {
+    font-size: 1rem;
   }
 }
 @media screen and (max-width: 320px) {
-  body {
-    font-size: 40%;
+  .pricingTable {
+    font-size: 50%;
   }
 }
- */

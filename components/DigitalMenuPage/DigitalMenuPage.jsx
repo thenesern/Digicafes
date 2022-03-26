@@ -2,7 +2,9 @@ import React from "react";
 import DigitalMenuPrices from "./DigitalMenuPlans/DigitalMenuPlans";
 import styles from "./DigitalMenuPage.module.css";
 import DigitalMenuStepper from "./DigitalMenuStepper/DigitalMenuStepper";
+import StepperMobile from "./StepperMobile/StepperMobile";
 import Link from "next/link";
+import Footer from "../Footer/Footer";
 
 const DigitalMenuPage = () => {
   return (
@@ -75,8 +77,13 @@ const DigitalMenuPage = () => {
           </div>
         </article>
         <article>
-          <div>
+          <div className={styles.stepper}>
             <DigitalMenuStepper />
+          </div>
+        </article>
+        <article>
+          <div className={styles.stepperMobile}>
+            <StepperMobile />
           </div>
         </article>
         <article>
@@ -85,6 +92,7 @@ const DigitalMenuPage = () => {
           </div>
         </article>
       </section>
+      <Footer />
     </div>
   );
 };
