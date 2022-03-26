@@ -101,7 +101,6 @@ const Nav = () => {
       return enqueueSnackbar("Şifreler eşleşmiyor", { variant: "error" });
     }
     const signedIn = new Date().toLocaleString();
-
     const lowerFirst = fName?.toLowerCase();
     const betterFirst = lowerFirst?.replace(
       lowerFirst[0],
@@ -127,7 +126,8 @@ const Nav = () => {
       });
       dispatch({ type: "USER_LOGIN", payload: data });
       Cookies.set("userInfo", JSON.stringify(data));
-      router.push("/");
+      setIsFetching(false);
+      setVisibleRegister(false);
     } catch (err) {
       setIsFetching(false);
       enqueueSnackbar("E-mail adresi zaten kayıtlı.", { variant: "error" });
@@ -497,7 +497,6 @@ const Nav = () => {
               aria-expanded={open ? "true" : undefined}
               onClick={handleClick}
               className={styles.dropdown}
-         
             >
               <AccountCircleRounded />
               <div className={styles.username}>
@@ -522,17 +521,40 @@ const Nav = () => {
                 marginLeft: "2rem",
               }}
             >
-              <button className={styles.button}>
-                <Link href="/hesabim" className={styles["menu-link"]} passHref>
-                  <div className={styles["link-item"]}>Hesabım</div>
-                </Link>
-              </button>
-              <button className={styles.button}>
-                <Link href="/panel" className={styles["menu-link"]} passHref>
-                  <div className={styles["link-item"]}>Yönetim Paneli</div>
-                </Link>
-              </button>
-
+              {user?.isAdmin === false ? (
+                <>
+                  <button className={styles.button}>
+                    <Link
+                      href="/hesabim"
+                      className={styles["menu-link"]}
+                      passHref
+                    >
+                      <div className={styles["link-item"]}>Hesabım</div>
+                    </Link>
+                  </button>
+                  <button className={styles.button}>
+                    <Link
+                      href="/panel"
+                      className={styles["menu-link"]}
+                      passHref
+                    >
+                      <div className={styles["link-item"]}>Yönetim Paneli</div>
+                    </Link>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button className={styles.button}>
+                    <Link
+                      href="/admin/panel"
+                      className={styles["menu-link"]}
+                      passHref
+                    >
+                      <div className={styles["link-item"]}>Panel</div>
+                    </Link>
+                  </button>
+                </>
+              )}
               <button className={styles.button} onClick={logoutHandler}>
                 <Link href="/" passHref className={styles["menu-link"]}>
                   <div className={styles["link-item"]}>
