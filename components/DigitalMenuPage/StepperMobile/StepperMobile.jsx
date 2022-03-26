@@ -44,15 +44,7 @@ export default function VerticalLinearStepper() {
       <Stepper activeStep={activeStep} orientation="vertical">
         {steps.map((step, index) => (
           <Step key={step.label}>
-            <StepLabel
-              optional={
-                index === 2 ? (
-                  <Typography variant="caption">Last step</Typography>
-                ) : null
-              }
-            >
-              {step.label}
-            </StepLabel>
+            <StepLabel>{step.label}</StepLabel>
             <StepContent>
               <Typography>{step.description}</Typography>
               <Box sx={{ mb: 2 }}>

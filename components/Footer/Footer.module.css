@@ -98,6 +98,12 @@
   gap: 1rem;
 }
 
+@media only screen and (max-width: 1000px) {
+  .center {
+    display: none;
+  }
+}
+
 @media only screen and (max-width: 500px) {
   .container {
     display: flex;
@@ -106,12 +112,6 @@
     justify-content: center;
     padding: 0 1rem;
   }
-  .center {
-    display: none;
-  }
-}
-
-@media only screen and (max-width: 1000px) {
   .center {
     display: none;
   }
