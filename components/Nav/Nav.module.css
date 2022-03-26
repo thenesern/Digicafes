@@ -32,6 +32,12 @@
 .container.fixed .menuButton {
   color: #1d3557;
 }
+.container.fixed .dropdown {
+  color: #1d3557 !important;
+}
+.dropdown {
+  color: #fbeee0 !important;
+}
 .list {
   display: flex;
   list-style: none;

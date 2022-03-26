@@ -497,7 +497,7 @@ const Nav = () => {
               aria-expanded={open ? "true" : undefined}
               onClick={handleClick}
               className={styles.dropdown}
-              style={{ color: "white" }}
+         
             >
               <AccountCircleRounded />
               <div className={styles.username}>
