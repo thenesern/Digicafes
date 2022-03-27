@@ -57,7 +57,7 @@ const UserDashboard = () => {
     e.preventDefault();
     const storeName = brandName
       ?.toLowerCase()
-      .replace(brandName[0], brandName[0].toUpperCase());
+      .replace(brandName[0], brandName[0]?.toUpperCase());
     try {
       const { data } = await axios.post("/api/qr/menu", {
         storeName,
