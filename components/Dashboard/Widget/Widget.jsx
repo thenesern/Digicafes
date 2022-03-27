@@ -21,7 +21,7 @@ const Widget = (props) => {
       data = {
         title: "Kullanıcılar",
         isMoney: false,
-        link: "/admin/panel/kullanicilar",
+        link: "/admin/dashboard/users",
         amount: props.users,
         icon: (
           <PersonOutlined
@@ -35,7 +35,7 @@ const Widget = (props) => {
       data = {
         title: "Siparişler",
         isMoney: false,
-        link: "/admin/panel/siparisler",
+        link: "/admin/dashboard/siparisler",
         amount: props.orders,
         icon: (
           <ShoppingCartOutlined
@@ -49,7 +49,7 @@ const Widget = (props) => {
       data = {
         title: "Kazançlar",
         isMoney: false,
-        link: "/admin/panel/kazanclar",
+        link: "/admin/dashboard/kazanclar",
         amount: props.earnings,
         icon: (
           <MonetizationOnOutlined
@@ -63,7 +63,7 @@ const Widget = (props) => {
       data = {
         title: "Ürünler",
         isMoney: false,
-        link: "/admin/panel/urunler",
+        link: "/admin/dashboard/urunler",
         amount: props.products,
         icon: (
           <StoreMallDirectoryTwoTone

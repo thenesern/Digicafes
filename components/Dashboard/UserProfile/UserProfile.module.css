@@ -1,0 +1,99 @@
+.single {
+  display: flex;
+  width: 100%;
+  padding-top: 3%;
+}
+
+.top {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 6fr 4fr;
+  gap: 20px;
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+}
+.left {
+  flex: 1;
+  padding: 20px;
+  padding: 2rem 6rem;
+}
+
+.right {
+  flex: 1;
+  padding: 20px;
+  padding: 2rem 6rem;
+}
+.editButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  font-size: 12px;
+  color: #7451f8;
+  background-color: #7551f818;
+  cursor: pointer;
+  border-radius: 0px 0px 0px 5px;
+}
+
+.item {
+  display: block;
+}
+.itemImg {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.itemTitle {
+  margin-bottom: 10px;
+  color: #555;
+  width: 7rem;
+}
+
+.detailItem {
+  margin-bottom: 10px;
+  font-size: 14px;
+  display: block;
+}
+.itemKey {
+  font-weight: bold;
+  color: gray;
+  margin-right: 5px;
+}
+
+.email {
+  display: block;
+}
+
+.right {
+  flex: 2;
+}
+
+.title {
+  font-size: 16px;
+  color: lightgray;
+  margin-bottom: 20px;
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+.button {
+  width: 30%;
+  border: none;
+  margin: 20px 0;
+  padding: 10px;
+  margin-left: auto;
+  background-color: #606c38;
+  color: white;
+  cursor: pointer;
+}
+
+.button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}

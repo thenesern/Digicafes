@@ -18,20 +18,14 @@ const UserTable = (props) => {
   const { userInfo } = state;
   const handleDelete = async (id) => {
     if (!isAdmin) {
-      console.log(id);
-      await axios.delete(`/api/users/${id}`, {
-        headers: { authorization: `Bearer ${userInfo.token}` },
-      });
+      try {
+        await axios.delete(`/api/users/${id}`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
-  };
-
-  const deleteUser = async (id) => {
-    await fetch(`/api/users/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
   };
 
   const columns = [
@@ -94,12 +88,12 @@ const UserTable = (props) => {
           <div className={styles.actions}>
             <Link
               passHref
-              href={`/dashboard/users/${params.row._id}`}
+              href={`/admin/dashboard/users/${params.row._id}`}
               style={{ textDecoration: "none" }}
             >
               <button className={styles.viewButton}>
                 <AccountBox className={styles.viewIcon} />
-                View
+                Profil
               </button>
             </Link>
             <button
@@ -163,7 +157,7 @@ const UserTable = (props) => {
           </div>
         </Box>
       </Modal>
-      <div className={styles.datatableTitle}>User List</div>
+      <div className={styles.datatableTitle}>Kullanıcılar</div>
       <DataGrid
         rows={props.users}
         columns={columns}

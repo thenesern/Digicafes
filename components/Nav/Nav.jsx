@@ -536,7 +536,7 @@ const Nav = () => {
                   </button>
                   <button className={styles.button}>
                     <Link
-                      href="/panel"
+                      href="/dashboard"
                       className={styles["menu-link"]}
                       passHref
                     >
@@ -548,7 +548,7 @@ const Nav = () => {
                 <>
                   <button className={styles.button}>
                     <Link
-                      href="/admin/panel"
+                      href="/admin/dashboard"
                       className={styles["menu-link"]}
                       passHref
                     >

@@ -26,7 +26,7 @@ const SideBar = () => {
             </Link>
           </li>
           <li className={styles.li}>
-            <Link href="/admin/panel" className={styles.link} passHref>
+            <Link href="/admin/dashboard" className={styles.link} passHref>
               <button className={styles.button}>
                 <Home color="primary" />
                 <h6 className={styles.title}>Panel</h6>
@@ -39,7 +39,7 @@ const SideBar = () => {
           <li className={styles.li}>
             <Link
               passHref
-              href="/admin/panel/kullanicilar"
+              href="/admin/dashboard/users"
               className={styles.link}
             >
               <button className={styles.button}>

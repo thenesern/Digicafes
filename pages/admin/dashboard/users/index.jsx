@@ -1,11 +1,11 @@
 import React from "react";
-import SideBar from "../../../components/Dashboard/SideBar/SideBar";
-import UserTable from "../../../components/Dashboard/UserTable/UserTable";
-import User from "../../../models/UserModel";
-import db from "../../../utils/db";
-import styles from "./Kullanicilar.module.css";
+import SideBar from "../../../../components/Dashboard/SideBar/SideBar";
+import UserTable from "../../../../components/Dashboard/UserTable/UserTable";
+import User from "../../../../models/UserModel";
+import db from "../../../../utils/db";
+import styles from "./users.module.css";
 
-const kullanicilar = ({ users }) => {
+const users = ({ users }) => {
   return (
     <div className={styles.container}>
       <SideBar />
@@ -27,4 +27,4 @@ export async function getStaticProps() {
   };
 }
 
-export default kullanicilar;
+export default users;
