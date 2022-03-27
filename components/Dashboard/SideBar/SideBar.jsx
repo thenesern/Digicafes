@@ -37,7 +37,11 @@ const SideBar = () => {
         <h6 className={styles.header}>Yönetim</h6>
         <ul className={styles.list}>
           <li className={styles.li}>
-            <Link passHref href="/dashboard/users" className={styles.link}>
+            <Link
+              passHref
+              href="/admin/panel/kullanicilar"
+              className={styles.link}
+            >
               <button className={styles.button}>
                 <Group color="primary" />
                 <h6 className={styles.title}>Kullanıcılar</h6>

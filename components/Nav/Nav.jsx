@@ -114,6 +114,7 @@ const Nav = () => {
     );
     const firstName = betterFirst;
     const lastName = betterLast;
+    const createdAt = new Date().toLocaleString();
     try {
       setIsFetching(true);
       const { data } = await axios.post("/api/auth/register", {
@@ -123,6 +124,7 @@ const Nav = () => {
         password,
         passwordConfirm,
         signedIn,
+        createdAt,
       });
       dispatch({ type: "USER_LOGIN", payload: data });
       Cookies.set("userInfo", JSON.stringify(data));

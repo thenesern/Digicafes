@@ -15,10 +15,7 @@ import {
 
 const Widget = (props) => {
   let data;
-  let earnings;
-  let orders;
-  let products;
-  console.log(props.data);
+
   switch (props.type) {
     case "users":
       data = {

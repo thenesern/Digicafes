@@ -21,6 +21,7 @@ const panel = ({ users, orders, products }) => {
     </div>
   );
 };
+
 export async function getStaticProps() {
   await db.connect();
   const users = await User.find();

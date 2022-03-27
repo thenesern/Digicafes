@@ -16,6 +16,7 @@ handler.post(async (req, res) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     isAdmin: false,
+    createdAt: req.body.createdAt,
   });
   const user = await newUser.save();
   await db.disconnect();
