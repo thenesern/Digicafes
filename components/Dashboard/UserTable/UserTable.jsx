@@ -51,7 +51,9 @@ const UserTable = (props) => {
       headerName: "Kayıt Tarihi",
       width: 220,
       renderCell: (params) => {
-        return <div className={styles.userListItem}>{params.row.signedIn}</div>;
+        return (
+          <div className={styles.userListItem}>{params.row.createdAt}</div>
+        );
       },
     },
     {
