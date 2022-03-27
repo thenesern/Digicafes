@@ -15,24 +15,32 @@ const SideBar = () => {
   return (
     <div className={styles.container}>
       <div className={styles.bar}>
-        <h6 className={styles.header}>Dashboard</h6>
+        <h6 className={styles.header}>Panel</h6>
         <ul className={styles.list}>
           <li className={styles.li}>
             <Link href="/admin/panel" className={styles.link} passHref>
               <button className={styles.button}>
                 <Home color="primary" />
-                <h6 className={styles.title}>Home</h6>
+                <h6 className={styles.title}>Ana Sayfa</h6>
+              </button>
+            </Link>
+          </li>
+          <li className={styles.li}>
+            <Link href="/admin/panel" className={styles.link} passHref>
+              <button className={styles.button}>
+                <Home color="primary" />
+                <h6 className={styles.title}>Panel</h6>
               </button>
             </Link>
           </li>
         </ul>
-        <h6 className={styles.header}>Analytics</h6>
+        <h6 className={styles.header}>Kazançlar</h6>
         <ul className={styles.list}>
           <li className={styles.li}>
             <Link href="/dashboard" className={styles.link} passHref>
               <button className={styles.button}>
                 <ShoppingCartOutlined color="primary" />
-                <h6 className={styles.title}>Orders</h6>
+                <h6 className={styles.title}>Siparişler</h6>
               </button>
             </Link>
           </li>
@@ -40,18 +48,18 @@ const SideBar = () => {
             <Link href="/dashboard" className={styles.link} passHref>
               <button className={styles.button}>
                 <BarChartOutlined color="primary" />
-                <h6 className={styles.title}>Earnings</h6>
+                <h6 className={styles.title}>Kazançlar</h6>
               </button>
             </Link>
           </li>
         </ul>
-        <h6 className={styles.header}>Management</h6>
+        <h6 className={styles.header}>Yönetim</h6>
         <ul className={styles.list}>
           <li className={styles.li}>
             <Link href="/dashboard/products" className={styles.link} passHref>
               <button className={styles.button}>
                 <StoreMallDirectory color="primary" />
-                <h6 className={styles.title}>Products</h6>
+                <h6 className={styles.title}>Ürünler</h6>
               </button>
             </Link>
           </li>
@@ -59,12 +67,12 @@ const SideBar = () => {
             <Link passHref href="/dashboard/users" className={styles.link}>
               <button className={styles.button}>
                 <Group color="primary" />
-                <h6 className={styles.title}>Users</h6>
+                <h6 className={styles.title}>Kullanıcılar</h6>
               </button>
             </Link>
           </li>
         </ul>
-        <h6 className={styles.header}>Main Menu</h6>
+        <h6 className={styles.header}>Ana Sayfa</h6>
         <ul className={styles.list}>
           <li className={styles.li}>
             <Link passHref href="/dashboard/footer" className={styles.link}>

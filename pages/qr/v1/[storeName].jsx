@@ -1,8 +1,5 @@
-import axios from "axios";
 import { useRouter } from "next/router";
 import React from "react";
-import { useState } from "react";
-import { useEffect } from "react";
 import styles from "./store.module.css";
 import db from "../../../utils/db.js";
 import QRMenu from "../../../models/QRMenuModel.js";

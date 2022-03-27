@@ -1,4 +1,10 @@
 .container {
-  width: 100%;
-  height: 100vh;
+  display: grid;
+  grid-template-columns: 0.1fr 1fr;
+}
+
+.widgets {
+  display: flex;
+  padding: 1rem 2rem 0 2rem;
+  gap: 20px;
 }
