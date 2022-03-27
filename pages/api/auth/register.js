@@ -27,6 +27,7 @@ handler.post(async (req, res) => {
     email: user.email,
     id: user._id,
     token,
+    isAdmin: user.isAdmin,
   });
 });
 

@@ -49,7 +49,7 @@ const UserTable = (props) => {
     {
       field: "createdAt",
       headerName: "Kayıt Tarihi",
-      width: 200,
+      width: 220,
       renderCell: (params) => {
         return <div className={styles.userListItem}>{params.row.signedIn}</div>;
       },
@@ -57,7 +57,7 @@ const UserTable = (props) => {
     {
       field: "signedIn",
       headerName: "Son Giriş",
-      width: 200,
+      width: 220,
       renderCell: (params) => {
         return <div className={styles.userListItem}>{params.row.signedIn}</div>;
       },
@@ -65,7 +65,7 @@ const UserTable = (props) => {
     {
       field: "email",
       headerName: "E-mail",
-      width: 200,
+      width: 220,
     },
 
     {
