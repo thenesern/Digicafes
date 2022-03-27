@@ -49,7 +49,11 @@ const SideBar = () => {
             </Link>
           </li>
           <li className={styles.li}>
-            <Link href="/dashboard" className={styles.link} passHref>
+            <Link
+              href="/admin/dashboard/orders"
+              className={styles.link}
+              passHref
+            >
               <button className={styles.button}>
                 <ShoppingCartOutlined color="primary" />
                 <h6 className={styles.title}>Siparişler</h6>
@@ -57,7 +61,11 @@ const SideBar = () => {
             </Link>
           </li>
           <li className={styles.li}>
-            <Link href="/dashboard/products" className={styles.link} passHref>
+            <Link
+              href="/admin/dashboard/products"
+              className={styles.link}
+              passHref
+            >
               <button className={styles.button}>
                 <StoreMallDirectory color="primary" />
                 <h6 className={styles.title}>Ürünler</h6>

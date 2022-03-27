@@ -3,7 +3,7 @@ import SideBar from "../../../components/Dashboard/SideBar/SideBar";
 import Widget from "../../../components/Dashboard/Widget/Widget";
 import Nav from "../../../components/Nav/Nav";
 import Order from "../../../models/OrderModel";
-import Product from "../../../models/productsModel";
+import Product from "../../../models/ProductModel";
 import User from "../../../models/UserModel";
 import db from "../../../utils/db";
 import styles from "./panel.module.css";

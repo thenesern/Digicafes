@@ -35,7 +35,7 @@ const Widget = (props) => {
       data = {
         title: "Siparişler",
         isMoney: false,
-        link: "/admin/dashboard/siparisler",
+        link: "/admin/dashboard/orders",
         amount: props.orders,
         icon: (
           <ShoppingCartOutlined
@@ -63,7 +63,7 @@ const Widget = (props) => {
       data = {
         title: "Ürünler",
         isMoney: false,
-        link: "/admin/dashboard/urunler",
+        link: "/admin/dashboard/products",
         amount: props.products,
         icon: (
           <StoreMallDirectoryTwoTone
@@ -84,7 +84,7 @@ const Widget = (props) => {
           {data?.isMoney && "$"} {data?.amount}
         </span>
         <Link href={data.link} className={styles.link} passHref>
-          <h6 className={styles.link}>Sayafaya Git - {data?.title}</h6>
+          <h6 className={styles.link}>Sayfaya Git - {data?.title}</h6>
         </Link>
       </div>
       <div className={styles.right}>{data?.icon}</div>

@@ -22,7 +22,6 @@ const isAuth = async (req, res, next) => {
   if (authorization) {
     // Bearer xxx => xxx
     const token = authorization.slice(7, authorization.length);
-    console.log(token);
     jwt.verify(token, process.env.JWT_SEC, (err, decode) => {
       if (err) {
         res.status(401).send({ message: "Token is not valid" });
