@@ -53,19 +53,13 @@ const User = () => {
               <TextField
                 className={styles.itemTitle}
                 helperText="Adınız"
-                value={firstName?.replace(
-                  firstName[0],
-                  firstName[0].toUpperCase()
-                )}
+                value={firstName}
                 onChange={firstNameChangeHandler}
               />
               <TextField
                 className={styles.itemTitle}
                 helperText="Soyadınız"
-                value={lastName?.replace(
-                  lastName[0],
-                  lastName[0].toUpperCase()
-                )}
+                value={lastName}
                 onChange={lastNameChangeHandler}
               />
               <TextField

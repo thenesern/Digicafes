@@ -27,7 +27,6 @@ const UserProfile = (props) => {
     e.preventDefault();
     setIsChanged(true);
   };
-  const [image, setImage] = useState("/defaultImage");
   const url = user?.image;
   return (
     <div className={styles.single}>
@@ -39,8 +38,8 @@ const UserProfile = (props) => {
         <div className={styles.right}>
           <h1 className={styles.title}>Kullanıcı Bilgileri</h1>
           <div className={styles.item}>
-            <Image
-              src={image || url}
+            <img
+              src={url || ""}
               alt=""
               className={styles.itemImg}
               width="200px"
@@ -50,19 +49,13 @@ const UserProfile = (props) => {
               <TextField
                 className={styles.itemTitle}
                 helperText="Adınız"
-                value={firstName?.replace(
-                  firstName[0],
-                  firstName[0].toUpperCase()
-                )}
+                value={firstName}
                 onChange={firstNameChangeHandler}
               />
               <TextField
                 className={styles.itemTitle}
                 helperText="Soyadınız"
-                value={lastName?.replace(
-                  lastName[0],
-                  lastName[0].toUpperCase()
-                )}
+                value={lastName}
                 onChange={lastNameChangeHandler}
               />
               <TextField
