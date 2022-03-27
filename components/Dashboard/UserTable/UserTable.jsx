@@ -3,20 +3,35 @@ import { DataGrid } from "@mui/x-data-grid";
 import Link from "next/link";
 import { AccountBox, Delete } from "@material-ui/icons";
 import { useEffect } from "react";
-/* import { deleteUser, getUsers } from "../../../redux/apiCalls"; */
 import { Box, Modal, Typography } from "@mui/material";
 import { useState } from "react";
+import axios from "axios";
+import { Store } from "../../../redux/store";
+import { useContext } from "react";
 
 const UserTable = (props) => {
   const [id, setId] = useState();
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
   const [isAdmin, setIsAdmin] = useState(false);
-
-  const handleDelete = (id) => {
+  const { state } = useContext(Store);
+  const { userInfo } = state;
+  const handleDelete = async (id) => {
     if (!isAdmin) {
-      deleteUser(id, dispatch);
+      console.log(id);
+      await axios.delete(`/api/users/${id}`, {
+        headers: { authorization: `Bearer ${userInfo.token}` },
+      });
     }
+  };
+
+  const deleteUser = async (id) => {
+    await fetch(`/api/users/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   };
 
   const columns = [
@@ -124,17 +139,17 @@ const UserTable = (props) => {
               component="h2"
               style={{ fontWeight: "600", color: "#001219" }}
             >
-              Are you sure?
+              Emin misiniz?
             </Typography>
           </div>
           <div className={styles.modalBody}>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              The user ({firstName} {lastName}) will be deleted.
+              Kullanıcı, ({firstName} {lastName}) silinecek.
             </Typography>
           </div>
           <div className={styles.modalFooter}>
             <button className={styles.discard} onClick={handleClose}>
-              Discard
+              Vazgeç
             </button>
             <button
               className={styles.delete}
@@ -143,7 +158,7 @@ const UserTable = (props) => {
                 handleClose();
               }}
             >
-              DELETE
+              Onayla
             </button>
           </div>
         </Box>

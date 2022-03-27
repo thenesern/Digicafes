@@ -11,9 +11,7 @@ handler.post(async (req, res) => {
   const user = await User.findOne({ email: req.body.email }).select(
     "+password"
   );
-  console.log(user._id);
-  console.log(req.body.signedIn);
-  const signedIn = await User.findByIdAndUpdate(user._id, {
+  await User.findByIdAndUpdate(user._id, {
     signedIn: req.body.signedIn,
   });
   await db.disconnect();
