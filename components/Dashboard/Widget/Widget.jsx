@@ -39,7 +39,7 @@ const Widget = (props) => {
         title: "Siparişler",
         isMoney: false,
         link: "/admin/panel/siparisler",
-        amount: orders || "",
+        amount: props.orders,
         icon: (
           <ShoppingCartOutlined
             className={styles.icon}
@@ -53,7 +53,7 @@ const Widget = (props) => {
         title: "Kazançlar",
         isMoney: false,
         link: "/admin/panel/kazanclar",
-        amount: earnings || "",
+        amount: props.earnings,
         icon: (
           <MonetizationOnOutlined
             className={styles.icon}
@@ -67,7 +67,7 @@ const Widget = (props) => {
         title: "Ürünler",
         isMoney: false,
         link: "/admin/panel/urunler",
-        amount: products || "",
+        amount: props.products,
         icon: (
           <StoreMallDirectoryTwoTone
             className={styles.icon}

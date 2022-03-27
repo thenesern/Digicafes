@@ -92,7 +92,6 @@ const DigitalMenuPage = () => {
           </div>
         </article>
       </section>
-      <Footer />
     </div>
   );
 };
