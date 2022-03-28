@@ -12,6 +12,7 @@ handler.post(async (req, res) => {
       description: req.body.description,
       price: req.body.price,
       period: req.body.period,
+      category: req.body.category,
     });
     await newProduct.save();
     await db.disconnect();

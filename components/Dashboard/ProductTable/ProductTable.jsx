@@ -33,10 +33,7 @@ const ProductTable = (props) => {
     control,
     formState: { errors },
   } = useForm();
-  const handleAdd = async ({ name, description, price }) => {
-    console.log(name);
-    console.log(price);
-    console.log(description);
+  const handleAdd = async ({ name, description, price, category }) => {
     try {
       await axios.post(
         `/api/product`,
@@ -44,11 +41,13 @@ const ProductTable = (props) => {
           name,
           description,
           price,
+          category,
         },
         {
           headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
+      handleCloseNew();
     } catch (err) {
       console.log(err);
     }
@@ -85,6 +84,11 @@ const ProductTable = (props) => {
     {
       field: "description",
       headerName: "Açıklama",
+      width: 320,
+    },
+    {
+      field: "category",
+      headerName: "Kategori",
       width: 220,
     },
     {
@@ -190,6 +194,26 @@ const ProductTable = (props) => {
                         id="name"
                         label="Ürün / Hizmet Adı"
                         inputProps={{ type: "name" }}
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Controller
+                    name="category"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="category"
+                        label="Kategori"
+                        inputProps={{ type: "category" }}
                         {...field}
                       ></TextField>
                     )}

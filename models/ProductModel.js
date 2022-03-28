@@ -15,6 +15,10 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    category: {
+      type: String,
+      required: true,
+    },
     period: {
       type: String,
       required: true,
