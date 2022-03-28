@@ -6,54 +6,68 @@ import db from "../../utils/db";
 import nanoid from "../../utils/nanoid.js";
 import Iyzipay from "iyzipay";
 const handler = nc();
+
 handler.post(async (req, res) => {
   const data = {
     locale: Iyzipay.LOCALE.TR,
-    conversationId: nanoid(),
-    price: "300",
-    paidPrice: "300",
+    conversationId: req.order.id,
+    price: req.order.price,
+    paidPrice: req.order.price,
     currency: Iyzipay.CURRENCY.TRY,
-    installments: "1",
-    /*   basketId: String(order?._id), */
-    basketId: "11111",
+    installment: "1",
+    basketId: req.order.id,
     paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
     paymentGroup: Iyzipay.PAYMENT_GROUP.SUBSCRIPTION,
-    paymentCard: req.card,
+    paymentCard: {
+      cardHolderName: req.card.name,
+      cardNumber: req.card.number,
+      expireMonth: req.card.expireMonth,
+      expireYear: req.card.expireYear,
+      cvc: req.card.cvc,
+      registerCard: "0",
+    },
     buyer: {
-      /*   id: String(req.user.id), */
-      id: "21312",
-      name: req.user?.name,
-      surname: req.user?.surname,
-      gsmNumber: req.user?.phoneNumber,
-      email: req.user?.email,
-      identityNumber: req.user?.identityNumber,
-      lastLoginDate: req.user?.signedIn,
-      registrationDate: req.user?.createdAt,
-      registrationAddress: req.user?.address,
-      ip: req.user?.ip,
-      city: req.user?.city,
-      country: req.user?.country,
-      zipCode: req.user?.zipCode,
+      id: req.user.id,
+      name: req.user.firstName,
+      surname: req.user.lastName,
+      gsmNumber: "+905350000000",
+      email: req.user.email,
+      identityNumber: "74300864791",
+      lastLoginDate: req.user.signedIn,
+      registrationDate: req.user.createdAt,
+      registrationAddress: "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1",
+      ip: "85.34.78.112",
+      city: "Istanbul",
+      country: "Turkey",
+      zipCode: "34732",
     },
-    /*    basketItems: cart.products.map((product, index) => {
-      return {
-        id: String(product?._id),
-        name: product?.name,
-        category1: product?.category,
+    shippingAddress: {
+      contactName: "Jane Doe",
+      city: "Istanbul",
+      country: "Turkey",
+      address: "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1",
+      zipCode: "34742",
+    },
+    billingAddress: {
+      contactName: "Jane Doe",
+      city: "Istanbul",
+      country: "Turkey",
+      address: "Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1",
+      zipCode: "34742",
+    },
+    basketItems: [
+      {
+        id: req._construct.id,
+        name: req.product.name,
+        category1: req.product.category,
+        category2: "Digital Service",
         itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
-        price: product?.price,
-      };
-    }), */
-    basketItems: {
-      id: "123",
-      name: "asd",
-      category1: "aaa",
-      itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
-      price: "300",
-    },
+        price: req.product.price,
+      },
+    ],
   };
   const result = await createAPayment(data);
-  await CompletePayment(result);
+  /*  await CompletePayment(result); */
   res.json(result);
 });
 

@@ -1,7 +1,16 @@
 import React from "react";
 import styles from "./DigitalMenuPlans.module.css";
+import axios from "axios";
 
 const DigitalMenuPlans = () => {
+  const paymentHandler = async () => {
+    try {
+      await axios.post("/api/payments");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className={styles["pricingTable"]}>
       <h3 className={styles["pricingTable-subtitle"]}>
@@ -22,7 +31,10 @@ const DigitalMenuPlans = () => {
             <li>Sınırsız Ürün Modülü</li>
             <li>Özel Yönetim Paneli</li>
           </ul>
-          <button className={styles["pricingTable-firstTable_table__getstart"]}>
+          <button
+            className={styles["pricingTable-firstTable_table__getstart"]}
+            onClick={paymentHandler}
+          >
             Hemen Başlayın
           </button>
         </li>

@@ -392,3 +392,7 @@ const refundPayments = () => {
 };
 
 // refundPayments();
+
+module.exports = {
+  createPayment,
+};

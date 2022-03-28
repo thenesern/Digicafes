@@ -16,7 +16,7 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    padiPrice: {
+    paidPrice: {
       type: Number,
       required: true,
     },
