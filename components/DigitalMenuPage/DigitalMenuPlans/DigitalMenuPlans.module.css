@@ -1,5 +1,5 @@
 .pricingTable {
-  margin: 40px auto;
+  margin: 20px auto;
 }
 .pricingTable > .pricingTable-title {
   text-align: center;
@@ -29,7 +29,7 @@
 }
 .pricingTable-firstTable_table {
   vertical-align: middle;
-  width: 31%;
+  width: 40%;
   background-color: #fff;
   display: inline-block;
   padding: 0px 30px 40px;

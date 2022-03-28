@@ -5,7 +5,6 @@ const productSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      unique: true,
     },
     description: {
       type: String,
@@ -24,6 +23,7 @@ const productSchema = new mongoose.Schema(
       required: true,
       default: "Ay",
     },
+    features: [{ type: String, required: true }],
   },
   { timestamps: true }
 );

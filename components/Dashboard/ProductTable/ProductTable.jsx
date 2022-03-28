@@ -33,7 +33,14 @@ const ProductTable = (props) => {
     control,
     formState: { errors },
   } = useForm();
-  const handleAdd = async ({ name, description, price, category }) => {
+  const handleAdd = async ({
+    name,
+    description,
+    price,
+    category,
+    rawFeatures,
+  }) => {
+    const features = rawFeatures.split(",");
     try {
       await axios.post(
         `/api/product`,
@@ -42,6 +49,7 @@ const ProductTable = (props) => {
           description,
           price,
           category,
+          features,
         },
         {
           headers: { authorization: `Bearer ${userInfo.token}` },
@@ -76,7 +84,7 @@ const ProductTable = (props) => {
     {
       field: "price",
       headerName: "Fiyat",
-      width: 220,
+      width: 100,
       renderCell: (params) => {
         return <div className={styles.userListItem}>₺{params.row.price}</div>;
       },
@@ -89,6 +97,16 @@ const ProductTable = (props) => {
     {
       field: "category",
       headerName: "Kategori",
+      width: 160,
+    },
+    {
+      field: "period",
+      headerName: "Dönem",
+      width: 120,
+    },
+    {
+      field: "features",
+      headerName: "Özellikler",
       width: 220,
     },
     {
@@ -254,6 +272,26 @@ const ProductTable = (props) => {
                         id="price"
                         label="Fiyat"
                         inputProps={{ type: "price" }}
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Controller
+                    name="rawFeatures"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="rawFeatures"
+                        label="Özellikler"
+                        inputProps={{ type: "rawFeatures" }}
                         {...field}
                       ></TextField>
                     )}

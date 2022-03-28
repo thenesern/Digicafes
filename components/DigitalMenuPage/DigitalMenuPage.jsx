@@ -6,7 +6,7 @@ import StepperMobile from "./StepperMobile/StepperMobile";
 import Link from "next/link";
 import Footer from "../Footer/Footer";
 
-const DigitalMenuPage = () => {
+const DigitalMenuPage = ({ products }) => {
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -88,7 +88,7 @@ const DigitalMenuPage = () => {
         </article>
         <article>
           <div>
-            <DigitalMenuPrices />
+            <DigitalMenuPrices products={products} />
           </div>
         </article>
       </section>

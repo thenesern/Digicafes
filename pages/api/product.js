@@ -11,7 +11,7 @@ handler.post(async (req, res) => {
       name: req.body.name,
       description: req.body.description,
       price: req.body.price,
-      period: req.body.period,
+      period: "Ay",
       category: req.body.category,
     });
     await newProduct.save();
