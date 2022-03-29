@@ -18,13 +18,6 @@ const DigitalMenuPlans = ({ products }) => {
     // names must be equal
     return 0;
   });
-  const paymentHandler = async () => {
-    try {
-      await axios.post("/api/payments");
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   return (
     <div className={styles["pricingTable"]}>
