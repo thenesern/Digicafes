@@ -20,8 +20,18 @@ import VideoLabelIcon from "@mui/icons-material/VideoLabel";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
+import { Input, Modal } from "@nextui-org/react";
+import { useState } from "react";
+import Card from "./card";
 
-const checkout = ({ product }) => {
+const Checkout = ({ product }) => {
+  const [visible, setVisible] = React.useState(false);
+  const handler = () => setVisible(true);
+  const [stepper, setStepper] = useState(0);
+  const closeHandler = () => {
+    setVisible(false);
+    setStepper(0);
+  };
   let user;
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
@@ -118,10 +128,29 @@ const checkout = ({ product }) => {
     <div>
       <Nav />
       <div className={styles.container}>
+        <Modal
+          closeButton
+          preventClose
+          width="46rem"
+          aria-labelledby="modal-title"
+          open={visible}
+          onClose={closeHandler}
+        >
+          <Modal.Header>
+            <h3>Ödemeyi Tamamlayın</h3>
+          </Modal.Header>
+          <Modal.Body>
+            <Card />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => setStepper(2)}>Ödemeyi Tamamla</Button>
+          </Modal.Footer>
+        </Modal>
+
         <Stack sx={{ width: "100%" }} spacing={4}>
           <Stepper
             alternativeLabel
-            activeStep={0}
+            activeStep={stepper}
             connector={<QontoConnector />}
           >
             {steps.map((label) => (
@@ -162,7 +191,11 @@ const checkout = ({ product }) => {
                   className={styles.button}
                   variant="contained"
                   type="submit"
-                  onClick={paymentHandler}
+                  /*   onClick={paymentHandler} */
+                  onClick={() => {
+                    handler();
+                    setStepper(1);
+                  }}
                   fullWidth
                   style={{ backgroundColor: "#264653" }}
                 >
@@ -203,4 +236,4 @@ export async function getStaticProps({ params }) {
   };
 }
 
-export default checkout;
+export default Checkout;
