@@ -8,7 +8,7 @@ import Iyzipay from "iyzipay";
 const handler = nc();
 
 handler.post(async (req, res) => {
-  console.log(req.body);
+
   const data = {
     locale: Iyzipay.LOCALE.TR,
     conversationId: req.body.order.id,
