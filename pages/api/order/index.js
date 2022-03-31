@@ -17,9 +17,12 @@ handler.post(async (req, res) => {
       user: req.body.user,
     });
     await newOrder.save();
-
     await db.disconnect();
-    res.send({ status: "succes", message: "Order saved successfully" });
+    res.send({
+      status: "succes",
+      message: "Order saved successfully",
+      id: newOrder._id,
+    });
   } catch (err) {
     console.log(err.message);
     await db.disconnect();

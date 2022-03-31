@@ -1,37 +1,29 @@
+import React, { useState } from "react";
 import { Input } from "@nextui-org/react";
-import React from "react";
 import Cards from "react-credit-cards";
 import "react-credit-cards/es/styles-compiled.css";
 import styles from "./card.module.css";
 
-export default class PaymentForm extends React.Component {
-  state = {
-    cvc: "",
-    expiry: "",
-    focus: "",
-    name: "",
-    number: "",
-  };
+function useCard() {
+  const [number, setCardNumber] = useState("");
+  const [name, setCardName] = useState("");
+  const [expiry, setExpiry] = useState("");
+  const [cvc, setCvc] = useState("");
+  const [focus, setFocus] = useState("");
 
-  handleInputFocus = (e) => {
-    this.setState({ focus: e.target.name });
-  };
-
-  handleInputChange = (e) => {
-    const { name, value } = e.target;
-
-    this.setState({ [name]: value });
-  };
-
-  render() {
-    return (
+  return {
+    number,
+    name,
+    expiry,
+    cvc,
+    render: (
       <div id="PaymentForm" className={styles.container}>
         <Cards
-          cvc={this.state.cvc}
-          expiry={this.state.expiry}
-          focused={this.state.focus}
-          name={this.state.name}
-          number={this.state.number}
+          cvc={cvc}
+          expiry={expiry}
+          focused={focus}
+          name={name}
+          number={number}
           placeholders={{ name: "AD SOYAD" }}
         />
         <form className={styles.form}>
@@ -43,9 +35,10 @@ export default class PaymentForm extends React.Component {
             color="primary"
             size="lg"
             name="name"
-            onChange={this.handleInputChange}
-            onFocus={this.handleInputFocus}
+            onChange={(e) => setCardName(e.target.value)}
+            onFocus={(e) => setFocus(e.target.name)}
             placeholder="Kartın Üzerindeki Ad Soyad"
+            aria-label="name"
           />
           <Input
             clearable
@@ -56,8 +49,9 @@ export default class PaymentForm extends React.Component {
             size="lg"
             type="tel"
             name="number"
-            onChange={this.handleInputChange}
-            onFocus={this.handleInputFocus}
+            aria-label="number"
+            onChange={(e) => setCardNumber(e.target.value)}
+            onFocus={(e) => setFocus(e.target.name)}
             placeholder="Kart Numarası"
           />
           <div className={styles.bottom}>
@@ -67,20 +61,23 @@ export default class PaymentForm extends React.Component {
               className={styles.input}
               name="expiry"
               width="7rem"
-              onChange={this.handleInputChange}
-              onFocus={this.handleInputFocus}
+              aria-label="expiry"
+              onChange={(e) => setExpiry(e.target.value)}
+              onFocus={(e) => setFocus(e.target.name)}
               color="primary"
               size="lg"
+              maxLength={5}
               placeholder="SKT"
             />
             <Input
               clearable
               bordered
+              aria-label="cvc"
               name="cvc"
               className={styles.input}
               width="7rem"
-              onChange={this.handleInputChange}
-              onFocus={this.handleInputFocus}
+              onChange={(e) => setCvc(e.target.value)}
+              onFocus={(e) => setFocus(e.target.name)}
               color="primary"
               size="lg"
               placeholder="CVC"
@@ -88,6 +85,8 @@ export default class PaymentForm extends React.Component {
           </div>
         </form>
       </div>
-    );
-  }
+    ),
+  };
 }
+
+export default useCard;
