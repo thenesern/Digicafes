@@ -4,6 +4,7 @@ import { TextField } from "@material-ui/core";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import Image from "next/image";
+import axios from "axios";
 
 const User = ({ order }) => {
   let profile;
@@ -20,9 +21,20 @@ const User = ({ order }) => {
     setLastName(e.target.value);
   };
 
-  const updateHandler = (e) => {
+  const updateHandler = async (e) => {
+    console.log(firstName);
     e.preventDefault();
-    updateUser(dispatch, { firstName, lastName, id });
+    await axios.patch(
+      "/api/users/" + profile.id + "/update",
+      {
+        firstName,
+        lastName,
+        id: profile.id,
+      },
+      {
+        headers: { authorization: `Bearer ${profile.token}` },
+      }
+    );
   };
 
   const formHandler = (e) => {
@@ -34,13 +46,13 @@ const User = ({ order }) => {
   return (
     <div className={styles.single}>
       <div className={styles.top}>
-        <div className={styles.left}>
-          <h1 className={styles.title}>Siparişler</h1>
-          <List order={order} />
-        </div>
         <div className={styles.right}>
           <h1 className={styles.title}>Kullanıcı Bilgileri</h1>
           <form className={styles.details} onChange={formHandler}>
+            <img
+              src="https://img.icons8.com/external-flaticons-flat-flat-icons/452/external-user-web-flaticons-flat-flat-icons-2.png"
+              className={styles.img}
+            />
             <div className={styles.inputs}>
               <TextField
                 className={styles.itemTitle}
@@ -70,6 +82,14 @@ const User = ({ order }) => {
               Kaydet
             </button>
           </form>
+        </div>
+        <div className={styles.left}>
+          <h1 className={styles.title}>Siparişler</h1>
+          {order ? (
+            <List order={order} />
+          ) : (
+            <h6 className={styles.notFound}>Sipariş bulunamadı.</h6>
+          )}
         </div>
       </div>
     </div>
