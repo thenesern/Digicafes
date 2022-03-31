@@ -8,13 +8,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
-const List = () => {
+const List = ({ order }) => {
   const rows = [
     {
-      id: 1143155,
-      product: "QR Menü",
-      customer: "John Smith",
-      date: "1 Mart",
+      id: order?._id,
+      product: order?.product.name,
+      date: order?.createdAt,
       method: "Ziraat Bankkart",
       status: "Teslim Edilecek",
     },
@@ -26,7 +25,6 @@ const List = () => {
           <TableRow>
             <TableCell className={styles.tableCell}>Takip Kodu</TableCell>
             <TableCell className={styles.tableCell}>Hizmet</TableCell>
-            <TableCell className={styles.tableCell}>Kullanıcı</TableCell>
             <TableCell className={styles.tableCell}>Tarih</TableCell>
             <TableCell className={styles.tableCell}>Ödeme Yöntemi</TableCell>
             <TableCell className={styles.tableCell}>Durum</TableCell>
@@ -39,7 +37,6 @@ const List = () => {
               <TableCell className={styles.tableCell}>
                 <div className={styles.cellWrapper}>{row.product}</div>
               </TableCell>
-              <TableCell className={styles.tableCell}>{row.customer}</TableCell>
               <TableCell className={styles.tableCell}>{row.date}</TableCell>
               <TableCell className={styles.tableCell}>{row.method}</TableCell>
               <TableCell className={styles.tableCell}>

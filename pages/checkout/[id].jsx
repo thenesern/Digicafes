@@ -22,20 +22,60 @@ import StepConnector, {
 } from "@mui/material/StepConnector";
 import { Input, Modal } from "@nextui-org/react";
 import { useState } from "react";
-import Card from "./card";
+import useCard from "./card";
 
 const Checkout = ({ product }) => {
   const [visible, setVisible] = React.useState(false);
   const handler = () => setVisible(true);
   const [stepper, setStepper] = useState(0);
+  const { render, name, number, cvc, expiry } = useCard();
+
   const closeHandler = () => {
     setVisible(false);
-    setStepper(0);
   };
   let user;
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
   }
+
+  const paymentHandler = async () => {
+    try {
+      const order = await axios.post(
+        "/api/order",
+        { product: product._id, user: user.id },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
+
+      await axios.post("/api/payments", {
+        order: {
+          id: order.data.id,
+          price: product.price,
+          paidPrice: product.price,
+        },
+        /*       card: {
+              name,
+            number,
+                expireMonth: expiry.split("/")[0],
+                expireYear: expiry.split("/")[1],
+               cvc,
+                registerCard: 0,
+              }, */
+        card: {
+          name: "Enes Eren",
+          number: "4987490000000002",
+          month: "12",
+          year: "24",
+          cvc: "200",
+          registerCard: 0,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const steps = ["Siparişi Gözden Geçir", "Ödemeyi Tamamla", "Sonuç"];
   const QontoConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -110,20 +150,6 @@ const Checkout = ({ product }) => {
     completed: PropTypes.bool,
   };
 
-  const paymentHandler = async () => {
-    try {
-      await axios.post(
-        "/api/order",
-        { product: product._id, user: user.id },
-        {
-          headers: { authorization: `Bearer ${user.token}` },
-        }
-      );
-      /*  await axios.post("/api/payments", { hello: "hi" }); */
-    } catch (err) {
-      console.log(err);
-    }
-  };
   return (
     <div>
       <Nav />
@@ -139,11 +165,17 @@ const Checkout = ({ product }) => {
           <Modal.Header>
             <h3>Ödemeyi Tamamlayın</h3>
           </Modal.Header>
-          <Modal.Body>
-            <Card />
-          </Modal.Body>
+          <Modal.Body>{render}</Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => setStepper(2)}>Ödemeyi Tamamla</Button>
+            <Button
+              onClick={() => {
+                setStepper(2);
+                setVisible(false);
+                paymentHandler();
+              }}
+            >
+              Ödemeyi Tamamla
+            </Button>
           </Modal.Footer>
         </Modal>
 
