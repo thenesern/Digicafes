@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { Store } from "../../redux/store";
@@ -17,30 +17,30 @@ import Fade from "@mui/material/Fade";
 import { Button, TextField, List, ListItem, Menu } from "@material-ui/core";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
 import ModalMui from "@mui/material/Modal";
-import { useEffect } from "react";
 import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Box } from "@mui/system";
 
 const Nav = () => {
-  const [visibleLogin, setVisibleLogin] = useState(false);
-  const [visibleRegister, setVisibleRegister] = useState(false);
   const { state, dispatch } = useContext(Store);
   const [isFetching, setIsFetching] = useState(false);
+  const [openMuiLogin, setOpenMuiLogin] = useState(false);
+  const [openMuiRegister, setOpenMuiRegister] = useState(false);
+  const handleOpenMuiLogin = () => setOpenMuiLogin(true);
+  const handleOpenMuiRegister = () => setOpenMuiRegister(true);
+  const handleCloseMuiLogin = () => setOpenMuiLogin(false);
+  const handleCloseMuiRegister = () => setOpenMuiRegister(false);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [openMenu, setOpenMenu] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [openMui, setOpenMui] = React.useState(false);
-  const handleOpenMui = () => setOpenMui(true);
-  const handleCloseMui = () => setOpenMui(false);
-
   const open = Boolean(anchorEl);
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-
   let user;
+
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
   }
@@ -48,10 +48,11 @@ const Nav = () => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const [openMenu, setOpenMenu] = useState(false);
+
   const logoutHandler = () => {
     setAnchorEl(null);
     dispatch({ type: "USER_LOGOUT" });
@@ -59,10 +60,6 @@ const Nav = () => {
     Router.push("/");
   };
 
-  const closeHandler = () => {
-    setVisibleLogin(false);
-    setVisibleRegister(false);
-  };
   const loginHandler = async ({ email, password }) => {
     closeSnackbar();
     const signedIn = new Date().toLocaleString();
@@ -136,7 +133,7 @@ const Nav = () => {
       dispatch({ type: "USER_LOGIN", payload: data });
       Cookies.set("userInfo", JSON.stringify(data));
       setIsFetching(false);
-      setVisibleRegister(false);
+      handleCloseMuiRegister();
     } catch (err) {
       setIsFetching(false);
       enqueueSnackbar("E-mail adresi zaten kayıtlı.", { variant: "error" });
@@ -166,15 +163,15 @@ const Nav = () => {
       <ModalMui
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={openMui}
-        onClose={handleCloseMui}
+        open={openMuiLogin}
+        onClose={handleCloseMuiLogin}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
         }}
       >
-        <Box className={styles.box}>
+        <Box className={styles.loginBox}>
           <div className={styles.wrapper}>
             <h1 className={styles.title}>Giriş Yap</h1>
             <div className={styles.signup}>
@@ -259,238 +256,234 @@ const Nav = () => {
           </div>
         </Box>
       </ModalMui>
-      <Modal
-        closeButton
-        className={styles.modalRegister}
-        onClose={closeHandler}
-        open={visibleRegister}
+      <ModalMui
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openMuiRegister}
+        onClose={handleCloseMuiRegister}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
       >
-        <Modal
-          style={{
-            background: "transparent",
-            boxShadow: "none",
-          }}
-          preventClose
-          aria-labelledby="modal-title"
-          open={isFetching}
-        >
-          <Modal.Body>
-            <Loading size="xl" />
-            <Spacer />
-          </Modal.Body>
-        </Modal>
-        <h1 className={styles.title}>Üye Ol</h1>
-        <div className={styles.signin}>
-          <p>Hesabınız var mı?</p>
-          <span style={{ fontWeight: "600", cursor: "pointer" }}>
-            Giriş Yapın
-          </span>
-        </div>
-        <form onSubmit={handleSubmit(registerHandler)} className={styles.form}>
-          <List>
-            <div style={{ display: "flex" }}>
-              <ListItem>
-                <Controller
-                  name="fName"
-                  control={control}
-                  defaultValue=""
-                  rules={{
-                    required: true,
-                    minLength: 2,
-                  }}
-                  render={({ field }) => (
-                    <TextField
-                      variant="outlined"
-                      fullWidth
-                      id="fName"
-                      label="Ad"
-                      error={Boolean(errors.fName)}
-                      helperText={
-                        errors.fName
-                          ? errors.fName.type === "minLength"
-                            ? "Lütfen geçerli bir Ad giriniz"
-                            : "Lütfen Adınızı giriniz"
-                          : ""
-                      }
-                      {...field}
-                    ></TextField>
-                  )}
-                ></Controller>
-              </ListItem>
-              <ListItem>
-                <Controller
-                  name="lName"
-                  control={control}
-                  defaultValue=""
-                  rules={{
-                    required: true,
-                    minLength: 2,
-                  }}
-                  render={({ field }) => (
-                    <TextField
-                      variant="outlined"
-                      fullWidth
-                      id="lName"
-                      label="Soyad"
-                      error={Boolean(errors.lName)}
-                      helperText={
-                        errors.lName
-                          ? errors.lName.type === "minLength"
-                            ? "Lütfen geçerli bir Soyad giriniz"
-                            : "Lütfen Soyadınızı giriniz"
-                          : ""
-                      }
-                      {...field}
-                    ></TextField>
-                  )}
-                ></Controller>
-              </ListItem>
-            </div>
-            <ListItem>
-              <Controller
-                name="email"
-                control={control}
-                defaultValue=""
-                rules={{
-                  required: true,
-                  pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                }}
-                render={({ field }) => (
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    id="email"
-                    label="Email"
-                    inputProps={{ type: "email" }}
-                    error={Boolean(errors.email)}
-                    onChange={(e) => setEmail(e.target.value)}
-                    helperText={
-                      errors.email
-                        ? errors.email.type === "pattern"
-                          ? "Lütfen geçerli bir E-Mail adresi giriniz"
-                          : "Lütfen E-Mail adresinizi giriniz"
-                        : ""
-                    }
-                    {...field}
-                  ></TextField>
-                )}
-              ></Controller>
-            </ListItem>
-            <div style={{ display: "flex" }}>
-              <ListItem>
-                <Controller
-                  name="password"
-                  control={control}
-                  defaultValue=""
-                  rules={{
-                    required: true,
-                    minLength: 6,
-                  }}
-                  render={({ field }) => (
-                    <TextField
-                      variant="outlined"
-                      id="password"
-                      label="Şifre"
-                      inputProps={{ type: "password" }}
-                      error={Boolean(errors.password)}
-                      helperText={
-                        errors.password
-                          ? errors.password.type === "minLength"
-                            ? "Şifreniz minimum 5 karakter olmalıdır"
-                            : "Lütfen bir şifre giriniz"
-                          : ""
-                      }
-                      {...field}
-                    ></TextField>
-                  )}
-                ></Controller>
-              </ListItem>
-              <ListItem>
-                <Controller
-                  name="passwordConfirm"
-                  control={control}
-                  defaultValue=""
-                  rules={{
-                    required: true,
-                    minLength: 6,
-                  }}
-                  render={({ field }) => (
-                    <TextField
-                      variant="outlined"
-                      id="passwordConfirm"
-                      label="Şifre Onay"
-                      inputProps={{ type: "password" }}
-                      error={Boolean(errors.passwordConfirm)}
-                      helperText={
-                        errors.passwordConfirm
-                          ? errors.passwordConfirm.type === "minLength"
-                            ? "Şifreniz minimum 5 karakterden oluşmalıdır"
-                            : "Lütfen bir şifre giriniz"
-                          : ""
-                      }
-                      {...field}
-                    ></TextField>
-                  )}
-                ></Controller>
-              </ListItem>
-            </div>
-            <div className={styles.aggreement}>
-              <div className={styles.privacy}>
-                <p>
-                  Kişisel verileriniz,
-                  <Link href="/" passHref>
-                    <span
-                      style={{
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        margin: "0 4px",
-                      }}
-                    >
-                      Aydınlatma Metni
-                    </span>
-                  </Link>
-                  kapsamında işlenmektedir. “Üye ol” butonuna basarak
-                  <Link href="/" passHref>
-                    <span
-                      style={{
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        margin: "0 4px",
-                      }}
-                    >
-                      Üyelik Sözleşmesi
-                    </span>
-                  </Link>
-                  ’ni, ve
-                  <Link href="/" passHref>
-                    <span
-                      style={{
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        margin: "0 4px",
-                      }}
-                    >
-                      Çerez Politikası
-                    </span>
-                  </Link>
-                  ’nı okuduğunuzu ve kabul ettiğinizi onaylıyorsunuz.
-                </p>
+        <Box className={styles.registerBox}>
+          <h1 className={styles.title}>Üye Ol</h1>
+          <div className={styles.signin}>
+            <p>Hesabınız var mı?</p>
+            <span style={{ fontWeight: "600", cursor: "pointer" }}>
+              Giriş Yapın
+            </span>
+          </div>
+          <form
+            onSubmit={handleSubmit(registerHandler)}
+            className={styles.form}
+          >
+            <List>
+              <div style={{ display: "flex" }}>
+                <ListItem>
+                  <Controller
+                    name="fName"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      minLength: 2,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="fName"
+                        label="Ad"
+                        error={Boolean(errors.fName)}
+                        helperText={
+                          errors.fName
+                            ? errors.fName.type === "minLength"
+                              ? "Lütfen geçerli bir Ad giriniz"
+                              : "Lütfen Adınızı giriniz"
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Controller
+                    name="lName"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      minLength: 2,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="lName"
+                        label="Soyad"
+                        error={Boolean(errors.lName)}
+                        helperText={
+                          errors.lName
+                            ? errors.lName.type === "minLength"
+                              ? "Lütfen geçerli bir Soyad giriniz"
+                              : "Lütfen Soyadınızı giriniz"
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
               </div>
-            </div>
-            <ListItem>
-              <Button
-                variant="contained"
-                type="submit"
-                fullWidth
-                color="primary"
-                onSubmit={handleSubmit(registerHandler)}
-              >
-                Üye Ol
-              </Button>
-            </ListItem>
-          </List>
-        </form>
-      </Modal>
+              <ListItem>
+                <Controller
+                  name="email"
+                  control={control}
+                  defaultValue=""
+                  rules={{
+                    required: true,
+                    pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      variant="outlined"
+                      fullWidth
+                      id="email"
+                      label="Email"
+                      inputProps={{ type: "email" }}
+                      error={Boolean(errors.email)}
+                      onChange={(e) => setEmail(e.target.value)}
+                      helperText={
+                        errors.email
+                          ? errors.email.type === "pattern"
+                            ? "Lütfen geçerli bir E-Mail adresi giriniz"
+                            : "Lütfen E-Mail adresinizi giriniz"
+                          : ""
+                      }
+                      {...field}
+                    ></TextField>
+                  )}
+                ></Controller>
+              </ListItem>
+              <div style={{ display: "flex" }}>
+                <ListItem>
+                  <Controller
+                    name="password"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      minLength: 6,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        id="password"
+                        label="Şifre"
+                        inputProps={{ type: "password" }}
+                        error={Boolean(errors.password)}
+                        helperText={
+                          errors.password
+                            ? errors.password.type === "minLength"
+                              ? "Şifreniz minimum 5 karakter olmalıdır"
+                              : "Lütfen bir şifre giriniz"
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Controller
+                    name="passwordConfirm"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      minLength: 6,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        id="passwordConfirm"
+                        label="Şifre Onay"
+                        inputProps={{ type: "password" }}
+                        error={Boolean(errors.passwordConfirm)}
+                        helperText={
+                          errors.passwordConfirm
+                            ? errors.passwordConfirm.type === "minLength"
+                              ? "Şifreniz minimum 5 karakterden oluşmalıdır"
+                              : "Lütfen bir şifre giriniz"
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+              </div>
+              <div className={styles.aggreement}>
+                <div className={styles.privacy}>
+                  <p>
+                    Kişisel verileriniz,
+                    <Link href="/" passHref>
+                      <span
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Aydınlatma Metni
+                      </span>
+                    </Link>
+                    kapsamında işlenmektedir. “Üye ol” butonuna basarak
+                    <Link href="/" passHref>
+                      <span
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Üyelik Sözleşmesi
+                      </span>
+                    </Link>
+                    ’ni, ve
+                    <Link href="/" passHref>
+                      <span
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Çerez Politikası
+                      </span>
+                    </Link>
+                    ’nı okuduğunuzu ve kabul ettiğinizi onaylıyorsunuz.
+                  </p>
+                </div>
+              </div>
+              <ListItem>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  fullWidth
+                  color="primary"
+                  onSubmit={handleSubmit(registerHandler)}
+                >
+                  Üye Ol
+                </Button>
+              </ListItem>
+            </List>
+          </form>
+        </Box>
+      </ModalMui>
       <ul className={styles.list}>
         <li className={styles.left}>
           <Link href="/" passHref>
@@ -574,13 +567,13 @@ const Nav = () => {
           <li className={styles.rightXL}>
             <button
               className={styles.signIn}
-              onClick={() => handleOpenMui(true)}
+              onClick={() => handleOpenMuiLogin(true)}
             >
               Giriş Yap
             </button>
             <button
               className={styles.signUp}
-              onClick={() => setVisibleRegister(true)}
+              onClick={() => handleOpenMuiRegister(true)}
             >
               Üye Ol
             </button>
@@ -679,16 +672,10 @@ const Nav = () => {
             </div>
           ) : (
             <div className={styles.buttons}>
-              <button
-                className={styles.signIn}
-                onClick={() => setVisibleLogin(true)}
-              >
+              <button className={styles.signIn} onClick={handleOpenMuiLogin}>
                 Giriş Yap
               </button>
-              <button
-                className={styles.signUp}
-                onClick={() => setVisibleRegister(true)}
-              >
+              <button className={styles.signUp} onClick={handleOpenMuiRegister}>
                 Üye Ol
               </button>
             </div>

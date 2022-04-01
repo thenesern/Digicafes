@@ -185,7 +185,7 @@
   justify-content: center;
   height: 24rem;
 }
-.box {
+.loginBox {
   background-color: #fbeee0;
   padding: 2rem;
   position: absolute;
@@ -194,9 +194,22 @@
   transform: translate(-50%, -50%);
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border: none;
+  width: 400px;
   outline: none;
 }
 
+.registerBox {
+  background-color: #fbeee0;
+  padding: 2rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border: none;
+  width: 600px;
+  outline: none;
+}
 .modalRegister {
   box-shadow: none;
   width: 34rem;
@@ -313,5 +326,11 @@
   }
   .profileMenuMobile {
     display: block;
+  }
+  .loginBox {
+    width: 90%;
+  }
+  .registerBox {
+    width: 96%;
   }
 }
