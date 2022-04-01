@@ -76,7 +76,7 @@ const DigitalMenuPage = ({ products }) => {
             />
           </div>
         </article>
-        <article>
+        <article className={styles.steps}>
           <div className={styles.stepper}>
             <DigitalMenuStepper />
           </div>

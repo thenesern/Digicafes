@@ -12,7 +12,7 @@
 .pricingTable > .pricingTable-subtitle {
   text-align: center;
   color: #b4bdc6;
-  font-size: 1.8em;
+  font-size: 2rem;
   letter-spacing: 0.04em;
   margin-bottom: 60px;
 }
@@ -23,8 +23,7 @@
 }
 .pricingTable-firstTable {
   list-style: none;
-  padding-left: 2em;
-  padding-right: 2em;
+  padding: 4rem 1rem;
   text-align: center;
 }
 .pricingTable-firstTable_table {
@@ -351,7 +350,7 @@
     font-size: 60%;
   }
   .pricingTable > .pricingTable-subtitle {
-    font-size: 1rem;
+    font-size: 12px;
   }
 }
 @media screen and (max-width: 320px) {
