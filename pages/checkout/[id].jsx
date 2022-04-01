@@ -179,7 +179,7 @@ const Checkout = ({ product }) => {
           </Modal.Footer>
         </Modal>
 
-        <Stack sx={{ width: "100%" }} spacing={4}>
+        <Stack sx={{ width: "100%" }} spacing={4} className={styles.stepper}>
           <Stepper
             alternativeLabel
             activeStep={stepper}
@@ -187,7 +187,9 @@ const Checkout = ({ product }) => {
           >
             {steps.map((label) => (
               <Step key={label}>
-                <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
+                <StepLabel StepIconComponent={QontoStepIcon}>
+                  <h6 className={styles.stepperLabel}> {label} </h6>{" "}
+                </StepLabel>
               </Step>
             ))}
           </Stepper>
@@ -196,15 +198,15 @@ const Checkout = ({ product }) => {
           <div className={styles.left}>
             <h1 className={styles.title}>Sepet Bilgisi</h1>
             <div className={styles.informations}>
-              <div>
+              <div className={styles.cells}>
                 <h5 className={styles.title}>Ürün Adı</h5>
                 <p>{product.name}</p>
               </div>
-              <div>
+              <div className={styles.cells}>
                 <h5 className={styles.title}>Adet / Süre</h5>
                 <p>{product.period}lık Hizmet</p>
               </div>
-              <div>
+              <div className={styles.cells}>
                 <h5 className={styles.title}>Fiyat</h5>
                 <p>{product.price}₺</p>
               </div>

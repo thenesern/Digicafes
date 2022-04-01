@@ -73,7 +73,7 @@ const Nav = () => {
       dispatch({ type: "USER_LOGIN", payload: data });
       Cookies.set("userInfo", JSON.stringify(data));
       setIsFetching(false);
-      handleCloseMui();
+      handleCloseMuiLogin();
     } catch (err) {
       setIsFetching(false);
       enqueueSnackbar("Geçersiz E-mail veya Şifre", { variant: "error" });
