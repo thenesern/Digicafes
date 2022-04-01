@@ -23,17 +23,19 @@ import StepConnector, {
 import { Input, Modal } from "@nextui-org/react";
 import { useState } from "react";
 import useCard from "../../components/Card/card";
+import { useEffect } from "react";
 
 const Checkout = ({ product }) => {
   const [visible, setVisible] = React.useState(false);
   const handler = () => setVisible(true);
   const [stepper, setStepper] = useState(0);
   const { render, name, number, cvc, expiry } = useCard();
-
   const closeHandler = () => {
     setVisible(false);
   };
+
   let user;
+
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
   }

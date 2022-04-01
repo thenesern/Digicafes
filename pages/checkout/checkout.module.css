@@ -99,9 +99,11 @@
     padding: 1rem;
   }
   .left {
-    padding: 1rem;
+    padding: 2rem 1rem;
   }
-
+  .right {
+    padding: 2rem 1rem;
+  }
   .informations {
     padding: 10px;
     gap: 1rem;
