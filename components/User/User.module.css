@@ -123,4 +123,15 @@
     gap: 2rem;
     padding: 5rem 1rem 1rem 1rem;
   }
+  .left {
+    padding: 2rem;
+  }
+  .right {
+    padding: 2rem;
+  }
+  .inputs {
+    width: 12rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
