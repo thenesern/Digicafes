@@ -39,7 +39,6 @@ export async function getStaticProps({ params }) {
     })
     .populate({ path: "user", model: User });
   await db.disconnect();
-  console.log(order);
   return {
     props: {
       order: JSON.parse(JSON.stringify(order)),

@@ -21,6 +21,7 @@ const UserProfile = (props) => {
   const updateHandler = (e) => {
     e.preventDefault();
     updateUser(dispatch, { firstName, lastName, id });
+    setIsChanged(false);
   };
 
   const formHandler = (e) => {

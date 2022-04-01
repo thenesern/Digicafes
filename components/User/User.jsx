@@ -22,9 +22,9 @@ const User = ({ order }) => {
   };
 
   const updateHandler = async (e) => {
-    console.log(firstName);
+    setIsChanged(false);
     e.preventDefault();
-    await axios.patch(
+    const user = await axios.patch(
       "/api/users/" + profile.id + "/update",
       {
         firstName,
@@ -35,6 +35,8 @@ const User = ({ order }) => {
         headers: { authorization: `Bearer ${profile.token}` },
       }
     );
+    Cookies.remove("userInfo");
+    Cookies.set("userInfo", JSON.stringify(user.data));
   };
 
   const formHandler = (e) => {

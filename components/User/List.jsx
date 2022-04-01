@@ -23,7 +23,7 @@ const List = ({ order }) => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell className={styles.tableCell}>Takip Kodu</TableCell>
+            <TableCell className={styles.tableCell}>Sipariş Numarası</TableCell>
             <TableCell className={styles.tableCell}>Hizmet</TableCell>
             <TableCell className={styles.tableCell}>Tarih</TableCell>
             <TableCell className={styles.tableCell}>Ödeme Yöntemi</TableCell>

@@ -8,9 +8,8 @@ import Iyzipay from "iyzipay";
 const handler = nc();
 
 handler.post(async (req, res) => {
-
   const data = {
-    locale: Iyzipay.LOCALE.TR,
+    /*  locale: Iyzipay.LOCALE.TR,
     conversationId: req.body.order.id,
     price: req.body.order.price,
     paidPrice: req.body.order.price,
@@ -22,11 +21,12 @@ handler.post(async (req, res) => {
     paymentCard: {
       cardHolderName: req.body.card.name,
       cardNumber: req.body.card.number,
-      expireMonth: req.body.card.expireMonth,
-      expireYear: req.body.card.expireYear,
+      expireMonth: req.body.card.month,
+      expireYear: req.body.card.year,
       cvc: req.body.card.cvc,
-      registerCard: "0",
-    },
+      registerCard: "0", 
+    }*/
+    /*
     buyer: {
       id: req.body.user.id,
       name: req.body.user.firstName,
@@ -65,11 +65,12 @@ handler.post(async (req, res) => {
         itemType: Iyzipay.BASKET_ITEM_TYPE.VIRTUAL,
         price: req.body.product.price,
       },
-    ],
+    ], */
   };
-  const result = await createAPayment(data);
+
+  /*   const result = await createAPayment(data2); */
   /*  await CompletePayment(result); */
-  res.json(result);
+  /*   res.json(result); */
 });
 
 export default handler;

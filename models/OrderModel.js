@@ -12,7 +12,11 @@ const orderSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-    } /* 
+    },
+    createdAt: {
+      type: String,
+      required: true,
+    } /*
     price: {
       type: Number,
       required: true,

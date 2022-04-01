@@ -23,6 +23,9 @@ const CompletePayment = async (result) => {
     errorCode: result?.errorCode,
     errorMessage: result?.errorMessage,
   });
+  await User.patch({
+    allowedDashboard: true,
+  });
 };
 
 module.exports = {
