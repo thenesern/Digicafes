@@ -553,6 +553,17 @@ const Nav = () => {
                   </button>
                 </>
               )}
+              <button className={styles.button}>
+                <Link
+                  href={"/dashboard/" + user.id}
+                  passHref
+                  className={styles["menu-link"]}
+                >
+                  <button className={styles["link-item"]}>
+                    <span>Yönetim Paneli</span>
+                  </button>
+                </Link>
+              </button>
               <button className={styles.button} onClick={logoutHandler}>
                 <Link href="/" passHref className={styles["menu-link"]}>
                   <button className={styles["link-item"]}>
@@ -660,6 +671,17 @@ const Nav = () => {
                     </button>
                   </>
                 )}
+                <button className={styles.button}>
+                  <Link
+                    href={"/dashboard/" + user.id}
+                    passHref
+                    className={styles["menu-link"]}
+                  >
+                    <button className={styles["link-item"]}>
+                      <span>Yönetim Paneli</span>
+                    </button>
+                  </Link>
+                </button>
                 <button className={styles.button} onClick={logoutHandler}>
                   <Link href="/" passHref className={styles["menu-link"]}>
                     <button className={styles["link-item"]}>

@@ -32,7 +32,7 @@ export async function getStaticPaths() {
 }
 export async function getStaticProps({ params }) {
   await db.connect();
-  const order = await Order.findOne({ user: params.userId })
+  const order = await Order.find({ user: params.userId })
     .populate({
       path: "product",
       model: Product,

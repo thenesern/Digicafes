@@ -7,7 +7,10 @@ const orderSchema = new mongoose.Schema(
       ref: "Product",
       required: true,
     },
-
+    menuv1: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "QRMenu",
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

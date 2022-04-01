@@ -7,6 +7,11 @@ const QRMenuSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
     products: [
       {
         name: {
