@@ -607,76 +607,77 @@ const Nav = () => {
           </IconButton>
         </div>
         <Divider />
-        {user ? (
-          <div className={styles.profileMenu}>
-            <Button
-              id="fade-button"
-              aria-controls={open ? "fade-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-              className={styles.dropdown}
-            >
-              <AccountCircleRounded />
-              <div className={styles.username}>
-                <h6>{user?.firstName}</h6>
-                <h6>{user?.lastName}</h6>
-              </div>
-            </Button>
-            <Menu
-              id="fade-menu"
-              MenuListProps={{
-                "aria-labelledby": "fade-button",
-              }}
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              TransitionComponent={Fade}
-              style={{
-                display: "flex",
-                alingItems: "center",
-                justifyContent: "center",
-                marginTop: "3rem",
-                marginLeft: "2rem",
-              }}
-            >
-              {user?.isAdmin === false ? (
-                <>
-                  <button className={styles.button}>
-                    <Link
-                      href={"/hesap/" + user?.id}
-                      className={styles["menu-link"]}
-                      passHref
-                    >
-                      <button className={styles["link-item"]}>Hesabım</button>
-                    </Link>
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button className={styles.button}>
-                    <Link
-                      href="/admin/dashboard"
-                      className={styles["menu-link"]}
-                      passHref
-                    >
-                      <button className={styles["link-item"]}>Panel</button>
-                    </Link>
-                  </button>
-                </>
-              )}
-              <button className={styles.button} onClick={logoutHandler}>
-                <Link href="/" passHref className={styles["menu-link"]}>
-                  <button className={styles["link-item"]}>
-                    <span>Çıkış Yap</span>
-                    <LogoutIcon className={styles.icon} />
-                  </button>
-                </Link>
-              </button>
-            </Menu>
-          </div>
-        ) : (
-          <div className={styles.right}>
+
+        <div className={styles.right}>
+          {user ? (
+            <div className={styles.profileMenuMobile}>
+              <Button
+                id="fade-button"
+                aria-controls={open ? "fade-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+                className={styles.dropdown}
+              >
+                <AccountCircleRounded />
+                <div className={styles.username}>
+                  <h6>{user?.firstName}</h6>
+                  <h6>{user?.lastName}</h6>
+                </div>
+              </Button>
+              <Menu
+                id="fade-menu"
+                MenuListProps={{
+                  "aria-labelledby": "fade-button",
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                TransitionComponent={Fade}
+                style={{
+                  display: "flex",
+                  alingItems: "center",
+                  justifyContent: "center",
+                  marginTop: "3rem",
+                  marginLeft: "2rem",
+                }}
+              >
+                {user?.isAdmin === false ? (
+                  <>
+                    <button className={styles.button}>
+                      <Link
+                        href={"/hesap/" + user?.id}
+                        className={styles["menu-link"]}
+                        passHref
+                      >
+                        <button className={styles["link-item"]}>Hesabım</button>
+                      </Link>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button className={styles.button}>
+                      <Link
+                        href="/admin/dashboard"
+                        className={styles["menu-link"]}
+                        passHref
+                      >
+                        <button className={styles["link-item"]}>Panel</button>
+                      </Link>
+                    </button>
+                  </>
+                )}
+                <button className={styles.button} onClick={logoutHandler}>
+                  <Link href="/" passHref className={styles["menu-link"]}>
+                    <button className={styles["link-item"]}>
+                      <span>Çıkış Yap</span>
+                      <LogoutIcon className={styles.icon} />
+                    </button>
+                  </Link>
+                </button>
+              </Menu>
+            </div>
+          ) : (
             <div className={styles.buttons}>
               <button
                 className={styles.signIn}
@@ -691,12 +692,11 @@ const Nav = () => {
                 Üye Ol
               </button>
             </div>
-
-            <Link href="/dijital-menu" passHref>
-              <h5 className={styles.link}>Dijital Menü</h5>
-            </Link>
-          </div>
-        )}
+          )}
+          <Link href="/dijital-menu" passHref>
+            <h5 className={styles.link}>Dijital Menü</h5>
+          </Link>
+        </div>
       </SwipeableDrawer>
     </navbar>
   );
