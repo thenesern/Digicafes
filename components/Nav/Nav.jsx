@@ -8,7 +8,7 @@ import { useSnackbar } from "notistack";
 import axios from "axios";
 import { Controller, useForm } from "react-hook-form";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-
+import Backdrop from "@mui/material/Backdrop";
 // Styles
 import styles from "./Nav.module.css";
 import { AccountCircleRounded } from "@material-ui/icons";
@@ -16,9 +16,11 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Fade from "@mui/material/Fade";
 import { Button, TextField, List, ListItem, Menu } from "@material-ui/core";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
+import ModalMui from "@mui/material/Modal";
 import { useEffect } from "react";
 import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
 import MenuIcon from "@material-ui/icons/Menu";
+import { Box } from "@mui/system";
 
 const Nav = () => {
   const [visibleLogin, setVisibleLogin] = useState(false);
@@ -26,6 +28,10 @@ const Nav = () => {
   const { state, dispatch } = useContext(Store);
   const [isFetching, setIsFetching] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [openMui, setOpenMui] = React.useState(false);
+  const handleOpenMui = () => setOpenMui(true);
+  const handleCloseMui = () => setOpenMui(false);
+
   const open = Boolean(anchorEl);
   const {
     handleSubmit,
@@ -112,6 +118,7 @@ const Nav = () => {
       lowerLast[0],
       lowerLast[0]?.toUpperCase()
     );
+
     const firstName = betterFirst;
     const lastName = betterLast;
     const createdAt = new Date().toLocaleString();
@@ -143,26 +150,31 @@ const Nav = () => {
       }
     >
       <Modal
-        closeButton
-        className={styles.modal}
-        onClose={closeHandler}
-        open={visibleLogin}
+        style={{
+          background: "transparent",
+          boxShadow: "none",
+        }}
+        preventClose
+        aria-labelledby="modal-title"
+        open={isFetching}
       >
-        <>
-          <Modal
-            style={{
-              background: "transparent",
-              boxShadow: "none",
-            }}
-            preventClose
-            aria-labelledby="modal-title"
-            open={isFetching}
-          >
-            <Modal.Body>
-              <Loading size="xl" />
-              <Spacer />
-            </Modal.Body>
-          </Modal>
+        <Modal.Body>
+          <Loading size="xl" />
+          <Spacer />
+        </Modal.Body>
+      </Modal>
+      <ModalMui
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openMui}
+        onClose={handleCloseMui}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Box  className={styles.box}>
           <div className={styles.wrapper}>
             <h1 className={styles.title}>Giriş Yap</h1>
             <div className={styles.signup}>
@@ -245,8 +257,8 @@ const Nav = () => {
               </List>
             </form>
           </div>
-        </>
-      </Modal>
+        </Box>
+      </ModalMui>
       <Modal
         closeButton
         className={styles.modalRegister}
@@ -491,7 +503,7 @@ const Nav = () => {
           </div>
         </li>
         {user ? (
-          <>
+          <div className={styles.profileMenu}>
             <Button
               id="fade-button"
               aria-controls={open ? "fade-menu" : undefined}
@@ -527,20 +539,11 @@ const Nav = () => {
                 <>
                   <button className={styles.button}>
                     <Link
-                      href="/hesabim"
+                      href={"/hesap/" + user?.id}
                       className={styles["menu-link"]}
                       passHref
                     >
-                      <div className={styles["link-item"]}>Hesabım</div>
-                    </Link>
-                  </button>
-                  <button className={styles.button}>
-                    <Link
-                      href="/dashboard"
-                      className={styles["menu-link"]}
-                      passHref
-                    >
-                      <div className={styles["link-item"]}>Yönetim Paneli</div>
+                      <button className={styles["link-item"]}>Hesabım</button>
                     </Link>
                   </button>
                 </>
@@ -552,26 +555,26 @@ const Nav = () => {
                       className={styles["menu-link"]}
                       passHref
                     >
-                      <div className={styles["link-item"]}>Panel</div>
+                      <button className={styles["link-item"]}>Panel</button>
                     </Link>
                   </button>
                 </>
               )}
               <button className={styles.button} onClick={logoutHandler}>
                 <Link href="/" passHref className={styles["menu-link"]}>
-                  <div className={styles["link-item"]}>
+                  <button className={styles["link-item"]}>
                     <span>Çıkış Yap</span>
                     <LogoutIcon className={styles.icon} />
-                  </div>
+                  </button>
                 </Link>
               </button>
             </Menu>
-          </>
+          </div>
         ) : (
           <li className={styles.rightXL}>
             <button
               className={styles.signIn}
-              onClick={() => setVisibleLogin(true)}
+              onClick={() => handleOpenMui(true)}
             >
               Giriş Yap
             </button>
@@ -604,26 +607,96 @@ const Nav = () => {
           </IconButton>
         </div>
         <Divider />
-        <div className={styles.right}>
-          <div className={styles.buttons}>
-            <button
-              className={styles.signIn}
-              onClick={() => setVisibleLogin(true)}
+        {user ? (
+          <div className={styles.profileMenu}>
+            <Button
+              id="fade-button"
+              aria-controls={open ? "fade-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClick}
+              className={styles.dropdown}
             >
-              Giriş Yap
-            </button>
-            <button
-              className={styles.signUp}
-              onClick={() => setVisibleRegister(true)}
+              <AccountCircleRounded />
+              <div className={styles.username}>
+                <h6>{user?.firstName}</h6>
+                <h6>{user?.lastName}</h6>
+              </div>
+            </Button>
+            <Menu
+              id="fade-menu"
+              MenuListProps={{
+                "aria-labelledby": "fade-button",
+              }}
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              TransitionComponent={Fade}
+              style={{
+                display: "flex",
+                alingItems: "center",
+                justifyContent: "center",
+                marginTop: "3rem",
+                marginLeft: "2rem",
+              }}
             >
-              Üye Ol
-            </button>
+              {user?.isAdmin === false ? (
+                <>
+                  <button className={styles.button}>
+                    <Link
+                      href={"/hesap/" + user?.id}
+                      className={styles["menu-link"]}
+                      passHref
+                    >
+                      <button className={styles["link-item"]}>Hesabım</button>
+                    </Link>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button className={styles.button}>
+                    <Link
+                      href="/admin/dashboard"
+                      className={styles["menu-link"]}
+                      passHref
+                    >
+                      <button className={styles["link-item"]}>Panel</button>
+                    </Link>
+                  </button>
+                </>
+              )}
+              <button className={styles.button} onClick={logoutHandler}>
+                <Link href="/" passHref className={styles["menu-link"]}>
+                  <button className={styles["link-item"]}>
+                    <span>Çıkış Yap</span>
+                    <LogoutIcon className={styles.icon} />
+                  </button>
+                </Link>
+              </button>
+            </Menu>
           </div>
+        ) : (
+          <div className={styles.right}>
+            <div className={styles.buttons}>
+              <button
+                className={styles.signIn}
+                onClick={() => setVisibleLogin(true)}
+              >
+                Giriş Yap
+              </button>
+              <button
+                className={styles.signUp}
+                onClick={() => setVisibleRegister(true)}
+              >
+                Üye Ol
+              </button>
+            </div>
 
-          <Link href="/dijital-menu" passHref>
-            <h5 className={styles.link}>Dijital Menü</h5>
-          </Link>
-        </div>
+            <Link href="/dijital-menu" passHref>
+              <h5 className={styles.link}>Dijital Menü</h5>
+            </Link>
+          </div>
+        )}
       </SwipeableDrawer>
     </navbar>
   );
