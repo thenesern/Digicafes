@@ -76,7 +76,7 @@ const Nav = () => {
       dispatch({ type: "USER_LOGIN", payload: data });
       Cookies.set("userInfo", JSON.stringify(data));
       setIsFetching(false);
-      setVisibleLogin(false);
+      handleCloseMui();
     } catch (err) {
       setIsFetching(false);
       enqueueSnackbar("Geçersiz E-mail veya Şifre", { variant: "error" });
@@ -174,7 +174,7 @@ const Nav = () => {
           timeout: 500,
         }}
       >
-        <Box  className={styles.box}>
+        <Box className={styles.box}>
           <div className={styles.wrapper}>
             <h1 className={styles.title}>Giriş Yap</h1>
             <div className={styles.signup}>

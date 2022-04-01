@@ -22,7 +22,7 @@ import StepConnector, {
 } from "@mui/material/StepConnector";
 import { Input, Modal } from "@nextui-org/react";
 import { useState } from "react";
-import useCard from "./card";
+import useCard from "../../components/Card/card";
 
 const Checkout = ({ product }) => {
   const [visible, setVisible] = React.useState(false);
