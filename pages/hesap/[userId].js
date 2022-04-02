@@ -17,7 +17,7 @@ const Hesap = ({ order }) => {
   );
 };
 
-export async function getStaticPaths() {
+/* export async function getStaticPaths() {
   await db.connect();
   const users = await User.find();
   await db.disconnect();
@@ -44,5 +44,5 @@ export async function getStaticProps({ params }) {
       order: JSON.parse(JSON.stringify(order)),
     },
   };
-}
+} */
 export default Hesap;
