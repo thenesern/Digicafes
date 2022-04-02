@@ -1,11 +1,11 @@
 import React from "react";
-import Nav from "../../components/Nav/Nav";
-import User from "../../models/UserModel";
-import Order from "../../models/OrderModel";
-import db from "../../utils/db";
+import Nav from "../../../components/Nav/Nav";
+import User from "../../../models/UserModel";
+import Order from "../../../models/OrderModel";
+import db from "../../../utils/db";
 import styles from "./dashboard.module.css";
-import Product from "../../models/ProductModel";
-import QRMenu from "../../models/QRMenuModel";
+import Product from "../../../models/ProductModel";
+import QRMenu from "../../../models/QRMenuModel";
 import Link from "next/link";
 
 const Dashboard = ({ orders, user }) => {
