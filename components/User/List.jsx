@@ -24,7 +24,7 @@ const List = ({ orders }) => {
             <TableCell>Hizmet</TableCell>
             <TableCell>Tarih</TableCell>
             <TableCell>Ödeme Yöntemi</TableCell>
-            <TableCell>Durum</TableCell>
+            <TableCell>Ödeme Tutarı</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

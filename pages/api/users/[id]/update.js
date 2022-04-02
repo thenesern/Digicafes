@@ -17,8 +17,8 @@ handler.patch(async (req, res) => {
   const token = signToken(user);
   res.send({
     token,
-    firstName: user.firstName,
-    lastName: user.lastName,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
     email: user.email,
     id: user._id,
     isAdmin: user.isAdmin,
