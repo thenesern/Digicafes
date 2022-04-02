@@ -49,3 +49,22 @@
   border-radius: 1rem;
   justify-content: flex-start;
 }
+
+.orderNotFoundImage {
+  width: 10rem;
+  display: flex;
+}
+.orderNotFound {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.info {
+  background-color: #ffe8d6;
+  padding: 1rem;
+  border-radius: 4px;
+}

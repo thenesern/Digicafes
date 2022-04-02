@@ -14,43 +14,57 @@ const Dashboard = ({ orders, user }) => {
       <Nav />
       <div className={styles.container}>
         <h3 className={styles.title}>Yönetim Paneli</h3>
-        {orders.map((order) => (
-          <div key={order._id} className={styles.panel}>
-            <div>
-              <h3>Panel</h3>
-              <Link
-                href={
-                  order?.product?.name === "Dijital Menü - V1"
-                    ? `/dashboard/${user}/menu/v1`
-                    : "/"
-                }
-                passHref
-              >
-                <button className={styles.button}>
-                  <h6 className={styles.subtitle}>{order.product.name}</h6>
-                </button>
-              </Link>
-            </div>
-            <div>
-              {order.product.name === "Dijital Menü - V1" && (
-                <div>
+        {orders.length > 0 &&
+          orders.map((order) => (
+            <div key={order._id} className={styles.panel}>
+              <div>
+                <h3>Panel</h3>
+                <Link
+                  href={
+                    order?.product?.name === "Dijital Menü - V1"
+                      ? `/dashboard/${user}/menu/v1/${order._id}`
+                      : "/"
+                  }
+                  passHref
+                >
+                  <button className={styles.button}>
+                    <h6 className={styles.subtitle}>{order.product.name}</h6>
+                  </button>
+                </Link>
+              </div>
+              <div>
+                {order.product.name === "Dijital Menü - V1" && (
                   <div>
-                    <h4>İş Yeri Adı</h4>
-                    <p>{order?.menuv1?.storeName || "Henüz Oluşturulmadı"}</p>
+                    <div>
+                      <h4>İş Yeri Adı</h4>
+                      <p>{order?.menuv1?.storeName || "Henüz Oluşturulmadı"}</p>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+              <div>
+                <h4>Oluşturulma Tarihi</h4>
+                <p>{order?.menuv1?.createdAt || "Henüz Oluşturulmadı"}</p>
+              </div>
+              <div>
+                <h4>Son Güncelleme Tarihi</h4>
+                <p>{order?.menuv1?.createdAt || "Henüz Oluşturulmadı"}</p>
+              </div>
             </div>
-            <div>
-              <h4>Oluşturulma Tarihi</h4>
-              <p>{order?.menuv1?.createdAt || "Henüz Oluşturulmadı"}</p>
-            </div>
-            <div>
-              <h4>Son Güncelleme Tarihi</h4>
-              <p>{order?.menuv1?.createdAt || "Henüz Oluşturulmadı"}</p>
-            </div>
+          ))}
+        {orders.length < 1 && (
+          <div className={styles.orderNotFound}>
+            <img
+              className={styles.orderNotFoundImage}
+              src="https://img.icons8.com/cotton/452/shopping-cart--v1.png"
+            />
+            <h4>Sipariş bulunamadı.</h4>
+            <p className={styles.info}>
+              Satın almış olduğunuz paketlerin Yönetim Paneline buradan
+              ulaşabilirsiniz.
+            </p>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
