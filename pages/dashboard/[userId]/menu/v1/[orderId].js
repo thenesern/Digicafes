@@ -7,12 +7,11 @@ import QRMenu from "../../../../../models/QRMenuModel";
 import User from "../../../../../models/UserModel";
 import db from "../../../../../utils/db";
 
-const DashboardMenuv1 = ({ userOrders }) => {
-  console.log(userOrders);
+const DashboardMenuv1 = ({ userOrder }) => {
   return (
     <div>
       <Nav />
-      <UserDashboard orders={userOrders} />
+      <UserDashboard order={userOrder} />
     </div>
   );
 };
@@ -35,7 +34,7 @@ export async function getStaticPaths() {
 }
 export async function getStaticProps({ params }) {
   await db.connect();
-  const orders = await Order.find({ _id: params.orderId })
+  const order = await Order.find({ _id: params.orderId })
     .populate({
       path: "product",
       model: Product,
@@ -45,7 +44,7 @@ export async function getStaticProps({ params }) {
   await db.disconnect();
   return {
     props: {
-      userOrders: JSON.parse(JSON.stringify(orders)),
+      userOrder: JSON.parse(JSON.stringify(order)),
     },
   };
 }
