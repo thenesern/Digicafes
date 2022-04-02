@@ -7,41 +7,35 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { DataGrid } from "@mui/x-data-grid";
 
-const List = ({ order }) => {
-  const rows = [
-    {
-      id: order?._id,
-      product: order?.product?.name,
-      date: order?.createdAt,
-      method: "Ziraat Bankkart",
-      status: "Teslim Edilecek",
-    },
-  ];
+function createData(_id, name, createdAt) {
+  return { _id, name, createdAt };
+}
+
+const List = ({ orders }) => {
+  const rows = [createData("_id", "name", "createdAt")];
   return (
-    <TableContainer component={Paper} className={styles.table}>
+    <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell className={styles.tableCell}>Sipariş Numarası</TableCell>
-            <TableCell className={styles.tableCell}>Hizmet</TableCell>
-            <TableCell className={styles.tableCell}>Tarih</TableCell>
-            <TableCell className={styles.tableCell}>Ödeme Yöntemi</TableCell>
-            <TableCell className={styles.tableCell}>Durum</TableCell>
+            <TableCell>Sipariş Numarası</TableCell>
+            <TableCell>Hizmet</TableCell>
+            <TableCell>Tarih</TableCell>
+            <TableCell>Ödeme Yöntemi</TableCell>
+            <TableCell>Durum</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell className={styles.tableCell}>{row.id}</TableCell>
-              <TableCell className={styles.tableCell}>
-                <div className={styles.cellWrapper}>{row.product}</div>
-              </TableCell>
-              <TableCell className={styles.tableCell}>{row.date}</TableCell>
-              <TableCell className={styles.tableCell}>{row.method}</TableCell>
-              <TableCell className={styles.tableCell}>
-                <span>{row.status}</span>
-              </TableCell>
+          {orders.map((row) => (
+            <TableRow
+              key={row.name}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell>{row._id}</TableCell>
+              <TableCell>{row.product.name}</TableCell>
+              <TableCell>{row.createdAt}</TableCell>
             </TableRow>
           ))}
         </TableBody>

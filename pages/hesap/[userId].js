@@ -2,38 +2,25 @@ import React from "react";
 import UserProfile from "../../components/User/User";
 import Nav from "../../components/Nav/Nav";
 import db from "../../utils/db";
-import User from "../../models/UserModel";
 import Order from "../../models/OrderModel";
 import Product from "../../models/ProductModel";
+import User from "../../models/UserModel";
 
-const Hesap = ({ order }) => {
-  console.log(order);
+const Hesap = ({ orders }) => {
   return (
     <>
       <Nav />
       <div>
-        <UserProfile order={order} />
+        <UserProfile orders={orders} />
       </div>
     </>
   );
 };
 
-export async function getStaticPaths() {
+export async function getServerSideProps(context) {
+  const { userId } = context.query;
   await db.connect();
-  const users = await User.find();
-  await db.disconnect();
-  return {
-    paths: users.map((user) => {
-      return {
-        params: { userId: JSON.parse(JSON.stringify(user._id)) },
-      };
-    }),
-    fallback: false, // false or 'blocking'
-  };
-}
-export async function getStaticProps({ params }) {
-  await db.connect();
-  const order = await Order.find({ user: params.userId })
+  const order = await Order.find({ user: userId })
     .populate({
       path: "product",
       model: Product,
@@ -42,7 +29,7 @@ export async function getStaticProps({ params }) {
   await db.disconnect();
   return {
     props: {
-      order: JSON.parse(JSON.stringify(order)),
+      orders: JSON.parse(JSON.stringify(order)),
     },
   };
 }

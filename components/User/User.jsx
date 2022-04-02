@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import Image from "next/image";
 import axios from "axios";
 
-const User = ({ order }) => {
+const User = ({ orders }) => {
   let profile;
   if (Cookies.get("userInfo")) {
     profile = JSON.parse(Cookies.get("userInfo"));
@@ -86,8 +86,8 @@ const User = ({ order }) => {
       </div>
       <div className={styles.right}>
         <h1 className={styles.title}>Siparişler</h1>
-        {order ? (
-          <List order={order} />
+        {orders ? (
+          <List orders={orders} />
         ) : (
           <h6 className={styles.notFound}>Sipariş bulunamadı.</h6>
         )}
