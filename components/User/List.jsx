@@ -12,7 +12,7 @@ const List = ({ order }) => {
   const rows = [
     {
       id: order?._id,
-      product: order?.product.name,
+      product: order?.product?.name,
       date: order?.createdAt,
       method: "Ziraat Bankkart",
       status: "Teslim Edilecek",

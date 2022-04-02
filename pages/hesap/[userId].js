@@ -7,6 +7,7 @@ import Order from "../../models/OrderModel";
 import Product from "../../models/ProductModel";
 
 const Hesap = ({ order }) => {
+  console.log(order);
   return (
     <>
       <Nav />
@@ -17,7 +18,7 @@ const Hesap = ({ order }) => {
   );
 };
 
-/* export async function getStaticPaths() {
+export async function getStaticPaths() {
   await db.connect();
   const users = await User.find();
   await db.disconnect();
@@ -27,7 +28,7 @@ const Hesap = ({ order }) => {
         params: { userId: JSON.parse(JSON.stringify(user._id)) },
       };
     }),
-    fallback: true, // false or 'blocking'
+    fallback: false, // false or 'blocking'
   };
 }
 export async function getStaticProps({ params }) {
@@ -44,5 +45,5 @@ export async function getStaticProps({ params }) {
       order: JSON.parse(JSON.stringify(order)),
     },
   };
-} */
+}
 export default Hesap;
