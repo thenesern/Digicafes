@@ -27,7 +27,7 @@ export async function getStaticPaths() {
         params: { userId: JSON.parse(JSON.stringify(user._id)) },
       };
     }),
-    fallback: false, // false or 'blocking'
+    fallback: true, // false or 'blocking'
   };
 }
 export async function getStaticProps({ params }) {

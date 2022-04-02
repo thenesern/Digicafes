@@ -12,7 +12,7 @@ const DashboardMenuv1 = ({ userOrders }) => {
   return (
     <div>
       <Nav />
-      <UserDashboard />
+      <UserDashboard orders={userOrders} />
     </div>
   );
 };

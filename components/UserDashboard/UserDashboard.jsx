@@ -17,7 +17,10 @@ import { DataGrid } from "@mui/x-data-grid";
 import Image from "next/image";
 import QRCode from "qrcode";
 
-const UserDashboard = () => {
+const UserDashboard = ({ orders }) => {
+  console.log(orders);
+  orders.map((order) => order.user._id);
+
   const [menu, setMenu] = useState();
   const products = [];
   const store = menu?.menu[0].storeName;
