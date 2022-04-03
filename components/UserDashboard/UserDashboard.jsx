@@ -20,26 +20,73 @@ import { fadeInRightBig } from "react-animations";
 import Radium, { StyleRoot } from "radium";
 import Cookies from "js-cookie";
 import CallMadeIcon from "@mui/icons-material/CallMade";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import Chip from "@mui/material/Chip";
+import { useTheme } from "@mui/material/styles";
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
 const UserDashboard = ({ order }) => {
+  const theme = useTheme();
   const [menu, setMenu] = useState(order[0].menuv1);
   const [name, setName] = useState("");
   const [price, setPrice] = useState();
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState();
+  const [categoryName, setCategoryName] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [src, setSrc] = useState("");
   const [isFirst, setIsFirst] = useState(false);
   const [storeNameFirst, setStoreNameFirst] = useState("");
   const [storeNameSet, setStoreNameSet] = useState(false);
-  const [categoriesFirst, setCategoriesFirst] = useState([]);
-  const [addCategoryFirst, setAddCategoryFirst] = useState("");
-  console.log(menu);
+  const [addCategory, setAddCategory] = useState("");
+  const [products, setProducts] = useState([...menu?.products]);
+  const [categories, setCategories] = useState([
+    ...menu?.categories.map((c) => c.name),
+  ]);
   const animate = {
     fadeInRightBig: {
       animation: "x 2s",
       animationName: Radium.keyframes(fadeInRightBig, "fadeInRightBig"),
     },
+  };
+
+  const [openAddProduct, setOpenAddProduct] = useState(false);
+  const handleOpenAddProduct = () => setOpenAddProduct(true);
+  const handleCloseAddProduct = () => setOpenAddProduct(false);
+  const [openAddCategory, setOpenAddCategory] = useState(false);
+  const handleOpenAddCategory = () => setOpenAddCategory(true);
+  const handleCloseAddCategory = () => setOpenAddCategory(false);
+  const [personName, setPersonName] = useState([]);
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
   };
 
   const {
@@ -59,7 +106,7 @@ const UserDashboard = ({ order }) => {
     }
   }, []);
   let user;
-
+  console.log(categories);
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
   }
@@ -89,10 +136,35 @@ const UserDashboard = ({ order }) => {
       console.log(err);
     }
   };
+  const addProductHandler = async (e) => {
+    e.preventDefault();
+    products.push({ name, price, description, category });
+    try {
+      await axios.patch(`/api/qr/menus/${menu?.storeName}`, {
+        storeName: menu?.storeName,
+        products,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const addCategoryHandler = async (e) => {
+    e.preventDefault();
+    categories.push({ name: categoryName });
+    try {
+      await axios.patch(`/api/qr/menus/${menu?.storeName}/categories`, {
+        storeName: menu?.storeName,
+        categories,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     QRCode.toDataURL("localhost:3000/qr/vq/demo").then(setSrc);
   }, []);
+
   const columns = [
     { field: "_id", headerName: "Ürün Kodu", width: 300 },
     {
@@ -138,9 +210,9 @@ const UserDashboard = ({ order }) => {
                     helperText={
                       isFirst ? (
                         storeNameFirst ? (
-                          `İpucu: www.site.com/qr/${storeNameFirst}`
+                          `Örnek: www.site.com/qr/${storeNameFirst}`
                         ) : (
-                          "İpucu: www.site.com/qr/dükkanadı"
+                          "Örnek: www.site.com/qr/dükkanadı"
                         )
                       ) : (
                         <Link
@@ -187,7 +259,7 @@ const UserDashboard = ({ order }) => {
                       required: true,
                       pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
                     }}
-                    onChange={(e) => setAddCategoryFirst(e.target.value)}
+                    onChange={(e) => setAddCategory(e.target.value)}
                     label="Kategoriler"
                     helperText="Örnek: Ana Yemekler"
                   ></TextField>
@@ -201,7 +273,7 @@ const UserDashboard = ({ order }) => {
                       color="primary"
                       onClick={(e) => {
                         e.preventDefault();
-                        categoriesFirst.push(addCategoryFirst);
+                        categoriesFirst.push(addCategory);
                         setAddCategoryFirst("");
                       }}
                     >
@@ -239,16 +311,187 @@ const UserDashboard = ({ order }) => {
                 <Button
                   variant="contained"
                   type="submit"
-                  fullWidth
-                  onClick={firstTimeHandler}
+                  onClick={handleOpenAddProduct}
+                  style={{ margin: "1rem", width: "16rem" }}
                 >
                   Ürün Ekle
                 </Button>
+                <Modal
+                  open={openAddProduct}
+                  onClose={handleCloseAddProduct}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box className={styles.box}>
+                    <form>
+                      <List className={styles.list}>
+                        <h3 className={styles.header}>Ürün Ekle</h3>
+                        <FormControl
+                          style={{ margin: "1rem" }}
+                          sx={{ m: 1, width: "50%" }}
+                        >
+                          <InputLabel id="demo-multiple-chip-label">
+                            Kategori
+                          </InputLabel>
+                          <Select
+                            labelId="demo-multiple-chip-label"
+                            id="demo-multiple-chip"
+                            multiple
+                            value={personName}
+                            onChange={handleChange}
+                            input={
+                              <OutlinedInput
+                                id="select-multiple-chip"
+                                label="Kategori"
+                              />
+                            }
+                            renderValue={(selected) => (
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexWrap: "wrap",
+                                  gap: 0.5,
+                                }}
+                              >
+                                {selected.map((value) => (
+                                  <Chip key={value} label={value} />
+                                ))}
+                              </Box>
+                            )}
+                            MenuProps={MenuProps}
+                          >
+                            {categories.map((name) => (
+                              <MenuItem
+                                key={name}
+                                value={name}
+                                style={getStyles(name, personName, theme)}
+                              >
+                                {name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                        <ListItem>
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="name"
+                            onChange={(e) => setName(e.target.value)}
+                            label="Ürün Adı"
+                            inputProps={{ type: "text" }}
+                            helperText="Örnek: Izgara Köfte, Kaşarlı Tost, Sufle"
+                          ></TextField>
+                        </ListItem>
+                        <ListItem>
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="description"
+                            label="Ürün Açıklaması"
+                            onChange={(e) => setDescription(e.target.value)}
+                            inputProps={{ type: "text" }}
+                            helperText="Örnek: 200GR Köfte; Patates kızartması, közlenmiş biber, soğan, domates, baharatlar, turşu ile"
+                          ></TextField>
+                        </ListItem>
+                        <ListItem>
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="price"
+                            onChange={(e) => setPrice(e.target.value)}
+                            label="Fiyat"
+                            inputProps={{ type: "number" }}
+                            helperText="Örnek: 50"
+                          ></TextField>
+                        </ListItem>
+                        <ListItem>
+                          <label htmlFor="icon-button-file">
+                            <Input
+                              accept="image/*"
+                              id="icon-button-file"
+                              type="file"
+                            />
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <PhotoCamera />
+                            </IconButton>
+                          </label>
+                        </ListItem>
+                        <ListItem>
+                          <Button
+                            variant="contained"
+                            type="submit"
+                            fullWidth
+                            onClick={addProductHandler}
+                            color="primary"
+                          >
+                            Ekle
+                          </Button>
+                        </ListItem>
+                      </List>
+                    </form>
+                  </Box>
+                </Modal>
+                <Modal
+                  open={openAddCategory}
+                  onClose={handleCloseAddCategory}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box className={styles.box}>
+                    <form>
+                      <List className={styles.list}>
+                        <h3 className={styles.header}>Ürün Ekle</h3>
+                        <ListItem>
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="category"
+                            label="Kategori"
+                            inputProps={{ type: "text" }}
+                            onChange={(e) => setCategoryName(e.target.value)}
+                            helperText="Örnek: Ana Yemek, Kahvaltılar, Tatlılar"
+                          ></TextField>
+                        </ListItem>
+                        <ListItem>
+                          <label htmlFor="icon-button-file">
+                            <Input
+                              accept="image/*"
+                              id="icon-button-file"
+                              type="file"
+                            />
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <PhotoCamera />
+                            </IconButton>
+                          </label>
+                        </ListItem>
+                        <ListItem>
+                          <Button
+                            variant="contained"
+                            type="submit"
+                            fullWidth
+                            onClick={addCategoryHandler}
+                            color="primary"
+                          >
+                            Ekle
+                          </Button>
+                        </ListItem>
+                      </List>
+                    </form>
+                  </Box>
+                </Modal>
                 <Button
                   variant="contained"
                   type="submit"
-                  fullWidth
-                  onClick={firstTimeHandler}
+                  onClick={handleOpenAddCategory}
+                  style={{ margin: "1rem", width: "16rem" }}
                 >
                   Kategori Ekle
                 </Button>

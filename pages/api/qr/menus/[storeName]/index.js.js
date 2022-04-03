@@ -1,6 +1,6 @@
 import nc from "next-connect";
-import QRMenu from "../../../../models/QRMenuModel";
-import db from "../../../../utils/db";
+import QRMenu from "../../../../../models/QRMenuModel";
+import db from "../../../../../utils/db";
 
 const handler = nc();
 
@@ -17,14 +17,17 @@ handler.get(async (req, res) => {
 });
 
 handler.patch(async (req, res) => {
+  console.log(req.body);
   await db.connect();
-  const name = req.body.storeName;
-  const menu = await QRMenu.find({ storeName: `${name}` });
-  if (menu) {
-    const updatedMenu = await QRMenu.updateOne({ products: req.body.products });
-    res.json("Updated successfully", updatedMenu);
-    await db.disconnect();
-  }
+  const menu = await QRMenu.findOneAndUpdate(
+    { storeName: req.body.storeName },
+    {
+      products: req.body.products,
+    }
+  );
+  console.log(menu);
+  res.json({ status: "success", menu });
+  await db.disconnect();
 });
 
 export default handler;

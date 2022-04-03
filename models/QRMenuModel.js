@@ -32,7 +32,7 @@ const QRMenuSchema = new mongoose.Schema(
         },
         image: {
           type: String,
-          required: true,
+          required: false,
         },
       },
     ],
@@ -44,7 +44,7 @@ const QRMenuSchema = new mongoose.Schema(
         },
         image: {
           type: String,
-          required: true,
+          required: false,
         },
       },
     ],
