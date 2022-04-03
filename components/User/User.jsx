@@ -36,7 +36,7 @@ const User = ({ orders }) => {
       }
     );
     Cookies.remove("userInfo");
-    console.log(user.data);
+
     Cookies.set("userInfo", JSON.stringify(user.data));
   };
 
