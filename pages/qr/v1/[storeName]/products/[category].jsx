@@ -14,7 +14,7 @@ const StoreMenu = ({ menu, category }) => {
         <div className={styles.nav}>Nav</div>
       </navbar>
       <div>
-        <Link href={`localhost:3000/qr/v1/${menu.storeName}`} passHref>
+        <Link href={"/qr/v1/" + menu?.storeName} passHref>
           <button>Geri</button>
         </Link>
       </div>

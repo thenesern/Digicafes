@@ -16,7 +16,7 @@ const DashboardMenuv1 = ({ userOrder }) => {
   );
 };
 
-/* export async function getStaticPaths() {
+export async function getStaticPaths() {
   await db.connect();
   const orders = await Order.find();
   await db.disconnect();
@@ -48,9 +48,8 @@ export async function getStaticProps({ params }) {
     },
   };
 }
- */
 
-export async function getServerSideProps(context) {
+/* export async function getServerSideProps(context) {
   const { orderId } = context.query;
   await db.connect();
   const order = await Order.find({ _id: orderId })
@@ -66,5 +65,5 @@ export async function getServerSideProps(context) {
       userOrder: JSON.parse(JSON.stringify(order)),
     },
   };
-}
+} */
 export default DashboardMenuv1;
