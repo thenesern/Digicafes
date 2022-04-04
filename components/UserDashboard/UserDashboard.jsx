@@ -50,20 +50,19 @@ function getStyles(name, personName, theme) {
 }
 const UserDashboard = ({ order }) => {
   const theme = useTheme();
-  const [menu, setMenu] = useState(order[0]?.menuv1);
+  const [menu, setMenu] = useState(order[0]?.menuv1 || "");
   const [name, setName] = useState("");
   const [price, setPrice] = useState();
   const [description, setDescription] = useState("");
-  const [categoryName, setCategoryName] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [src, setSrc] = useState("");
   const [isFirst, setIsFirst] = useState(false);
   const [storeNameFirst, setStoreNameFirst] = useState("");
   const [storeNameSet, setStoreNameSet] = useState(false);
   const [addCategory, setAddCategory] = useState("");
-  const [products, setProducts] = useState([...menu?.products]);
+  const [products, setProducts] = useState([...(menu?.products || "")]);
   const [categories, setCategories] = useState([
-    ...menu?.categories.map((c) => c.name),
+    ...(menu?.categories?.map((c) => c?.name) || ""),
   ]);
   const animate = {
     fadeInRightBig: {
@@ -106,7 +105,7 @@ const UserDashboard = ({ order }) => {
     }
   }, []);
   let user;
-  console.log(categories);
+
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
   }
@@ -117,14 +116,14 @@ const UserDashboard = ({ order }) => {
       const { data } = await axios.post("/api/qr/menu", {
         storeName: storeNameFirst,
         createdAt,
-        owner: order[0]?.user._id,
+        owner: order[0]?.user?._id,
         categories,
       });
       const orderProduct = await axios.patch(
         "/api/order/attachMenu",
         {
           orderId: order[0]?._id,
-          menuId: data.menu?._id,
+          menuId: data?.menu?._id,
         },
         {
           headers: { authorization: `Bearer ${user.token}` },
@@ -136,6 +135,7 @@ const UserDashboard = ({ order }) => {
       console.log(err);
     }
   };
+  console.log(categories);
   const addProductHandler = async (e) => {
     e.preventDefault();
     products.push({ name, price, description, category });
@@ -150,7 +150,7 @@ const UserDashboard = ({ order }) => {
   };
   const addCategoryHandler = async (e) => {
     e.preventDefault();
-    categories.push({ name: categoryName });
+
     try {
       await axios.patch(`/api/qr/menus/${menu?.storeName}/categories`, {
         storeName: menu?.storeName,
@@ -254,7 +254,7 @@ const UserDashboard = ({ order }) => {
                     fullWidth
                     disabled={isFirst ? false : true}
                     id="brandName"
-                    value={addCategoryFirst}
+                    value={addCategory}
                     rules={{
                       required: true,
                       pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
@@ -273,8 +273,8 @@ const UserDashboard = ({ order }) => {
                       color="primary"
                       onClick={(e) => {
                         e.preventDefault();
-                        categoriesFirst.push(addCategory);
-                        setAddCategoryFirst("");
+                        categories.push({ name: addCategory });
+                        setAddCategory("");
                       }}
                     >
                       Ekle
@@ -283,7 +283,7 @@ const UserDashboard = ({ order }) => {
                       variant="rwzr"
                       type="submit"
                       fullWidth
-                      disabled={categoriesFirst.length > 0 ? false : true}
+                      disabled={categories.length > 0 ? false : true}
                       onClick={firstTimeHandler}
                     >
                       İlerle
