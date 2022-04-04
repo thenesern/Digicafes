@@ -1,11 +1,12 @@
 import { useRouter } from "next/router";
 import React from "react";
 import styles from "./products.module.css";
-import db from "../../../../utils/db.js";
-import QRMenu from "../../../../models/QRMenuModel.js";
+import db from "../../../../../utils/db.js";
+import QRMenu from "../../../../../models/QRMenuModel.js";
 import Link from "next/link";
 
-const StoreMenu = ({ menu }) => {
+const StoreMenu = ({ menu, category }) => {
+  const filtered = menu?.products.filter((a) => a.category.includes(category));
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
@@ -19,12 +20,12 @@ const StoreMenu = ({ menu }) => {
       </div>
       <ul className={styles.list}>
         {menu &&
-          menu?.products?.map((m) => (
+          filtered?.map((m) => (
             <li className={styles.listItem} key={m?.name}>
-              <img src={m?.image} alt="" />
-              <div>
-                <h3>{m?.name}</h3>
-                <p>₺{m?.price}</p>
+              <img className={styles.img} src={m?.image} alt="" />
+              <div className={styles.bottom}>
+                <h3 className={styles.name}>{m?.name}</h3>
+                <p className={styles.price}>₺{m?.price}</p>
               </div>
             </li>
           ))}
@@ -34,30 +35,19 @@ const StoreMenu = ({ menu }) => {
   );
 };
 
-export async function getStaticPaths() {
-  await db.connect();
-  const menus = await QRMenu.find();
-  await db.disconnect();
-  return {
-    paths: menus.map((menu) => {
-      return {
-        params: { storeName: menu.storeName },
-      };
-    }),
-    fallback: false, // false or 'blocking'
-  };
-}
-export async function getStaticProps({ params }) {
+export async function getServerSideProps(context) {
+  const { category } = context.query;
+  const { storeName } = context.query;
   await db.connect();
   const menu = await QRMenu.findOne({
-    storeName: params.storeName,
+    storeName: storeName,
   }).lean();
   await db.disconnect();
   return {
     props: {
       menu: JSON.parse(JSON.stringify(menu)),
+      category,
     },
   };
 }
-
 export default StoreMenu;

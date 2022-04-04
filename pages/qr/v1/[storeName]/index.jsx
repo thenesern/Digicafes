@@ -4,8 +4,11 @@ import styles from "./store.module.css";
 import db from "../../../../utils/db.js";
 import QRMenu from "../../../../models/QRMenuModel.js";
 import Link from "next/link";
+import { useState } from "react";
 
 const StoreMenu = ({ menu }) => {
+  const [category, setCategory] = useState("");
+  console.log(category);
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
@@ -19,7 +22,9 @@ const StoreMenu = ({ menu }) => {
         {menu &&
           menu?.categories?.map((m) => (
             <Link
-              href={`/qr/v1/${menu?.storeName}/products`}
+              name={m?.name}
+              onClick={(e) => setCategory(m?.name)}
+              href={`/qr/v1/${menu?.storeName}/products/${category}`}
               passHref
               key={m?.name}
             >
