@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import React from "react";
 import styles from "./store.module.css";
-import db from "../../../utils/db.js";
-import QRMenu from "../../../models/QRMenuModel.js";
+import db from "../../../../utils/db.js";
+import QRMenu from "../../../../models/QRMenuModel.js";
 import Link from "next/link";
 
 const StoreMenu = ({ menu }) => {
@@ -18,7 +18,11 @@ const StoreMenu = ({ menu }) => {
       <ul className={styles.list}>
         {menu &&
           menu?.categories?.map((m) => (
-            <Link href="/" passHref key={m?.name}>
+            <Link
+              href={`/qr/v1/${menu?.storeName}/products`}
+              passHref
+              key={m?.name}
+            >
               <li
                 className={styles.listItem}
                 style={{ backgroundImage: `url(${m?.image})` }}
@@ -53,7 +57,6 @@ export async function getStaticProps({ params }) {
   const menu = await QRMenu.findOne({
     storeName: params.storeName,
   }).lean();
-  console.log(menu);
   await db.disconnect();
   return {
     props: {

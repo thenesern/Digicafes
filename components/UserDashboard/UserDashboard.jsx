@@ -181,7 +181,7 @@ const UserDashboard = ({ order }) => {
   };
 
   useEffect(() => {
-    QRCode.toDataURL("localhost:3000/qr/vq/demo").then(setSrc);
+    QRCode.toDataURL(`localhost:3000/qr/v1/${menu.storeName}`).then(setSrc);
   }, []);
 
   const columns = [
@@ -321,7 +321,7 @@ const UserDashboard = ({ order }) => {
               <h2 className={styles.header}>Dijital Menü Yönetim Paneli</h2>
               <div>
                 <h5>QR Menü Kodu</h5>
-                <Link href="/qr/v1/demo" passHref>
+                <Link href={`localhost:3000/qr/v1/${menu.storeName}`} passHref>
                   <img src={src} alt="" />
                 </Link>
               </div>
