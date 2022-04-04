@@ -42,6 +42,7 @@ const MenuProps = {
 };
 
 const UserDashboard = ({ order }) => {
+  const [file, setFile] = useState(null);
   const theme = useTheme();
   const [menu, setMenu] = useState(order[0]?.menuv1 || "");
   const [name, setName] = useState("");
@@ -81,7 +82,7 @@ const UserDashboard = ({ order }) => {
       typeof value === "string" ? value.split(",") : value
     );
   };
-  console.log(category);
+
   const {
     handleSubmit,
     control,
@@ -129,32 +130,56 @@ const UserDashboard = ({ order }) => {
       console.log(err);
     }
   };
-  console.log(categories);
+
   const addProductHandler = async (e) => {
     e.preventDefault();
-    products.push({ name, price, description, category });
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "uploads");
+
     try {
+      const uploadRes = await axios.post(
+        "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
+        data
+      );
+      products.push({
+        name,
+        price,
+        description,
+        category,
+        image: uploadRes.data.url,
+      });
       await axios.patch(`/api/qr/menus/${menu?.storeName}`, {
         storeName: menu?.storeName,
         products,
       });
+      handleCloseAddProduct();
     } catch (err) {
       console.log(err);
     }
   };
   const addCategoryHandler = async (e) => {
     e.preventDefault();
-    categoriesRaw.push({ name: addCategory });
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "uploads");
     try {
+      const uploadRes = await axios.post(
+        "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
+        data
+      );
+      categoriesRaw.push({ name: addCategory, image: uploadRes.data.url });
+
       await axios.patch(`/api/qr/menus/${menu?.storeName}/categories`, {
         storeName: menu?.storeName,
         categories: categoriesRaw,
       });
+      handleCloseAddCategory();
     } catch (err) {
       console.log(err);
     }
   };
-  console.log(categoriesRaw);
+
   useEffect(() => {
     QRCode.toDataURL("localhost:3000/qr/vq/demo").then(setSrc);
   }, []);
@@ -407,6 +432,7 @@ const UserDashboard = ({ order }) => {
                               accept="image/*"
                               id="icon-button-file"
                               type="file"
+                              onChange={(e) => setFile(e.target.files[0])}
                             />
                             <IconButton
                               color="primary"

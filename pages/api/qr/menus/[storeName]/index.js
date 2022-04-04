@@ -17,15 +17,14 @@ handler.get(async (req, res) => {
 });
 
 handler.patch(async (req, res) => {
-  console.log(req.body);
   await db.connect();
+  console.log(req.body.products);
   const menu = await QRMenu.findOneAndUpdate(
     { storeName: req.body.storeName },
     {
       products: req.body.products,
     }
   );
-  console.log(menu);
   res.json({ status: "success", menu });
   await db.disconnect();
 });
