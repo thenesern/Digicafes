@@ -50,7 +50,7 @@ function getStyles(name, personName, theme) {
 }
 const UserDashboard = ({ order }) => {
   const theme = useTheme();
-  const [menu, setMenu] = useState(order[0].menuv1);
+  const [menu, setMenu] = useState(order[0]?.menuv1);
   const [name, setName] = useState("");
   const [price, setPrice] = useState();
   const [description, setDescription] = useState("");
@@ -117,14 +117,14 @@ const UserDashboard = ({ order }) => {
       const { data } = await axios.post("/api/qr/menu", {
         storeName: storeNameFirst,
         createdAt,
-        owner: order[0].user._id,
+        owner: order[0]?.user._id,
         categories,
       });
       const orderProduct = await axios.patch(
         "/api/order/attachMenu",
         {
-          orderId: order[0]._id,
-          menuId: data.menu._id,
+          orderId: order[0]?._id,
+          menuId: data.menu?._id,
         },
         {
           headers: { authorization: `Bearer ${user.token}` },
@@ -507,7 +507,7 @@ const UserDashboard = ({ order }) => {
                     rows={menu?.products}
                     columns={columns}
                     pageSize={5}
-                    getRowId={(product) => product._id}
+                    getRowId={(product) => product?._id}
                     rowsPerPageOptions={[5]}
                   />
                 </div>
