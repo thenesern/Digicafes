@@ -2,7 +2,6 @@ import {
   Button,
   IconButton,
   Input,
-  Link,
   List,
   ListItem,
   TextField,
@@ -29,6 +28,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import { useTheme } from "@mui/material/styles";
+import Link from "next/link";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -58,7 +58,9 @@ const UserDashboard = ({ order }) => {
   const [categories, setCategories] = useState([
     ...(menu?.categories?.map((c) => c?.name) || ""),
   ]);
-  const [categoriesRaw, setCategoriesRaw] = useState([...menu?.categories]);
+  const [categoriesRaw, setCategoriesRaw] = useState([
+    ...(menu?.categories || ""),
+  ]);
   const animate = {
     fadeInRightBig: {
       animation: "x 2s",
@@ -147,7 +149,7 @@ const UserDashboard = ({ order }) => {
         price,
         description,
         category,
-        image: uploadRes.data.url,
+        image: uploadRes?.data.url,
       });
       await axios.patch(`/api/qr/menus/${menu?.storeName}`, {
         storeName: menu?.storeName,
@@ -168,7 +170,7 @@ const UserDashboard = ({ order }) => {
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
         data
       );
-      categoriesRaw.push({ name: addCategory, image: uploadRes.data.url });
+      categoriesRaw.push({ name: addCategory, image: uploadRes?.data.url });
 
       await axios.patch(`/api/qr/menus/${menu?.storeName}/categories`, {
         storeName: menu?.storeName,
