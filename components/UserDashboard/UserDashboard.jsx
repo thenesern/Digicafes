@@ -40,14 +40,7 @@ const MenuProps = {
     },
   },
 };
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
+
 const UserDashboard = ({ order }) => {
   const theme = useTheme();
   const [menu, setMenu] = useState(order[0]?.menuv1 || "");
@@ -64,6 +57,7 @@ const UserDashboard = ({ order }) => {
   const [categories, setCategories] = useState([
     ...(menu?.categories?.map((c) => c?.name) || ""),
   ]);
+  const [categoriesRaw, setCategoriesRaw] = useState([...menu?.categories]);
   const animate = {
     fadeInRightBig: {
       animation: "x 2s",
@@ -77,17 +71,17 @@ const UserDashboard = ({ order }) => {
   const [openAddCategory, setOpenAddCategory] = useState(false);
   const handleOpenAddCategory = () => setOpenAddCategory(true);
   const handleCloseAddCategory = () => setOpenAddCategory(false);
-  const [personName, setPersonName] = useState([]);
+  const [category, setCategory] = useState([]);
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
-    setPersonName(
+    setCategory(
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
   };
-
+  console.log(category);
   const {
     handleSubmit,
     control,
@@ -150,17 +144,17 @@ const UserDashboard = ({ order }) => {
   };
   const addCategoryHandler = async (e) => {
     e.preventDefault();
-
+    categoriesRaw.push({ name: addCategory });
     try {
       await axios.patch(`/api/qr/menus/${menu?.storeName}/categories`, {
         storeName: menu?.storeName,
-        categories,
+        categories: categoriesRaw,
       });
     } catch (err) {
       console.log(err);
     }
   };
-
+  console.log(categoriesRaw);
   useEffect(() => {
     QRCode.toDataURL("localhost:3000/qr/vq/demo").then(setSrc);
   }, []);
@@ -337,7 +331,7 @@ const UserDashboard = ({ order }) => {
                             labelId="demo-multiple-chip-label"
                             id="demo-multiple-chip"
                             multiple
-                            value={personName}
+                            value={category}
                             onChange={handleChange}
                             input={
                               <OutlinedInput
@@ -364,7 +358,10 @@ const UserDashboard = ({ order }) => {
                               <MenuItem
                                 key={name}
                                 value={name}
-                                style={getStyles(name, personName, theme)}
+                                style={{
+                                  padding: "10px",
+                                  width: "100%",
+                                }}
                               >
                                 {name}
                               </MenuItem>
@@ -444,7 +441,7 @@ const UserDashboard = ({ order }) => {
                   <Box className={styles.box}>
                     <form>
                       <List className={styles.list}>
-                        <h3 className={styles.header}>Ürün Ekle</h3>
+                        <h3 className={styles.header}>Kategori Ekle</h3>
                         <ListItem>
                           <TextField
                             variant="outlined"
@@ -452,7 +449,7 @@ const UserDashboard = ({ order }) => {
                             id="category"
                             label="Kategori"
                             inputProps={{ type: "text" }}
-                            onChange={(e) => setCategoryName(e.target.value)}
+                            onChange={(e) => setAddCategory(e.target.value)}
                             helperText="Örnek: Ana Yemek, Kahvaltılar, Tatlılar"
                           ></TextField>
                         </ListItem>
