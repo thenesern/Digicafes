@@ -8,7 +8,7 @@ import { useState } from "react";
 
 const StoreMenu = ({ menu }) => {
   const [category, setCategory] = useState("");
-  console.log(category);
+
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>

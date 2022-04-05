@@ -20,7 +20,8 @@ import Radium, { StyleRoot } from "radium";
 import Cookies from "js-cookie";
 import CallMadeIcon from "@mui/icons-material/CallMade";
 import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
+import { Loading, Modal, Spacer } from "@nextui-org/react";
+import ModalMui from "@mui/material/Modal";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -52,6 +53,7 @@ const UserDashboard = ({ order }) => {
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [src, setSrc] = useState("");
+  const [isFetching, setIsFetching] = useState(false);
   const [isFirst, setIsFirst] = useState(false);
   const [storeNameFirst, setStoreNameFirst] = useState("");
   const [storeNameSet, setStoreNameSet] = useState(false);
@@ -140,6 +142,7 @@ const UserDashboard = ({ order }) => {
     data.append("file", file);
     data.append("upload_preset", "uploads");
     try {
+      setIsFetching(true);
       const updatedAt = new Date().toLocaleString();
       const uploadRes = await axios.post(
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
@@ -158,8 +161,10 @@ const UserDashboard = ({ order }) => {
         updatedAt,
       });
       handleCloseAddProduct();
+      setIsFetching(false);
     } catch (err) {
       console.log(err);
+      setIsFetching(false);
     }
   };
   const addCategoryHandler = async (e) => {
@@ -168,6 +173,7 @@ const UserDashboard = ({ order }) => {
     data.append("file", file);
     data.append("upload_preset", "uploads");
     try {
+      setIsFetching(true);
       const updatedAt = new Date().toLocaleString();
       const uploadRes = await axios.post(
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
@@ -181,8 +187,10 @@ const UserDashboard = ({ order }) => {
         updatedAt,
       });
       handleCloseAddCategory();
+      setIsFetching(false);
     } catch (err) {
       console.log(err);
+      setIsFetching(false);
     }
   };
 
@@ -322,6 +330,18 @@ const UserDashboard = ({ order }) => {
       )}
       {!isFirst && (
         <div className={styles.container}>
+          <Modal
+            style={{
+              background: "transparent",
+              boxShadow: "none",
+            }}
+            preventClose
+            aria-labelledby="modal-title"
+            open={isFetching}
+          >
+            <Loading size="xl" />
+            <Spacer />
+          </Modal>
           <h2 className={styles.header}>Dijital Menü Yönetim Paneli</h2>
           <div className={styles.box}>
             <div>
@@ -360,7 +380,7 @@ const UserDashboard = ({ order }) => {
                 >
                   Ürün Ekle
                 </Button>
-                <Modal
+                <ModalMui
                   open={openAddProduct}
                   onClose={handleCloseAddProduct}
                   aria-labelledby="modal-modal-title"
@@ -482,8 +502,8 @@ const UserDashboard = ({ order }) => {
                       </List>
                     </form>
                   </Box>
-                </Modal>
-                <Modal
+                </ModalMui>
+                <ModalMui
                   open={openAddCategory}
                   onClose={handleCloseAddCategory}
                   aria-labelledby="modal-modal-title"
@@ -535,7 +555,7 @@ const UserDashboard = ({ order }) => {
                       </List>
                     </form>
                   </Box>
-                </Modal>
+                </ModalMui>
                 <Button
                   variant="contained"
                   type="submit"
