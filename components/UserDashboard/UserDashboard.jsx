@@ -509,6 +509,7 @@ const UserDashboard = ({ order }) => {
                             <Input
                               accept="image/*"
                               id="icon-button-file"
+                              onChange={(e) => setFile(e.target.files[0])}
                               type="file"
                             />
                             <IconButton
