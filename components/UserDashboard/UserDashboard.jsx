@@ -139,8 +139,8 @@ const UserDashboard = ({ order }) => {
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "uploads");
-    const updatedAt = new Date().toLocaleString();
     try {
+      const updatedAt = new Date().toLocaleString();
       const uploadRes = await axios.post(
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
         data
@@ -167,8 +167,8 @@ const UserDashboard = ({ order }) => {
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "uploads");
-    const updatedAt = new Date().toLocaleString();
     try {
+      const updatedAt = new Date().toLocaleString();
       const uploadRes = await axios.post(
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
         data
