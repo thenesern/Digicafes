@@ -190,7 +190,7 @@ const Checkout = ({ product }) => {
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel StepIconComponent={QontoStepIcon}>
-                  <h6 className={styles.stepperLabel}> {label} </h6>{" "}
+                  <h6 className={styles.stepperLabel}> {label} </h6>
                 </StepLabel>
               </Step>
             ))}

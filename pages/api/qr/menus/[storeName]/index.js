@@ -23,6 +23,7 @@ handler.patch(async (req, res) => {
     { storeName: req.body.storeName },
     {
       products: req.body.products,
+      updatedAt,
     }
   );
   res.json({ status: "success", menu });

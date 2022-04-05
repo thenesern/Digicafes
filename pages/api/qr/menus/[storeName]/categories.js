@@ -10,6 +10,7 @@ handler.patch(async (req, res) => {
     { storeName: req.body.storeName },
     {
       categories: req.body.categories,
+      updatedAt,
     }
   );
 

@@ -29,6 +29,8 @@ import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import { useTheme } from "@mui/material/styles";
 import Link from "next/link";
+import DownloadIcon from "@mui/icons-material/Download";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -67,7 +69,6 @@ const UserDashboard = ({ order }) => {
       animationName: Radium.keyframes(fadeInRightBig, "fadeInRightBig"),
     },
   };
-
   const [openAddProduct, setOpenAddProduct] = useState(false);
   const handleOpenAddProduct = () => setOpenAddProduct(true);
   const handleCloseAddProduct = () => setOpenAddProduct(false);
@@ -123,7 +124,7 @@ const UserDashboard = ({ order }) => {
           menuId: data?.menu?._id,
         },
         {
-          headers: { authorization: `Bearer ${user.token}` },
+          headers: { authorization: `Bearer ${user?.token}` },
         }
       );
 
@@ -138,7 +139,7 @@ const UserDashboard = ({ order }) => {
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "uploads");
-
+    const updatedAt = new Date().toLocaleString();
     try {
       const uploadRes = await axios.post(
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
@@ -154,6 +155,7 @@ const UserDashboard = ({ order }) => {
       await axios.patch(`/api/qr/menus/${menu?.storeName}`, {
         storeName: menu?.storeName,
         products,
+        updatedAt,
       });
       handleCloseAddProduct();
     } catch (err) {
@@ -165,6 +167,7 @@ const UserDashboard = ({ order }) => {
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "uploads");
+    const updatedAt = new Date().toLocaleString();
     try {
       const uploadRes = await axios.post(
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
@@ -175,6 +178,7 @@ const UserDashboard = ({ order }) => {
       await axios.patch(`/api/qr/menus/${menu?.storeName}/categories`, {
         storeName: menu?.storeName,
         categories: categoriesRaw,
+        updatedAt,
       });
       handleCloseAddCategory();
     } catch (err) {
@@ -183,7 +187,7 @@ const UserDashboard = ({ order }) => {
   };
 
   useEffect(() => {
-    QRCode.toDataURL(`localhost:3000/qr/v1/${menu.storeName}`).then(setSrc);
+    QRCode.toDataURL(`localhost:3000/qr/v1/${menu?.storeName}`).then(setSrc);
   }, []);
 
   const columns = [
@@ -317,15 +321,34 @@ const UserDashboard = ({ order }) => {
         </div>
       )}
       {!isFirst && (
-        <>
-          <div className={styles.container}>
+        <div className={styles.container}>
+          <h2 className={styles.header}>Dijital Menü Yönetim Paneli</h2>
+          <div className={styles.box}>
             <div>
-              <h2 className={styles.header}>Dijital Menü Yönetim Paneli</h2>
               <div>
-                <h5>QR Menü Kodu</h5>
-                <Link href={`localhost:3000/qr/v1/${menu.storeName}`} passHref>
+                <h3 className={styles.titles}>QR Menü Kodu</h3>
+
+                <>
                   <img src={src} alt="" />
-                </Link>
+                  <div>
+                    <>
+                      <Link href={`/qr/v1/${menu?.storeName}`} passHref>
+                        <a target="_blank">
+                          <Button variant="text" style={{ height: "2rem" }}>
+                            <p>Siteye Git</p>
+                            <ArrowRightIcon style={{ fontSize: "24px" }} />
+                          </Button>{" "}
+                        </a>
+                      </Link>
+                      <a href={src} download>
+                        <Button variant="text" style={{ height: "2rem" }}>
+                          <p>QR Kodu İndir</p>
+                          <DownloadIcon style={{ fontSize: "1rem" }} />
+                        </Button>
+                      </a>
+                    </>
+                  </div>
+                </>
               </div>
               <div>
                 <h6>Ürün Yönetimi</h6>
@@ -343,7 +366,7 @@ const UserDashboard = ({ order }) => {
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
                 >
-                  <Box className={styles.box}>
+                  <Box className={styles.modal}>
                     <form>
                       <List className={styles.list}>
                         <h3 className={styles.header}>Ürün Ekle</h3>
@@ -466,7 +489,7 @@ const UserDashboard = ({ order }) => {
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
                 >
-                  <Box className={styles.box}>
+                  <Box className={styles.modal}>
                     <form>
                       <List className={styles.list}>
                         <h3 className={styles.header}>Kategori Ekle</h3>
@@ -523,11 +546,11 @@ const UserDashboard = ({ order }) => {
               </div>
             </div>
             <div>
-              <h3>Menü</h3>
+              <h3 className={styles.titles}>Menü</h3>
               {isLoading ? (
                 <p>Yükleniyor...</p>
               ) : (
-                <div style={{ height: 500, width: "100%" }}>
+                <div style={{ height: "90%", width: "100%" }}>
                   <DataGrid
                     rows={menu?.products}
                     columns={columns}
@@ -539,7 +562,7 @@ const UserDashboard = ({ order }) => {
               )}
             </div>
           </div>
-        </>
+        </div>
       )}
     </>
   );

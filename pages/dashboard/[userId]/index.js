@@ -48,7 +48,7 @@ const Dashboard = ({ orders, user }) => {
               </div>
               <div>
                 <h4>Son Güncelleme Tarihi</h4>
-                <p>{order?.menuv1?.createdAt || "Henüz Oluşturulmadı"}</p>
+                <p>{order?.menuv1?.updatedAt || "Henüz Oluşturulmadı"}</p>
               </div>
             </div>
           ))}
