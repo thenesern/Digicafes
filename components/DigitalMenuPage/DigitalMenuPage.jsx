@@ -5,8 +5,16 @@ import DigitalMenuStepper from "./DigitalMenuStepper/DigitalMenuStepper";
 import StepperMobile from "./StepperMobile/StepperMobile";
 import Link from "next/link";
 import Footer from "../Footer/Footer";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const DigitalMenuPage = ({ products }) => {
+  const [isMobile, setIsMobile] = useState();
+  useEffect(() => {
+    if (window.innerWidth <= 760) {
+      setIsMobile(true);
+    }
+  }, []);
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -36,7 +44,9 @@ const DigitalMenuPage = ({ products }) => {
         </div>
       </div>
       <section className={styles.section}>
-        <h3 className={styles.articleHeader}>Özellikler</h3>
+        <h3 className={styles.articleHeader} id="features">
+          Özellikler
+        </h3>
         <article className={styles.first}>
           <div>
             <img
@@ -82,15 +92,19 @@ const DigitalMenuPage = ({ products }) => {
             />
           </div>
         </article>
-        <h3 className={styles.articleHeader}>İşleyiş</h3>
+        <h3 className={styles.articleHeader} id="process">
+          İşleyiş
+        </h3>
         <article className={styles.steps}>
           <div className={styles.stepper}>
             <DigitalMenuStepper />
           </div>
         </article>
-        <h3 className={styles.articleHeaderMobile} id="pricing">
-          Fiyatlandırma
-        </h3>
+        {isMobile && (
+          <h3 className={styles.articleHeaderMobile} id="pricing1">
+            Fiyatlandırma
+          </h3>
+        )}
         <article>
           <div className={styles.stepperMobile}>
             <StepperMobile />
@@ -104,8 +118,12 @@ const DigitalMenuPage = ({ products }) => {
             <DigitalMenuPrices products={products} />
           </div>
         </article>
-        <h3 className={styles.articleHeader}>Sıkça Sorulan Sorular</h3>
-        <h3 className={styles.articleHeader}>İletişim</h3>
+        <h3 className={styles.articleHeader} id="faq">
+          Sıkça Sorulan Sorular
+        </h3>
+        <h3 className={styles.articleHeader} id="contact">
+          İletişim
+        </h3>
       </section>
     </div>
   );

@@ -1,6 +1,6 @@
 // Dependencies
 import React, { useState, useContext, useEffect } from "react";
-import Link from "next/link";
+import LinkRouter from "next/link";
 import Cookies from "js-cookie";
 import { Store } from "../../redux/store";
 import Router from "next/router";
@@ -20,6 +20,7 @@ import ModalMui from "@mui/material/Modal";
 import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Box } from "@mui/system";
+import { Link } from "react-scroll";
 
 const Nav = () => {
   const { state, dispatch } = useContext(Store);
@@ -47,6 +48,13 @@ const Nav = () => {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+  const scrollToHead = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
   };
 
   const handleClose = () => {
@@ -430,41 +438,35 @@ const Nav = () => {
                 <div className={styles.privacy}>
                   <p>
                     Kişisel verileriniz,
-                    <Link href="/" passHref>
-                      <span
-                        style={{
-                          fontWeight: "600",
-                          cursor: "pointer",
-                          margin: "0 4px",
-                        }}
-                      >
-                        Aydınlatma Metni
-                      </span>
-                    </Link>
+                    <span
+                      style={{
+                        fontWeight: "600",
+                        cursor: "pointer",
+                        margin: "0 4px",
+                      }}
+                    >
+                      Aydınlatma Metni
+                    </span>
                     kapsamında işlenmektedir. “Üye ol” butonuna basarak
-                    <Link href="/" passHref>
-                      <span
-                        style={{
-                          fontWeight: "600",
-                          cursor: "pointer",
-                          margin: "0 4px",
-                        }}
-                      >
-                        Üyelik Sözleşmesi
-                      </span>
-                    </Link>
+                    <span
+                      style={{
+                        fontWeight: "600",
+                        cursor: "pointer",
+                        margin: "0 4px",
+                      }}
+                    >
+                      Üyelik Sözleşmesi
+                    </span>
                     ’ni, ve
-                    <Link href="/" passHref>
-                      <span
-                        style={{
-                          fontWeight: "600",
-                          cursor: "pointer",
-                          margin: "0 4px",
-                        }}
-                      >
-                        Çerez Politikası
-                      </span>
-                    </Link>
+                    <span
+                      style={{
+                        fontWeight: "600",
+                        cursor: "pointer",
+                        margin: "0 4px",
+                      }}
+                    >
+                      Çerez Politikası
+                    </span>
                     ’nı okuduğunuzu ve kabul ettiğinizi onaylıyorsunuz.
                   </p>
                 </div>
@@ -483,18 +485,54 @@ const Nav = () => {
             </List>
           </form>
         </Box>
-      </ModalMui>
-      <ul className={styles.list}>
+      </ModalMui >
+      <ul className={styles.list }  >
         <li className={styles.left}>
-          <Link href="/" passHref>
-            <h6 className={styles.logo}>Logo</h6>
-          </Link>
+          <LinkRouter href="/" passHref>
+            <h6 className={styles.logo} onClick={scrollToHead}>
+              Logo
+            </h6>
+          </LinkRouter>
           <div className={styles.headers}>
-            <h5 className={styles.link}>Özellikler</h5>
-            <h5 className={styles.link}>İşleyiş</h5>
-            <h5 className={styles.link}>Fiyatlandırma</h5>
-            <h5 className={styles.link}>Sıkça Sorulan Sorular</h5>
-            <h5 className={styles.link}>İletişim</h5>
+            <Link
+              to="features"
+              spy={true}
+              smooth={true}
+              offset={-80}
+              duration={200}
+            >
+              <h5 className={styles.link}>Özellikler</h5>
+            </Link>
+            <Link
+              to="process"
+              spy={true}
+              smooth={true}
+              offset={-80}
+              duration={200}
+            >
+              <h5 className={styles.link}>İşleyiş</h5>
+            </Link>
+            <Link
+              to="pricing"
+              spy={true}
+              smooth={true}
+              offset={-80}
+              duration={200}
+            >
+              <h5 className={styles.link}>Fiyatlandırma</h5>
+            </Link>
+            <Link to="faq" spy={true} smooth={true} offset={-80} duration={200}>
+              <h5 className={styles.link}>Sıkça Sorulan Sorular</h5>
+            </Link>
+            <Link
+              to="contact"
+              spy={true}
+              smooth={true}
+              offset={-80}
+              duration={200}
+            >
+              <h5 className={styles.link}>İletişim</h5>
+            </Link>
           </div>
         </li>
         {user ? (
@@ -533,30 +571,30 @@ const Nav = () => {
               {user?.isAdmin === false ? (
                 <>
                   <button className={styles.button}>
-                    <Link
+                    <LinkRouter
                       href={"/hesap/" + user?.id}
                       className={styles["menu-link"]}
                       passHref
                     >
                       <button className={styles["link-item"]}>Hesabım</button>
-                    </Link>
+                    </LinkRouter>
                   </button>
                 </>
               ) : (
                 <>
                   <button className={styles.button}>
-                    <Link
+                    <LinkRouter
                       href="/admin/dashboard"
                       className={styles["menu-link"]}
                       passHref
                     >
                       <button className={styles["link-item"]}>Panel</button>
-                    </Link>
+                    </LinkRouter>
                   </button>
                 </>
               )}
               <button className={styles.button}>
-                <Link
+                <LinkRouter
                   href={"/dashboard/" + user.id}
                   passHref
                   className={styles["menu-link"]}
@@ -564,15 +602,15 @@ const Nav = () => {
                   <button className={styles["link-item"]}>
                     <span>Yönetim Paneli</span>
                   </button>
-                </Link>
+                </LinkRouter>
               </button>
               <button className={styles.button} onClick={logoutHandler}>
-                <Link href="/" passHref className={styles["menu-link"]}>
+                <LinkRouter href="/" passHref className={styles["menu-link"]}>
                   <button className={styles["link-item"]}>
                     <span>Çıkış Yap</span>
                     <LogoutIcon className={styles.icon} />
                   </button>
-                </Link>
+                </LinkRouter>
               </button>
             </Menu>
           </div>
@@ -651,30 +689,30 @@ const Nav = () => {
                 {user?.isAdmin === false ? (
                   <>
                     <button className={styles.button}>
-                      <Link
+                      <LinkRouter
                         href={"/hesap/" + user?.id}
                         className={styles["menu-link"]}
                         passHref
                       >
                         <button className={styles["link-item"]}>Hesabım</button>
-                      </Link>
+                      </LinkRouter>
                     </button>
                   </>
                 ) : (
                   <>
                     <button className={styles.button}>
-                      <Link
+                      <LinkRouter
                         href="/admin/dashboard"
                         className={styles["menu-link"]}
                         passHref
                       >
                         <button className={styles["link-item"]}>Panel</button>
-                      </Link>
+                      </LinkRouter>
                     </button>
                   </>
                 )}
                 <button className={styles.button}>
-                  <Link
+                  <LinkRouter
                     href={"/dashboard/" + user.id}
                     passHref
                     className={styles["menu-link"]}
@@ -682,15 +720,15 @@ const Nav = () => {
                     <button className={styles["link-item"]}>
                       <span>Yönetim Paneli</span>
                     </button>
-                  </Link>
+                  </LinkRouter>
                 </button>
                 <button className={styles.button} onClick={logoutHandler}>
-                  <Link href="/" passHref className={styles["menu-link"]}>
+                  <LinkRouter href="/" passHref className={styles["menu-link"]}>
                     <button className={styles["link-item"]}>
                       <span>Çıkış Yap</span>
                       <LogoutIcon className={styles.icon} />
                     </button>
-                  </Link>
+                  </LinkRouter>
                 </button>
               </Menu>
             </div>
@@ -704,8 +742,44 @@ const Nav = () => {
               </button>
             </div>
           )}
-          <Link href="/dijital-menu" passHref>
-            <h5 className={styles.link}>Dijital Menü</h5>
+          <Link
+            to="features"
+            spy={true}
+            smooth={true}
+            offset={-80}
+            duration={200}
+          >
+            <h5 className={styles.link}>Özellikler</h5>
+          </Link>
+          <Link
+            to="process"
+            spy={true}
+            smooth={true}
+            offset={-80}
+            duration={200}
+          >
+            <h5 className={styles.link}>İşleyiş</h5>
+          </Link>
+          <Link
+            to="pricing"
+            spy={true}
+            smooth={true}
+            offset={-80}
+            duration={200}
+          >
+            <h5 className={styles.link}>Fiyatlandırma</h5>
+          </Link>
+          <Link to="faq" spy={true} smooth={true} offset={-80} duration={200}>
+            <h5 className={styles.link}>Sıkça Sorulan Sorular</h5>
+          </Link>
+          <Link
+            to="contact"
+            spy={true}
+            smooth={true}
+            offset={-80}
+            duration={200}
+          >
+            <h5 className={styles.link}>İletişim</h5>
           </Link>
         </div>
       </SwipeableDrawer>
