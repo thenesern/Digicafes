@@ -12,10 +12,15 @@ const DigitalMenuPage = ({ products }) => {
       <div className={styles.top}>
         <div className={styles.topLeft}>
           <h1 className={styles.header}>Dijital Menü</h1>
-          <p className={styles.description}>
-            Yönetim Paneliniz üzerinden Menünüzü düzenleyin ve hemen kullanmaya
-            başlayın.
-          </p>
+          <p className={styles.description}>Baskı Maliyetlerinden Kurtulun</p>
+          <a href="#pricing">
+            <button className={styles.buttonFirst}>
+              <span className={styles.circle} aria-hidden="true">
+                <span className={`${styles.icon} ${styles.arrow}`}></span>
+              </span>
+              <span className={styles.text}>Hemen Başlayın</span>
+            </button>
+          </a>
         </div>
         <div className={styles.images}>
           <img
@@ -31,6 +36,7 @@ const DigitalMenuPage = ({ products }) => {
         </div>
       </div>
       <section className={styles.section}>
+        <h3 className={styles.articleHeader}>Özellikler</h3>
         <article className={styles.first}>
           <div>
             <img
@@ -76,21 +82,30 @@ const DigitalMenuPage = ({ products }) => {
             />
           </div>
         </article>
+        <h3 className={styles.articleHeader}>İşleyiş</h3>
         <article className={styles.steps}>
           <div className={styles.stepper}>
             <DigitalMenuStepper />
           </div>
         </article>
+        <h3 className={styles.articleHeaderMobile} id="pricing">
+          Fiyatlandırma
+        </h3>
         <article>
           <div className={styles.stepperMobile}>
             <StepperMobile />
           </div>
         </article>
+        <h3 className={styles.articleHeader} id="pricing">
+          Fiyatlandırma
+        </h3>
         <article>
           <div>
             <DigitalMenuPrices products={products} />
           </div>
         </article>
+        <h3 className={styles.articleHeader}>Sıkça Sorulan Sorular</h3>
+        <h3 className={styles.articleHeader}>İletişim</h3>
       </section>
     </div>
   );

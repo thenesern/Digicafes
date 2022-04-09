@@ -490,9 +490,11 @@ const Nav = () => {
             <h6 className={styles.logo}>Logo</h6>
           </Link>
           <div className={styles.headers}>
-            <Link href="/dijital-menu" passHref>
-              <h5 className={styles.link}>Dijital Menü</h5>
-            </Link>
+            <h5 className={styles.link}>Özellikler</h5>
+            <h5 className={styles.link}>İşleyiş</h5>
+            <h5 className={styles.link}>Fiyatlandırma</h5>
+            <h5 className={styles.link}>Sıkça Sorulan Sorular</h5>
+            <h5 className={styles.link}>İletişim</h5>
           </div>
         </li>
         {user ? (
