@@ -87,7 +87,7 @@ const User = ({ orders }) => {
       </div>
       <div className={styles.right}>
         <h1 className={styles.title}>Siparişler</h1>
-        {orders ? (
+        {orders.length > 0 ? (
           <List orders={orders} />
         ) : (
           <h6 className={styles.notFound}>Sipariş bulunamadı.</h6>

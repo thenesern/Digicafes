@@ -18,7 +18,6 @@ handler.get(async (req, res) => {
 
 handler.patch(async (req, res) => {
   await db.connect();
-  console.log(req.body.products);
   const menu = await QRMenu.findOneAndUpdate(
     { storeName: req.body.storeName },
     {

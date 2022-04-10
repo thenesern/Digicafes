@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import React from "react";
 import styles from "./store.module.css";
 import db from "../../../../utils/db.js";
@@ -8,7 +8,7 @@ import { useState } from "react";
 
 const StoreMenu = ({ menu }) => {
   const [category, setCategory] = useState("");
-
+  const router = useRouter();
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
@@ -21,22 +21,19 @@ const StoreMenu = ({ menu }) => {
       <ul className={styles.list}>
         {menu &&
           menu?.categories?.map((m) => (
-            <Link
+            <li
               name={m?.name}
-              onClick={(e) => setCategory(m?.name)}
-              href={`/qr/v1/${menu?.storeName}/products/${category}`}
-              passHref
+              onClick={(e) => {
+                router.push(`/qr/v1/${menu?.storeName}/products/${m?.name}`);
+              }}
               key={m?.name}
+              className={styles.listItem}
+              style={{ backgroundImage: `url(${m?.image})` }}
             >
-              <li
-                className={styles.listItem}
-                style={{ backgroundImage: `url(${m?.image})` }}
-              >
-                <div className={styles.titleBack}>
-                  <h3 className={styles.title}>{m?.name}</h3>
-                </div>
-              </li>
-            </Link>
+              <div className={styles.titleBack}>
+                <h3 className={styles.title}>{m?.name}</h3>
+              </div>
+            </li>
           ))}
       </ul>
       <footer></footer>

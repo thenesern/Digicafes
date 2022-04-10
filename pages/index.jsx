@@ -1,20 +1,32 @@
-import Jumbotron from "../components/Jumbotron/Jumbotron";
-import Head from "next/head";
-import Nav from "../components/Nav/Nav";
-import DigitalMenuHome from "../components/DigitalMenuHome/DigitalMenuHome";
+import React from "react";
+import DigitalMenuPage from "../components/DigitalMenuPage/DigitalMenuPage";
 import Footer from "../components/Footer/Footer";
+import Nav from "../components/Nav/Nav";
+import Product from "../models/ProductModel";
+import db from "../utils/db";
 
-export default function Home() {
+const dijitalMenu = ({ products }) => {
   return (
     <div>
-      <Head>
-        <title>Brand Name | Ana Sayfa</title>
-        <meta name="description" content="Descriptions" />
-      </Head>
       <Nav />
-      <Jumbotron />
-      <DigitalMenuHome />
+      <div>
+        <DigitalMenuPage products={products} />
+      </div>
       <Footer />
     </div>
   );
+};
+
+export async function getStaticProps() {
+  await db.connect();
+  const products = await Product.find();
+  await db.disconnect();
+
+  return {
+    props: {
+      products: JSON.parse(JSON.stringify(products)),
+    },
+  };
 }
+
+export default dijitalMenu;

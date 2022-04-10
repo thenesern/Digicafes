@@ -1,23 +1,35 @@
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import React from "react";
 import styles from "./products.module.css";
 import db from "../../../../../utils/db.js";
 import QRMenu from "../../../../../models/QRMenuModel.js";
 import Link from "next/link";
+import { Button } from "@mui/material";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 const StoreMenu = ({ menu, category }) => {
+  const Router = useRouter();
   const filtered = menu?.products.filter((a) => a.category.includes(category));
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
+        <Link href={"/qr/v1/" + menu?.storeName} passHref>
+          <Button
+            style={{ padding: "0", margin: "0" }}
+            onClick={() => Router.push("/qr/v1/" + menu?.storeName)}
+          >
+            <>
+              <ArrowBackIosNewIcon
+                color="secondary"
+                style={{ fontSize: "14  px" }}
+              />
+              <p className={styles.back}>Ana Menü</p>
+            </>
+          </Button>
+        </Link>
         <h6 className={styles.logo}>Logo</h6>
         <div className={styles.nav}>Nav</div>
       </navbar>
-      <div>
-        <Link href={"/qr/v1/" + menu?.storeName} passHref>
-          <button>Geri</button>
-        </Link>
-      </div>
       <ul className={styles.list}>
         {menu &&
           filtered?.map((m) => (

@@ -21,8 +21,11 @@ import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Box } from "@mui/system";
 import { Link } from "react-scroll";
+import { useRouter } from "next/router";
 
 const Nav = () => {
+  const router = useRouter();
+
   const { state, dispatch } = useContext(Store);
   const [isFetching, setIsFetching] = useState(false);
   const [openMuiLogin, setOpenMuiLogin] = useState(false);
@@ -164,7 +167,7 @@ const Nav = () => {
         open={isFetching}
       >
         <Modal.Body>
-          <Loading size="xl" />
+          <Loading color="white" size="xl" />
           <Spacer />
         </Modal.Body>
       </Modal>
@@ -485,55 +488,63 @@ const Nav = () => {
             </List>
           </form>
         </Box>
-      </ModalMui >
-      <ul className={styles.list }  >
+      </ModalMui>
+      <ul className={styles.list}>
         <li className={styles.left}>
           <LinkRouter href="/" passHref>
             <h6 className={styles.logo} onClick={scrollToHead}>
               Logo
             </h6>
           </LinkRouter>
-          <div className={styles.headers}>
-            <Link
-              to="features"
-              spy={true}
-              smooth={true}
-              offset={-80}
-              duration={200}
-            >
-              <h5 className={styles.link}>Özellikler</h5>
-            </Link>
-            <Link
-              to="process"
-              spy={true}
-              smooth={true}
-              offset={-80}
-              duration={200}
-            >
-              <h5 className={styles.link}>İşleyiş</h5>
-            </Link>
-            <Link
-              to="pricing"
-              spy={true}
-              smooth={true}
-              offset={-80}
-              duration={200}
-            >
-              <h5 className={styles.link}>Fiyatlandırma</h5>
-            </Link>
-            <Link to="faq" spy={true} smooth={true} offset={-80} duration={200}>
-              <h5 className={styles.link}>Sıkça Sorulan Sorular</h5>
-            </Link>
-            <Link
-              to="contact"
-              spy={true}
-              smooth={true}
-              offset={-80}
-              duration={200}
-            >
-              <h5 className={styles.link}>İletişim</h5>
-            </Link>
-          </div>
+          {router.pathname === "/" && (
+            <div className={styles.headers}>
+              <Link
+                to="features"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>Özellikler</h5>
+              </Link>
+              <Link
+                to="process"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>İşleyiş</h5>
+              </Link>
+              <Link
+                to="pricing"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>Fiyatlandırma</h5>
+              </Link>
+              <Link
+                to="faq"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>Sıkça Sorulan Sorular</h5>
+              </Link>
+              <Link
+                to="contact"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>İletişim</h5>
+              </Link>
+            </div>
+          )}
         </li>
         {user ? (
           <div className={styles.profileMenu}>

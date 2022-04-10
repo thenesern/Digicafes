@@ -3,10 +3,11 @@ import DigitalMenuPrices from "./DigitalMenuPlans/DigitalMenuPlans";
 import styles from "./DigitalMenuPage.module.css";
 import DigitalMenuStepper from "./DigitalMenuStepper/DigitalMenuStepper";
 import StepperMobile from "./StepperMobile/StepperMobile";
-import Link from "next/link";
+import LinkRouter from "next/link";
 import Footer from "../Footer/Footer";
 import { useEffect } from "react";
 import { useState } from "react";
+import { Link } from "react-scroll";
 
 const DigitalMenuPage = ({ products }) => {
   const [isMobile, setIsMobile] = useState();
@@ -21,14 +22,20 @@ const DigitalMenuPage = ({ products }) => {
         <div className={styles.topLeft}>
           <h1 className={styles.header}>Dijital Menü</h1>
           <p className={styles.description}>Baskı Maliyetlerinden Kurtulun</p>
-          <a href="#pricing">
+          <Link
+            to="pricing"
+            spy={true}
+            smooth={true}
+            offset={-80}
+            duration={200}
+          >
             <button className={styles.buttonFirst}>
               <span className={styles.circle} aria-hidden="true">
                 <span className={`${styles.icon} ${styles.arrow}`}></span>
               </span>
               <span className={styles.text}>Hemen Başlayın</span>
             </button>
-          </a>
+          </Link>
         </div>
         <div className={styles.images}>
           <img
@@ -80,9 +87,9 @@ const DigitalMenuPage = ({ products }) => {
               Dijital Menü, Kullanıcı Deneyimine odaklı tasarımı sayesinde
               müşteri memnuniyetini artırır.
             </p>
-            <Link href="/qr/v1/demo" passHref>
+            <LinkRouter href="/qr/v1/demo" passHref>
               <button className={styles.button}>Demo&apos;yu İncele</button>
-            </Link>
+            </LinkRouter>
           </div>
           <div>
             <img

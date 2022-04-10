@@ -575,9 +575,9 @@ const UserDashboard = ({ order }) => {
                   <DataGrid
                     rows={menu?.products}
                     columns={columns}
-                    pageSize={5}
+                    pageSize={8}
                     getRowId={(product) => product?._id}
-                    rowsPerPageOptions={[5]}
+                    rowsPerPageOptions={[8]}
                   />
                 </div>
               )}
