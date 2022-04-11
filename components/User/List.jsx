@@ -7,14 +7,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { DataGrid } from "@mui/x-data-grid";
-
-function createData(_id, name, createdAt) {
-  return { _id, name, createdAt };
-}
 
 const List = ({ orders }) => {
-  const rows = [createData("_id", "name", "createdAt")];
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -30,7 +24,7 @@ const List = ({ orders }) => {
         <TableBody>
           {orders.map((row) => (
             <TableRow
-              key={row.name}
+              key={row._id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell>{row._id}</TableCell>
