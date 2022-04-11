@@ -193,9 +193,17 @@ const UserDashboard = ({ order }) => {
       setIsFetching(false);
     }
   };
-
+  var opts = {
+    errorCorrectionLevel: "H",
+    type: "image/png",
+    quality: 1,
+    margin: 1,
+  };
   useEffect(() => {
-    QRCode.toDataURL(`localhost:3000/qr/v1/${menu?.storeName}`).then(setSrc);
+    QRCode.toDataURL(
+      `https://www.project-thenesern.vercel.app.com/qr/v1/${menu?.storeName}`,
+      opts
+    ).then(setSrc);
   }, []);
 
   const columns = [
