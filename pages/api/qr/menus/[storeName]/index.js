@@ -24,6 +24,7 @@ handler.patch(async (req, res) => {
       products: req.body.products,
     }
   );
+  await menu.save();
   res.json({ status: "success", menu });
   await db.disconnect();
 });
