@@ -154,10 +154,14 @@ const UserDashboard = ({ order }) => {
         category,
         image: uploadRes?.data.url,
       });
-      await axios.patch(`/api/qr/menus/${menu?.storeName}`, {
-        storeName: menu?.storeName,
-        products,
-      });
+      const updatedMenu = await axios.patch(
+        `/api/qr/menus/${menu?.storeName}`,
+        {
+          storeName: menu?.storeName,
+          products,
+        }
+      );
+      setMenu(updatedMenu.data.menu);
       handleCloseAddProduct();
       setIsFetching(false);
     } catch (err) {
@@ -572,7 +576,7 @@ const UserDashboard = ({ order }) => {
                     rows={menu?.products}
                     columns={columns}
                     pageSize={8}
-                    getRowId={(product) => product?._id}
+                    getRowId={(row) => row?._id}
                     rowsPerPageOptions={[8]}
                   />
                 </div>
