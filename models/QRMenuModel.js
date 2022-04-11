@@ -52,15 +52,17 @@ const QRMenuSchema = new mongoose.Schema(
     ],
     createdAt: {
       type: String,
-      required: true,
     },
     updatedAt: {
       type: String,
-      required: true,
     },
   },
   { timestamps: true }
 );
+
+QRMenuSchema.pre("save", async function (next) {
+  this.updatedAt = await new Date().toLocaleString();
+});
 
 const QRMenu = mongoose.models.QRMenu || mongoose.model("QRMenu", QRMenuSchema);
 

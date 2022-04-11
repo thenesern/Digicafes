@@ -10,10 +10,9 @@ handler.patch(async (req, res) => {
     { storeName: req.body.storeName },
     {
       categories: req.body.categories,
-      updatedAt: req.body.updatedAt,
     }
   );
-
+  await menu.save();
   res.json({ status: "success", menu });
   await db.disconnect();
 });

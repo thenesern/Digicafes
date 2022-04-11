@@ -9,6 +9,7 @@ handler.post(async (req, res) => {
   const newMenu = new QRMenu({
     storeName: req.body.storeName,
     createdAt: req.body.createdAt,
+    updatedAt: req.body.createdAt,
     categories: req.body.categories,
     owner: req.body.owner,
   });

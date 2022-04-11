@@ -143,7 +143,6 @@ const UserDashboard = ({ order }) => {
     data.append("upload_preset", "uploads");
     try {
       setIsFetching(true);
-      const updatedAt = new Date().toLocaleString();
       const uploadRes = await axios.post(
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
         data
@@ -158,7 +157,6 @@ const UserDashboard = ({ order }) => {
       await axios.patch(`/api/qr/menus/${menu?.storeName}`, {
         storeName: menu?.storeName,
         products,
-        updatedAt,
       });
       handleCloseAddProduct();
       setIsFetching(false);
@@ -174,7 +172,6 @@ const UserDashboard = ({ order }) => {
     data.append("upload_preset", "uploads");
     try {
       setIsFetching(true);
-      const updatedAt = new Date().toLocaleString();
       const uploadRes = await axios.post(
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
         data
@@ -184,7 +181,6 @@ const UserDashboard = ({ order }) => {
       await axios.patch(`/api/qr/menus/${menu?.storeName}/categories`, {
         storeName: menu?.storeName,
         categories: categoriesRaw,
-        updatedAt,
       });
       handleCloseAddCategory();
       setIsFetching(false);
@@ -339,7 +335,7 @@ const UserDashboard = ({ order }) => {
             aria-labelledby="modal-title"
             open={isFetching}
           >
-            <Loading size="xl" />
+            <Loading color="white" size="xl" />
             <Spacer />
           </Modal>
           <h2 className={styles.header}>Dijital Menü Yönetim Paneli</h2>
