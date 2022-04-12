@@ -25,12 +25,6 @@ const Footer = () => {
         <div className={styles.icon}>
           <Instagram />
         </div>
-        <div className={styles.icon}>
-          <Twitter />
-        </div>
-        <div className={styles.icon}>
-          <Pinterest />
-        </div>
       </div>
 
       <div className={styles.right}>

@@ -753,45 +753,55 @@ const Nav = () => {
               </button>
             </div>
           )}
-          <Link
-            to="features"
-            spy={true}
-            smooth={true}
-            offset={-80}
-            duration={200}
-          >
-            <h5 className={styles.link}>Özellikler</h5>
-          </Link>
-          <Link
-            to="process"
-            spy={true}
-            smooth={true}
-            offset={-80}
-            duration={200}
-          >
-            <h5 className={styles.link}>İşleyiş</h5>
-          </Link>
-          <Link
-            to="pricing"
-            spy={true}
-            smooth={true}
-            offset={-80}
-            duration={200}
-          >
-            <h5 className={styles.link}>Fiyatlandırma</h5>
-          </Link>
-          <Link to="faq" spy={true} smooth={true} offset={-80} duration={200}>
-            <h5 className={styles.link}>Sıkça Sorulan Sorular</h5>
-          </Link>
-          <Link
-            to="contact"
-            spy={true}
-            smooth={true}
-            offset={-80}
-            duration={200}
-          >
-            <h5 className={styles.link}>İletişim</h5>
-          </Link>
+          {router.pathname === "/" && (
+            <div>
+              <Link
+                to="features"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>Özellikler</h5>
+              </Link>
+              <Link
+                to="process"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>İşleyiş</h5>
+              </Link>
+              <Link
+                to="pricing"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>Fiyatlandırma</h5>
+              </Link>
+              <Link
+                to="faq"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>Sıkça Sorulan Sorular</h5>
+              </Link>
+              <Link
+                to="contact"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>İletişim</h5>
+              </Link>
+            </div>
+          )}
         </div>
       </SwipeableDrawer>
     </navbar>

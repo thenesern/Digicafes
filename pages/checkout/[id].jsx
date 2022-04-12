@@ -180,7 +180,6 @@ const Checkout = ({ product }) => {
             </Button>
           </Modal.Footer>
         </Modal>
-
         <Stack sx={{ width: "100%" }} spacing={4} className={styles.stepper}>
           <Stepper
             alternativeLabel
@@ -198,7 +197,7 @@ const Checkout = ({ product }) => {
         </Stack>
         <div className={styles.box}>
           <div className={styles.left}>
-            <h1 className={styles.title}>Sepet Bilgisi</h1>
+            <h1 className={styles.header}>Sepet Bilgisi</h1>
             <div className={styles.informations}>
               <div className={styles.cells}>
                 <h5 className={styles.title}>Ürün Adı</h5>
@@ -216,9 +215,9 @@ const Checkout = ({ product }) => {
           </div>
           <div className={styles.right}>
             <div className={styles.summary}>
-              <h1 className={styles.title}>Özet</h1>
+              <h1 className={styles.header}>Özet</h1>
               <div>
-                <p>Toplam Tutar: {product.price}₺</p>
+                <p className={styles.SummaryDescription}>Toplam Tutar: {product.price}₺</p>
               </div>
             </div>
             {user ? (

@@ -62,9 +62,42 @@
   justify-content: center;
   gap: 1rem;
 }
-
+.panel {
+  display: flex;
+  flex-direction: row;
+}
+.infos {
+  display: flex;
+  gap: 2rem;
+  font-size: 1rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.infoCell {
+  min-width: 12rem;
+}
 .info {
   background-color: #ffe8d6;
   padding: 1rem;
   border-radius: 4px;
+}
+@media only screen and (max-width: 500px) {
+  .container {
+    height: 100%;
+    padding-top: 4rem;
+  }
+  .panel {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .infos {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 14px;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
 }

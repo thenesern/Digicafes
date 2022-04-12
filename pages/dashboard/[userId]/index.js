@@ -32,23 +32,27 @@ const Dashboard = ({ orders, user }) => {
                   </button>
                 </Link>
               </div>
-              <div>
-                {order.product.name === "Dijital Menü - V1" && (
-                  <div>
+              <div className={styles.infos}>
+                <div className={styles.infoCell}>
+                  {order.product.name === "Dijital Menü - V1" && (
                     <div>
-                      <h4>İş Yeri Adı</h4>
-                      <p>{order?.menuv1?.storeName || "Henüz Oluşturulmadı"}</p>
+                      <div>
+                        <h4>İş Yeri Adı</h4>
+                        <p>
+                          {order?.menuv1?.storeName || "Henüz Oluşturulmadı"}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
-              <div>
-                <h4>Oluşturulma Tarihi</h4>
-                <p>{order?.menuv1?.createdAt || "Henüz Oluşturulmadı"}</p>
-              </div>
-              <div>
-                <h4>Son Güncelleme Tarihi</h4>
-                <p>{order?.menuv1?.updatedAt || "Henüz Oluşturulmadı"}</p>
+                  )}
+                </div>
+                <div className={styles.infoCell}>
+                  <h4>Oluşturulma Tarihi</h4>
+                  <p>{order?.menuv1?.createdAt || "Henüz Oluşturulmadı"}</p>
+                </div>
+                <div className={styles.infoCell}>
+                  <h4>Son Güncelleme Tarihi</h4>
+                  <p>{order?.menuv1?.updatedAt || "Henüz Oluşturulmadı"}</p>
+                </div>
               </div>
             </div>
           ))}
