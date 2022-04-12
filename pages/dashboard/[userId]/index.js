@@ -74,7 +74,7 @@ const Dashboard = ({ orders, user }) => {
   );
 };
 
-export async function getStaticPaths() {
+/* export async function getStaticPaths() {
   await db.connect();
   const users = await User.find();
   await db.disconnect();
@@ -86,8 +86,8 @@ export async function getStaticPaths() {
     }),
     fallback: false, // false or 'blocking'
   };
-}
-export async function getStaticProps({ params }) {
+} */
+/* export async function getStaticProps({ params }) {
   await db.connect();
   const orders = await Order.find({ user: params.userId })
     .populate({
@@ -102,6 +102,26 @@ export async function getStaticProps({ params }) {
     props: {
       orders: JSON.parse(JSON.stringify(orders)),
       user: params.userId,
+    },
+  };
+} */
+
+export async function getServerSideProps(context) {
+  const { userId } = context.query;
+  await db.connect();
+  const orders = await Order.find({ user: userId })
+    .populate({
+      path: "product",
+      model: Product,
+    })
+    .populate({ path: "user", model: User })
+    .populate({ path: "menuv1", model: QRMenu });
+
+  await db.disconnect();
+  return {
+    props: {
+      orders: JSON.parse(JSON.stringify(orders)),
+      user: userId,
     },
   };
 }
