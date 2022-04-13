@@ -8,6 +8,9 @@ import Footer from "../Footer/Footer";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-scroll";
+import Image from "next/image";
+import digitalMenuMockup from "../../assets/image/DigitalMenuPanelMockup.png";
+import QRMenuMockup from "../../assets/image/QRMenuMockup.png";
 
 const DigitalMenuPage = ({ products }) => {
   const [isMobile, setIsMobile] = useState();
@@ -39,13 +42,11 @@ const DigitalMenuPage = ({ products }) => {
         </div>
         <div className={styles.images}>
           <img
-            lazyOnload
             src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/DigitalMenuPanelMockup.png"
             alt=""
             className={styles.image}
           />
           <img
-            lazyOnload
             src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/QRMenuMockup.png"
             alt=""
             className={styles.image2}
@@ -57,12 +58,15 @@ const DigitalMenuPage = ({ products }) => {
           Özellikler
         </h3>
         <article className={styles.first}>
-          <div>
-            <img
-              lazyOnload
-              src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/DigitalMenuPanelMockup.png"
+          <div
+            style={{ width: "48rem", height: "auto" }}
+            className={styles.test}
+          >
+            <Image
+              layout="responsive"
+              objectFit="contain"
+              src={digitalMenuMockup}
               alt=""
-              className={styles.firstImage}
             />
           </div>
           <div className={styles.firstDes}>
@@ -94,12 +98,12 @@ const DigitalMenuPage = ({ products }) => {
               <button className={styles.button}>Demo&apos;yu İncele</button>
             </LinkRouter>
           </div>
-          <div>
-            <img
-              lazyOnload
-              src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/QRMenuMockup.png"
+          <div style={{ width: "14rem", height: "auto" }}>
+            <Image
+              src={QRMenuMockup}
               alt=""
-              className={styles.secondImage}
+              layout="responsive"
+              objectFit="contain"
             />
           </div>
         </article>

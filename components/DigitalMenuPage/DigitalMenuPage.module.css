@@ -123,11 +123,6 @@
   justify-content: center;
 }
 
-.firstImage {
-  object-fit: contain;
-  width: auto;
-  height: 30rem;
-}
 .secondImage {
   object-fit: contain;
   width: auto;
@@ -330,5 +325,8 @@
   }
   .buttonFirst:hover .arrow {
     transform: translate(0, 0);
+  }
+  .test {
+    width: 20rem !important;
   }
 }
