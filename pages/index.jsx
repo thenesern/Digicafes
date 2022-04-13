@@ -5,9 +5,6 @@ import Nav from "../components/Nav/Nav";
 import Product from "../models/ProductModel";
 import db from "../utils/db";
 
-export const config = {
-  unstable_runtimeJS: false,
-};
 const DijitalMenu = ({ products }) => {
   return (
     <div>
