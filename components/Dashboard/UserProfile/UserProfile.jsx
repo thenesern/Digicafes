@@ -34,13 +34,12 @@ const UserProfile = (props) => {
       <div className={styles.top}>
         <div className={styles.left}>
           <h1 className={styles.title}>Siparişler</h1>
-          {/*   <List /> */}
+          <List />
         </div>
         <div className={styles.right}>
           <h1 className={styles.title}>Kullanıcı Bilgileri</h1>
           <div className={styles.item}>
             <img
-              lazyOnload
               src={url || ""}
               alt=""
               className={styles.itemImg}

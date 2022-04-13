@@ -61,7 +61,7 @@ const QRMenuSchema = new mongoose.Schema(
 );
 
 QRMenuSchema.pre("save", async function (next) {
-  this.updatedAt = await new Date().toLocaleString("tr-TR");
+  this.updatedAt = new Date().toLocaleString("tr-TR");
 });
 
 const QRMenu = mongoose.models.QRMenu || mongoose.model("QRMenu", QRMenuSchema);

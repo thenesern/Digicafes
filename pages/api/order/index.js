@@ -21,7 +21,7 @@ handler.post(async (req, res) => {
     await newOrder.save();
     await db.disconnect();
     res.send({
-      status: "succes",
+      status: "success",
       message: "Order saved successfully",
       id: newOrder._id,
     });

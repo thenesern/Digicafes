@@ -7,7 +7,6 @@ const DigitalMenuHome = () => {
     <div className={styles.container}>
       <div className={styles.left}>
         <img
-          lazyOnload
           src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/QRMenuMockup.png"
           alt="QR Menü Mockup"
           className={styles.image}

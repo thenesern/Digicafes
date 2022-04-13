@@ -52,7 +52,6 @@ const User = ({ orders }) => {
         <h1 className={styles.title}>Kullanıcı Bilgileri</h1>
         <form className={styles.details} onChange={formHandler}>
           <img
-            lazyOnload
             src="https://img.icons8.com/external-flaticons-flat-flat-icons/452/external-user-web-flaticons-flat-flat-icons-2.png"
             className={styles.img}
           />

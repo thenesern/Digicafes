@@ -30,7 +30,7 @@ const OrderTable = (props) => {
       renderCell: (params) => {
         return (
           <div className={styles.userListItem}>
-            <img lazyOnload className={styles.userListImg} src={params.row.image} alt="" />
+            <img className={styles.userListImg} src={params.row.image} alt="" />
             {params.row.firstName}
           </div>
         );

@@ -360,12 +360,7 @@ const UserDashboard = ({ order }) => {
                 <h3 className={styles.titles}>QR Menü Kodu</h3>
 
                 <>
-                  <img
-                    src={src}
-                    alt="QR"
-                
-                    className={styles.qrImg}
-                  />
+                  <img src={src} alt="QR" className={styles.qrImg} />
                   <div>
                     <>
                       <Link href={`/qr/v1/${menu?.storeName}`} passHref>

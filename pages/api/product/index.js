@@ -16,7 +16,7 @@ handler.post(async (req, res) => {
     });
     await newProduct.save();
     await db.disconnect();
-    res.send({ status: "succes", message: "Product saved successfully" });
+    res.send({ status: "success", message: "Product saved successfully" });
   } catch (err) {
     console.log(err.message);
     await db.disconnect();
