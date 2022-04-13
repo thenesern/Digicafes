@@ -16,7 +16,7 @@ handler.post(async (req, res) => {
     const newOrder = new Order({
       product: req.body.product,
       user: req.body.user,
-      createdAt: new Date().toLocaleString(),
+      createdAt: new Date().toLocaleString("tr-TR"),
     });
     await newOrder.save();
     await db.disconnect();

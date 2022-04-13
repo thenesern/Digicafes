@@ -73,7 +73,7 @@ const Nav = () => {
 
   const loginHandler = async ({ email, password }) => {
     closeSnackbar();
-    const signedIn = new Date().toLocaleString();
+    const signedIn = new Date().toLocaleString("tr-TR");
     try {
       setIsFetching(true);
       const { data } = await axios.post("/api/auth/login", {
@@ -114,7 +114,7 @@ const Nav = () => {
     if (password !== passwordConfirm) {
       return enqueueSnackbar("Şifreler eşleşmiyor", { variant: "error" });
     }
-    const signedIn = new Date().toLocaleString();
+    const signedIn = new Date().toLocaleString("tr-TR");
     const lowerFirst = fName?.toLowerCase();
     const betterFirst = lowerFirst?.replace(
       lowerFirst[0],
@@ -129,7 +129,7 @@ const Nav = () => {
 
     const firstName = betterFirst;
     const lastName = betterLast;
-    const createdAt = new Date().toLocaleString();
+    const createdAt = new Date().toLocaleString("tr-TR");
     try {
       setIsFetching(true);
       const { data } = await axios.post("/api/auth/register", {

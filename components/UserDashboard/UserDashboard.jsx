@@ -111,7 +111,7 @@ const UserDashboard = ({ order }) => {
   }
   const firstTimeHandler = async (e) => {
     e.preventDefault();
-    const createdAt = new Date().toLocaleString();
+    const createdAt = new Date().toLocaleString("tr-TR");
     try {
       const { data } = await axios.post("/api/qr/menu", {
         storeName: storeNameFirst,
