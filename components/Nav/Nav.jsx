@@ -581,7 +581,14 @@ const Nav = () => {
             >
               {user?.isAdmin === false ? (
                 <>
-                  <button className={styles.button}>
+                  <button
+                    className={styles.button}
+                    onClick={() => {
+                      if (router?.pathname !== "/hesap/[userId]") {
+                        setIsFetching(true);
+                      }
+                    }}
+                  >
                     <LinkRouter
                       href={"/hesap/" + user?.id}
                       className={styles["menu-link"]}
@@ -593,7 +600,14 @@ const Nav = () => {
                 </>
               ) : (
                 <>
-                  <button className={styles.button}>
+                  <button
+                    className={styles.button}
+                    onClick={() => {
+                      if (router?.pathname !== "/admin/dashboard") {
+                        setIsFetching(true);
+                      }
+                    }}
+                  >
                     <LinkRouter
                       href="/admin/dashboard"
                       className={styles["menu-link"]}
@@ -604,7 +618,14 @@ const Nav = () => {
                   </button>
                 </>
               )}
-              <button className={styles.button}>
+              <button
+                className={styles.button}
+                onClick={() => {
+                  if (router?.pathname !== "/dashboard/[userId]") {
+                    setIsFetching(true);
+                  }
+                }}
+              >
                 <LinkRouter
                   href={"/dashboard/" + user.id}
                   passHref

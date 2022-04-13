@@ -7,12 +7,32 @@ import styles from "./dashboard.module.css";
 import Product from "../../../models/ProductModel";
 import QRMenu from "../../../models/QRMenuModel";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { Loading, Modal, Spacer } from "@nextui-org/react";
+import { useState } from "react";
 
 const Dashboard = ({ orders, user }) => {
+  const router = useRouter();
+  const [isFetching, setIsFetching] = useState(false);
+
   return (
     <div>
       <Nav />
       <div className={styles.container}>
+        <Modal
+          style={{
+            background: "transparent",
+            boxShadow: "none",
+          }}
+          preventClose
+          aria-labelledby="modal-title"
+          open={isFetching}
+        >
+          <Modal.Body>
+            <Loading color="white" size="xl" />
+            <Spacer />
+          </Modal.Body>
+        </Modal>
         <h3 className={styles.title}>Yönetim Paneli</h3>
         {orders.length > 0 &&
           orders.map((order) => (
@@ -27,7 +47,17 @@ const Dashboard = ({ orders, user }) => {
                   }
                   passHref
                 >
-                  <button className={styles.button}>
+                  <button
+                    className={styles.button}
+                    onClick={() => {
+                      if (
+                        router?.pathname !==
+                        "/dashboard/[userId]/menu/v1/[orderId]"
+                      ) {
+                        setIsFetching(true);
+                      }
+                    }}
+                  >
                     <h6 className={styles.subtitle}>{order.product.name}</h6>
                   </button>
                 </Link>

@@ -113,6 +113,7 @@ const UserDashboard = ({ order }) => {
     e.preventDefault();
     const createdAt = new Date().toLocaleString("tr-TR");
     try {
+      setIsFetching(true);
       const { data } = await axios.post("/api/qr/menu", {
         storeName: storeNameFirst,
         createdAt,
@@ -131,8 +132,10 @@ const UserDashboard = ({ order }) => {
       );
 
       setIsFirst(false);
+      setIsFetching(false);
     } catch (err) {
       console.log(err);
+      setIsFetching(false);
     }
   };
 
@@ -324,7 +327,7 @@ const UserDashboard = ({ order }) => {
                       variant="rwzr"
                       type="submit"
                       fullWidth
-                      disabled={categories.length > 0 ? false : true}
+                      disabled={categories?.length > 0 ? false : true}
                       onClick={firstTimeHandler}
                     >
                       İlerle
