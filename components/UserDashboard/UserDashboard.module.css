@@ -52,12 +52,16 @@
 }
 
 .image {
-  width: 4rem;
-  height: 4rem;
+  width: 3rem;
+  height: 3rem;
   object-fit: contain;
   border-radius: 50%;
 }
-
+.qrImg {
+  object-fit: cover;
+  width: 6rem;
+  height: auto;
+}
 .firstContainer {
   display: flex;
   flex-direction: column;

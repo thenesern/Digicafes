@@ -5,7 +5,10 @@ import Nav from "../components/Nav/Nav";
 import Product from "../models/ProductModel";
 import db from "../utils/db";
 
-const dijitalMenu = ({ products }) => {
+export const config = {
+  unstable_runtimeJS: false,
+};
+const DijitalMenu = ({ products }) => {
   return (
     <div>
       <Nav />
@@ -29,4 +32,4 @@ export async function getStaticProps() {
   };
 }
 
-export default dijitalMenu;
+export default DijitalMenu;

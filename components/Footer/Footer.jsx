@@ -29,14 +29,17 @@ const Footer = () => {
 
       <div className={styles.right}>
         <img
+          lazyOnload
           className={styles.card}
           src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/master-card.png"
         />
         <img
+          lazyOnload
           className={styles.card}
           src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/visa.png"
         />
         <img
+          lazyOnload
           className={styles.iyzico}
           src="https://raw.githubusercontent.com/thenesern/project/969fada3dd5d63aebf5dfcedc97067e21fef98b3/assets/image/iyzico-logo-subbrands-pwi.svg"
         />

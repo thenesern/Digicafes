@@ -39,11 +39,13 @@ const DigitalMenuPage = ({ products }) => {
         </div>
         <div className={styles.images}>
           <img
+            lazyOnload
             src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/DigitalMenuPanelMockup.png"
             alt=""
             className={styles.image}
           />
           <img
+            lazyOnload
             src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/QRMenuMockup.png"
             alt=""
             className={styles.image2}
@@ -57,6 +59,7 @@ const DigitalMenuPage = ({ products }) => {
         <article className={styles.first}>
           <div>
             <img
+              lazyOnload
               src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/DigitalMenuPanelMockup.png"
               alt=""
               className={styles.firstImage}
@@ -93,6 +96,7 @@ const DigitalMenuPage = ({ products }) => {
           </div>
           <div>
             <img
+              lazyOnload
               src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/QRMenuMockup.png"
               alt=""
               className={styles.secondImage}

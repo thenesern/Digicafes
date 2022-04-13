@@ -41,7 +41,12 @@ const UserTable = (props) => {
       renderCell: (params) => {
         return (
           <div className={styles.userListItem}>
-            <img className={styles.userListImg} src={params.row.image} alt="" />
+            <img
+              lazyOnload
+              className={styles.userListImg}
+              src={params.row.image}
+              alt=""
+            />
             {params.row.firstName}
           </div>
         );
