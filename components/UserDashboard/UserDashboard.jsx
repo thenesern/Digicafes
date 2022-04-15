@@ -58,10 +58,13 @@ const UserDashboard = ({ order }) => {
   const [storeNameFirst, setStoreNameFirst] = useState("");
   const [storeNameSet, setStoreNameSet] = useState(false);
   const [addCategory, setAddCategory] = useState("");
-  const [products, setProducts] = useState([...(menu?.products || "")]);
+  const [products, setProducts] = useState([...(menu?.products || [])]);
+  const arrayProducts = Array.from(products);
   const [categories, setCategories] = useState([
     ...(menu?.categories?.map((c) => c?.name) || ""),
   ]);
+  const arrayCategories = Array.from(categories);
+
   const [categoriesRaw, setCategoriesRaw] = useState([
     ...(menu?.categories || ""),
   ]);
@@ -87,7 +90,6 @@ const UserDashboard = ({ order }) => {
       typeof value === "string" ? value.split(",") : value
     );
   };
-
   const {
     handleSubmit,
     control,
@@ -103,7 +105,7 @@ const UserDashboard = ({ order }) => {
     if (!menu) {
       setIsFirst(true);
     }
-  }, []);
+  }, [menu]);
   let user;
 
   if (Cookies.get("userInfo")) {
@@ -138,7 +140,6 @@ const UserDashboard = ({ order }) => {
       setIsFetching(false);
     }
   };
-
   const addProductHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -150,7 +151,7 @@ const UserDashboard = ({ order }) => {
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
         data
       );
-      products.push({
+      arrayProducts.push({
         name,
         price,
         description,
@@ -161,10 +162,12 @@ const UserDashboard = ({ order }) => {
         `/api/qr/menus/${menu?.storeName}`,
         {
           storeName: menu?.storeName,
-          products,
+          products: arrayProducts,
         }
       );
-      setMenu(updatedMenu.data.menu);
+      setMenu(updatedMenu?.data?.menu);
+      setProducts(updatedMenu?.data?.menu?.products);
+      console.log(products);
       handleCloseAddProduct();
       setIsFetching(false);
     } catch (err) {
@@ -175,6 +178,7 @@ const UserDashboard = ({ order }) => {
   const addCategoryHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
+
     data.append("file", file);
     data.append("upload_preset", "uploads");
     try {
@@ -183,7 +187,7 @@ const UserDashboard = ({ order }) => {
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
         data
       );
-      categoriesRaw.push({ name: addCategory, image: uploadRes?.data.url });
+      categoriesRaw.push({ name: addCategory, image: uploadRes?.data?.url });
 
       await axios.patch(`/api/qr/menus/${menu?.storeName}/categories`, {
         storeName: menu?.storeName,
@@ -196,18 +200,18 @@ const UserDashboard = ({ order }) => {
       setIsFetching(false);
     }
   };
-  var opts = {
-    errorCorrectionLevel: "H",
-    type: "image/png",
-    quality: 1,
-    margin: 1,
-  };
   useEffect(() => {
+    var opts = {
+      errorCorrectionLevel: "H",
+      type: "image/png",
+      quality: 1,
+      margin: 1,
+    };
     QRCode.toDataURL(
       `https://www.project-thenesern.vercel.app.com/qr/v1/${menu?.storeName}`,
       opts
     ).then(setSrc);
-  }, []);
+  }, [menu]);
 
   const columns = [
     { field: "_id", headerName: "Ürün Kodu", width: 300 },
@@ -368,7 +372,7 @@ const UserDashboard = ({ order }) => {
                           <Button variant="text" style={{ height: "2rem" }}>
                             <p>Siteye Git</p>
                             <ArrowRightIcon style={{ fontSize: "24px" }} />
-                          </Button>{" "}
+                          </Button>
                         </a>
                       </Link>
                       <a href={src} download>
@@ -581,16 +585,18 @@ const UserDashboard = ({ order }) => {
               <h3 className={styles.titles}>Menü</h3>
               {isLoading ? (
                 <p>Yükleniyor...</p>
-              ) : (
+              ) : products?.length > 0 ? (
                 <div style={{ height: "90%", width: "100%" }}>
                   <DataGrid
-                    rows={menu?.products}
+                    rows={products}
+                    getRowId={(row) => `${row.name}${row.price}`}
                     columns={columns}
                     pageSize={8}
-                    getRowId={(row) => row?._id}
                     rowsPerPageOptions={[8]}
                   />
                 </div>
+              ) : (
+                "Menü bulunamadı."
               )}
             </div>
           </div>

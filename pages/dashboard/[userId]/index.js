@@ -82,9 +82,11 @@ const Dashboard = ({ orders, user }) => {
                 <div className={styles.infoCell}>
                   <h4>Son Güncelleme Tarihi</h4>
                   <p>
-                    {new Date(`${order?.menuv1?.updatedAt}`).toLocaleString(
-                      "tr-TR"
-                    ) || "Henüz Oluşturulmadı"}
+                    {order?.menuv1?.updatedAt
+                      ? new Date(`${order?.menuv1?.updatedAt}`).toLocaleString(
+                          "tr-TR"
+                        )
+                      : "Henüz Oluşturulmadı"}
                   </p>
                 </div>
               </div>
