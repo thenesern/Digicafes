@@ -54,6 +54,7 @@ const UserDashboard = ({ order }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [src, setSrc] = useState("");
   const [isFetching, setIsFetching] = useState(false);
+  const [isFetchingForFirst, setIsFetchingForFirst] = useState(false);
   const [isFirst, setIsFirst] = useState(false);
   const [storeName, setStoreName] = useState(menu?.storeName || "");
   const [addCategory, setAddCategory] = useState("");
@@ -107,13 +108,13 @@ const UserDashboard = ({ order }) => {
     e.preventDefault();
     const createdAt = new Date().toLocaleString("tr-TR");
     try {
-      setIsFetching(true);
+      setIsFetchingForFirst(true);
       const { data } = await axios.post("/api/qr/menu", {
         storeName: storeName,
         createdAt,
         owner: order[0]?.user?._id,
       });
-      const orderProduct = await axios.patch(
+      await axios.patch(
         "/api/order/attachMenu",
         {
           orderId: order[0]?._id,
@@ -123,12 +124,11 @@ const UserDashboard = ({ order }) => {
           headers: { authorization: `Bearer ${user?.token}` },
         }
       );
-
       setIsFirst(false);
-      setIsFetching(false);
+      setIsFetchingForFirst(false);
     } catch (err) {
       console.log(err);
-      setIsFetching(false);
+      setIsFetchingForFirst(false);
     }
   };
   const addProductHandler = async (e) => {
@@ -158,7 +158,6 @@ const UserDashboard = ({ order }) => {
       );
       setMenu(updatedMenu?.data?.menu);
       setProducts(updatedMenu?.data?.menu?.products);
-      console.log(products);
       handleCloseAddProduct();
       setIsFetching(false);
     } catch (err) {
@@ -227,6 +226,18 @@ const UserDashboard = ({ order }) => {
     <>
       {isFirst && (
         <div className={styles.firstContainer}>
+          <Modal
+            style={{
+              background: "transparent",
+              boxShadow: "none",
+            }}
+            preventClose
+            aria-labelledby="modal-title"
+            open={isFetchingForFirst}
+          >
+            <Loading color="white" size="xl" />
+            <Spacer />
+          </Modal>
           <StyleRoot>
             <form className={styles.formFirst} style={animate.fadeInRightBig}>
               <h2 className={styles.headerFirst}>
