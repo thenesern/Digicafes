@@ -81,7 +81,11 @@ const Dashboard = ({ orders, user }) => {
                 </div>
                 <div className={styles.infoCell}>
                   <h4>Son Güncelleme Tarihi</h4>
-                  <p>{order?.menuv1?.updatedAt || "Henüz Oluşturulmadı"}</p>
+                  <p>
+                    {new Date(`${order?.menuv1?.updatedAt}`).toLocaleString(
+                      "tr-TR"
+                    ) || "Henüz Oluşturulmadı"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -103,38 +107,6 @@ const Dashboard = ({ orders, user }) => {
     </div>
   );
 };
-
-/* export async function getStaticPaths() {
-  await db.connect();
-  const users = await User.find();
-  await db.disconnect();
-  return {
-    paths: users.map((user) => {
-      return {
-        params: { userId: JSON.parse(JSON.stringify(user._id)) },
-      };
-    }),
-    fallback: false, // false or 'blocking'
-  };
-} */
-/* export async function getStaticProps({ params }) {
-  await db.connect();
-  const orders = await Order.find({ user: params.userId })
-    .populate({
-      path: "product",
-      model: Product,
-    })
-    .populate({ path: "user", model: User })
-    .populate({ path: "menuv1", model: QRMenu });
-
-  await db.disconnect();
-  return {
-    props: {
-      orders: JSON.parse(JSON.stringify(orders)),
-      user: params.userId,
-    },
-  };
-} */
 
 export async function getServerSideProps(context) {
   const { userId } = context.query;

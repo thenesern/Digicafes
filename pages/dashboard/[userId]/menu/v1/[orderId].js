@@ -16,39 +16,6 @@ const DashboardMenuv1 = ({ userOrder }) => {
   );
 };
 
-/* export async function getStaticPaths() {
-  await db.connect();
-  const orders = await Order.find();
-  await db.disconnect();
-  return {
-    paths: orders.map((order) => {
-      return {
-        params: {
-          userId: order.user.toString(),
-          orderId: JSON.parse(JSON.stringify(order._id)),
-        },
-      };
-    }),
-    fallback: false, // false or 'blocking'
-  };
-}
-export async function getStaticProps({ params }) {
-  await db.connect();
-  const order = await Order.find({ _id: params.orderId })
-    .populate({
-      path: "product",
-      model: Product,
-    })
-    .populate({ path: "user", model: User })
-    .populate({ path: "menuv1", model: QRMenu });
-  await db.disconnect();
-  return {
-    props: {
-      userOrder: JSON.parse(JSON.stringify(order)),
-    },
-  };
-} */
-
 export async function getServerSideProps(context) {
   const { orderId } = context.query;
   await db.connect();
