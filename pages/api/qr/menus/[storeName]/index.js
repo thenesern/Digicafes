@@ -25,7 +25,6 @@ handler.patch(async (req, res) => {
     }
   );
   const menu = await QRMenu.findOne({ storeName: req.body.storeName });
-  await menu.save();
   res.json({ status: "success", menu });
   await db.disconnect();
 });

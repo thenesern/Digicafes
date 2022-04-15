@@ -6,13 +6,14 @@ const handler = nc();
 
 handler.patch(async (req, res) => {
   await db.connect();
-  const menu = await QRMenu.findOneAndUpdate(
+  console.log(req.body)
+  const prev = await QRMenu.findOneAndUpdate(
     { storeName: req.body.storeName },
     {
       categories: req.body.categories,
     }
   );
-  await menu.save();
+  const menu = await QRMenu.findOne({ storeName: req.body.storeName });
   res.json({ status: "success", menu });
   await db.disconnect();
 });

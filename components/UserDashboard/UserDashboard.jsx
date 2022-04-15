@@ -55,16 +55,13 @@ const UserDashboard = ({ order }) => {
   const [src, setSrc] = useState("");
   const [isFetching, setIsFetching] = useState(false);
   const [isFirst, setIsFirst] = useState(false);
-  const [storeNameFirst, setStoreNameFirst] = useState("");
-  const [storeNameSet, setStoreNameSet] = useState(false);
+  const [storeName, setStoreName] = useState(menu?.storeName || "");
   const [addCategory, setAddCategory] = useState("");
-  const [products, setProducts] = useState([...(menu?.products || [])]);
+  const [products, setProducts] = useState([...(menu?.products || "")]);
   const arrayProducts = Array.from(products);
   const [categories, setCategories] = useState([
     ...(menu?.categories?.map((c) => c?.name) || ""),
   ]);
-  const arrayCategories = Array.from(categories);
-
   const [categoriesRaw, setCategoriesRaw] = useState([
     ...(menu?.categories || ""),
   ]);
@@ -96,11 +93,6 @@ const UserDashboard = ({ order }) => {
     formState: { errors },
   } = useForm();
 
-  const steps = (e) => {
-    e.preventDefault();
-    setStoreNameSet(true);
-  };
-
   useEffect(() => {
     if (!menu) {
       setIsFirst(true);
@@ -117,10 +109,9 @@ const UserDashboard = ({ order }) => {
     try {
       setIsFetching(true);
       const { data } = await axios.post("/api/qr/menu", {
-        storeName: storeNameFirst,
+        storeName: storeName,
         createdAt,
         owner: order[0]?.user?._id,
-        categories,
       });
       const orderProduct = await axios.patch(
         "/api/order/attachMenu",
@@ -188,9 +179,9 @@ const UserDashboard = ({ order }) => {
         data
       );
       categoriesRaw.push({ name: addCategory, image: uploadRes?.data?.url });
-
+      categories.push(addCategory);
       await axios.patch(`/api/qr/menus/${menu?.storeName}/categories`, {
-        storeName: menu?.storeName,
+        storeName,
         categories: categoriesRaw,
       });
       handleCloseAddCategory();
@@ -236,7 +227,7 @@ const UserDashboard = ({ order }) => {
     <>
       {isFirst && (
         <div className={styles.firstContainer}>
-          <StyleRoot style={{ display: storeNameSet && "none" }}>
+          <StyleRoot>
             <form className={styles.formFirst} style={animate.fadeInRightBig}>
               <h2 className={styles.headerFirst}>
                 Lütfen İş Yerinizin Adını Giriniz
@@ -253,12 +244,12 @@ const UserDashboard = ({ order }) => {
                       required: true,
                       pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
                     }}
-                    onChange={(e) => setStoreNameFirst(e.target.value)}
+                    onChange={(e) => setStoreName(e.target.value)}
                     label={menu?.menuv1?.storeName ? "" : "Dükkan Adı"}
                     helperText={
                       isFirst ? (
-                        storeNameFirst ? (
-                          `Örnek: www.site.com/qr/${storeNameFirst}`
+                        storeName ? (
+                          `Örnek: www.site.com/qr/${storeName}`
                         ) : (
                           "Örnek: www.site.com/qr/dükkanadı"
                         )
@@ -268,7 +259,7 @@ const UserDashboard = ({ order }) => {
                           as={`localhost:3000/qr/${menu?.menuv1?.storeName}`}
                         >
                           www.site.com/qr/
-                          {menu?.menuv1?.storeName || storeNameFirst}
+                          {menu?.menuv1?.storeName || storeName}
                         </Link>
                       )
                     }
@@ -280,61 +271,10 @@ const UserDashboard = ({ order }) => {
                       variant="contained"
                       type="submit"
                       fullWidth
-                      onClick={steps}
                       color="primary"
-                    >
-                      Kaydet
-                    </Button>
-                  </ListItem>
-                )}
-              </List>
-            </form>
-          </StyleRoot>
-          <StyleRoot style={{ display: !storeNameSet && "none" }}>
-            <form className={styles.formFirst} style={animate.fadeInRightBig}>
-              <h2 className={styles.headerFirst}>
-                Lütfen Menü için Kategori Ekleyiniz
-              </h2>
-              <List className={styles.list}>
-                <ListItem>
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    disabled={isFirst ? false : true}
-                    id="brandName"
-                    value={addCategory}
-                    rules={{
-                      required: true,
-                      pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                    }}
-                    onChange={(e) => setAddCategory(e.target.value)}
-                    label="Kategoriler"
-                    helperText="Örnek: Ana Yemekler"
-                  ></TextField>
-                </ListItem>
-                {isFirst && (
-                  <ListItem>
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      fullWidth
-                      color="primary"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        categories.push({ name: addCategory });
-                        setAddCategory("");
-                      }}
-                    >
-                      Ekle
-                    </Button>
-                    <Button
-                      variant="rwzr"
-                      type="submit"
-                      fullWidth
-                      disabled={categories?.length > 0 ? false : true}
                       onClick={firstTimeHandler}
                     >
-                      İlerle
+                      Kaydet
                     </Button>
                   </ListItem>
                 )}
