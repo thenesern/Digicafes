@@ -6,8 +6,7 @@ const handler = nc();
 
 handler.patch(async (req, res) => {
   await db.connect();
-  console.log(req.body)
-  const prev = await QRMenu.findOneAndUpdate(
+  await QRMenu.findOneAndUpdate(
     { storeName: req.body.storeName },
     {
       categories: req.body.categories,

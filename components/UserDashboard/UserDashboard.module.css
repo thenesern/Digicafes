@@ -22,6 +22,11 @@
   color: #001219;
   text-align: start;
 }
+.deleteDescription {
+  margin: 0 10px;
+  background-color: lightgray;
+  padding: 4px;
+}
 .left {
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;

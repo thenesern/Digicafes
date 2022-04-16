@@ -32,6 +32,9 @@ import { useTheme } from "@mui/material/styles";
 import Link from "next/link";
 import DownloadIcon from "@mui/icons-material/Download";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SendIcon from "@mui/icons-material/Send";
+import Stack from "@mui/material/Stack";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -60,6 +63,8 @@ const UserDashboard = ({ order }) => {
   const [addCategory, setAddCategory] = useState("");
   const [products, setProducts] = useState([...(menu?.products || "")]);
   const arrayProducts = Array.from(products);
+  const [deleteId, setDeleteId] = useState("");
+  const [deleteName, setDeleteName] = useState("");
   const [categories, setCategories] = useState([
     ...(menu?.categories?.map((c) => c?.name) || ""),
   ]);
@@ -75,6 +80,9 @@ const UserDashboard = ({ order }) => {
   const [openAddProduct, setOpenAddProduct] = useState(false);
   const handleOpenAddProduct = () => setOpenAddProduct(true);
   const handleCloseAddProduct = () => setOpenAddProduct(false);
+  const handleOpenDeleteProduct = () => setOpenDeleteProduct(true);
+  const handleCloseDeleteProduct = () => setOpenDeleteProduct(false);
+  const [openDeleteProduct, setOpenDeleteProduct] = useState(false);
   const [openAddCategory, setOpenAddCategory] = useState(false);
   const handleOpenAddCategory = () => setOpenAddCategory(true);
   const handleCloseAddCategory = () => setOpenAddCategory(false);
@@ -131,6 +139,7 @@ const UserDashboard = ({ order }) => {
       setIsFetchingForFirst(false);
     }
   };
+
   const addProductHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -165,6 +174,27 @@ const UserDashboard = ({ order }) => {
       setIsFetching(false);
     }
   };
+  const deleteProductHandler = async () => {
+    setIsFetching(true);
+
+    try {
+      setProducts(arrayProducts.filter((product) => product._id !== deleteId));
+      const newProducts = arrayProducts.filter(
+        (product) => product._id !== deleteId
+      );
+      console.log(newProducts);
+      await axios.patch(`/api/qr/menus/${menu?.storeName}`, {
+        storeName: menu?.storeName,
+        products: newProducts,
+      });
+      setIsFetching(false);
+    } catch (err) {
+      console.log(err);
+      setIsFetching(false);
+    }
+    setIsFetching(false);
+  };
+
   const addCategoryHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -204,7 +234,7 @@ const UserDashboard = ({ order }) => {
   }, [menu]);
 
   const columns = [
-    { field: "_id", headerName: "Ürün Kodu", flex: 1 },
+    { field: "_id", headerName: "Ürün Kodu", flex: 1.3 },
     {
       field: "name",
       headerName: "Ürün",
@@ -221,7 +251,46 @@ const UserDashboard = ({ order }) => {
     { field: "price", headerName: "Ürün Fiyatı", flex: 1 },
     { field: "description", headerName: "Ürün Açıklaması", flex: 1 },
     { field: "category", headerName: "Ürün Kategorisi", flex: 1 },
+    {
+      field: "actions",
+      headerName: "Yönetim",
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <Stack direction="row" spacing={2}>
+            <Button
+              onClick={() => {
+                handleOpenDeleteProduct();
+                setDeleteId(params?.row._id);
+                setDeleteName(params?.row.name);
+              }}
+              variant="outlined"
+              startIcon={<DeleteIcon color="error" />}
+            >
+              Sil
+            </Button>
+          </Stack>
+        );
+      },
+    },
   ];
+  const categoryColumns = [
+    { field: "_id", headerName: "Kategori Kodu", flex: 1 },
+    {
+      field: "name",
+      headerName: "Kategori",
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <div className={styles.product}>
+            <img src={params?.row.image} alt="" className={styles.image} />
+            <p>{params?.row.name}</p>
+          </div>
+        );
+      },
+    },
+  ];
+
   return (
     <>
       {isFirst && (
@@ -520,6 +589,53 @@ const UserDashboard = ({ order }) => {
                     </form>
                   </Box>
                 </ModalMui>
+                <ModalMui
+                  open={openDeleteProduct}
+                  onClose={handleCloseDeleteProduct}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box className={styles.modal}>
+                    <form>
+                      <List className={styles.list}>
+                        <h3 className={styles.header}>Emin misiniz?</h3>
+
+                        <ListItem>
+                          <p>
+                            Ürün
+                            <span className={styles.deleteDescription}>
+                              {deleteName} ({deleteId})
+                            </span>
+                            silinecek
+                          </p>
+                        </ListItem>
+                      </List>
+                    </form>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      onClick={() => {
+                        handleCloseDeleteProduct();
+                        setDeleteId("");
+                      }}
+                      style={{ margin: "1rem", width: "16rem" }}
+                    >
+                      Vazgeç
+                    </Button>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      color="primary"
+                      onClick={() => {
+                        deleteProductHandler();
+                        handleCloseDeleteProduct();
+                      }}
+                      style={{ margin: "1rem", width: "16rem" }}
+                    >
+                      Onayla
+                    </Button>
+                  </Box>
+                </ModalMui>
                 <Button
                   variant="contained"
                   type="submit"
@@ -553,12 +669,12 @@ const UserDashboard = ({ order }) => {
                 <h3 className={styles.titles}>Kategori Listesi</h3>
                 {isLoading ? (
                   <p>Yükleniyor...</p>
-                ) : products?.length > 0 ? (
+                ) : categories?.length > 0 ? (
                   <div style={{ height: "18rem", width: "100%" }}>
                     <DataGrid
-                      rows={products}
+                      rows={categoriesRaw}
                       getRowId={(row) => `${row.name}${row.price}`}
-                      columns={columns}
+                      columns={categoryColumns}
                       pageSize={5}
                       rowsPerPageOptions={[8]}
                     />
