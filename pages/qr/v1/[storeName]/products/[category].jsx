@@ -6,9 +6,12 @@ import QRMenu from "../../../../../models/QRMenuModel.js";
 import Link from "next/link";
 import { Button } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { Loading, Modal, Spacer } from "@nextui-org/react";
+import { useState } from "react";
 
 const StoreMenu = ({ menu, category }) => {
   const Router = useRouter();
+  const [isFetching, setIsFetching] = useState(false);
   const filtered = menu?.products.filter((a) => a.category.includes(category));
   return (
     <div className={styles.container}>
@@ -16,7 +19,15 @@ const StoreMenu = ({ menu, category }) => {
         <Link href={"/qr/v1/" + menu?.storeName} passHref>
           <Button
             style={{ padding: "0", margin: "0" }}
-            onClick={() => Router.push("/qr/v1/" + menu?.storeName)}
+            onClick={() => {
+              setIsFetching(true);
+              try {
+                Router.push("/qr/v1/" + menu?.storeName);
+              } catch (err) {
+                console.log(err);
+                setIsFetching(false);
+              }
+            }}
           >
             <>
               <ArrowBackIosNewIcon
@@ -31,6 +42,20 @@ const StoreMenu = ({ menu, category }) => {
         <div className={styles.nav}>Nav</div>
       </navbar>
       <ul className={styles.list}>
+        <Modal
+          style={{
+            background: "transparent",
+            boxShadow: "none",
+          }}
+          preventClose
+          aria-labelledby="modal-title"
+          open={isFetching}
+        >
+          <Modal.Body>
+            <Loading color="white" size="xl" />
+            <Spacer />
+          </Modal.Body>
+        </Modal>
         {menu &&
           filtered?.map((m) => (
             <li className={styles.listItem} key={m?.name}>

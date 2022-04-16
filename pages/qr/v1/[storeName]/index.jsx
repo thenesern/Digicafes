@@ -3,9 +3,12 @@ import React from "react";
 import styles from "./store.module.css";
 import db from "../../../../utils/db.js";
 import QRMenu from "../../../../models/QRMenuModel.js";
+import { Loading, Modal, Spacer } from "@nextui-org/react";
+import { useState } from "react";
 
 const StoreMenu = ({ menu }) => {
   const router = useRouter();
+  const [isFetching, setIsFetching] = useState(false);
   console.log(menu);
   return (
     <div className={styles.container}>
@@ -13,16 +16,33 @@ const StoreMenu = ({ menu }) => {
         <h6 className={styles.logo}>Logo</h6>
         <div className={styles.nav}>Nav</div>
       </navbar>
-      <div>
-        <h6>Menü</h6>
-      </div>
+
       <ul className={styles.list}>
+        <Modal
+          style={{
+            background: "transparent",
+            boxShadow: "none",
+          }}
+          preventClose
+          aria-labelledby="modal-title"
+          open={isFetching}
+        >
+          <Modal.Body>
+            <Loading color="white" size="xl" />
+            <Spacer />
+          </Modal.Body>
+        </Modal>
         {menu &&
           menu?.categories?.map((m) => (
             <li
-              name={m?.name}
-              onClick={(e) => {
-                router.push(`/qr/v1/${menu?.storeName}/products/${m?.name}`);
+              onClick={() => {
+                setIsFetching(true);
+                try {
+                  router.push(`/qr/v1/${menu?.storeName}/products/${m?.name}`);
+                } catch (err) {
+                  console.log(err);
+                  setIsFetching(false);
+                }
               }}
               key={m?.name}
               className={styles.listItem}
