@@ -35,6 +35,7 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
+import { useSnackbar } from "notistack";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -48,6 +49,7 @@ const MenuProps = {
 };
 
 const UserDashboard = ({ order }) => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [file, setFile] = useState(null);
   const theme = useTheme();
   const [menu, setMenu] = useState(order[0]?.menuv1 || "");
@@ -172,9 +174,19 @@ const UserDashboard = ({ order }) => {
       setProducts(updatedMenu?.data?.menu?.products);
       handleCloseAddProduct();
       setIsFetching(false);
+      setName("");
+      setDescription("");
+      setPrice("");
+      setFile(null);
+      enqueueSnackbar("Ürün Eklendi", { variant: "success" });
     } catch (err) {
       console.log(err);
       setIsFetching(false);
+      setName("");
+      setDescription("");
+      setPrice("");
+      setFile(null);
+      enqueueSnackbar("Ürün Eklenemedi", { variant: "error" });
     }
   };
   const deleteProductHandler = async () => {
@@ -190,9 +202,13 @@ const UserDashboard = ({ order }) => {
         products: newProducts,
       });
       setIsFetching(false);
+      setDeleteId("");
+      enqueueSnackbar("Ürün Silindi", { variant: "success" });
     } catch (err) {
       console.log(err);
       setIsFetching(false);
+      setDeleteId("");
+      enqueueSnackbar("Ürün Silinemedi", { variant: "error" });
     }
     setIsFetching(false);
   };
@@ -210,9 +226,13 @@ const UserDashboard = ({ order }) => {
         categories: newCategories,
       });
       setIsFetching(false);
+      setDeleteId("");
+      enqueueSnackbar("Kategori Silindi", { variant: "success" });
     } catch (err) {
       console.log(err);
       setIsFetching(false);
+      setDeleteId("");
+      enqueueSnackbar("Kategori Silinemedi", { variant: "success" });
     }
     setIsFetching(false);
   };
@@ -240,9 +260,15 @@ const UserDashboard = ({ order }) => {
       setCategories(updatedMenu?.data?.menu?.categories);
       handleCloseAddCategory();
       setIsFetching(false);
+      setAddCategory("");
+      setFile(null);
+      enqueueSnackbar("Kategori Eklendi", { variant: "success" });
     } catch (err) {
       console.log(err);
       setIsFetching(false);
+      setAddCategory("");
+      setFile(null);
+      enqueueSnackbar("Kategori Eklenemedi", { variant: "error" });
     }
   };
   useEffect(() => {
@@ -469,6 +495,7 @@ const UserDashboard = ({ order }) => {
                 <Button
                   variant="contained"
                   type="submit"
+                  disabled={categories.length > 0 ? false : true}
                   onClick={handleOpenAddProduct}
                   style={{ margin: "1rem", width: "16rem" }}
                 >

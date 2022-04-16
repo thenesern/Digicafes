@@ -9,6 +9,7 @@ import { useState } from "react";
 const StoreMenu = ({ menu }) => {
   const [category, setCategory] = useState("");
   const router = useRouter();
+  console.log(menu);
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
@@ -35,7 +36,9 @@ const StoreMenu = ({ menu }) => {
               </div>
             </li>
           ))}
+        {/*   {menu?.categories.length && <p>menü bulunamadı</p>} */}
       </ul>
+
       <footer></footer>
     </div>
   );
