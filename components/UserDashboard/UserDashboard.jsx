@@ -259,9 +259,9 @@ const UserDashboard = ({ order }) => {
       );
       setCategories(updatedMenu?.data?.menu?.categories);
       handleCloseAddCategory();
-      setIsFetching(false);
       setAddCategory("");
       setFile(null);
+      setIsFetching(false);
       enqueueSnackbar("Kategori Eklendi", { variant: "success" });
     } catch (err) {
       console.log(err);
@@ -667,7 +667,19 @@ const UserDashboard = ({ order }) => {
                             variant="contained"
                             type="submit"
                             fullWidth
-                            onClick={addCategoryHandler}
+                            onClick={(e) => {
+                              if (categoryNames.includes(addCategory)) {
+                                handleCloseAddCategory();
+                                enqueueSnackbar(
+                                  "Zaten bu isimde bir kategoriniz var",
+                                  {
+                                    variant: "error",
+                                  }
+                                );
+                              } else {
+                                addCategoryHandler(e);
+                              }
+                            }}
                             color="primary"
                           >
                             Ekle
