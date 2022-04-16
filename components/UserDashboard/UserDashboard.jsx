@@ -36,6 +36,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import { useSnackbar } from "notistack";
+import QrCodeIcon from "@mui/icons-material/QrCode";
+import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
+import ViewListIcon from "@mui/icons-material/ViewList";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -326,11 +329,11 @@ const UserDashboard = ({ order }) => {
     },
   ];
   const categoryColumns = [
-    { field: "_id", headerName: "Kategori Kodu", flex: 1 },
+    { field: "_id", headerName: "Kategori Kodu", flex: 2 },
     {
       field: "name",
       headerName: "Kategori",
-      flex: 1,
+      flex: 2,
       renderCell: (params) => {
         return (
           <div className={styles.product}>
@@ -454,7 +457,10 @@ const UserDashboard = ({ order }) => {
           <div className={styles.box}>
             <div className={styles.left}>
               <div>
-                <h3 className={styles.titles}>QR Menü Kodu</h3>
+                <div className={styles.headers}>
+                  <QrCodeIcon color="primary" />
+                  <h3 className={styles.titles}>QR Menü Kodu</h3>
+                </div>
                 <div className={styles.qr}>
                   <img src={src} alt="QR" className={styles.qrImg} />
                   <div className={styles.qrActions}>
@@ -491,7 +497,10 @@ const UserDashboard = ({ order }) => {
                 </div>
               </div>
               <div>
-                <h3>Menü Yönetimi</h3>
+                <div className={styles.headers}>
+                  <DashboardCustomizeIcon color="primary" />
+                  <h3>Menü Yönetimi</h3>
+                </div>
                 <Button
                   variant="contained"
                   type="submit"
@@ -755,12 +764,21 @@ const UserDashboard = ({ order }) => {
               </div>
             </div>
             <div className={styles.right}>
-              <div style={{ height: "100%", width: "100%" }}>
-                <h3 className={styles.titles}>Ürün Listesi</h3>
+              <div
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  boxShadow: "rgba(17, 17, 26, 0.1) 0px 1px 0px",
+                }}
+              >
+                <div className={styles.headers}>
+                  <ViewListIcon color="primary" />
+                  <h3 className={styles.titles}>Ürün Listesi</h3>
+                </div>
                 {isLoading ? (
                   <p>Yükleniyor...</p>
                 ) : products?.length > 0 ? (
-                  <div style={{ height: "17rem", width: "100%" }}>
+                  <div style={{ height: "24rem", width: "100%" }}>
                     <DataGrid
                       localeText={
                         trTR.components.MuiDataGrid.defaultProps.localeText
@@ -768,8 +786,8 @@ const UserDashboard = ({ order }) => {
                       rows={products}
                       getRowId={(row) => `${row.name}${row.price}`}
                       columns={columns}
-                      pageSize={3}
-                      rowsPerPageOptions={[3]}
+                      pageSize={5}
+                      rowsPerPageOptions={[5]}
                     />
                   </div>
                 ) : (
@@ -777,11 +795,14 @@ const UserDashboard = ({ order }) => {
                 )}
               </div>
               <div style={{ height: "100%", width: "100%" }}>
-                <h3 className={styles.titles}>Kategori Listesi</h3>
+                <div className={styles.headers}>
+                  <ViewListIcon color="primary" />
+                  <h3 className={styles.titles}>Kategori Listesi</h3>
+                </div>
                 {isLoading ? (
                   <p>Yükleniyor...</p>
                 ) : categories?.length > 0 ? (
-                  <div style={{ height: "17rem", width: "100%" }}>
+                  <div style={{ height: "24rem", width: "100%" }}>
                     <DataGrid
                       localeText={
                         trTR.components.MuiDataGrid.defaultProps.localeText
@@ -789,8 +810,8 @@ const UserDashboard = ({ order }) => {
                       rows={categories}
                       getRowId={(row) => `${row.name}${row.price}`}
                       columns={categoryColumns}
-                      pageSize={3}
-                      rowsPerPageOptions={[3]}
+                      pageSize={5}
+                      rowsPerPageOptions={[5]}
                     />
                   </div>
                 ) : (
