@@ -1,13 +1,10 @@
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import React from "react";
 import styles from "./store.module.css";
 import db from "../../../../utils/db.js";
 import QRMenu from "../../../../models/QRMenuModel.js";
-import Link from "next/link";
-import { useState } from "react";
 
 const StoreMenu = ({ menu }) => {
-  const [category, setCategory] = useState("");
   const router = useRouter();
   console.log(menu);
   return (
@@ -36,7 +33,6 @@ const StoreMenu = ({ menu }) => {
               </div>
             </li>
           ))}
-        {/*   {menu?.categories.length && <p>menü bulunamadı</p>} */}
       </ul>
 
       <footer></footer>
@@ -44,24 +40,12 @@ const StoreMenu = ({ menu }) => {
   );
 };
 
-export async function getStaticPaths() {
-  await db.connect();
-  const menus = await QRMenu.find();
-  await db.disconnect();
-  return {
-    paths: menus.map((menu) => {
-      return {
-        params: { storeName: menu.storeName },
-      };
-    }),
-    fallback: false, // false or 'blocking'
-  };
-}
-export async function getStaticProps({ params }) {
+export async function getServerSideProps(context) {
+  const { storeName } = context.query;
   await db.connect();
   const menu = await QRMenu.findOne({
-    storeName: params.storeName,
-  }).lean();
+    storeName,
+  });
   await db.disconnect();
   return {
     props: {
@@ -69,5 +53,4 @@ export async function getStaticProps({ params }) {
     },
   };
 }
-
 export default StoreMenu;

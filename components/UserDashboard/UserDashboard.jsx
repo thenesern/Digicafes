@@ -282,7 +282,7 @@ const UserDashboard = ({ order }) => {
       margin: 1,
     };
     QRCode.toDataURL(
-      `https://www.project-thenesern.vercel.app.com/qr/v1/${menu?.storeName}`,
+      `https://www.project-testenes.vercel.app.com/qr/v1/${menu?.storeName}`,
       opts
     ).then(setSrc);
   }, [menu]);
