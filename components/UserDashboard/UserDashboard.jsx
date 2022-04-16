@@ -204,11 +204,11 @@ const UserDashboard = ({ order }) => {
   }, [menu]);
 
   const columns = [
-    { field: "_id", headerName: "Ürün Kodu", width: 300 },
+    { field: "_id", headerName: "Ürün Kodu", flex: 1 },
     {
       field: "name",
       headerName: "Ürün",
-      width: 300,
+      flex: 1,
       renderCell: (params) => {
         return (
           <div className={styles.product}>
@@ -218,9 +218,9 @@ const UserDashboard = ({ order }) => {
         );
       },
     },
-    { field: "price", headerName: "Ürün Fiyatı", width: 200 },
-    { field: "description", headerName: "Ürün Açıklaması", width: 200 },
-    { field: "category", headerName: "Ürün Kategorisi", width: 200 },
+    { field: "price", headerName: "Ürün Fiyatı", flex: 1 },
+    { field: "description", headerName: "Ürün Açıklaması", flex: 1 },
+    { field: "category", headerName: "Ürün Kategorisi", flex: 1 },
   ];
   return (
     <>
@@ -308,12 +308,10 @@ const UserDashboard = ({ order }) => {
             <Loading color="white" size="xl" />
             <Spacer />
           </Modal>
-          <h2 className={styles.header}>Dijital Menü Yönetim Paneli</h2>
           <div className={styles.box}>
-            <div>
+            <div className={styles.left}>
               <div>
                 <h3 className={styles.titles}>QR Menü Kodu</h3>
-
                 <>
                   <img src={src} alt="QR" className={styles.qrImg} />
                   <div>
@@ -337,7 +335,7 @@ const UserDashboard = ({ order }) => {
                 </>
               </div>
               <div>
-                <h6>Ürün Yönetimi</h6>
+                <h3>Menü Yönetimi</h3>
                 <Button
                   variant="contained"
                   type="submit"
@@ -532,23 +530,43 @@ const UserDashboard = ({ order }) => {
                 </Button>
               </div>
             </div>
-            <div>
-              <h3 className={styles.titles}>Menü</h3>
-              {isLoading ? (
-                <p>Yükleniyor...</p>
-              ) : products?.length > 0 ? (
-                <div style={{ height: "90%", width: "100%" }}>
-                  <DataGrid
-                    rows={products}
-                    getRowId={(row) => `${row.name}${row.price}`}
-                    columns={columns}
-                    pageSize={8}
-                    rowsPerPageOptions={[8]}
-                  />
-                </div>
-              ) : (
-                "Menü bulunamadı."
-              )}
+            <div className={styles.right}>
+              <div style={{ height: "100%", width: "100%" }}>
+                <h3 className={styles.titles}>Ürün Listesi</h3>
+                {isLoading ? (
+                  <p>Yükleniyor...</p>
+                ) : products?.length > 0 ? (
+                  <div style={{ height: "18rem", width: "100%" }}>
+                    <DataGrid
+                      rows={products}
+                      getRowId={(row) => `${row.name}${row.price}`}
+                      columns={columns}
+                      pageSize={5}
+                      rowsPerPageOptions={[8]}
+                    />
+                  </div>
+                ) : (
+                  "Menü bulunamadı."
+                )}
+              </div>
+              <div style={{ height: "100%", width: "100%" }}>
+                <h3 className={styles.titles}>Kategori Listesi</h3>
+                {isLoading ? (
+                  <p>Yükleniyor...</p>
+                ) : products?.length > 0 ? (
+                  <div style={{ height: "18rem", width: "100%" }}>
+                    <DataGrid
+                      rows={products}
+                      getRowId={(row) => `${row.name}${row.price}`}
+                      columns={columns}
+                      pageSize={5}
+                      rowsPerPageOptions={[8]}
+                    />
+                  </div>
+                ) : (
+                  "Kategori bulunamadı."
+                )}
+              </div>
             </div>
           </div>
         </div>

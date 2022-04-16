@@ -13,14 +13,35 @@
   height: 100vh;
   grid-template-columns: 3fr 7fr;
   gap: 4rem;
+  padding-top: 8rem;
 }
 .header {
-  padding: 7% 0 1rem 1rem;
+  padding: 1rem;
   margin: 0;
   width: 100%;
   color: #001219;
   text-align: start;
 }
+.left {
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 2rem;
+  padding: 1rem 2rem;
+}
+.right {
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 1rem 2rem;
+}
+
 .headerFirst {
   margin: 0;
   padding: 0;
