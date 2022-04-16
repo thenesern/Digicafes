@@ -18,10 +18,12 @@ handler.get(async (req, res) => {
 
 handler.patch(async (req, res) => {
   await db.connect();
+  console.log(req.body);
   await QRMenu.findOneAndUpdate(
     { storeName: req.body.storeName },
     {
       products: req.body.products,
+      storeLogo: req.body.storeLogo,
     }
   );
   const menu = await QRMenu.findOne({ storeName: req.body.storeName });

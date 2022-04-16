@@ -106,8 +106,13 @@
   border-radius: 50%;
 }
 .qrImg {
-  object-fit: cover;
+  object-fit: contain;
   width: 6rem;
+  height: auto;
+}
+.logo {
+  object-fit: contain;
+  width: 86px;
   height: auto;
 }
 .firstContainer {

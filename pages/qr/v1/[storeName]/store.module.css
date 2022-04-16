@@ -23,7 +23,11 @@
   align-items: center;
   justify-content: center;
 }
-
+.logo {
+  object-fit: contain;
+  width: 4rem;
+  height: auto;
+}
 .listItem {
   min-height: 10rem;
   border: 1px solid lightgray;
@@ -41,7 +45,6 @@
 .titleBack {
   text-align: center;
   backdrop-filter: blur(4px);
-  /*   backdrop-filter: contrast(50%); */
   backdrop-filter: sepia(50%);
   height: 100%;
   background-color: rgba(0, 18, 25, 0.5);
@@ -52,10 +55,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2rem;
-  background-color: #023047;
+  padding: 0 4px;
+  background-color: transparent;
   width: 100%;
-  height: 5rem;
+  position: fixed;
+  top: 0;
+  z-index: 2;
+  left: 0;
 }
 
 .logo {
@@ -64,4 +70,5 @@
 
 .nav {
   color: #ffe8d6;
+  backdrop-filter: blur(2px);
 }

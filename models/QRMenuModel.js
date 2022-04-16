@@ -7,6 +7,9 @@ const QRMenuSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    storeLogo: {
+      type: String,
+    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

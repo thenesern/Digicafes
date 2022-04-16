@@ -71,6 +71,10 @@ const UserDashboard = ({ order }) => {
   const [deleteId, setDeleteId] = useState("");
   const [deleteName, setDeleteName] = useState("");
   const [deleteCategory, setDeleteCategory] = useState(false);
+  const [storeLogo, setStoreLogo] = useState(
+    menu?.storeLogo ||
+      "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1650137521/uploads/logoDefault_ez8obk.png"
+  );
   const [categoryNames, setCategoryNames] = useState([
     ...(menu?.categories?.map((c) => c?.name) || ""),
   ]);
@@ -93,8 +97,12 @@ const UserDashboard = ({ order }) => {
   };
   const [openDeleteProduct, setOpenDelete] = useState(false);
   const [openAddCategory, setOpenAddCategory] = useState(false);
+  const [openUploadLogo, setOpenUploadLogo] = useState(false);
+
   const handleOpenAddCategory = () => setOpenAddCategory(true);
   const handleCloseAddCategory = () => setOpenAddCategory(false);
+  const handleOpenUploadLogo = () => setOpenUploadLogo(true);
+  const handleCloseUploadLogo = () => setOpenUploadLogo(false);
   const [category, setCategory] = useState([]);
   const handleChange = (event) => {
     const {
@@ -105,6 +113,7 @@ const UserDashboard = ({ order }) => {
       typeof value === "string" ? value.split(",") : value
     );
   };
+
   const {
     handleSubmit,
     control,
@@ -274,12 +283,45 @@ const UserDashboard = ({ order }) => {
       enqueueSnackbar("Kategori Eklenemedi", { variant: "error" });
     }
   };
+  const uploadLogoHandler = async (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "uploads");
+    try {
+      setIsFetching(true);
+      const uploadRes = await axios.post(
+        "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
+        data
+      );
+      const updatedMenu = await axios.patch(
+        `/api/qr/menus/${menu?.storeName}`,
+        {
+          storeName,
+          storeLogo: uploadRes?.data?.url,
+        }
+      );
+      setStoreLogo(uploadRes?.data?.url);
+      setMenu(updatedMenu?.data?.menu);
+      handleCloseUploadLogo();
+      setFile(null);
+      setIsFetching(false);
+      enqueueSnackbar("Logo Yüklendi", { variant: "success" });
+    } catch (err) {
+      console.log(err);
+      setIsFetching(false);
+      setFile(null);
+      enqueueSnackbar("Logo Yüklenemedi", { variant: "error" });
+    }
+  };
+
   useEffect(() => {
     var opts = {
       errorCorrectionLevel: "H",
       type: "image/png",
       quality: 1,
-      margin: 1,
+      margin: 0,
+      padding: 0,
     };
     QRCode.toDataURL(
       `https://www.project-testenes.vercel.app.com/qr/v1/${menu?.storeName}`,
@@ -463,6 +505,7 @@ const UserDashboard = ({ order }) => {
                 </div>
                 <div className={styles.qr}>
                   <img src={src} alt="QR" className={styles.qrImg} />
+                  <img src={storeLogo} alt="Logo" className={styles.logo} />
                   <div className={styles.qrActions}>
                     <Link href={`/qr/v1/${menu?.storeName}`} passHref>
                       <a target="_blank">
@@ -699,6 +742,49 @@ const UserDashboard = ({ order }) => {
                   </Box>
                 </ModalMui>
                 <ModalMui
+                  open={openUploadLogo}
+                  onClose={handleCloseUploadLogo}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box className={styles.modal}>
+                    <form>
+                      <List className={styles.list}>
+                        <h3 className={styles.header}>Logo Yükle</h3>
+
+                        <ListItem>
+                          <label htmlFor="icon-button-file">
+                            <Input
+                              accept="image/*"
+                              id="icon-button-file"
+                              onChange={(e) => setFile(e.target.files[0])}
+                              type="file"
+                            />
+                            <IconButton
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <PhotoCamera />
+                            </IconButton>
+                          </label>
+                        </ListItem>
+                        <ListItem>
+                          <Button
+                            variant="contained"
+                            type="submit"
+                            fullWidth
+                            onClick={uploadLogoHandler}
+                            color="primary"
+                          >
+                            Yükle
+                          </Button>
+                        </ListItem>
+                      </List>
+                    </form>
+                  </Box>
+                </ModalMui>
+                <ModalMui
                   open={openDeleteProduct}
                   onClose={handleCloseDelete}
                   aria-labelledby="modal-modal-title"
@@ -760,6 +846,14 @@ const UserDashboard = ({ order }) => {
                   style={{ margin: "1rem", width: "16rem" }}
                 >
                   Kategori Ekle
+                </Button>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  onClick={handleOpenUploadLogo}
+                  style={{ margin: "1rem", width: "16rem" }}
+                >
+                  Logo Yükle
                 </Button>
               </div>
             </div>

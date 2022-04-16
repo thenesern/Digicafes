@@ -1,20 +1,40 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./store.module.css";
 import db from "../../../../utils/db.js";
 import QRMenu from "../../../../models/QRMenuModel.js";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
-import { useState } from "react";
+import { Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const StoreMenu = ({ menu }) => {
+  const [open, setOpen] = useState(false);
   const router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
   console.log(menu);
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
-        <h6 className={styles.logo}>Logo</h6>
-        <div className={styles.nav}>Nav</div>
+        {menu?.storeLogo?.includes("cloudinary") ? (
+          <img src={menu?.storeLogo} alt="Logo" className={styles.logo} />
+        ) : (
+          <h6 className={styles.logo}>{menu?.storeLogo}</h6>
+        )}
+        <IconButton onClick={() => setOpen(true)}>
+          <MenuIcon style={{ color: "white", fontSize: "2rem" }} />
+        </IconButton>
+        <SwipeableDrawer
+          anchor="right"
+          open={open}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+        >
+          <IconButton>
+            <ChevronRightIcon onClick={() => setOpen(true)} />
+            <Divider />
+          </IconButton>
+        </SwipeableDrawer>
       </navbar>
 
       <ul className={styles.list}>
