@@ -429,27 +429,40 @@ const UserDashboard = ({ order }) => {
             <div className={styles.left}>
               <div>
                 <h3 className={styles.titles}>QR Menü Kodu</h3>
-                <>
+                <div className={styles.qr}>
                   <img src={src} alt="QR" className={styles.qrImg} />
-                  <div>
-                    <>
-                      <Link href={`/qr/v1/${menu?.storeName}`} passHref>
-                        <a target="_blank">
-                          <Button variant="text" style={{ height: "2rem" }}>
-                            <p>Siteye Git</p>
-                            <ArrowRightIcon style={{ fontSize: "24px" }} />
+                  <div className={styles.qrActions}>
+                    <Link href={`/qr/v1/${menu?.storeName}`} passHref>
+                      <a target="_blank">
+                        <Stack direction="row" spacing={1}>
+                          <Button
+                            variant="outlined"
+                            style={{
+                              height: "2rem",
+                              width: "12rem",
+                            }}
+                            endIcon={
+                              <ArrowRightIcon style={{ fontSize: "2rem" }} />
+                            }
+                          >
+                            Siteye Git
                           </Button>
-                        </a>
-                      </Link>
-                      <a href={src} download>
-                        <Button variant="text" style={{ height: "2rem" }}>
-                          <p>QR Kodu İndir</p>
-                          <DownloadIcon style={{ fontSize: "1rem" }} />
-                        </Button>
+                        </Stack>
                       </a>
-                    </>
+                    </Link>
+                    <a href={src} download>
+                      <Stack direction="row" spacing={1}>
+                        <Button
+                          variant="outlined"
+                          style={{ height: "2rem", width: "12rem" }}
+                          endIcon={<DownloadIcon />}
+                        >
+                          QR Kodu İndir
+                        </Button>
+                      </Stack>
+                    </a>
                   </div>
-                </>
+                </div>
               </div>
               <div>
                 <h3>Menü Yönetimi</h3>
