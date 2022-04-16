@@ -12,7 +12,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import styles from "./UserDashboard.module.css";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, trTR } from "@mui/x-data-grid";
 import Image from "next/image";
 import QRCode from "qrcode";
 import { fadeInRightBig } from "react-animations";
@@ -65,12 +65,12 @@ const UserDashboard = ({ order }) => {
   const arrayProducts = Array.from(products);
   const [deleteId, setDeleteId] = useState("");
   const [deleteName, setDeleteName] = useState("");
-  const [categories, setCategories] = useState([
+  const [deleteCategory, setDeleteCategory] = useState(false);
+  const [categoryNames, setCategoryNames] = useState([
     ...(menu?.categories?.map((c) => c?.name) || ""),
   ]);
-  const [categoriesRaw, setCategoriesRaw] = useState([
-    ...(menu?.categories || ""),
-  ]);
+  const [categories, setCategories] = useState([...(menu?.categories || "")]);
+  const arrayCategories = Array.from(categories);
   const animate = {
     fadeInRightBig: {
       animation: "x 2s",
@@ -81,7 +81,10 @@ const UserDashboard = ({ order }) => {
   const handleOpenAddProduct = () => setOpenAddProduct(true);
   const handleCloseAddProduct = () => setOpenAddProduct(false);
   const handleOpenDeleteProduct = () => setOpenDeleteProduct(true);
-  const handleCloseDeleteProduct = () => setOpenDeleteProduct(false);
+  const handleCloseDeleteProduct = () => {
+    setOpenDeleteProduct(false);
+    setDeleteCategory(false);
+  };
   const [openDeleteProduct, setOpenDeleteProduct] = useState(false);
   const [openAddCategory, setOpenAddCategory] = useState(false);
   const handleOpenAddCategory = () => setOpenAddCategory(true);
@@ -139,7 +142,6 @@ const UserDashboard = ({ order }) => {
       setIsFetchingForFirst(false);
     }
   };
-
   const addProductHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -182,10 +184,29 @@ const UserDashboard = ({ order }) => {
       const newProducts = arrayProducts.filter(
         (product) => product._id !== deleteId
       );
-      console.log(newProducts);
       await axios.patch(`/api/qr/menus/${menu?.storeName}`, {
         storeName: menu?.storeName,
         products: newProducts,
+      });
+      setIsFetching(false);
+    } catch (err) {
+      console.log(err);
+      setIsFetching(false);
+    }
+    setIsFetching(false);
+  };
+  const deleteCategoryHandler = async () => {
+    setIsFetching(true);
+    try {
+      setCategories(
+        arrayCategories.filter((category) => category._id !== deleteId)
+      );
+      const newCategories = arrayCategories.filter(
+        (category) => category._id !== deleteId
+      );
+      await axios.patch(`/api/qr/menus/${menu?.storeName}/categories`, {
+        storeName: menu?.storeName,
+        categories: newCategories,
       });
       setIsFetching(false);
     } catch (err) {
@@ -198,7 +219,6 @@ const UserDashboard = ({ order }) => {
   const addCategoryHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
-
     data.append("file", file);
     data.append("upload_preset", "uploads");
     try {
@@ -207,12 +227,16 @@ const UserDashboard = ({ order }) => {
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
         data
       );
-      categoriesRaw.push({ name: addCategory, image: uploadRes?.data?.url });
-      categories.push(addCategory);
-      await axios.patch(`/api/qr/menus/${menu?.storeName}/categories`, {
-        storeName,
-        categories: categoriesRaw,
-      });
+      arrayCategories.push({ name: addCategory, image: uploadRes?.data?.url });
+      categoryNames.push(addCategory);
+      const updatedMenu = await axios.patch(
+        `/api/qr/menus/${menu?.storeName}/categories`,
+        {
+          storeName,
+          categories: arrayCategories,
+        }
+      );
+      setCategories(updatedMenu?.data?.menu?.categories);
       handleCloseAddCategory();
       setIsFetching(false);
     } catch (err) {
@@ -286,6 +310,29 @@ const UserDashboard = ({ order }) => {
             <img src={params?.row.image} alt="" className={styles.image} />
             <p>{params?.row.name}</p>
           </div>
+        );
+      },
+    },
+    {
+      field: "actions",
+      headerName: "Yönetim",
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <Stack direction="row" spacing={2}>
+            <Button
+              onClick={() => {
+                handleOpenDeleteProduct();
+                setDeleteId(params?.row._id);
+                setDeleteName(params?.row.name);
+                setDeleteCategory(true);
+              }}
+              variant="outlined"
+              startIcon={<DeleteIcon color="error" />}
+            >
+              Sil
+            </Button>
+          </Stack>
         );
       },
     },
@@ -457,7 +504,7 @@ const UserDashboard = ({ order }) => {
                             )}
                             MenuProps={MenuProps}
                           >
-                            {categories.map((name) => (
+                            {categoryNames.map((name) => (
                               <MenuItem
                                 key={name}
                                 value={name}
@@ -602,11 +649,11 @@ const UserDashboard = ({ order }) => {
 
                         <ListItem>
                           <p>
-                            Ürün
+                            {deleteCategory ? "Kategori" : "Ürün"}
                             <span className={styles.deleteDescription}>
                               {deleteName} ({deleteId})
                             </span>
-                            silinecek
+                            silinecek.
                           </p>
                         </ListItem>
                       </List>
@@ -617,6 +664,7 @@ const UserDashboard = ({ order }) => {
                       onClick={() => {
                         handleCloseDeleteProduct();
                         setDeleteId("");
+                        setDeleteCategory(false);
                       }}
                       style={{ margin: "1rem", width: "16rem" }}
                     >
@@ -627,8 +675,15 @@ const UserDashboard = ({ order }) => {
                       type="submit"
                       color="primary"
                       onClick={() => {
-                        deleteProductHandler();
-                        handleCloseDeleteProduct();
+                        if (deleteCategory === true) {
+                          deleteCategoryHandler();
+                          handleCloseDeleteProduct();
+                          setDeleteCategory(false);
+                        } else {
+                          deleteProductHandler();
+                          handleCloseDeleteProduct();
+                          setDeleteCategory(false);
+                        }
                       }}
                       style={{ margin: "1rem", width: "16rem" }}
                     >
@@ -652,17 +707,20 @@ const UserDashboard = ({ order }) => {
                 {isLoading ? (
                   <p>Yükleniyor...</p>
                 ) : products?.length > 0 ? (
-                  <div style={{ height: "18rem", width: "100%" }}>
+                  <div style={{ height: "17rem", width: "100%" }}>
                     <DataGrid
+                      localeText={
+                        trTR.components.MuiDataGrid.defaultProps.localeText
+                      }
                       rows={products}
                       getRowId={(row) => `${row.name}${row.price}`}
                       columns={columns}
-                      pageSize={5}
-                      rowsPerPageOptions={[8]}
+                      pageSize={3}
+                      rowsPerPageOptions={[3]}
                     />
                   </div>
                 ) : (
-                  "Menü bulunamadı."
+                  "Ürün bulunamadı."
                 )}
               </div>
               <div style={{ height: "100%", width: "100%" }}>
@@ -670,13 +728,16 @@ const UserDashboard = ({ order }) => {
                 {isLoading ? (
                   <p>Yükleniyor...</p>
                 ) : categories?.length > 0 ? (
-                  <div style={{ height: "18rem", width: "100%" }}>
+                  <div style={{ height: "17rem", width: "100%" }}>
                     <DataGrid
-                      rows={categoriesRaw}
+                      localeText={
+                        trTR.components.MuiDataGrid.defaultProps.localeText
+                      }
+                      rows={categories}
                       getRowId={(row) => `${row.name}${row.price}`}
                       columns={categoryColumns}
-                      pageSize={5}
-                      rowsPerPageOptions={[8]}
+                      pageSize={3}
+                      rowsPerPageOptions={[3]}
                     />
                   </div>
                 ) : (
