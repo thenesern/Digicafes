@@ -80,12 +80,13 @@ const UserDashboard = ({ order }) => {
   const [openAddProduct, setOpenAddProduct] = useState(false);
   const handleOpenAddProduct = () => setOpenAddProduct(true);
   const handleCloseAddProduct = () => setOpenAddProduct(false);
-  const handleOpenDeleteProduct = () => setOpenDeleteProduct(true);
-  const handleCloseDeleteProduct = () => {
-    setOpenDeleteProduct(false);
+  const handleOpenDelete = () => setOpenDelete(true);
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
     setDeleteCategory(false);
+    setDeleteId("");
   };
-  const [openDeleteProduct, setOpenDeleteProduct] = useState(false);
+  const [openDeleteProduct, setOpenDelete] = useState(false);
   const [openAddCategory, setOpenAddCategory] = useState(false);
   const handleOpenAddCategory = () => setOpenAddCategory(true);
   const handleCloseAddCategory = () => setOpenAddCategory(false);
@@ -284,7 +285,7 @@ const UserDashboard = ({ order }) => {
           <Stack direction="row" spacing={2}>
             <Button
               onClick={() => {
-                handleOpenDeleteProduct();
+                handleOpenDelete();
                 setDeleteId(params?.row._id);
                 setDeleteName(params?.row.name);
               }}
@@ -322,7 +323,7 @@ const UserDashboard = ({ order }) => {
           <Stack direction="row" spacing={2}>
             <Button
               onClick={() => {
-                handleOpenDeleteProduct();
+                handleOpenDelete();
                 setDeleteId(params?.row._id);
                 setDeleteName(params?.row.name);
                 setDeleteCategory(true);
@@ -638,7 +639,7 @@ const UserDashboard = ({ order }) => {
                 </ModalMui>
                 <ModalMui
                   open={openDeleteProduct}
-                  onClose={handleCloseDeleteProduct}
+                  onClose={handleCloseDelete}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
                 >
@@ -662,7 +663,7 @@ const UserDashboard = ({ order }) => {
                       variant="contained"
                       type="submit"
                       onClick={() => {
-                        handleCloseDeleteProduct();
+                        handleCloseDelete();
                         setDeleteId("");
                         setDeleteCategory(false);
                       }}
@@ -677,11 +678,11 @@ const UserDashboard = ({ order }) => {
                       onClick={() => {
                         if (deleteCategory === true) {
                           deleteCategoryHandler();
-                          handleCloseDeleteProduct();
+                          handleCloseDelete();
                           setDeleteCategory(false);
                         } else {
                           deleteProductHandler();
-                          handleCloseDeleteProduct();
+                          handleCloseDelete();
                           setDeleteCategory(false);
                         }
                       }}
