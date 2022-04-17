@@ -5,7 +5,7 @@ import db from "../../../../utils/db";
 
 const handler = nc();
 
-/* handler.use(isAuth); */
+handler.use(isAuth);
 
 handler.patch(async (req, res) => {
   await db.connect();

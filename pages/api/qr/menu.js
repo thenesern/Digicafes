@@ -1,8 +1,11 @@
 import nc from "next-connect";
 import db from "../../../utils/db";
 import QRMenu from "../../../models/QRMenuModel";
+import { isAuth } from "../../../utils/auth";
 
 const handler = nc();
+
+handler.use(isAuth);
 
 handler.post(async (req, res) => {
   await db.connect();

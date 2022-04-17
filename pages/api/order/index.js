@@ -34,12 +34,18 @@ handler.post(async (req, res) => {
 handler.get(async (req, res) => {
   try {
     await db.connect();
-    const order = await Order.findById(req.body.order)
+    const order = await Order.find({ user: req.body.user })
       .populate({
         path: "product",
         model: Product,
       })
       .populate({ path: "user", model: User });
+    /* const order = await Order.findById(req.body.order)
+      .populate({
+        path: "product",
+        model: Product,
+      })
+      .populate({ path: "user", model: User }); */
     await db.disconnect();
     res.send(order);
   } catch (err) {

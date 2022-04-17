@@ -10,11 +10,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
 import { useState } from "react";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
 
 const Dashboard = ({ orders, user }) => {
   const router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
-
   return (
     <div>
       <Nav />
@@ -112,6 +113,15 @@ const Dashboard = ({ orders, user }) => {
 
 export async function getServerSideProps(context) {
   const { userId } = context.query;
+  const signedUserId = JSON.parse(context.req.cookies["userInfo"])?.id || null;
+  if (signedUserId !== userId) {
+    return {
+      redirect: {
+        destination: "/404",
+        permanent: false,
+      },
+    };
+  }
   await db.connect();
   const orders = await Order.find({ user: userId })
     .populate({
