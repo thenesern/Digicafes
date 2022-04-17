@@ -1,13 +1,15 @@
 .navbar {
-  display: flex;
+  display: grid;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 1rem;
+  grid-template-columns: 2fr 6fr 2fr;
+  justify-items: center;
   background: transparent;
   backdrop-filter: blur(12px);
   width: 100%;
-  height: 4rem;
+  height: 5rem;
   position: fixed;
+  background-color: #023047;
+
   top: 0;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
     rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
@@ -15,8 +17,9 @@
 }
 
 .logo {
-  color: #14213d;
-  font-size: 1rem;
+  object-fit: contain;
+  width: 4rem;
+  height: auto;
 }
 
 .nav {
@@ -27,11 +30,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 4rem;
+  padding-top: 5rem;
 }
 .back {
   font-size: 10px;
   padding-left: 4px;
+  color: #f7ede2;
 }
 .list {
   list-style: none;
@@ -78,4 +82,28 @@
 .price {
   font-weight: 600;
   color: #fb8500;
+}
+
+.navList {
+  background-color: #023047;
+  display: flex;
+  color: #f1faee;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  list-style: none;
+  padding: 1rem;
+  gap: 4px;
+  font-size: 14px;
+}
+.navList a {
+  border-bottom: 1px solid gray;
+  width: 100%;
+  line-height: 14px;
+  color: #ffe8d6;
+}
+
+.titles {
+  width: 100%;
+  cursor: pointer;
 }

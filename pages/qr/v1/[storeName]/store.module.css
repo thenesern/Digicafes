@@ -49,6 +49,7 @@
   height: 100%;
   background-color: rgba(0, 18, 25, 0.5);
   width: 100%;
+  margin-top: 3rem;
 }
 
 .navbar {
@@ -56,9 +57,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 4px;
-  background-color: transparent;
   width: 100%;
-  position: fixed;
+  background-color: #023047;
+  position: relative;
   top: 0;
   z-index: 2;
   left: 0;
@@ -71,4 +72,23 @@
 .nav {
   color: #ffe8d6;
   backdrop-filter: blur(2px);
+}
+.navList {
+  background-color: #023047;
+  display: flex;
+  color: #f1faee;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  list-style: none;
+  padding: 1rem;
+  gap: 4px;
+  font-size: 14px;
+}
+.navList a {
+  border-bottom: 1px solid gray;
+  width: 100%;
+  line-height: 14px;
+  cursor: pointer;
+  color: #ffe8d6;
 }

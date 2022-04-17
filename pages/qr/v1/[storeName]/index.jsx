@@ -3,16 +3,14 @@ import React, { useState } from "react";
 import styles from "./store.module.css";
 import db from "../../../../utils/db.js";
 import QRMenu from "../../../../models/QRMenuModel.js";
-import { Loading, Modal, Spacer } from "@nextui-org/react";
+import { Link, Loading, Modal, Spacer } from "@nextui-org/react";
 import { Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const StoreMenu = ({ menu }) => {
   const [open, setOpen] = useState(false);
-  const router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
-  console.log(menu);
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
@@ -34,6 +32,26 @@ const StoreMenu = ({ menu }) => {
             <ChevronRightIcon onClick={() => setOpen(true)} />
             <Divider />
           </IconButton>
+          <ul className={styles.navList}>
+            {menu &&
+              menu?.categories?.map((m) => (
+                <Link
+                  href={`/qr/v1/${menu?.storeName}/products/${m?.name}`}
+                  passHref
+                  onClick={() => {
+                    try {
+                      setIsFetching(true);
+                    } catch (err) {
+                      console.log(err);
+                      setIsFetching(false);
+                    }
+                  }}
+                  key={m?.name}
+                >
+                  <h3>{m?.name}</h3>
+                </Link>
+              ))}
+          </ul>
         </SwipeableDrawer>
       </navbar>
 
@@ -54,11 +72,12 @@ const StoreMenu = ({ menu }) => {
         </Modal>
         {menu &&
           menu?.categories?.map((m) => (
-            <li
+            <Link
+              href={`/qr/v1/${menu?.storeName}/products/${m?.name}`}
+              passHref
               onClick={() => {
-                setIsFetching(true);
                 try {
-                  router.push(`/qr/v1/${menu?.storeName}/products/${m?.name}`);
+                  setIsFetching(true);
                 } catch (err) {
                   console.log(err);
                   setIsFetching(false);
@@ -71,7 +90,7 @@ const StoreMenu = ({ menu }) => {
               <div className={styles.titleBack}>
                 <h3 className={styles.title}>{m?.name}</h3>
               </div>
-            </li>
+            </Link>
           ))}
       </ul>
 

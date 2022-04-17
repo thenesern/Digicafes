@@ -8,38 +8,80 @@ import { Button } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
 import { useState } from "react";
+import { Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const StoreMenu = ({ menu, category }) => {
-  const Router = useRouter();
+  const [open, setOpen] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const filtered = menu?.products.filter((a) => a.category.includes(category));
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
-        <Link href={"/qr/v1/" + menu?.storeName} passHref>
+        <Link
+          href={"/qr/v1/" + menu?.storeName}
+          passHref
+        >
           <Button
-            style={{ padding: "0", margin: "0" }}
             onClick={() => {
-              setIsFetching(true);
               try {
-                Router.push("/qr/v1/" + menu?.storeName);
+                setIsFetching(true);
               } catch (err) {
                 console.log(err);
                 setIsFetching(false);
               }
             }}
           >
-            <>
-              <ArrowBackIosNewIcon
-                color="secondary"
-                style={{ fontSize: "14  px" }}
-              />
-              <p className={styles.back}>Ana Menü</p>
-            </>
+            <ArrowBackIosNewIcon
+              style={{ color: "f7ede2", fontSize: "14px" }}
+            />
+            <p className={styles.back}>Geri</p>
           </Button>
         </Link>
-        <h6 className={styles.logo}>Logo</h6>
-        <div className={styles.nav}>Nav</div>
+        {menu?.storeLogo?.includes("cloudinary") ? (
+          <img src={menu?.storeLogo} alt="Logo" className={styles.logo} />
+        ) : (
+          <span className={styles.logo}>{menu?.storeLogo}</span>
+        )}
+
+        <IconButton onClick={() => setOpen(true)}>
+          <MenuIcon
+            style={{ color: "white", fontSize: "2rem" }}
+          
+          />
+        </IconButton>
+        <SwipeableDrawer
+          anchor="right"
+          open={open}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+        >
+          <IconButton>
+            <ChevronRightIcon onClick={() => setOpen(true)} />
+            <Divider />
+          </IconButton>
+          <ul className={styles.navList}>
+            {menu &&
+              menu?.categories?.map((m) => (
+                <Link
+                  href={`/qr/v1/${menu?.storeName}/products/${m?.name}`}
+                  passHref
+                  onClick={() => {
+                    try {
+                      setIsFetching(true);
+                    } catch (err) {
+                      console.log(err);
+                      setIsFetching(false);
+                    }
+                  }}
+                  key={m?.name}
+                >
+                  <h3 className={styles.titles}>{m?.name}</h3>
+                </Link>
+              ))}
+          </ul>
+        </SwipeableDrawer>
       </navbar>
       <ul className={styles.list}>
         <Modal
