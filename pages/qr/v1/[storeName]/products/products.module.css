@@ -102,8 +102,23 @@
   line-height: 14px;
   color: #ffe8d6;
 }
-
+.modalDesc {
+  padding: 0 1rem;
+}
 .titles {
   width: 100%;
   cursor: pointer;
+}
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  color: #ffe8d6;
+  background-color: #023047;
+}
+.modalImage {
+  width: 100%;
+  height: 16rem;
+  object-fit: cover;
 }

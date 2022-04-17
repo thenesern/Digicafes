@@ -8,21 +8,29 @@ import { Button } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
 import { useState } from "react";
-import { Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
+import { Box, Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const StoreMenu = ({ menu, category }) => {
   const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [productName, setProductName] = useState("");
+  const [productImage, setProductImage] = useState("");
+  const [productPrice, setProductPrice] = useState(null);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setProductName("");
+    setProductImage("");
+    setProductPrice(null);
+  };
   const [isFetching, setIsFetching] = useState(false);
   const filtered = menu?.products.filter((a) => a.category.includes(category));
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
-        <Link
-          href={"/qr/v1/" + menu?.storeName}
-          passHref
-        >
+        <Link href={"/qr/v1/" + menu?.storeName} passHref>
           <Button
             onClick={() => {
               try {
@@ -46,10 +54,7 @@ const StoreMenu = ({ menu, category }) => {
         )}
 
         <IconButton onClick={() => setOpen(true)}>
-          <MenuIcon
-            style={{ color: "white", fontSize: "2rem" }}
-          
-          />
+          <MenuIcon style={{ color: "white", fontSize: "2rem" }} />
         </IconButton>
         <SwipeableDrawer
           anchor="right"
@@ -85,6 +90,29 @@ const StoreMenu = ({ menu, category }) => {
       </navbar>
       <ul className={styles.list}>
         <Modal
+          open={openModal}
+          style={{
+            width: "92%",
+            margin: "0 auto",
+          }}
+          onClose={handleCloseModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box>
+            <div className={styles.modalHeader}>
+              <h3>{productName}</h3>
+              <span>₺{productPrice}</span>
+            </div>
+            <img src={productImage} alt="Menu" className={styles.modalImage} />
+            <p className={styles.modalDesc}>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Laudantium porro natus sequi eaque accusantium molestiae
+              blanditiis consectetur est vero accusamus ipsam officiis ipsum.
+            </p>
+          </Box>
+        </Modal>
+        <Modal
           style={{
             background: "transparent",
             boxShadow: "none",
@@ -100,7 +128,16 @@ const StoreMenu = ({ menu, category }) => {
         </Modal>
         {menu &&
           filtered?.map((m) => (
-            <li className={styles.listItem} key={m?.name}>
+            <li
+              className={styles.listItem}
+              key={m?.name}
+              onClick={() => {
+                setProductName(m?.name);
+                setProductImage(m?.image);
+                setProductPrice(m?.price);
+                handleOpenModal();
+              }}
+            >
               <img className={styles.img} src={m?.image} alt="" />
               <div className={styles.bottom}>
                 <h3 className={styles.name}>{m?.name}</h3>
