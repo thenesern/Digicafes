@@ -9,7 +9,11 @@ const orderSchema = new mongoose.Schema(
     },
     menuv1: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "QRMenu",
+      ref: "QRMenu1",
+    },
+    menuv2: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "QRMenu2",
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,

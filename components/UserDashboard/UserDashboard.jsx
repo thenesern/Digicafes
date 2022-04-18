@@ -95,10 +95,14 @@ const UserDashboard = ({ order }) => {
     setDeleteCategory(false);
     setDeleteId("");
   };
+  let user;
+
+  if (Cookies.get("userInfo")) {
+    user = JSON.parse(Cookies.get("userInfo"));
+  }
   const [openDeleteProduct, setOpenDelete] = useState(false);
   const [openAddCategory, setOpenAddCategory] = useState(false);
   const [openUploadLogo, setOpenUploadLogo] = useState(false);
-
   const handleOpenAddCategory = () => setOpenAddCategory(true);
   const handleCloseAddCategory = () => setOpenAddCategory(false);
   const handleOpenUploadLogo = () => setOpenUploadLogo(true);
@@ -125,26 +129,35 @@ const UserDashboard = ({ order }) => {
       setIsFirst(true);
     }
   }, [menu]);
-  let user;
 
-  if (Cookies.get("userInfo")) {
-    user = JSON.parse(Cookies.get("userInfo"));
-  }
   const firstTimeHandler = async (e) => {
     e.preventDefault();
     const createdAt = new Date().toLocaleString("tr-TR");
+    let version;
+    if (order[0]?.product?.name === "Dijital Menü - V1") {
+      version = "v1";
+    } else {
+      version = "v2";
+    }
     try {
       setIsFetchingForFirst(true);
-      const { data } = await axios.post("/api/qr/menu", {
-        storeName: storeName,
-        createdAt,
-        owner: order[0]?.user?._id,
-      });
+      const { data } = await axios.post(
+        `/api/qr/${version}/menu`,
+        {
+          storeName: storeName,
+          createdAt,
+          owner: order[0]?.user?._id,
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
       await axios.patch(
         "/api/order/attachMenu",
         {
           orderId: order[0]?._id,
           menuId: data?.menu?._id,
+          orderProduct: order[0]?.product?.name,
         },
         {
           headers: { authorization: `Bearer ${user?.token}` },
@@ -162,6 +175,12 @@ const UserDashboard = ({ order }) => {
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "uploads");
+    let version;
+    if (order[0]?.product?.name === "Dijital Menü - V1") {
+      version = "v1";
+    } else {
+      version = "v2";
+    }
     try {
       setIsFetching(true);
       const uploadRes = await axios.post(
@@ -176,10 +195,13 @@ const UserDashboard = ({ order }) => {
         image: uploadRes?.data.url,
       });
       const updatedMenu = await axios.patch(
-        `/api/qr/menus/${menu?.storeName}`,
+        `/api/qr/${version}/${menu?.storeName}/menu`,
         {
           storeName: menu?.storeName,
           products: arrayProducts,
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
         }
       );
       setMenu(updatedMenu?.data?.menu);
@@ -203,16 +225,27 @@ const UserDashboard = ({ order }) => {
   };
   const deleteProductHandler = async () => {
     setIsFetching(true);
-
+    let version;
+    if (order[0]?.product?.name === "Dijital Menü - V1") {
+      version = "v1";
+    } else {
+      version = "v2";
+    }
     try {
       setProducts(arrayProducts.filter((product) => product._id !== deleteId));
       const newProducts = arrayProducts.filter(
         (product) => product._id !== deleteId
       );
-      await axios.patch(`/api/qr/menus/${menu?.storeName}`, {
-        storeName: menu?.storeName,
-        products: newProducts,
-      });
+      await axios.patch(
+        `/api/qr/${version}/${menu?.storeName}/menu`,
+        {
+          storeName: menu?.storeName,
+          products: newProducts,
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
       setIsFetching(false);
       setDeleteId("");
       enqueueSnackbar("Ürün Silindi", { variant: "success" });
@@ -226,6 +259,12 @@ const UserDashboard = ({ order }) => {
   };
   const deleteCategoryHandler = async () => {
     setIsFetching(true);
+    let version;
+    if (order[0]?.product?.name === "Dijital Menü - V1") {
+      version = "v1";
+    } else {
+      version = "v2";
+    }
     try {
       setCategories(
         arrayCategories.filter((category) => category._id !== deleteId)
@@ -233,10 +272,16 @@ const UserDashboard = ({ order }) => {
       const newCategories = arrayCategories.filter(
         (category) => category._id !== deleteId
       );
-      await axios.patch(`/api/qr/menus/${menu?.storeName}/categories`, {
-        storeName: menu?.storeName,
-        categories: newCategories,
-      });
+      await axios.patch(
+        `/api/qr/${version}/${menu?.storeName}/categories`,
+        {
+          storeName: menu?.storeName,
+          categories: newCategories,
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
       setIsFetching(false);
       setDeleteId("");
       enqueueSnackbar("Kategori Silindi", { variant: "success" });
@@ -244,7 +289,7 @@ const UserDashboard = ({ order }) => {
       console.log(err);
       setIsFetching(false);
       setDeleteId("");
-      enqueueSnackbar("Kategori Silinemedi", { variant: "success" });
+      enqueueSnackbar("Kategori Silinemedi", { variant: "error" });
     }
     setIsFetching(false);
   };
@@ -254,19 +299,36 @@ const UserDashboard = ({ order }) => {
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "uploads");
+    let version;
+    if (order[0]?.product?.name === "Dijital Menü - V1") {
+      version = "v1";
+    } else {
+      version = "v2";
+    }
     try {
       setIsFetching(true);
       const uploadRes = await axios.post(
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
         data
       );
-      arrayCategories.push({ name: addCategory, image: uploadRes?.data?.url });
-      categoryNames.push(addCategory);
+      let betterCategoryName = addCategory
+        ?.split(" ")
+        .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
+        .join(" ");
+      arrayCategories.push({
+        name: betterCategoryName,
+        image: uploadRes?.data?.url,
+      });
+      categoryNames.push(betterCategoryName);
+
       const updatedMenu = await axios.patch(
-        `/api/qr/menus/${menu?.storeName}/categories`,
+        `/api/qr/${version}/${menu?.storeName}/categories`,
         {
           storeName,
           categories: arrayCategories,
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
         }
       );
       setCategories(updatedMenu?.data?.menu?.categories);
@@ -288,6 +350,12 @@ const UserDashboard = ({ order }) => {
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "uploads");
+    let version;
+    if (order[0]?.product?.name === "Dijital Menü - V1") {
+      version = "v1";
+    } else {
+      version = "v2";
+    }
     try {
       setIsFetching(true);
       const uploadRes = await axios.post(
@@ -295,10 +363,13 @@ const UserDashboard = ({ order }) => {
         data
       );
       const updatedMenu = await axios.patch(
-        `/api/qr/menus/${menu?.storeName}`,
+        `/api/qr/${version}/${menu?.storeName}/menu`,
         {
           storeName,
           storeLogo: uploadRes?.data?.url,
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
         }
       );
       setStoreLogo(uploadRes?.data?.url);

@@ -60,6 +60,7 @@ const QRMenuSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const QRMenu = mongoose.models.QRMenu || mongoose.model("QRMenu", QRMenuSchema);
+const QRMenu1 =
+  mongoose.models.QRMenu1 || mongoose.model("QRMenu1", QRMenuSchema);
 
-export default QRMenu;
+export default QRMenu1;

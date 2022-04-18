@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styles from "./store.module.css";
 import db from "../../../../utils/db.js";
-import QRMenu from "../../../../models/QRMenu1Model.js";
+import QRMenu from "../../../../models/QRMenuModel.js";
 import { Link, Loading, Modal, Spacer } from "@nextui-org/react";
 import { Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
 import MenuIcon from "@mui/icons-material/Menu";

@@ -1,5 +1,5 @@
-/* import nc from "next-connect";
-import QRMenu from "../../../../../models/QRMenuModel";
+import nc from "next-connect";
+import QRMenu from "../../../../../models/QRMenu1Model";
 import { isAuth } from "../../../../../utils/auth";
 import db from "../../../../../utils/db";
 
@@ -21,4 +21,3 @@ handler.patch(async (req, res) => {
 });
 
 export default handler;
- */

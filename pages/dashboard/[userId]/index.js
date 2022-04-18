@@ -5,7 +5,8 @@ import Order from "../../../models/OrderModel";
 import db from "../../../utils/db";
 import styles from "./dashboard.module.css";
 import Product from "../../../models/ProductModel";
-import QRMenu from "../../../models/QRMenuModel";
+import QRMenu1 from "../../../models/QRMenu1Model";
+import QRMenu2 from "../../../models/QRMenu2Model";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
@@ -14,6 +15,7 @@ import Cookies from "js-cookie";
 import { useEffect } from "react";
 
 const Dashboard = ({ orders, user }) => {
+  console.log(orders);
   const router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
   return (
@@ -44,7 +46,7 @@ const Dashboard = ({ orders, user }) => {
                   href={
                     order?.product?.name === "Dijital Menü - V1"
                       ? `/dashboard/${user}/menu/v1/${order._id}`
-                      : "/"
+                      : `/dashboard/${user}/menu/v2/${order._id}`
                   }
                   passHref
                 >
@@ -59,18 +61,32 @@ const Dashboard = ({ orders, user }) => {
                       }
                     }}
                   >
-                    <h6 className={styles.subtitle}>{order.product.name}</h6>
+                    <h6 className={styles.subtitle}>{order?.product?.name}</h6>
                   </button>
                 </Link>
               </div>
               <div className={styles.infos}>
                 <div className={styles.infoCell}>
-                  {order.product.name === "Dijital Menü - V1" && (
+                  {order?.product?.name === "Dijital Menü - V1" && (
                     <div>
                       <div>
                         <h4>İş Yeri Adı</h4>
                         <p>
-                          {order?.menuv1?.storeName || "Henüz Oluşturulmadı"}
+                          {order?.menuv1
+                            ? order?.menuv1?.storeName
+                            : "Henüz Oluşturulmadı"}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                  {order?.product?.name === "Dijital Menü - V2" && (
+                    <div>
+                      <div>
+                        <h4>İş Yeri Adı</h4>
+                        <p>
+                          {order?.menuv1
+                            ? order?.menuv2?.storeName
+                            : "Henüz Oluşturulmadı"}
                         </p>
                       </div>
                     </div>
@@ -78,17 +94,33 @@ const Dashboard = ({ orders, user }) => {
                 </div>
                 <div className={styles.infoCell}>
                   <h4>Oluşturulma Tarihi</h4>
-                  <p>{order?.menuv1?.createdAt || "Henüz Oluşturulmadı"}</p>
+                  {order?.product?.name === "Dijital Menü - V1" && (
+                    <p>{order?.menuv1?.createdAt || "Henüz Oluşturulmadı"}</p>
+                  )}
+                  {order?.product?.name === "Dijital Menü - V2" && (
+                    <p>{order?.menuv2?.createdAt || "Henüz Oluşturulmadı"}</p>
+                  )}
                 </div>
                 <div className={styles.infoCell}>
                   <h4>Son Güncellenme Tarihi</h4>
-                  <p>
-                    {order?.menuv1?.updatedAt
-                      ? new Date(`${order?.menuv1?.updatedAt}`).toLocaleString(
-                          "tr-TR"
-                        )
-                      : "Henüz Oluşturulmadı"}
-                  </p>
+                  {order?.product?.name === "Dijital Menü - V1" && (
+                    <p>
+                      {order?.menuv1?.updatedAt
+                        ? new Date(
+                            `${order?.menuv1?.updatedAt}`
+                          ).toLocaleString("tr-TR")
+                        : "Henüz Oluşturulmadı"}
+                    </p>
+                  )}
+                  {order?.product?.name === "Dijital Menü - V2" && (
+                    <p>
+                      {order?.menuv2?.updatedAt
+                        ? new Date(
+                            `${order?.menuv2?.updatedAt}`
+                          ).toLocaleString("tr-TR")
+                        : "Henüz Oluşturulmadı"}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -129,7 +161,8 @@ export async function getServerSideProps(context) {
       model: Product,
     })
     .populate({ path: "user", model: User })
-    .populate({ path: "menuv1", model: QRMenu });
+    .populate({ path: "menuv1", model: QRMenu1 })
+    .populate({ path: "menuv2", model: QRMenu2 });
 
   await db.disconnect();
   return {

@@ -1,8 +1,8 @@
 import { Router, useRouter } from "next/router";
 import React from "react";
 import styles from "./products.module.css";
-import db from "../../../../../utils/db.js";
-import QRMenu from "../../../../../models/QRMenu1Model.js";
+import db from "../../../../utils/db.js";
+import QRMenu from "../../../../models/QRMenu1Model.js";
 import Link from "next/link";
 import { Badge, Button } from "@material-ui/core";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";

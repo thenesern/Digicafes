@@ -10,7 +10,7 @@ import QRMenu from "../../../../../models/QRMenu1Model";
 import User from "../../../../../models/UserModel";
 import db from "../../../../../utils/db";
 
-const DashboardMenuv1 = ({ userOrder }) => {
+const DashboardMenuv2 = ({ userOrder }) => {
   return (
     <div>
       <Nav />
@@ -38,7 +38,7 @@ export async function getServerSideProps(context) {
       model: Product,
     })
     .populate({ path: "user", model: User })
-    .populate({ path: "menuv1", model: QRMenu });
+    .populate({ path: "menuv2", model: QRMenu });
   await db.disconnect();
   return {
     props: {
@@ -46,4 +46,4 @@ export async function getServerSideProps(context) {
     },
   };
 }
-export default DashboardMenuv1;
+export default DashboardMenuv2;

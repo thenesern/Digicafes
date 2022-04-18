@@ -1,7 +1,7 @@
 import nc from "next-connect";
-import db from "../../../utils/db";
-import QRMenu from "../../../models/QRMenuModel";
-import { isAuth } from "../../../utils/auth";
+import db from "../../../../utils/db";
+import QRMenu from "../../../../models/QRMenu2Model";
+import { isAuth } from "../../../../utils/auth";
 
 const handler = nc();
 

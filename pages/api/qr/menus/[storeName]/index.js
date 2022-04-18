@@ -1,5 +1,5 @@
 import nc from "next-connect";
-import QRMenu from "../../../../../models/QRMenuModel";
+import QRMenu from "../../../../../models/QRMenu1Model";
 import { isAuth } from "../../../../../utils/auth";
 import db from "../../../../../utils/db";
 
@@ -16,21 +16,6 @@ handler.get(async (req, res) => {
   } catch (err) {
     console.log(err.message);
   }
-  await db.disconnect();
-});
-
-handler.patch(async (req, res) => {
-  await db.connect();
-  console.log(req.body);
-  await QRMenu.findOneAndUpdate(
-    { storeName: req.body.storeName },
-    {
-      products: req.body.products,
-      storeLogo: req.body.storeLogo,
-    }
-  );
-  const menu = await QRMenu.findOne({ storeName: req.body.storeName });
-  res.json({ status: "success", menu });
   await db.disconnect();
 });
 
