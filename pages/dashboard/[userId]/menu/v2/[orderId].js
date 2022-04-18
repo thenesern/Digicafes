@@ -6,7 +6,7 @@ import Nav from "../../../../../components/Nav/Nav";
 import UserDashboard from "../../../../../components/UserDashboard/UserDashboard";
 import Order from "../../../../../models/OrderModel";
 import Product from "../../../../../models/ProductModel";
-import QRMenu from "../../../../../models/QRMenu1Model";
+import QRMenu from "../../../../../models/QRMenu2Model";
 import User from "../../../../../models/UserModel";
 import db from "../../../../../utils/db";
 

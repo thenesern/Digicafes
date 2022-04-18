@@ -55,7 +55,7 @@ const UserDashboard = ({ order }) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [file, setFile] = useState(null);
   const theme = useTheme();
-  const [menu, setMenu] = useState(order[0]?.menuv1 || "");
+  const [menu, setMenu] = useState(order[0]?.menuv1 || order[0]?.menuv2 || "");
   const [name, setName] = useState("");
   const [price, setPrice] = useState();
   const [description, setDescription] = useState("");
@@ -69,6 +69,15 @@ const UserDashboard = ({ order }) => {
   const [products, setProducts] = useState([...(menu?.products || "")]);
   const arrayProducts = Array.from(products);
   const [deleteId, setDeleteId] = useState("");
+  const [version, setVersion] = useState("");
+  useEffect(() => {
+    if (order[0]?.product?.name === "Dijital Menü - V1") {
+      setVersion("v1");
+    } else {
+      setVersion("v2");
+    }
+  }, [order]);
+
   const [deleteName, setDeleteName] = useState("");
   const [deleteCategory, setDeleteCategory] = useState(false);
   const [storeLogo, setStoreLogo] = useState(
@@ -133,12 +142,7 @@ const UserDashboard = ({ order }) => {
   const firstTimeHandler = async (e) => {
     e.preventDefault();
     const createdAt = new Date().toLocaleString("tr-TR");
-    let version;
-    if (order[0]?.product?.name === "Dijital Menü - V1") {
-      version = "v1";
-    } else {
-      version = "v2";
-    }
+
     try {
       setIsFetchingForFirst(true);
       const { data } = await axios.post(
@@ -175,12 +179,7 @@ const UserDashboard = ({ order }) => {
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "uploads");
-    let version;
-    if (order[0]?.product?.name === "Dijital Menü - V1") {
-      version = "v1";
-    } else {
-      version = "v2";
-    }
+
     try {
       setIsFetching(true);
       const uploadRes = await axios.post(
@@ -225,12 +224,7 @@ const UserDashboard = ({ order }) => {
   };
   const deleteProductHandler = async () => {
     setIsFetching(true);
-    let version;
-    if (order[0]?.product?.name === "Dijital Menü - V1") {
-      version = "v1";
-    } else {
-      version = "v2";
-    }
+
     try {
       setProducts(arrayProducts.filter((product) => product._id !== deleteId));
       const newProducts = arrayProducts.filter(
@@ -259,12 +253,7 @@ const UserDashboard = ({ order }) => {
   };
   const deleteCategoryHandler = async () => {
     setIsFetching(true);
-    let version;
-    if (order[0]?.product?.name === "Dijital Menü - V1") {
-      version = "v1";
-    } else {
-      version = "v2";
-    }
+
     try {
       setCategories(
         arrayCategories.filter((category) => category._id !== deleteId)
@@ -299,12 +288,7 @@ const UserDashboard = ({ order }) => {
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "uploads");
-    let version;
-    if (order[0]?.product?.name === "Dijital Menü - V1") {
-      version = "v1";
-    } else {
-      version = "v2";
-    }
+
     try {
       setIsFetching(true);
       const uploadRes = await axios.post(
@@ -350,12 +334,7 @@ const UserDashboard = ({ order }) => {
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "uploads");
-    let version;
-    if (order[0]?.product?.name === "Dijital Menü - V1") {
-      version = "v1";
-    } else {
-      version = "v2";
-    }
+
     try {
       setIsFetching(true);
       const uploadRes = await axios.post(
@@ -395,7 +374,7 @@ const UserDashboard = ({ order }) => {
       padding: 0,
     };
     QRCode.toDataURL(
-      `https://www.project-testenes.vercel.app.com/qr/v1/${menu?.storeName}`,
+      `https://www.project-testenes.vercel.app.com/qr${version}/${menu?.storeName}`,
       opts
     ).then(setSrc);
   }, [menu]);
@@ -509,30 +488,13 @@ const UserDashboard = ({ order }) => {
                     fullWidth
                     disabled={isFirst ? false : true}
                     id="brandName"
-                    value={menu?.menuv1?.storeName}
                     rules={{
                       required: true,
                       pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
                     }}
+                    style={{ maxWidth: "24rem" }}
                     onChange={(e) => setStoreName(e.target.value)}
-                    label={menu?.menuv1?.storeName ? "" : "Dükkan Adı"}
-                    helperText={
-                      isFirst ? (
-                        storeName ? (
-                          `Örnek: www.site.com/qr/${storeName}`
-                        ) : (
-                          "Örnek: www.site.com/qr/dükkanadı"
-                        )
-                      ) : (
-                        <Link
-                          href="localhost:3000/qr/[storeName]"
-                          as={`localhost:3000/qr/${menu?.menuv1?.storeName}`}
-                        >
-                          www.site.com/qr/
-                          {menu?.menuv1?.storeName || storeName}
-                        </Link>
-                      )
-                    }
+                    label="Dükkan Adı"
                   ></TextField>
                 </ListItem>
                 {isFirst && (
@@ -578,7 +540,7 @@ const UserDashboard = ({ order }) => {
                   <img src={src} alt="QR" className={styles.qrImg} />
                   <img src={storeLogo} alt="Logo" className={styles.logo} />
                   <div className={styles.qrActions}>
-                    <Link href={`/qr/v1/${menu?.storeName}`} passHref>
+                    <Link href={`/qr/${version}/${menu?.storeName}`} passHref>
                       <a target="_blank">
                         <Stack direction="row" spacing={1}>
                           <Button

@@ -15,7 +15,6 @@ import Cookies from "js-cookie";
 import { useEffect } from "react";
 
 const Dashboard = ({ orders, user }) => {
-  console.log(orders);
   const router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
   return (
@@ -84,7 +83,7 @@ const Dashboard = ({ orders, user }) => {
                       <div>
                         <h4>İş Yeri Adı</h4>
                         <p>
-                          {order?.menuv1
+                          {order?.menuv2
                             ? order?.menuv2?.storeName
                             : "Henüz Oluşturulmadı"}
                         </p>

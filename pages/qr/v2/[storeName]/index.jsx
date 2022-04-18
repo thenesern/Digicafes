@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styles from "./store.module.css";
 import db from "../../../../utils/db.js";
-import QRMenu from "../../../../models/QRMenuModel.js";
+import QRMenu from "../../../../models/QRMenu2Model.js";
 import { Link, Loading, Modal, Spacer } from "@nextui-org/react";
 import { Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -36,7 +36,7 @@ const StoreMenu = ({ menu }) => {
             {menu &&
               menu?.categories?.map((m) => (
                 <Link
-                  href={`/qr/v1/${menu?.storeName}/products/${m?.name}`}
+                  href={`/qr/v2/${menu?.storeName}/products/${m?.name}`}
                   passHref
                   onClick={() => {
                     try {
@@ -73,7 +73,7 @@ const StoreMenu = ({ menu }) => {
         {menu &&
           menu?.categories?.map((m) => (
             <Link
-              href={`/qr/v1/${menu?.storeName}/products/${m?.name}`}
+              href={`/qr/v2/${menu?.storeName}/products/${m?.name}`}
               passHref
               onClick={() => {
                 try {
