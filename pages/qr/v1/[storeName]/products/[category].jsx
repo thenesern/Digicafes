@@ -55,13 +55,40 @@ const StoreMenu = ({ menu, category }) => {
         )}
 
         <div className={styles["menu-item"]}>
-          <Badge
-            badgeContent={0}
-            color="primary"
-            style={{ transform: "scale(0.9)" }}
+          <IconButton onClick={() => setOpen(true)}>
+            <MenuIcon style={{ color: "white", fontSize: "2rem" }} />
+          </IconButton>
+          <SwipeableDrawer
+            anchor="right"
+            open={open}
+            onOpen={() => setOpen(true)}
+            onClose={() => setOpen(false)}
           >
-            <ShoppingCartOutlined style={{ color: "#f7ede2" }} />
-          </Badge>
+            <IconButton>
+              <ChevronRightIcon onClick={() => setOpen(true)} />
+              <Divider />
+            </IconButton>
+            <ul className={styles.navList}>
+              {menu &&
+                menu?.categories?.map((m) => (
+                  <Link
+                    href={`/qr/v1/${menu?.storeName}/products/${m?.name}`}
+                    passHref
+                    onClick={() => {
+                      try {
+                        setIsFetching(true);
+                      } catch (err) {
+                        console.log(err);
+                        setIsFetching(false);
+                      }
+                    }}
+                    key={m?.name}
+                  >
+                    <h3 className={styles.title}>{m?.name}</h3>
+                  </Link>
+                ))}
+            </ul>
+          </SwipeableDrawer>
         </div>
       </navbar>
       <ul className={styles.list}>
@@ -118,9 +145,6 @@ const StoreMenu = ({ menu, category }) => {
               <div className={styles.bottom}>
                 <h3 className={styles.name}>{m?.name}</h3>
                 <p className={styles.price}>₺{m?.price}</p>
-                <Button variant="outlined" color="primary" fullWidth>
-                  Sepete Ekle
-                </Button>
               </div>
             </li>
           ))}

@@ -4,13 +4,21 @@ import styles from "./store.module.css";
 import db from "../../../../utils/db.js";
 import QRMenu from "../../../../models/QRMenu2Model.js";
 import { Link, Loading, Modal, Spacer } from "@nextui-org/react";
-import { Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
+import {
+  Button,
+  Divider,
+  IconButton,
+  SwipeableDrawer,
+} from "@material-ui/core";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const StoreMenu = ({ menu }) => {
   const [open, setOpen] = useState(false);
+
+  const Router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
+
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
@@ -72,12 +80,11 @@ const StoreMenu = ({ menu }) => {
         </Modal>
         {menu &&
           menu?.categories?.map((m) => (
-            <Link
-              href={`/qr/v2/${menu?.storeName}/products/${m?.name}`}
-              passHref
+            <div
               onClick={() => {
                 try {
                   setIsFetching(true);
+                  Router.push(`/qr/v2/${menu?.storeName}/products/${m?.name}`);
                 } catch (err) {
                   console.log(err);
                   setIsFetching(false);
@@ -90,7 +97,7 @@ const StoreMenu = ({ menu }) => {
               <div className={styles.titleBack}>
                 <h3 className={styles.title}>{m?.name}</h3>
               </div>
-            </Link>
+            </div>
           ))}
       </ul>
 

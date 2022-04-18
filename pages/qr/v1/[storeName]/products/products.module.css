@@ -37,6 +37,13 @@
   padding-left: 4px;
   color: #f7ede2;
 }
+.title {
+  cursor: pointer;
+  border-bottom: 1px solid gray;
+  padding: 0 0 10px 0;
+  width: 100%;
+  margin: 0;
+}
 .list {
   list-style: none;
   width: 100%;
@@ -92,8 +99,8 @@
   justify-content: flex-start;
   align-items: flex-start;
   list-style: none;
-  padding: 1rem;
-  gap: 4px;
+  padding: 2rem 1rem;
+  gap: 21px;
   font-size: 14px;
 }
 
