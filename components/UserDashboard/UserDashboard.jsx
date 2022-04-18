@@ -569,6 +569,29 @@ const UserDashboard = ({ order }) => {
                         </Button>
                       </Stack>
                     </a>
+                    {order[0]?.menuv2 && (
+                      <Link
+                        href={`/dashboard/${user?.id}/menu/${version}/${order[0]?._id}/orders`}
+                        passHref
+                      >
+                        <a target="_blank">
+                          <Stack direction="row" spacing={1}>
+                            <Button
+                              variant="outlined"
+                              style={{
+                                height: "2rem",
+                                width: "12rem",
+                              }}
+                              endIcon={
+                                <ArrowRightIcon style={{ fontSize: "2rem" }} />
+                              }
+                            >
+                              Sipariş Paneli
+                            </Button>
+                          </Stack>
+                        </a>
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
