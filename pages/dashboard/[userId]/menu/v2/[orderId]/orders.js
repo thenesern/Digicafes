@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useSnackbar } from "notistack";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -13,6 +14,8 @@ const StoreOrderPanel = ({ data }) => {
   const [orders, setOrders] = useState(data?.orders);
   const [refreshToken, setRefreshToken] = useState(Math.random());
   const [storeName, setStoreName] = useState(data?.storeName);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [isNew, setIsNew] = useState(false);
   useEffect(() => {
     retrieveData().finally(() => {
       // Update refreshToken after 3 seconds so this event will re-trigger and update the data
@@ -24,15 +27,31 @@ const StoreOrderPanel = ({ data }) => {
     const menus = await axios.get(
       "http://localhost:3000/api/qr/v2/demo/orders"
     );
+
+    if (
+      orders.map((o) => o._id)[0] !==
+      menus?.data?.menus
+        ?.filter((menu) => menu.storeName === storeName)[0]
+        .orders.map((o) => o._id)[0]
+    ) {
+      console.log("change detected");
+      setIsNew(true);
+    }
     return setOrders(
       menus?.data?.menus?.filter((menu) => menu.storeName === storeName)[0]
         .orders
     );
   }
-  console.log(orders);
+  useEffect(() => {
+    if (isNew) {
+      enqueueSnackbar("Yeni Sipariş", { variant: "success" });
+      setIsNew(false);
+    } else {
+      return;
+    }
+  }, [isNew, enqueueSnackbar]);
   return (
     <div className={styles.container}>
-      <Nav />
       <br></br>
       <br></br>
       <br></br>
