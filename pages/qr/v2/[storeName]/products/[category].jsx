@@ -16,31 +16,58 @@ import { Store } from "../../../../../redux/store";
 import Order from "../../../../../models/OrderModel";
 import Product from "../../../../../models/ProductModel";
 import { useEffect } from "react";
+import axios from "axios";
 
 const StoreMenu = ({ menu, category, order }) => {
+  const [storeName, setStoreName] = useState(menu?.storeName);
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
   const quantity = cart?.length;
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [openCart, setOpenCart] = useState(false);
   const [productName, setProductName] = useState("");
   const [productImage, setProductImage] = useState("");
   const [productPrice, setProductPrice] = useState(null);
+  const [tableNum, setTableNum] = useState(1);
+  const [cartTotal, setCartTotal] = useState(null);
   const cartItems = [...cart];
   const handleOpenModal = () => setOpenModal(true);
+  const handleOpenCart = () => setOpenCart(true);
+  const handleCloseCart = () => setOpenCart(false);
   const handleCloseModal = () => {
     setOpenModal(false);
     setProductName("");
     setProductImage("");
     setProductPrice(null);
   };
+  console.log(cartItems);
   const [isFetching, setIsFetching] = useState(false);
   const filtered = menu?.products.filter((a) => a.category.includes(category));
-  const addToCartHandler = (name) => {
-    cartItems.push({ name });
+  const handleCartOrder = async () => {
+    setIsFetching(true);
+    try {
+      await axios.patch(`/api/qr/v2/${storeName}/orders`, {
+        orders: [{ cartItems, tableNum }],
+        storeName,
+      });
+      setIsFetching(false);
+    } catch (err) {
+      setIsFetching(false);
+      console.log(err);
+    }
+  };
+  const addToCartHandler = ({ name, price, quantity, img }) => {
+    if (cartItems.find((a) => a.name === name)) {
+      cartItems.find((item) => item.name === name).quantity += quantity;
+    } else {
+      cartItems.push({ name, price, quantity, img });
+    }
+    setCartTotal(cartItems.map((item) => item.price * item.quantity));
     dispatch({ type: "CART", payload: cartItems });
   };
   const [version, setVersion] = useState("");
+
   useEffect(() => {
     if (order[0]?.product?.name === "Dijital Menü - V1") {
       setVersion("v1");
@@ -79,6 +106,7 @@ const StoreMenu = ({ menu, category, order }) => {
           <Badge
             badgeContent={quantity}
             color="primary"
+            onClick={handleOpenCart}
             style={{ transform: "scale(0.9)" }}
           >
             <ShoppingCartOutlined style={{ color: "#f7ede2" }} />
@@ -107,6 +135,43 @@ const StoreMenu = ({ menu, category, order }) => {
               Laudantium porro natus sequi eaque accusantium molestiae
               blanditiis consectetur est vero accusamus ipsam officiis ipsum.
             </p>
+          </Box>
+        </Modal>
+        <Modal
+          open={openCart}
+          style={{
+            width: "92%",
+            margin: "0 auto",
+          }}
+          onClose={handleCloseCart}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box>
+            <Modal.Header>
+              <h2>Sepet Özeti</h2>
+            </Modal.Header>
+            <Modal.Body>
+              {cartItems?.map((item) => (
+                <div key={Math.random()} className={styles.cart}>
+                  <div className={styles.cartHeader}>
+                    <img src={item?.img} alt="" className={styles.cartImg} />
+                    <h4>{item?.name}</h4>
+                  </div>
+                  <h4>x{item?.quantity}</h4>
+                </div>
+              ))}
+            </Modal.Body>
+            <Modal.Footer className={styles.cartFooter}>
+              <div>Toplam: ₺{cartTotal}</div>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleCartOrder}
+              >
+                Siparişi Onayla
+              </Button>
+            </Modal.Footer>
           </Box>
         </Modal>
         <Modal
@@ -150,7 +215,14 @@ const StoreMenu = ({ menu, category, order }) => {
                   color: "#f7ede2",
                 }}
                 fullWidth
-                onClick={() => addToCartHandler(m?.name)}
+                onClick={() =>
+                  addToCartHandler({
+                    name: m?.name,
+                    price: m?.price,
+                    img: m?.image,
+                    quantity: 1,
+                  })
+                }
               >
                 Sepete Ekle
               </Button>

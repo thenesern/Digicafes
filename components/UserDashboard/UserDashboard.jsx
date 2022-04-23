@@ -146,7 +146,7 @@ const UserDashboard = ({ order }) => {
     try {
       setIsFetchingForFirst(true);
       const { data } = await axios.post(
-        `/api/qr/${version}/menu`,
+        `/api/qr/${version}/${storeName}/menu`,
         {
           storeName: storeName,
           createdAt,

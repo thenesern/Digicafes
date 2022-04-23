@@ -21,7 +21,24 @@
   width: 4rem;
   height: auto;
 }
-
+.cartImg {
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+.cartHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.cart {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
 .nav {
   color: #14213d;
 }
@@ -119,7 +136,12 @@
   height: 16rem;
   object-fit: cover;
 }
-
+.cartFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between !important;
+  padding: 1rem !important;
+}
 .navList a {
   border-bottom: 1px solid gray;
   width: 100%;
