@@ -35,12 +35,11 @@ const columns = [
 ];
 
 const StoreOrders = (props) => {
-  console.log(props.orders.map((a) => a.cartItems));
   return (
     <div className={styles.container}>
       <div className={styles.orders}>
         <div className={styles.grids}>
-          {props?.orders.map((order) => (
+          {props.orders?.map((order) => (
             <DataGrid
               key={order?._id}
               rows={order?.cartItems}
@@ -52,7 +51,7 @@ const StoreOrders = (props) => {
               localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
             />
           ))}
-          {props?.orders.map((order) => (
+          {props.orders?.map((order) => (
             <DataGrid
               key={order?._id}
               rows={order}

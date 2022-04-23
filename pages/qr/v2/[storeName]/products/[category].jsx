@@ -41,7 +41,6 @@ const StoreMenu = ({ menu, category, order }) => {
     setProductImage("");
     setProductPrice(null);
   };
-  console.log(cartItems);
   const [isFetching, setIsFetching] = useState(false);
   const filtered = menu?.products.filter((a) => a.category.includes(category));
   const handleCartOrder = async () => {

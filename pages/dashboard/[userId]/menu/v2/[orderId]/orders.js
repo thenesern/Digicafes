@@ -1,4 +1,7 @@
+import axios from "axios";
 import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 import Nav from "../../../../../../components/Nav/Nav";
 import StoreOrders from "../../../../../../components/StoreOrders/StoreOrders";
 import Order from "../../../../../../models/OrderModel";
@@ -6,7 +9,27 @@ import QRMenu from "../../../../../../models/QRMenu2Model";
 import db from "../../../../../../utils/db";
 import styles from "./orders.module.css";
 
-const StoreOrderPanel = ({ orders }) => {
+const StoreOrderPanel = ({ data }) => {
+  const [orders, setOrders] = useState(data?.orders);
+  const [refreshToken, setRefreshToken] = useState(Math.random());
+  const [storeName, setStoreName] = useState(data?.storeName);
+  useEffect(() => {
+    retrieveData().finally(() => {
+      // Update refreshToken after 3 seconds so this event will re-trigger and update the data
+      setTimeout(() => setRefreshToken(Math.random()), 15000);
+    });
+  }, [refreshToken]);
+
+  async function retrieveData() {
+    const menus = await axios.get(
+      "http://localhost:3000/api/qr/v2/demo/orders"
+    );
+    return setOrders(
+      menus?.data?.menus?.filter((menu) => menu.storeName === storeName)[0]
+        .orders
+    );
+  }
+  console.log(orders);
   return (
     <div className={styles.container}>
       <Nav />
@@ -45,7 +68,7 @@ export async function getServerSideProps(context) {
   }
   return {
     props: {
-      orders: JSON.parse(JSON.stringify(menu.orders)),
+      data: JSON.parse(JSON.stringify(menu)),
     },
   };
 }
