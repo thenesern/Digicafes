@@ -12,21 +12,22 @@ import db from "../../../../../../utils/db";
 import styles from "./orders.module.css";
 
 const StoreOrderPanel = ({ data }) => {
+  const [storeLogo, setStoreLogo] = useState(data?.storeLogo);
+  const [storeName, setStoreName] = useState(data?.storeName);
   const [orders, setOrders] = useState(data?.orders);
   const [refreshToken, setRefreshToken] = useState(Math.random());
-  const [storeName, setStoreName] = useState(data?.storeName);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [isNew, setIsNew] = useState(false);
+
   useEffect(() => {
     retrieveData().finally(() => {
-      // Update refreshToken after 3 seconds so this event will re-trigger and update the data
       setTimeout(() => setRefreshToken(Math.random()), 15000);
     });
   }, [refreshToken]);
 
   async function retrieveData() {
     const menus = await axios.get(
-      "http://localhost:3000/api/qr/v2/demo/orders"
+      `http://localhost:3000/api/qr/v2/${storeName}/orders`
     );
 
     if (
@@ -53,16 +54,7 @@ const StoreOrderPanel = ({ data }) => {
   }, [isNew, enqueueSnackbar]);
   return (
     <div className={styles.container}>
-      <OrderNav orders={orders} />
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
+      <OrderNav orders={orders} storeLogo={storeLogo} />
       <StoreOrders orders={orders} />
     </div>
   );

@@ -7,6 +7,29 @@ const OrderNav = (props) => {
   const [dates, setDates] = useState(
     props.orders?.map((o) => o.createdAt.split(" ")[0])
   );
+  const [favs, setFavs] = useState(
+    props.orders?.map((o) => o.cartItems.map((a) => a.name).toString())
+  );
+  const [favItemCount, setFavItemCount] = useState(null);
+  let m = 0;
+  const [favItem, setFavItem] = useState("");
+  function setFavItems() {
+    for (let i = 0; i < favs.length; i++) {
+      for (let j = i; j < favs.length; j++) {
+        if (favs[i] == favs[j]) m++;
+        if (favItemCount < m) {
+          favItemCount = m;
+          setFavItem(favs[i]);
+          setFavItemCount(favItemCount);
+        }
+      }
+
+      m = 0;
+    }
+  }
+  useEffect(() => {
+    setFavItems();
+  }, []);
   useEffect(() => {
     setDates(props.orders?.map((o) => o.createdAt.split(" ")[0]));
   }, [props]);
@@ -68,19 +91,15 @@ const OrderNav = (props) => {
   }
   return (
     <nav className={styles.nav}>
-      <div>
-        <Button
-          variant="contained"
-          style={{ backgroundColor: "#fbeee0", color: "#1d3557" }}
-          startIcon={<ArrowBackIosNewIcon />}
-        >
-          Panele Dön
-        </Button>
+      <div className={styles.logo}>
+        <img src={props.storeLogo} alt="Logo" className={styles.storeLogo} />
       </div>
-      <div>
-        <img src="" alt="a" />
+      <div className={styles.favs}>
+        <h3 className={styles.header}>En Sevilenler</h3>
+        <div className={styles.periods}>
+          <span>{favItem + " " + `(${favItemCount})` || "Yok"}</span>
+        </div>
       </div>
-
       <div className={styles.right}>
         <h5 className={styles.header}>Siparişler</h5>
         <div className={styles.orders}>

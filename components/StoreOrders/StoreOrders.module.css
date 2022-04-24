@@ -11,26 +11,28 @@
 
 .gridHeader {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
 }
 
 .orders {
-  margin-top: 4rem;
+  margin-top: 7rem;
 }
 .gridOrders {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 1rem;
+  width: 100%;
 }
+
 .grids {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 24rem;
+  height: 36rem;
   gap: 1rem;
-  padding: 0 2rem;
+  padding: 2rem;
 }

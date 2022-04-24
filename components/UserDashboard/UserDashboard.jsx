@@ -282,23 +282,23 @@ const UserDashboard = ({ order }) => {
     }
     setIsFetching(false);
   };
-
   const addCategoryHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "uploads");
-
+    let betterCategoryName = addCategory
+      ?.split(" ")
+      .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
+      .join(" ");
+    console.log(betterCategoryName);
     try {
       setIsFetching(true);
       const uploadRes = await axios.post(
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
         data
       );
-      let betterCategoryName = addCategory
-        ?.split(" ")
-        .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
-        .join(" ");
+
       arrayCategories.push({
         name: betterCategoryName,
         image: uploadRes?.data?.url,

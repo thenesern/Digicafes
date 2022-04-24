@@ -63,7 +63,7 @@ const StoreMenu = ({ menu, category, order }) => {
     } else {
       cartItems.push({ name, price, quantity, img });
     }
-    setCartTotal(cartItems.map((item) => item.price * item.quantity));
+    setCartTotal(cartItems.map((item) => +item.price * +item.quantity));
     dispatch({ type: "CART", payload: cartItems });
   };
   const [version, setVersion] = useState("");
