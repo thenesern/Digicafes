@@ -36,6 +36,13 @@ const OrderNav = (props) => {
   for (let i = 0; i < length; i++) {
     week.push(date.replace(date.split(".")[0], date.split(".")[0] - i));
   }
+  for (let i = 0; i < date.split(".")[0]; i++) {
+    if (date.split(".")[0] !== 0) {
+      month.push(date.replace(date.split(".")[0], date.split(".")[0] - i));
+    } else {
+      return;
+    }
+  }
   const days = [
     "Pazar",
     "Pazartesi",
@@ -46,17 +53,19 @@ const OrderNav = (props) => {
     "Cumartesi",
   ];
   const weekOrders = [];
+  const monthOrders = [];
+  const d = new Date();
+  let day = days[d.getDay()];
   for (let i = 0; i < dates.length; i++) {
     if (dates.some((ele) => week.includes(ele))) {
       weekOrders.push("true");
     }
   }
-  /*   console.log(dates.map((a) => a.split(".")[0]));
-  console.log(date.split(".")[0]); */
-  console.log(weekOrders);
-  for (let i = 0; i < day; i++) {}
-  const d = new Date();
-  let day = days[d.getDay()];
+  for (let i = 0; i < dates.length; i++) {
+    if (dates.some((ele) => month.includes(ele))) {
+      monthOrders.push("true");
+    }
+  }
   return (
     <nav className={styles.nav}>
       <div>
@@ -88,7 +97,7 @@ const OrderNav = (props) => {
           </div>
           <div className={styles.periods}>
             <h6 className={styles.title}>Bu Ay</h6>
-            <span>{"" || 0}</span>
+            <span>{monthOrders.length || 0}</span>
           </div>
         </div>
       </div>
