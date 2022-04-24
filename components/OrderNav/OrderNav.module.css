@@ -1,0 +1,42 @@
+.nav {
+  background-color: #1d3557;
+  color: #fbeee0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 2fr 6fr 2fr;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.header {
+  padding: 0;
+  margin: 0;
+  padding: 10px 0 4px 0;
+}
+.title {
+  margin: 0;
+  padding: 0;
+}
+.orders {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+  gap: 1rem;
+}
+
+.periods {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+}

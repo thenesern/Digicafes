@@ -5,31 +5,43 @@ import { trTR } from "@mui/x-data-grid";
 
 const columns = [
   {
+    field: "_id",
+    headerName: "Ürün Kodu",
+    flex: 1,
+  },
+  {
     field: "name",
-    headerName: "Ürün Adı",
+    headerName: "Sipariş",
     flex: 1,
     renderCell: (params) => {
       return (
         <div className={styles.gridHeader}>
-          <img src={params?.row?.img} className={styles.gridImage} />
-          <p>{params?.row?.name}</p>
+          {params.row.cartItems.map((i) => (
+            <div key={Math.random()} className={styles.gridOrders}>
+              <p>{i.name}</p>
+              <p>x</p>
+              <p>{i.quantity}</p>
+            </div>
+          ))}
         </div>
       );
     },
   },
   {
-    field: "quantity",
-    headerName: "Miktar / Adet",
+    field: "tableNum",
+    headerName: "Masa Numarası",
     flex: 1,
     editable: false,
   },
   {
     field: "price",
-    headerName: "Birim Fiyat",
+    headerName: "Toplam Tutar",
     flex: 1,
     editable: false,
     renderCell: (params) => {
-      return <span>₺{params?.row?.price}</span>;
+      return (
+        <span>₺{params?.row?.cartItems.map((a) => a.quantity * a.price)}</span>
+      );
     },
   },
 ];
@@ -39,30 +51,15 @@ const StoreOrders = (props) => {
     <div className={styles.container}>
       <div className={styles.orders}>
         <div className={styles.grids}>
-          {props.orders?.map((order) => (
-            <DataGrid
-              key={order?._id}
-              rows={order?.cartItems}
-              columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-              getRowId={(row) => row?._id}
-              disableSelectionOnClick
-              localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
-            />
-          ))}
-          {props.orders?.map((order) => (
-            <DataGrid
-              key={order?._id}
-              rows={order}
-              columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-              getRowId={(row) => row?._id}
-              disableSelectionOnClick
-              localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
-            />
-          ))}
+          <DataGrid
+            rows={props.orders}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            getRowId={(row) => row?._id}
+            disableSelectionOnClick
+            localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
+          />
         </div>
       </div>
     </div>

@@ -45,9 +45,10 @@ const StoreMenu = ({ menu, category, order }) => {
   const filtered = menu?.products.filter((a) => a.category.includes(category));
   const handleCartOrder = async () => {
     setIsFetching(true);
+    const createdAt = new Date().toLocaleString("tr-TR");
     try {
       await axios.patch(`/api/qr/v2/${storeName}/orders`, {
-        orders: [{ cartItems, tableNum }],
+        orders: [{ cartItems, tableNum, createdAt }],
         storeName,
       });
       setIsFetching(false);

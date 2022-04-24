@@ -4,6 +4,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import Nav from "../../../../../../components/Nav/Nav";
+import OrderNav from "../../../../../../components/OrderNav/OrderNav";
 import StoreOrders from "../../../../../../components/StoreOrders/StoreOrders";
 import Order from "../../../../../../models/OrderModel";
 import QRMenu from "../../../../../../models/QRMenu2Model";
@@ -52,7 +53,7 @@ const StoreOrderPanel = ({ data }) => {
   }, [isNew, enqueueSnackbar]);
   return (
     <div className={styles.container}>
-      <br></br>
+      <OrderNav orders={orders} />
       <br></br>
       <br></br>
       <br></br>

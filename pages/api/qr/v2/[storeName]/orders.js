@@ -17,7 +17,7 @@ handler.patch(async (req, res) => {
   await QRMenu.findOneAndUpdate(
     { storeName: req.body.storeName },
     {
-      orders: req.body.orders,
+      $push: { orders: req.body.orders },
     }
   );
   res.json({ status: "success" });
