@@ -32,7 +32,6 @@ const Checkout = ({ product }) => {
   const [visible, setVisible] = React.useState(false);
   const handler = () => setVisible(true);
   const [stepper, setStepper] = useState(0);
-  console.log(userInfo);
   const { render, name, number, cvc, expiry } = useCard();
   const closeHandler = () => {
     setVisible(false);

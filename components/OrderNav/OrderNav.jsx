@@ -40,19 +40,19 @@ const OrderNav = (props) => {
     if (day === "Pazar") {
       setLength(7);
     } else if (day === "Pazartesi") {
-      setLength(0);
-    } else if (day === "Salı") {
       setLength(1);
-    } else if (day === "Çarşamba") {
+    } else if (day === "Salı") {
       setLength(2);
-    } else if (day === "Perşembe") {
+    } else if (day === "Çarşamba") {
       setLength(3);
-    } else if (day === "Cuma") {
+    } else if (day === "Perşembe") {
       setLength(4);
-    } else if (day === "Cumartesi") {
+    } else if (day === "Cuma") {
       setLength(5);
-    } else {
+    } else if (day === "Cumartesi") {
       setLength(6);
+    } else {
+      return;
     }
   }, []);
   const [length, setLength] = useState(null);
@@ -89,6 +89,7 @@ const OrderNav = (props) => {
       monthOrders.push("true");
     }
   }
+
   return (
     <nav className={styles.nav}>
       <div className={styles.logo}>

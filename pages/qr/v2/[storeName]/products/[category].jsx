@@ -56,8 +56,10 @@ const StoreMenu = ({ menu, category, order }) => {
         storeName,
       });
       setIsFetching(false);
+      handleCloseCart();
     } catch (err) {
       setIsFetching(false);
+      handleCloseCart();
       console.log(err);
     }
   };

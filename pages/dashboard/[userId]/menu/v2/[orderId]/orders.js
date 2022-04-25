@@ -19,6 +19,7 @@ const StoreOrderPanel = ({ data, order }) => {
   const [refreshToken, setRefreshToken] = useState(Math.random());
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [isNew, setIsNew] = useState(false);
+  const audio = document.getElementById("a1");
 
   useEffect(() => {
     retrieveData().finally(() => {
@@ -42,6 +43,7 @@ const StoreOrderPanel = ({ data, order }) => {
   useEffect(() => {
     if (isNew) {
       enqueueSnackbar("Yeni Sipariş", { variant: "success" });
+      audio.play();
       setIsNew(false);
     } else {
       return;
@@ -50,6 +52,14 @@ const StoreOrderPanel = ({ data, order }) => {
   return (
     <div className={styles.container}>
       <OrderNav orders={orders} storeLogo={storeLogo} />
+      <div className="container">
+        <div className="col">
+          <audio
+            id="a1"
+            src="https://res.cloudinary.com/dlyjd3mnb/video/upload/v1650899563/orderAlert_ltwbxs.mp3"
+          ></audio>
+        </div>
+      </div>
       <StoreOrders orders={orders} />
     </div>
   );
