@@ -97,7 +97,9 @@ const OrderNav = (props) => {
       <div className={styles.favs}>
         <h3 className={styles.header}>En Sevilenler</h3>
         <div className={styles.periods}>
-          <span>{favItem + " " + `(${favItemCount})` || "Yok"}</span>
+          <span>
+            {(favItem && favItem + " " + `(${favItemCount})`) || "Yok"}
+          </span>
         </div>
       </div>
       <div className={styles.right}>

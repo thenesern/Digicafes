@@ -4,11 +4,10 @@ import QRMenu from "../../../../../models/QRMenu2Model";
 
 const handler = nc();
 
-handler.get(async (req, res) => {
+handler.post(async (req, res) => {
   await db.connect();
-
-  const menus = await QRMenu.find();
-  res.send({ status: "success", menus });
+  const menu = await QRMenu.findOne({ _id: req.body.menuv2Id });
+  res.send({ status: "success", menu });
   await db.disconnect();
 });
 

@@ -11,9 +11,10 @@ import QRMenu from "../../../../../../models/QRMenu2Model";
 import db from "../../../../../../utils/db";
 import styles from "./orders.module.css";
 
-const StoreOrderPanel = ({ data }) => {
+const StoreOrderPanel = ({ data, order }) => {
   const [storeLogo, setStoreLogo] = useState(data?.storeLogo);
   const [storeName, setStoreName] = useState(data?.storeName);
+  const [menuv2Id, setMenuv2Id] = useState(order?.menuv2);
   const [orders, setOrders] = useState(data?.orders);
   const [refreshToken, setRefreshToken] = useState(Math.random());
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -26,21 +27,17 @@ const StoreOrderPanel = ({ data }) => {
   }, [refreshToken]);
 
   async function retrieveData() {
-    const menus = await axios.get(`/api/qr/v2/${storeName}/orders`);
-
-    if (
-      orders.map((o) => o._id)[0] !==
-      menus?.data?.menus
-        ?.filter((menu) => menu.storeName === storeName)[0]
-        .orders.map((o) => o._id)[0]
-    ) {
-      console.log("change detected");
-      setIsNew(true);
+    try {
+      const menus = await axios.post(`/api/qr/v2/${storeName}/orders`, {
+        menuv2Id,
+      });
+      if (orders.length < menus?.data?.menu?.orders.length) {
+        setIsNew(true);
+      }
+      setOrders(menus?.data?.menu?.orders);
+    } catch (err) {
+      console.log(err);
     }
-    return setOrders(
-      menus?.data?.menus?.filter((menu) => menu.storeName === storeName)[0]
-        .orders
-    );
   }
   useEffect(() => {
     if (isNew) {
@@ -49,7 +46,7 @@ const StoreOrderPanel = ({ data }) => {
     } else {
       return;
     }
-  }, [isNew, enqueueSnackbar]);
+  }, [isNew]);
   return (
     <div className={styles.container}>
       <OrderNav orders={orders} storeLogo={storeLogo} />
@@ -67,7 +64,7 @@ export async function getServerSideProps(context) {
   const order = await Order.findOne({ _id: orderId });
   const menu = await QRMenu.findOne({ _id: order?.menuv2 });
   await db.disconnect();
-
+  console.log(order);
   if (signedUserId !== userId) {
     return {
       redirect: {
@@ -79,6 +76,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       data: JSON.parse(JSON.stringify(menu)),
+      order: JSON.parse(JSON.stringify(order)),
     },
   };
 }

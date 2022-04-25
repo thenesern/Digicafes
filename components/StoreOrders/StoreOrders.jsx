@@ -56,9 +56,10 @@ const StoreOrders = (props) => {
       renderCell: (params) => {
         return (
           <span>
-            {params?.row?.cartItems.map((a) => (
-              <p key={Math.random()}>₺{a.price * a.quantity}</p>
-            ))}
+            <span>₺</span>
+            {params?.row?.cartItems.reduce(function (a, b) {
+              return a + b.price * b.quantity;
+            }, 0)}
           </span>
         );
       },
@@ -72,6 +73,11 @@ const StoreOrders = (props) => {
           <DataGrid
             rows={props.orders}
             columns={columns}
+            initialState={{
+              sorting: {
+                sortModel: [{ field: "createdAt", sort: "desc" }],
+              },
+            }}
             rowHeight={100}
             sx={{
               height: 720,

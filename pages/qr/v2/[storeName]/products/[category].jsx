@@ -188,7 +188,6 @@ const StoreMenu = ({ menu, category, order }) => {
                               }, 0)
                             );
                             dispatch({ type: "CART", payload: cartItems });
-                            console.log(cartItems);
                           } else {
                             {
                               setCartItems([]);
