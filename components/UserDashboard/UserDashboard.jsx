@@ -179,7 +179,10 @@ const UserDashboard = ({ order }) => {
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "uploads");
-
+    let betterProductName = name
+      ?.split(" ")
+      .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
+      .join(" ");
     try {
       setIsFetching(true);
       const uploadRes = await axios.post(
@@ -187,7 +190,7 @@ const UserDashboard = ({ order }) => {
         data
       );
       arrayProducts.push({
-        name,
+        name: betterProductName,
         price,
         description,
         category,
@@ -251,9 +254,20 @@ const UserDashboard = ({ order }) => {
     }
     setIsFetching(false);
   };
+
   const deleteCategoryHandler = async () => {
     setIsFetching(true);
-
+    if (
+      products.map((a) => a.category.toString()).includes(deleteName) === true
+    ) {
+      setIsFetching(false);
+      setDeleteId("");
+      setDeleteName("");
+      return enqueueSnackbar(
+        "Kategori Silinemedi (Bu kategoriyi kullanan bir ürün var.)",
+        { variant: "error" }
+      );
+    }
     try {
       setCategories(
         arrayCategories.filter((category) => category._id !== deleteId)
@@ -273,11 +287,13 @@ const UserDashboard = ({ order }) => {
       );
       setIsFetching(false);
       setDeleteId("");
+      setDeleteName("");
       enqueueSnackbar("Kategori Silindi", { variant: "success" });
     } catch (err) {
       console.log(err);
       setIsFetching(false);
       setDeleteId("");
+      setDeleteName("");
       enqueueSnackbar("Kategori Silinemedi", { variant: "error" });
     }
     setIsFetching(false);
@@ -291,7 +307,6 @@ const UserDashboard = ({ order }) => {
       ?.split(" ")
       .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
       .join(" ");
-    console.log(betterCategoryName);
     try {
       setIsFetching(true);
       const uploadRes = await axios.post(
@@ -394,9 +409,16 @@ const UserDashboard = ({ order }) => {
         );
       },
     },
-    { field: "price", headerName: "Ürün Fiyatı", flex: 1 },
+    {
+      field: "price",
+      headerName: "Ürün Fiyatı",
+      flex: 0.7,
+      renderCell: (params) => {
+        return <span>₺{params?.row.price}</span>;
+      },
+    },
     { field: "description", headerName: "Ürün Açıklaması", flex: 1 },
-    { field: "category", headerName: "Ürün Kategorisi", flex: 1 },
+    { field: "category", headerName: "Ürün Kategorisi", flex: 0.8 },
     {
       field: "actions",
       headerName: "Yönetim",

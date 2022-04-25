@@ -26,9 +26,7 @@ const StoreOrderPanel = ({ data }) => {
   }, [refreshToken]);
 
   async function retrieveData() {
-    const menus = await axios.get(
-      `http://localhost:3000/api/qr/v2/${storeName}/orders`
-    );
+    const menus = await axios.get(`/api/qr/v2/${storeName}/orders`);
 
     if (
       orders.map((o) => o._id)[0] !==

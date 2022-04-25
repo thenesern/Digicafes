@@ -33,6 +33,13 @@
   justify-content: center;
   gap: 1rem;
 }
+.productQuantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
 .cart {
   display: flex;
   align-items: center;

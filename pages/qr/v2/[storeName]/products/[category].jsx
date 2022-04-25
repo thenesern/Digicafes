@@ -17,6 +17,8 @@ import Order from "../../../../../models/OrderModel";
 import Product from "../../../../../models/ProductModel";
 import { useEffect } from "react";
 import axios from "axios";
+import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
+import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 
 const StoreMenu = ({ menu, category, order }) => {
   const [storeName, setStoreName] = useState(menu?.storeName);
@@ -29,9 +31,10 @@ const StoreMenu = ({ menu, category, order }) => {
   const [productName, setProductName] = useState("");
   const [productImage, setProductImage] = useState("");
   const [productPrice, setProductPrice] = useState(null);
+  const [productDescription, setProductDescription] = useState("");
   const [tableNum, setTableNum] = useState(1);
   const [cartTotal, setCartTotal] = useState(null);
-  const cartItems = [...cart];
+  const [cartItems, setCartItems] = useState([...cart]);
   const handleOpenModal = () => setOpenModal(true);
   const handleOpenCart = () => setOpenCart(true);
   const handleCloseCart = () => setOpenCart(false);
@@ -40,6 +43,7 @@ const StoreMenu = ({ menu, category, order }) => {
     setProductName("");
     setProductImage("");
     setProductPrice(null);
+    setProductDescription("");
   };
   const [isFetching, setIsFetching] = useState(false);
   const filtered = menu?.products.filter((a) => a.category.includes(category));
@@ -63,11 +67,14 @@ const StoreMenu = ({ menu, category, order }) => {
     } else {
       cartItems.push({ name, price, quantity, img });
     }
-    setCartTotal(cartItems.map((item) => +item.price * +item.quantity));
+    setCartTotal(
+      cartItems.reduce(function (a, b) {
+        return a + b.price * b.quantity;
+      }, 0)
+    );
     dispatch({ type: "CART", payload: cartItems });
   };
   const [version, setVersion] = useState("");
-
   useEffect(() => {
     if (order[0]?.product?.name === "Dijital Menü - V1") {
       setVersion("v1");
@@ -75,7 +82,6 @@ const StoreMenu = ({ menu, category, order }) => {
       setVersion("v2");
     }
   }, [order]);
-
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
@@ -130,17 +136,14 @@ const StoreMenu = ({ menu, category, order }) => {
               <span>₺{productPrice}</span>
             </div>
             <img src={productImage} alt="Menu" className={styles.modalImage} />
-            <p className={styles.modalDesc}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Laudantium porro natus sequi eaque accusantium molestiae
-              blanditiis consectetur est vero accusamus ipsam officiis ipsum.
-            </p>
+            <p className={styles.modalDesc}>{productDescription}</p>
           </Box>
         </Modal>
         <Modal
           open={openCart}
           style={{
             width: "92%",
+            minWidth: "36rem",
             margin: "0 auto",
           }}
           onClose={handleCloseCart}
@@ -153,24 +156,83 @@ const StoreMenu = ({ menu, category, order }) => {
             </Modal.Header>
             <Modal.Body>
               {cartItems?.map((item) => (
-                <div key={Math.random()} className={styles.cart}>
-                  <div className={styles.cartHeader}>
-                    <img src={item?.img} alt="" className={styles.cartImg} />
-                    <h4>{item?.name}</h4>
+                <>
+                  <div key={Math.random()} className={styles.cart}>
+                    <div className={styles.cartHeader}>
+                      <img src={item?.img} alt="" className={styles.cartImg} />
+                      <h4>{item?.name}</h4>
+                    </div>
+                    <div className={styles.productQuantity}>
+                      <Button
+                        variant="outlined"
+                        onClick={() => {
+                          if (item.quantity > 1) {
+                            item.quantity -= 1;
+                            setCartItems([...cart]);
+                            setCartTotal(
+                              cartItems.reduce(function (a, b) {
+                                return a + b.price * b.quantity;
+                              }, 0)
+                            );
+                            dispatch({ type: "CART", payload: cartItems });
+                          } else if (
+                            item.quantity - 1 === 0 &&
+                            cartItems.length - 1 !== 0
+                          ) {
+                            setCartItems(
+                              cartItems.filter((product) => product !== item)
+                            );
+                            setCartTotal(
+                              cart.reduce(function (a, b) {
+                                return a + b.price * b.quantity;
+                              }, 0)
+                            );
+                            dispatch({ type: "CART", payload: cartItems });
+                            console.log(cartItems);
+                          } else {
+                            {
+                              setCartItems([]);
+                              setCartTotal(0);
+                              dispatch({ type: "CART", payload: [] });
+                            }
+                          }
+                        }}
+                      >
+                        <ArrowCircleDownIcon />
+                      </Button>
+                      <h4>x{item?.quantity}</h4>
+                      <Button
+                        variant="outlined"
+                        onClick={() => {
+                          item.quantity += 1;
+                          setCartItems([...cart]);
+                          setCartTotal(
+                            cartItems.reduce(function (a, b) {
+                              return a + b.price * b.quantity;
+                            }, 0)
+                          );
+                          dispatch({ type: "CART", payload: cartItems });
+                        }}
+                      >
+                        <ArrowCircleUpIcon />
+                      </Button>
+                    </div>
                   </div>
-                  <h4>x{item?.quantity}</h4>
-                </div>
+                </>
               ))}
+              {cart.length === 0 && <p>Sepetiniz boş.</p>}
             </Modal.Body>
             <Modal.Footer className={styles.cartFooter}>
-              <div>Toplam: ₺{cartTotal}</div>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleCartOrder}
-              >
-                Siparişi Onayla
-              </Button>
+              {cart.length > 0 && <div>Toplam: ₺{cartTotal}</div>}
+              {cart.length > 0 && (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleCartOrder}
+                >
+                  Siparişi Onayla
+                </Button>
+              )}
             </Modal.Footer>
           </Box>
         </Modal>
@@ -197,6 +259,7 @@ const StoreMenu = ({ menu, category, order }) => {
                   setProductName(m?.name);
                   setProductImage(m?.image);
                   setProductPrice(m?.price);
+                  setProductDescription(m?.description);
                   handleOpenModal();
                 }}
               >

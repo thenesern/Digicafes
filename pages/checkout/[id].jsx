@@ -24,21 +24,19 @@ import { Input, Modal } from "@nextui-org/react";
 import { useState } from "react";
 import useCard from "../../components/Card/card";
 import { useEffect } from "react";
-
+import { useContext } from "react";
+import { Store } from "../../redux/store";
 const Checkout = ({ product }) => {
+  const { state } = useContext(Store);
+  const { userInfo } = state;
   const [visible, setVisible] = React.useState(false);
   const handler = () => setVisible(true);
   const [stepper, setStepper] = useState(0);
+  console.log(userInfo);
   const { render, name, number, cvc, expiry } = useCard();
   const closeHandler = () => {
     setVisible(false);
   };
-
-  let user;
-
-  if (Cookies.get("userInfo")) {
-    user = JSON.parse(Cookies.get("userInfo"));
-  }
 
   const paymentHandler = async () => {
     try {
@@ -217,10 +215,12 @@ const Checkout = ({ product }) => {
             <div className={styles.summary}>
               <h1 className={styles.header}>Özet</h1>
               <div>
-                <p className={styles.SummaryDescription}>Toplam Tutar: {product.price}₺</p>
+                <p className={styles.SummaryDescription}>
+                  Toplam Tutar: {product.price}₺
+                </p>
               </div>
             </div>
-            {user ? (
+            {userInfo ? (
               <div className={styles.footer}>
                 <Button
                   className={styles.button}

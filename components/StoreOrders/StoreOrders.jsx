@@ -44,7 +44,7 @@ const StoreOrders = (props) => {
       headerClassName: "dark",
       editable: false,
       renderCell: (params) => {
-        return <span>{params.row.createdAt.split(" ")[1]}</span>;
+        return <span>{params.row.createdAt}</span>;
       },
     },
     {
