@@ -257,6 +257,7 @@ const Nav = () => {
                     type="submit"
                     fullWidth
                     color="primary"
+                    style={{ outline: "none" }}
                     onSubmit={handleSubmit(loginHandler)}
                   >
                     Giriş Yap
@@ -662,7 +663,7 @@ const Nav = () => {
             </button>
           </li>
         )}
-        <Hidden smUp>
+        <Hidden mdUp>
           <IconButton style={{ padding: "0", margin: "0" }}>
             <MenuIcon
               onClick={() => setOpenMenu(true)}

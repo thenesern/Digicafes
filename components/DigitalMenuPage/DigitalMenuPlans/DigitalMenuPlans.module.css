@@ -12,9 +12,9 @@
 .pricingTable > .pricingTable-subtitle {
   text-align: center;
   color: #b4bdc6;
-  font-size: 2rem;
+  font-size: 1.3rem;
   letter-spacing: 0.04em;
-  margin-bottom: 60px;
+  margin: 3rem;
 }
 @media screen and (max-width: 480px) {
   .pricingTable > .pricingTable-subtitle {
@@ -23,8 +23,9 @@
 }
 .pricingTable-firstTable {
   list-style: none;
-  padding: 4rem 1rem;
   text-align: center;
+  margin: 0 !important;
+  padding: 0 0 1rem 0 !important;
 }
 .pricingTable-firstTable_table {
   vertical-align: middle;
@@ -76,45 +77,13 @@
     transform: none;
   }
 }
-.pricingTable-firstTable_table:not(:last-of-type) {
-  margin-right: 3.5%;
-}
+
 @media screen and (max-width: 767px) {
   .pricingTable-firstTable_table:not(:last-of-type) {
     margin-right: auto;
   }
 }
-.pricingTable-firstTable_table:nth-of-type(2) {
-  position: relative;
-}
-@media screen and (max-width: 767px) {
-  .pricingTable-firstTable_table:nth-of-type(2) h1 {
-    padding-top: 8%;
-  }
-}
 
-@media screen and (max-width: 988px) {
-  .pricingTable-firstTable_table:nth-of-type(2):before {
-    font-size: 0.6em;
-  }
-}
-@media screen and (max-width: 767px) {
-  .pricingTable-firstTable_table:nth-of-type(2):before {
-    left: 10px;
-    width: 45px;
-    height: 45px;
-    top: -10px;
-    padding-top: 13px;
-  }
-}
-@media screen and (max-width: 480px) {
-  .pricingTable-firstTable_table:nth-of-type(2):before {
-    font-size: 0.8em;
-  }
-}
-.pricingTable-firstTable_table:nth-of-type(2):hover:before {
-  transform: rotate(360deg);
-}
 .pricingTable-firstTable_table__header {
   font-size: 1.6em;
   padding: 40px 0px;

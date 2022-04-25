@@ -22,7 +22,7 @@ const DigitalMenuPlans = ({ products }) => {
   return (
     <div className={styles["pricingTable"]}>
       <h3 className={styles["pricingTable-subtitle"]}>
-        Bütün Planlar 30 Gün Deneme Sürümü İçerir
+        Bütün Planlar 14 Gün Deneme Sürümü İçerir
       </h3>
 
       <ul className={styles["pricingTable-firstTable"]}>

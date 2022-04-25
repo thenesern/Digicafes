@@ -85,6 +85,7 @@ const ContactForm = () => {
           <Textarea
             placeholder="Mesajınız."
             name="message"
+            className={styles.text}
             style={{ width: "24rem", minHeight: "6rem" }}
           />
           <Button

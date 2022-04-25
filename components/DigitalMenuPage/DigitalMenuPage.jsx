@@ -62,7 +62,7 @@ const DigitalMenuPage = ({ products }) => {
         <article className={styles.first}>
           <div
             style={{ width: "48rem", height: "auto" }}
-            className={styles.test}
+            className={styles.featuresImage1}
           >
             <Image
               layout="responsive"

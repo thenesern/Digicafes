@@ -56,3 +56,9 @@
   justify-content: center;
   gap: 1rem;
 }
+
+@media only screen and (max-width: 800px) {
+  .text {
+    width: 19rem !important;
+  }
+}
