@@ -11,6 +11,7 @@ import { Link } from "react-scroll";
 import Image from "next/image";
 import digitalMenuMockup from "../../assets/image/DigitalMenuPanelMockup.png";
 import QRMenuMockup from "../../assets/image/QRMenuMockup.png";
+import FAQ from "../faq/FAQ";
 
 const DigitalMenuPage = ({ products }) => {
   const [isMobile, setIsMobile] = useState();
@@ -136,6 +137,7 @@ const DigitalMenuPage = ({ products }) => {
         <h3 className={styles.articleHeader} id="faq">
           Sıkça Sorulan Sorular
         </h3>
+        <FAQ />
         <h3 className={styles.articleHeader} id="contact">
           İletişim
         </h3>

@@ -60,6 +60,7 @@ const StoreOrderPanel = ({ data, order }) => {
           ></audio>
         </div>
       </div>
+
       <StoreOrders orders={orders} />
     </div>
   );
