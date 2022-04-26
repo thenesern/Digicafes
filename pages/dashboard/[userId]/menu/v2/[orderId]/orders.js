@@ -54,14 +54,13 @@ const StoreOrderPanel = ({ data, order }) => {
   return (
     <div className={styles.container}>
       <OrderNav orders={orders} storeLogo={storeLogo} />
-      <div className="container">
+      <StoreOrders orders={orders} />
+      <div>
         <ReactAudioPlayer
           src="https://res.cloudinary.com/dlyjd3mnb/video/upload/v1650899563/orderAlert_ltwbxs.mp3"
           ref={audioRef}
         />
       </div>
-
-      <StoreOrders orders={orders} />
     </div>
   );
 };
@@ -75,7 +74,6 @@ export async function getServerSideProps(context) {
   const order = await Order.findOne({ _id: orderId });
   const menu = await QRMenu.findOne({ _id: order?.menuv2 });
   await db.disconnect();
-  console.log(order);
   if (signedUserId !== userId) {
     return {
       redirect: {

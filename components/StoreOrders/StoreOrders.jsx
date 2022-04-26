@@ -73,6 +73,7 @@ const StoreOrders = (props) => {
           <DataGrid
             rows={props.orders}
             columns={columns}
+            className={classes.grid}
             initialState={{
               sorting: {
                 sortModel: [{ field: "createdAt", sort: "desc" }],

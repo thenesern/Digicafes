@@ -15,6 +15,12 @@
   gap: 4rem;
   padding-top: 8rem;
 }
+.images {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1rem;
+}
 .headers {
   display: flex;
   align-items: center;
@@ -88,7 +94,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 400;
-  background-color: #fefae0;
+  background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .li {
@@ -115,7 +121,7 @@
 }
 .logo {
   object-fit: contain;
-  width: 86px;
+  width: 96px;
   height: auto;
 }
 .firstContainer {
@@ -241,5 +247,8 @@
     align-items: center;
     flex-direction: column;
     justify-content: center;
+  }
+  .headerFirst {
+    font-size: 1rem;
   }
 }

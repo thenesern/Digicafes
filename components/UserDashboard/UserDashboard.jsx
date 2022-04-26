@@ -87,6 +87,7 @@ const UserDashboard = ({ order }) => {
   const [categoryNames, setCategoryNames] = useState([
     ...(menu?.categories?.map((c) => c?.name) || ""),
   ]);
+
   const [categories, setCategories] = useState([...(menu?.categories || "")]);
   const arrayCategories = Array.from(categories);
   const animate = {
@@ -183,6 +184,17 @@ const UserDashboard = ({ order }) => {
       ?.split(" ")
       .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
       .join(" ");
+    if (menu?.products?.map((c) => c?.name).includes(betterProductName)) {
+      handleCloseAddProduct();
+      setAddCategory("");
+      setIsFetching(false);
+      setName("");
+      setDescription("");
+      setPrice("");
+      return enqueueSnackbar("Bu isimde bir ürün zaten var", {
+        variant: "error",
+      });
+    }
     try {
       setIsFetching(true);
       const uploadRes = await axios.post(
@@ -272,6 +284,9 @@ const UserDashboard = ({ order }) => {
       setCategories(
         arrayCategories.filter((category) => category._id !== deleteId)
       );
+      setCategoryNames(
+        categoryNames.filter((category) => category !== deleteName)
+      );
       const newCategories = arrayCategories.filter(
         (category) => category._id !== deleteId
       );
@@ -307,6 +322,16 @@ const UserDashboard = ({ order }) => {
       ?.split(" ")
       .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
       .join(" ");
+
+    if (categoryNames.includes(betterCategoryName)) {
+      handleCloseAddCategory();
+      setAddCategory("");
+      setFile(null);
+      setIsFetching(false);
+      return enqueueSnackbar("Bu isimde bir kategori zaten var.", {
+        variant: "error",
+      });
+    }
     try {
       setIsFetching(true);
       const uploadRes = await axios.post(
@@ -514,7 +539,7 @@ const UserDashboard = ({ order }) => {
                       required: true,
                       pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
                     }}
-                    style={{ maxWidth: "24rem" }}
+                    style={{ maxWidth: "24rem", minWidth: "18rem" }}
                     onChange={(e) => setStoreName(e.target.value)}
                     label="Dükkan Adı"
                   ></TextField>

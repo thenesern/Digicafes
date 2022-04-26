@@ -1,9 +1,12 @@
 .container {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   flex-direction: column;
+  padding: 3rem 10rem 1rem 10rem;
   gap: 1rem;
+  color: #fbeee0;
+  background-color: #212529;
 }
 
 .left {
@@ -20,9 +23,14 @@
   padding: 20px;
   padding-left: 6rem;
 }
-
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
 .description {
-  margin: 1rem 0 2rem 0;
+  margin: 0 auto;
 }
 
 .social-container {
@@ -111,13 +119,10 @@
 
 @media only screen and (max-width: 500px) {
   .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0 1rem;
+    padding: 1rem;
   }
-  .center {
-    display: none;
+  .footer {
+    flex-direction: column;
+    gap: 1rem;
   }
 }

@@ -493,9 +493,7 @@ const Nav = () => {
       <ul className={styles.list}>
         <li className={styles.left}>
           <LinkRouter href="/" passHref>
-            <h6 className={styles.logo} onClick={scrollToHead}>
-              Logo
-            </h6>
+            <h6 className={styles.logo}>Logo</h6>
           </LinkRouter>
           {router.pathname === "/" && (
             <div className={styles.headers}>

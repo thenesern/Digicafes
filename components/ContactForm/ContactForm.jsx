@@ -57,8 +57,13 @@ const ContactForm = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.header}>
+        <h1>Soru, Görüş ve Önerileriniz için,</h1>
+      </div>
       <div className={styles.contact}>
-        <h1 className={styles.header}>İletişim</h1>
+        <h1 className={styles.header} id="contact">
+          İletişim
+        </h1>
         <form ref={form} className={styles.form} onSubmit={sendEmail}>
           <div className={styles.inputs}>
             <div className={styles.name}>

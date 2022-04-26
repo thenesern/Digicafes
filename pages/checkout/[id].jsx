@@ -41,9 +41,9 @@ const Checkout = ({ product }) => {
     try {
       const order = await axios.post(
         "/api/order",
-        { product: product._id, user: user.id },
+        { product: product._id, user: userInfo.id },
         {
-          headers: { authorization: `Bearer ${user.token}` },
+          headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
 

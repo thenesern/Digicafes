@@ -36,3 +36,45 @@
   gap: 1rem;
   padding: 2rem;
 }
+
+@media only screen and (max-width: 1280px) {
+  .grids {
+    overflow: scroll !important;
+    height: 100%;
+  }
+  .grid {
+    height: 34rem !important;
+  }
+  .orders {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .grids {
+    overflow: scroll !important;
+    height: 100%;
+  }
+  .grid {
+    height: 40rem !important;
+  }
+  .orders {
+    margin: 4rem 0 0 0;
+    padding: 0;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .grids {
+    overflow: scroll !important;
+    height: 100%;
+  }
+  .grid {
+    height: 20rem !important;
+  }
+  .orders {
+    margin: 0;
+    padding: 0;
+  }
+}
