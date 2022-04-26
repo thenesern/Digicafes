@@ -10,6 +10,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const StoreMenu = ({ menu }) => {
   const [open, setOpen] = useState(false);
+  const Router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
   return (
     <div className={styles.container}>
@@ -35,12 +36,13 @@ const StoreMenu = ({ menu }) => {
           <ul className={styles.navList}>
             {menu &&
               menu?.categories?.map((m) => (
-                <Link
-                  href={`/qr/v1/${menu?.storeName}/products/${m?.name}`}
-                  passHref
+                <li
                   onClick={() => {
                     try {
                       setIsFetching(true);
+                      Router.push(
+                        `/qr/v1/${menu?.storeName}/products/${m?.name}`
+                      );
                     } catch (err) {
                       console.log(err);
                       setIsFetching(false);
@@ -49,7 +51,7 @@ const StoreMenu = ({ menu }) => {
                   key={m?.name}
                 >
                   <h3>{m?.name}</h3>
-                </Link>
+                </li>
               ))}
           </ul>
         </SwipeableDrawer>
@@ -72,12 +74,11 @@ const StoreMenu = ({ menu }) => {
         </Modal>
         {menu &&
           menu?.categories?.map((m) => (
-            <Link
-              href={`/qr/v1/${menu?.storeName}/products/${m?.name}`}
-              passHref
+            <div
               onClick={() => {
                 try {
                   setIsFetching(true);
+                  Router.push(`/qr/v1/${menu?.storeName}/products/${m?.name}`);
                 } catch (err) {
                   console.log(err);
                   setIsFetching(false);
@@ -90,7 +91,7 @@ const StoreMenu = ({ menu }) => {
               <div className={styles.titleBack}>
                 <h3 className={styles.title}>{m?.name}</h3>
               </div>
-            </Link>
+            </div>
           ))}
       </ul>
 

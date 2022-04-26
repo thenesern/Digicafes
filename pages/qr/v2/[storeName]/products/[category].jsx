@@ -35,9 +35,16 @@ const StoreMenu = ({ menu, category, order }) => {
   const [tableNum, setTableNum] = useState(1);
   const [cartTotal, setCartTotal] = useState(null);
   const [cartItems, setCartItems] = useState([...cart]);
+  const [openIsSure, setOpenIsSure] = useState(false);
+  const [isSure, setIsSure] = useState(false);
   const handleOpenModal = () => setOpenModal(true);
+  const handleOpenIsSure = () => {
+    setOpenCart(false);
+    setOpenIsSure(true);
+  };
   const handleOpenCart = () => setOpenCart(true);
   const handleCloseCart = () => setOpenCart(false);
+  const handleCloseOpenIsSure = () => setOpenIsSure(false);
   const handleCloseModal = () => {
     setOpenModal(false);
     setProductName("");
@@ -47,6 +54,14 @@ const StoreMenu = ({ menu, category, order }) => {
   };
   const [isFetching, setIsFetching] = useState(false);
   const filtered = menu?.products.filter((a) => a.category.includes(category));
+
+  useEffect(() => {
+    if (isSure) {
+      handleCartOrder();
+      setIsSure(false);
+      handleCloseOpenIsSure();
+    }
+  }, [isSure]);
   const handleCartOrder = async () => {
     setIsFetching(true);
     const createdAt = new Date().toLocaleString("tr-TR");
@@ -124,10 +139,7 @@ const StoreMenu = ({ menu, category, order }) => {
       <ul className={styles.list}>
         <Modal
           open={openModal}
-          style={{
-            width: "92%",
-            margin: "0 auto",
-          }}
+          className={styles.modal}
           onClose={handleCloseModal}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
@@ -143,11 +155,7 @@ const StoreMenu = ({ menu, category, order }) => {
         </Modal>
         <Modal
           open={openCart}
-          style={{
-            width: "92%",
-            minWidth: "36rem",
-            margin: "0 auto",
-          }}
+          className={styles.cartModal}
           onClose={handleCloseCart}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
@@ -156,16 +164,24 @@ const StoreMenu = ({ menu, category, order }) => {
             <Modal.Header>
               <h2>Sepet Özeti</h2>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body style={{ padding: "1rem 0" }}>
               {cartItems?.map((item) => (
                 <>
                   <div key={Math.random()} className={styles.cart}>
                     <div className={styles.cartHeader}>
                       <img src={item?.img} alt="" className={styles.cartImg} />
-                      <h4>{item?.name}</h4>
+                      <h4
+                        style={{
+                          maxWidth: "7rem",
+                          overflow: "scroll",
+                        }}
+                      >
+                        {item?.name}
+                      </h4>
                     </div>
                     <div className={styles.productQuantity}>
                       <Button
+                        className={styles.buttons}
                         variant="outlined"
                         onClick={() => {
                           if (item.quantity > 1) {
@@ -204,6 +220,7 @@ const StoreMenu = ({ menu, category, order }) => {
                       <h4>x{item?.quantity}</h4>
                       <Button
                         variant="outlined"
+                        className={styles.buttons}
                         onClick={() => {
                           item.quantity += 1;
                           setCartItems([...cart]);
@@ -221,7 +238,9 @@ const StoreMenu = ({ menu, category, order }) => {
                   </div>
                 </>
               ))}
-              {cart.length === 0 && <p>Sepetiniz boş.</p>}
+              {cart.length === 0 && (
+                <p style={{ padding: "1rem" }}>Sepetiniz boş.</p>
+              )}
             </Modal.Body>
             <Modal.Footer className={styles.cartFooter}>
               {cart.length > 0 && <div>Toplam: ₺{cartTotal}</div>}
@@ -229,7 +248,7 @@ const StoreMenu = ({ menu, category, order }) => {
                 <Button
                   variant="contained"
                   color="secondary"
-                  onClick={handleCartOrder}
+                  onClick={handleOpenIsSure}
                 >
                   Siparişi Onayla
                 </Button>
@@ -250,6 +269,32 @@ const StoreMenu = ({ menu, category, order }) => {
             <Loading color="white" size="xl" />
             <Spacer />
           </Modal.Body>
+        </Modal>
+
+        <Modal
+          open={openIsSure}
+          onClose={handleCloseOpenIsSure}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Modal.Header>
+            <h3>Dikkat</h3>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Sipariş restorana iletilsin mi?</p>
+          </Modal.Body>
+          <Modal.Footer style={{ display: "flex", gap: "2rem" }}>
+            <Button variant="outlined" onClick={handleCloseOpenIsSure}>
+              Vazgeç
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => setIsSure(true)}
+            >
+              Onayla
+            </Button>
+          </Modal.Footer>
         </Modal>
         {menu &&
           filtered?.map((m) => (

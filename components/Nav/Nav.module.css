@@ -358,7 +358,12 @@
     color: #ffe8d6;
   }
   .signIn {
+    padding: 10px 16px;
+  }
+  .signUp {
     margin: 0;
+
+    padding: 10px 24px;
   }
   .link {
     color: #fbeee0;
@@ -386,6 +391,7 @@
     width: 90%;
   }
   .registerBox {
-    width: 96%;
+    width: 92%;
+    padding: 4px;
   }
 }

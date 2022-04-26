@@ -43,12 +43,13 @@ const StoreMenu = ({ menu }) => {
           <ul className={styles.navList}>
             {menu &&
               menu?.categories?.map((m) => (
-                <Link
-                  href={`/qr/v2/${menu?.storeName}/products/${m?.name}`}
-                  passHref
+                <li
                   onClick={() => {
                     try {
                       setIsFetching(true);
+                      Router.push(
+                        `/qr/v2/${menu?.storeName}/products/${m?.name}`
+                      );
                     } catch (err) {
                       console.log(err);
                       setIsFetching(false);
@@ -57,7 +58,7 @@ const StoreMenu = ({ menu }) => {
                   key={m?.name}
                 >
                   <h3>{m?.name}</h3>
-                </Link>
+                </li>
               ))}
           </ul>
         </SwipeableDrawer>

@@ -10,6 +10,8 @@ import Order from "../../../../../../models/OrderModel";
 import QRMenu from "../../../../../../models/QRMenu2Model";
 import db from "../../../../../../utils/db";
 import styles from "./orders.module.css";
+import ReactAudioPlayer from "react-audio-player";
+import { useRef } from "react";
 
 const StoreOrderPanel = ({ data, order }) => {
   const [storeLogo, setStoreLogo] = useState(data?.storeLogo);
@@ -19,8 +21,8 @@ const StoreOrderPanel = ({ data, order }) => {
   const [refreshToken, setRefreshToken] = useState(Math.random());
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [isNew, setIsNew] = useState(false);
-  const audio = document.getElementById("a1");
-
+  const audioRef = useRef();
+  const audio = audioRef?.current?.audioEl?.current;
   useEffect(() => {
     retrieveData().finally(() => {
       setTimeout(() => setRefreshToken(Math.random()), 15000);
@@ -53,12 +55,10 @@ const StoreOrderPanel = ({ data, order }) => {
     <div className={styles.container}>
       <OrderNav orders={orders} storeLogo={storeLogo} />
       <div className="container">
-        <div className="col">
-          <audio
-            id="a1"
-            src="https://res.cloudinary.com/dlyjd3mnb/video/upload/v1650899563/orderAlert_ltwbxs.mp3"
-          ></audio>
-        </div>
+        <ReactAudioPlayer
+          src="https://res.cloudinary.com/dlyjd3mnb/video/upload/v1650899563/orderAlert_ltwbxs.mp3"
+          ref={audioRef}
+        />
       </div>
 
       <StoreOrders orders={orders} />

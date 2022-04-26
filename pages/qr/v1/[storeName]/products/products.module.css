@@ -60,7 +60,6 @@
 .listItem {
   min-height: 10rem;
   border: 1px solid lightgray;
-  background-color: #f7ede2;
   display: flex;
   cursor: pointer;
   flex-direction: column;
@@ -125,7 +124,7 @@
   object-fit: cover;
 }
 
-.navList a {
+.navList li {
   border-bottom: 1px solid gray;
   width: 100%;
   line-height: 14px;

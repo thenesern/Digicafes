@@ -18,6 +18,8 @@ const StoreMenu = ({ menu, category }) => {
   const [openModal, setOpenModal] = useState(false);
   const [productName, setProductName] = useState("");
   const [productImage, setProductImage] = useState("");
+  const Router = useRouter();
+  const [productDescription, setProductDescription] = useState("");
   const [productPrice, setProductPrice] = useState(null);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => {
@@ -25,6 +27,7 @@ const StoreMenu = ({ menu, category }) => {
     setProductName("");
     setProductImage("");
     setProductPrice(null);
+    setProductDescription("");
   };
   const [isFetching, setIsFetching] = useState(false);
   const filtered = menu?.products.filter((a) => a.category.includes(category));
@@ -71,12 +74,13 @@ const StoreMenu = ({ menu, category }) => {
             <ul className={styles.navList}>
               {menu &&
                 menu?.categories?.map((m) => (
-                  <Link
-                    href={`/qr/v1/${menu?.storeName}/products/${m?.name}`}
-                    passHref
+                  <li
                     onClick={() => {
                       try {
                         setIsFetching(true);
+                        Router.push(
+                          `/qr/v1/${menu?.storeName}/products/${m?.name}`
+                        );
                       } catch (err) {
                         console.log(err);
                         setIsFetching(false);
@@ -84,8 +88,8 @@ const StoreMenu = ({ menu, category }) => {
                     }}
                     key={m?.name}
                   >
-                    <h3 className={styles.title}>{m?.name}</h3>
-                  </Link>
+                    <h3>{m?.name}</h3>
+                  </li>
                 ))}
             </ul>
           </SwipeableDrawer>
@@ -108,11 +112,7 @@ const StoreMenu = ({ menu, category }) => {
               <span>₺{productPrice}</span>
             </div>
             <img src={productImage} alt="Menu" className={styles.modalImage} />
-            <p className={styles.modalDesc}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Laudantium porro natus sequi eaque accusantium molestiae
-              blanditiis consectetur est vero accusamus ipsam officiis ipsum.
-            </p>
+            <p className={styles.modalDesc}>{productDescription}</p>
           </Box>
         </Modal>
         <Modal
@@ -138,6 +138,7 @@ const StoreMenu = ({ menu, category }) => {
                 setProductName(m?.name);
                 setProductImage(m?.image);
                 setProductPrice(m?.price);
+                setProductDescription(m?.description);
                 handleOpenModal();
               }}
             >

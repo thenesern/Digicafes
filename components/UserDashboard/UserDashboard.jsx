@@ -553,20 +553,23 @@ const UserDashboard = ({ order }) => {
           </Modal>
           <div className={styles.box}>
             <div className={styles.left}>
-              <div>
+              <div className={styles.leftBox}>
                 <div className={styles.headers}>
                   <QrCodeIcon color="primary" />
                   <h3 className={styles.titles}>QR Menü Kodu</h3>
                 </div>
                 <div className={styles.qr}>
-                  <img src={src} alt="QR" className={styles.qrImg} />
-                  <img src={storeLogo} alt="Logo" className={styles.logo} />
+                  <div className={styles.images}>
+                    <img src={src} alt="QR" className={styles.qrImg} />
+                    <img src={storeLogo} alt="Logo" className={styles.logo} />
+                  </div>
                   <div className={styles.qrActions}>
                     <Link href={`/qr/${version}/${menu?.storeName}`} passHref>
                       <a target="_blank">
                         <Stack direction="row" spacing={1}>
                           <Button
                             variant="outlined"
+                            className={styles.qrButtons}
                             style={{
                               height: "2rem",
                               width: "12rem",
@@ -583,6 +586,7 @@ const UserDashboard = ({ order }) => {
                     <a href={src} download>
                       <Stack direction="row" spacing={1}>
                         <Button
+                          className={styles.qrButtons}
                           variant="outlined"
                           style={{ height: "2rem", width: "12rem" }}
                           endIcon={<DownloadIcon />}
@@ -617,7 +621,7 @@ const UserDashboard = ({ order }) => {
                   </div>
                 </div>
               </div>
-              <div>
+              <div className={styles.actions}>
                 <div className={styles.headers}>
                   <DashboardCustomizeIcon color="primary" />
                   <h3>Menü Yönetimi</h3>
@@ -628,6 +632,7 @@ const UserDashboard = ({ order }) => {
                   disabled={categories.length > 0 ? false : true}
                   onClick={handleOpenAddProduct}
                   style={{ margin: "1rem", width: "16rem" }}
+                  className={styles.menuButtons}
                 >
                   Ürün Ekle
                 </Button>
@@ -884,40 +889,43 @@ const UserDashboard = ({ order }) => {
                         </ListItem>
                       </List>
                     </form>
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      onClick={() => {
-                        handleCloseDelete();
-                        setDeleteId("");
-                        setDeleteCategory(false);
-                      }}
-                      style={{ margin: "1rem", width: "16rem" }}
-                    >
-                      Vazgeç
-                    </Button>
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      color="primary"
-                      onClick={() => {
-                        if (deleteCategory === true) {
-                          deleteCategoryHandler();
+                    <div className={styles.modalButtons}>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        onClick={() => {
                           handleCloseDelete();
+                          setDeleteId("");
                           setDeleteCategory(false);
-                        } else {
-                          deleteProductHandler();
-                          handleCloseDelete();
-                          setDeleteCategory(false);
-                        }
-                      }}
-                      style={{ margin: "1rem", width: "16rem" }}
-                    >
-                      Onayla
-                    </Button>
+                        }}
+                        style={{ margin: "1rem", width: "16rem" }}
+                      >
+                        Vazgeç
+                      </Button>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        color="primary"
+                        onClick={() => {
+                          if (deleteCategory === true) {
+                            deleteCategoryHandler();
+                            handleCloseDelete();
+                            setDeleteCategory(false);
+                          } else {
+                            deleteProductHandler();
+                            handleCloseDelete();
+                            setDeleteCategory(false);
+                          }
+                        }}
+                        style={{ margin: "1rem", width: "16rem" }}
+                      >
+                        Onayla
+                      </Button>
+                    </div>
                   </Box>
                 </ModalMui>
                 <Button
+                  className={styles.menuButtons}
                   variant="contained"
                   type="submit"
                   onClick={handleOpenAddCategory}
@@ -926,6 +934,7 @@ const UserDashboard = ({ order }) => {
                   Kategori Ekle
                 </Button>
                 <Button
+                  className={styles.menuButtons}
                   variant="contained"
                   type="submit"
                   onClick={handleOpenUploadLogo}
@@ -950,8 +959,9 @@ const UserDashboard = ({ order }) => {
                 {isLoading ? (
                   <p>Yükleniyor...</p>
                 ) : products?.length > 0 ? (
-                  <div style={{ height: "24rem", width: "100%" }}>
+                  <div className={styles.grid}>
                     <DataGrid
+                      className={styles.data}
                       localeText={
                         trTR.components.MuiDataGrid.defaultProps.localeText
                       }
@@ -974,8 +984,9 @@ const UserDashboard = ({ order }) => {
                 {isLoading ? (
                   <p>Yükleniyor...</p>
                 ) : categories?.length > 0 ? (
-                  <div style={{ height: "24rem", width: "100%" }}>
+                  <div className={styles.grid}>
                     <DataGrid
+                      className={styles.data}
                       localeText={
                         trTR.components.MuiDataGrid.defaultProps.localeText
                       }

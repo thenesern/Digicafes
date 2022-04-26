@@ -751,7 +751,14 @@ const Nav = () => {
                     </button>
                   </>
                 )}
-                <button className={styles.button}>
+                <button
+                  className={styles.button}
+                  onClick={() => {
+                    if (router?.pathname !== "/dashboard/[userId]") {
+                      setIsFetching(true);
+                    }
+                  }}
+                >
                   <LinkRouter
                     href={"/dashboard/" + user.id}
                     passHref

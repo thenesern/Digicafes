@@ -11,16 +11,15 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
 import { useState } from "react";
-import Cookies from "js-cookie";
-import { useEffect } from "react";
 
 const Dashboard = ({ orders, user }) => {
   const router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
+
   return (
-    <div>
+    <div className={styles.container}>
       <Nav />
-      <div className={styles.container}>
+      <div className={styles.dashboard}>
         <Modal
           style={{
             background: "transparent",

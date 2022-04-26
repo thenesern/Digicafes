@@ -9,7 +9,6 @@
   height: 5rem;
   position: fixed;
   background-color: #023047;
-
   top: 0;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
     rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
@@ -44,7 +43,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1rem;
+  padding: 0 10px;
+  gap: 10px;
 }
 .nav {
   color: #14213d;
@@ -73,7 +73,10 @@
   align-items: center;
   justify-content: center;
 }
-
+.modal {
+  width: 92% !important;
+  margin: 0 auto !important;
+}
 .listItem {
   min-height: 10rem;
   border: 1px solid lightgray;
@@ -155,4 +158,20 @@
   line-height: 14px;
   cursor: pointer;
   color: #ffe8d6;
+}
+.cartModal {
+  margin: 0 auto;
+  min-width: "36rem";
+  width: 92%;
+}
+@media only screen and (max-width: 768px) {
+  .cartModal {
+    margin: 0 auto;
+    min-width: "12rem";
+    width: 96%;
+  }
+  .buttons {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
 }
