@@ -56,18 +56,20 @@ const User = ({ orders }) => {
             className={styles.img}
           />
           <div className={styles.inputs}>
-            <TextField
-              className={styles.itemTitle}
-              helperText="Adınız"
-              value={firstName}
-              onChange={firstNameChangeHandler}
-            />
-            <TextField
-              className={styles.itemTitle}
-              helperText="Soyadınız"
-              value={lastName}
-              onChange={lastNameChangeHandler}
-            />
+            <div className={styles.names}>
+              <TextField
+                className={styles.itemTitle}
+                helperText="Adınız"
+                value={firstName}
+                onChange={firstNameChangeHandler}
+              />
+              <TextField
+                className={styles.itemTitle}
+                helperText="Soyadınız"
+                value={lastName}
+                onChange={lastNameChangeHandler}
+              />
+            </div>
             <TextField
               className={styles.email}
               helperText="Email"

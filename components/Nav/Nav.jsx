@@ -721,7 +721,14 @@ const Nav = () => {
               >
                 {user?.isAdmin === false ? (
                   <>
-                    <button className={styles.button}>
+                    <button
+                      className={styles.button}
+                      onClick={() => {
+                        if (router?.pathname !== "/hesap/[userId]") {
+                          setIsFetching(true);
+                        }
+                      }}
+                    >
                       <LinkRouter
                         href={"/hesap/" + user?.id}
                         className={styles["menu-link"]}

@@ -151,13 +151,15 @@
   position: relative;
   display: block;
   margin: 0;
-  width: 3rem;
-  height: 3rem;
+  width: 2.6rem;
+  height: 2.6rem;
   background: linear-gradient(135deg, #f34079 40%, #fc894d);
   border-radius: 1.625rem;
-  transform: scale(0.8);
 }
 
+.buttonFirst:hover .circle {
+  width: 100%;
+}
 .icon {
   transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
   position: absolute;
@@ -198,13 +200,9 @@
   margin: 0 0 0 1rem;
   color: #2b2d42;
   font-weight: 700;
-  line-height: 1.6;
+  line-height: 1.3;
   text-align: center;
   text-transform: uppercase;
-}
-
-.buttonFirst:hover .circle {
-  width: 100%;
 }
 
 .buttonFirst:hover .arrow {
@@ -232,7 +230,7 @@
   border: none;
   border-radius: 10px;
   box-sizing: border-box;
-  color: #fff;
+  color: #ffe8d6;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -309,7 +307,7 @@
     width: 100%;
   }
   .container {
-    padding-top: 3rem;
+    padding-top: 2rem;
   }
   .top {
     flex-direction: column;
@@ -348,7 +346,7 @@
   }
   .firstDes {
     font-size: 12px;
-    padding: 0 2rem;
+    padding: 1rem 0;
   }
   .secondImage {
     height: 16rem;

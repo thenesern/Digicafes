@@ -348,11 +348,11 @@
     padding: 1rem;
     flex-direction: column;
     justify-content: flex-start;
-    width: 16rem;
+    width: 14rem;
     background-color: #1d3557;
     height: 100%;
     gap: 10px;
-    font-size: 14px;
+    font-size: 16px;
   }
   .menuButton {
     color: #ffe8d6;
