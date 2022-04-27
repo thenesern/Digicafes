@@ -82,6 +82,8 @@
   align-items: flex-start;
   list-style: none;
   padding: 1rem;
+  margin: 0;
+  height: 100%;
   gap: 4px;
   font-size: 14px;
 }

@@ -56,6 +56,23 @@ const QRMenuSchema = new mongoose.Schema(
     createdAt: {
       type: String,
     },
+
+    calls: [
+      {
+        tableNum: {
+          type: Number,
+          required: true,
+        },
+        callName: {
+          type: String,
+          required: true,
+        },
+        createdAt: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
     orders: [
       {
         tableNum: Number,

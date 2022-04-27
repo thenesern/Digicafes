@@ -6,12 +6,6 @@ import { trTR } from "@mui/x-data-grid";
 const StoreOrders = (props) => {
   const columns = [
     {
-      field: "_id",
-      headerName: "Ürün Kodu",
-      flex: 1,
-      headerClassName: "dark",
-    },
-    {
       field: "name",
       headerName: "Sipariş",
       flex: 1,
@@ -21,9 +15,11 @@ const StoreOrders = (props) => {
           <div className={classes.gridHeader}>
             {params.row.cartItems.map((i) => (
               <div key={Math.random()} className={classes.gridOrders}>
-                <p>{i.name}</p>
-                <p>x</p>
-                <p>{i.quantity}</p>
+                <div className={classes.orderDetails}>
+                  <p>{i.name}</p>
+                  <p>x</p>
+                  <p>{i.quantity}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -32,7 +28,7 @@ const StoreOrders = (props) => {
     },
     {
       field: "tableNum",
-      headerName: "Masa Numarası",
+      headerName: "Masa No.",
       flex: 1,
       headerClassName: "dark",
       editable: false,
@@ -81,14 +77,30 @@ const StoreOrders = (props) => {
             }}
             rowHeight={100}
             sx={{
-              height: 720,
+              "& .MuiDataGrid-renderingZone": {
+                maxHeight: "none !important",
+              },
+              "& .MuiDataGrid-cell": {
+                lineHeight: "unset !important",
+                maxHeight: "none !important",
+                whiteSpace: "normal",
+                wordWrap: "break-word",
+              },
+              "& .MuiDataGrid-row": {
+                maxHeight: "none !important",
+              },
+              virtualScrollerContent: {
+                height: "100% !important",
+                overflow: "scroll",
+              },
+              height: 1,
               width: 1,
               "& .dark": {
                 backgroundColor: "#1d3557",
                 color: "#fbeee0",
               },
             }}
-            pageSize={6}
+            pageSize={5}
             rowsPerPageOptions={[10, 15, 20]}
             getRowId={(row) => row?._id}
             disableSelectionOnClick

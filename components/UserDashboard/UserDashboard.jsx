@@ -201,6 +201,7 @@ const UserDashboard = ({ order }) => {
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
         data
       );
+
       arrayProducts.push({
         name: betterProductName,
         price,

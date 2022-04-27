@@ -12,12 +12,31 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import axios from "axios";
 
 const StoreMenu = ({ menu }) => {
   const [open, setOpen] = useState(false);
-
+  const [storeName, setStoreName] = useState(menu?.storeName);
   const Router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
+  const [callName, setCallName] = useState("");
+  const [tableNum, setTableNum] = useState(1);
+
+  const handleCalls = async ({ callName }) => {
+    setIsFetching(true);
+    const createdAt = new Date().toLocaleString("tr-TR");
+    try {
+      await axios.patch(`/api/qr/v2/${storeName}/calls`, {
+        calls: [{ tableNum, createdAt, callName }],
+        storeName,
+      });
+      setIsFetching(false);
+      setCallName("");
+    } catch (err) {
+      setIsFetching(false);
+      console.log(err);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -36,11 +55,38 @@ const StoreMenu = ({ menu }) => {
           onOpen={() => setOpen(true)}
           onClose={() => setOpen(false)}
         >
-          <IconButton>
-            <ChevronRightIcon onClick={() => setOpen(true)} />
-            <Divider />
-          </IconButton>
           <ul className={styles.navList}>
+            <Button
+              variant="contained"
+              style={{ margin: "10px auto", minWidth: "10rem" }}
+              color="primary"
+              onClick={() => {
+                handleCalls({ callName: "Garson Çağrısı" });
+              }}
+            >
+              Garson Çağır
+            </Button>
+            <Button
+              variant="contained"
+              style={{ margin: "10px auto", minWidth: "10rem" }}
+              color="primary"
+              onClick={() => {
+                handleCalls({ callName: "Hesap İsteği" });
+              }}
+            >
+              Hesap İste
+            </Button>
+            <h3
+              style={{
+                borderBottom: "1px solid #f1faee",
+                color: "#f1faee",
+                width: "100%",
+                paddingBottom: "10px",
+                textAlign: "center",
+              }}
+            >
+              Menü
+            </h3>
             {menu &&
               menu?.categories?.map((m) => (
                 <li

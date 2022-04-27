@@ -6,7 +6,7 @@
   display: grid;
   grid-template-columns: 1fr 4fr 4fr 1fr;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 0 2rem;
 }
 
 .right {

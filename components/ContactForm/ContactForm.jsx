@@ -31,7 +31,6 @@ const ContactForm = () => {
           (result) => {
             setSent(true);
             setFail(false);
-            console.log(result.text);
           },
           (error) => {
             console.log(error.text);
