@@ -115,19 +115,13 @@ const DigitalMenuPage = () => {
             <DigitalMenuStepper />
           </div>
         </article>
-        {isMobile && (
-          <h3 className={styles.articleHeaderMobile} id="pricing1">
-            Fiyatlandırma
-          </h3>
-        )}
+      
         <article>
           <div className={styles.stepperMobile}>
             <StepperMobile />
           </div>
         </article>
-        <h3 className={styles.articleHeader} id="pricing">
-          Fiyatlandırma
-        </h3>
+      
         <article>
           <div></div>
         </article>

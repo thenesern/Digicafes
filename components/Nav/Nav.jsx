@@ -178,7 +178,13 @@ const Nav = () => {
             <h1 className={styles.title}>Giriş Yap</h1>
             <div className={styles.signup}>
               <p>Hesabınız yok mu?</p>
-              <span style={{ fontWeight: "600", cursor: "pointer" }}>
+              <span
+                style={{ fontWeight: "600", cursor: "pointer" }}
+                onClick={() => {
+                  handleCloseMuiLogin();
+                  handleOpenMuiRegister();
+                }}
+              >
                 Üye Olun
               </span>
             </div>
@@ -274,7 +280,13 @@ const Nav = () => {
           <h1 className={styles.title}>Üye Ol</h1>
           <div className={styles.signin}>
             <p>Hesabınız var mı?</p>
-            <span style={{ fontWeight: "600", cursor: "pointer" }}>
+            <span
+              style={{ fontWeight: "600", cursor: "pointer" }}
+              onClick={() => {
+                handleCloseMuiRegister();
+                handleOpenMuiLogin();
+              }}
+            >
               Giriş Yapın
             </span>
           </div>
@@ -433,17 +445,21 @@ const Nav = () => {
                 <div className={styles.privacy}>
                   <p>
                     Kişisel verileriniz,
-                    <span
+                    <a
+                      href="/gizlilik-politikasi"
                       style={{
                         fontWeight: "600",
                         cursor: "pointer",
                         margin: "0 4px",
                       }}
+                      target="_blank"
                     >
-                      Aydınlatma Metni
-                    </span>
+                      Gizlilik Politikası
+                    </a>
                     kapsamında işlenmektedir. “Üye ol” butonuna basarak
-                    <span
+                    <a
+                      href="/uyelik-sozlesmesi"
+                      target="_blank"
                       style={{
                         fontWeight: "600",
                         cursor: "pointer",
@@ -451,9 +467,11 @@ const Nav = () => {
                       }}
                     >
                       Üyelik Sözleşmesi
-                    </span>
+                    </a>
                     ’ni, ve
-                    <span
+                    <a
+                      href="/cerez-politikasi"
+                      target="_blank"
                       style={{
                         fontWeight: "600",
                         cursor: "pointer",
@@ -461,7 +479,7 @@ const Nav = () => {
                       }}
                     >
                       Çerez Politikası
-                    </span>
+                    </a>
                     ’nı okuduğunuzu ve kabul ettiğinizi onaylıyorsunuz.
                   </p>
                 </div>
@@ -505,15 +523,6 @@ const Nav = () => {
                 duration={200}
               >
                 <h5 className={styles.link}>İşleyiş</h5>
-              </Link>
-              <Link
-                to="pricing"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={200}
-              >
-                <h5 className={styles.link}>Fiyatlandırma</h5>
               </Link>
               <Link
                 to="faq"
@@ -798,15 +807,7 @@ const Nav = () => {
               >
                 <h5 className={styles.link}>İşleyiş</h5>
               </Link>
-              <Link
-                to="pricing"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={200}
-              >
-                <h5 className={styles.link}>Fiyatlandırma</h5>
-              </Link>
+
               <Link
                 to="faq"
                 spy={true}
