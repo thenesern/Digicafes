@@ -596,6 +596,24 @@ const Nav = () => {
                       <button className={styles["link-item"]}>Hesabım</button>
                     </LinkRouter>
                   </button>
+                  <button
+                    className={styles.button}
+                    onClick={() => {
+                      if (router?.pathname !== "/dashboard/[userId]") {
+                        setIsFetching(true);
+                      }
+                    }}
+                  >
+                    <LinkRouter
+                      href={"/dashboard/" + user.id}
+                      passHref
+                      className={styles["menu-link"]}
+                    >
+                      <button className={styles["link-item"]}>
+                        <span>Yönetim Paneli</span>
+                      </button>
+                    </LinkRouter>
+                  </button>
                 </>
               ) : (
                 <>
@@ -617,24 +635,7 @@ const Nav = () => {
                   </button>
                 </>
               )}
-              <button
-                className={styles.button}
-                onClick={() => {
-                  if (router?.pathname !== "/dashboard/[userId]") {
-                    setIsFetching(true);
-                  }
-                }}
-              >
-                <LinkRouter
-                  href={"/dashboard/" + user.id}
-                  passHref
-                  className={styles["menu-link"]}
-                >
-                  <button className={styles["link-item"]}>
-                    <span>Yönetim Paneli</span>
-                  </button>
-                </LinkRouter>
-              </button>
+
               <button className={styles.button} onClick={logoutHandler}>
                 <LinkRouter href="/" passHref className={styles["menu-link"]}>
                   <button className={styles["link-item"]}>

@@ -690,6 +690,7 @@ const UserDashboard = ({ order }) => {
                                 height: "2rem",
                                 width: "12rem",
                               }}
+                              className={styles.qrButtons}
                               endIcon={
                                 <ArrowRightIcon style={{ fontSize: "2rem" }} />
                               }

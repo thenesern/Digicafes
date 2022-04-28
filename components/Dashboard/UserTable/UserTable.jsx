@@ -159,7 +159,7 @@ const UserTable = (props) => {
       </Modal>
       <div className={styles.datatableTitle}>Kullanıcılar</div>
       <DataGrid
-        rows={props.users}
+        rows={props.users.filter((user) => user.isAdmin === false)}
         columns={columns}
         getRowId={(row) => row._id}
         disableSelectionOnClick

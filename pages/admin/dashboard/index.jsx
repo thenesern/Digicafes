@@ -22,7 +22,7 @@ const panel = ({ users, orders, products }) => {
   );
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   await db.connect();
   const users = await User.find();
   const orders = await Order.find();
@@ -31,7 +31,9 @@ export async function getStaticProps() {
 
   return {
     props: {
-      users: JSON.parse(JSON.stringify(users.length)),
+      users: JSON.parse(
+        JSON.stringify(users.filter((user) => user.isAdmin === false).length)
+      ),
       orders: JSON.parse(JSON.stringify(orders.length)),
       products: JSON.parse(JSON.stringify(products.length)),
     },

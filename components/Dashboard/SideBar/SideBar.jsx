@@ -20,7 +20,7 @@ const SideBar = () => {
           <li className={styles.li}>
             <Link href="/" className={styles.link} passHref>
               <button className={styles.button}>
-                <Home color="primary" />
+                <Home style={{ color: "#118ab2" }} />
                 <h6 className={styles.title}>Ana Sayfa</h6>
               </button>
             </Link>
@@ -28,7 +28,7 @@ const SideBar = () => {
           <li className={styles.li}>
             <Link href="/admin/dashboard" className={styles.link} passHref>
               <button className={styles.button}>
-                <Home color="primary" />
+                <Home style={{ color: "#118ab2" }} />
                 <h6 className={styles.title}>Panel</h6>
               </button>
             </Link>
@@ -43,7 +43,7 @@ const SideBar = () => {
               className={styles.link}
             >
               <button className={styles.button}>
-                <Group color="primary" />
+                <Group style={{ color: "#118ab2" }} />
                 <h6 className={styles.title}>Kullanıcılar</h6>
               </button>
             </Link>
@@ -55,7 +55,7 @@ const SideBar = () => {
               passHref
             >
               <button className={styles.button}>
-                <ShoppingCartOutlined color="primary" />
+                <ShoppingCartOutlined style={{ color: "#118ab2" }} />
                 <h6 className={styles.title}>Siparişler</h6>
               </button>
             </Link>
@@ -67,7 +67,7 @@ const SideBar = () => {
               passHref
             >
               <button className={styles.button}>
-                <StoreMallDirectory color="primary" />
+                <StoreMallDirectory style={{ color: "#118ab2" }} />
                 <h6 className={styles.title}>Ürünler</h6>
               </button>
             </Link>
@@ -78,7 +78,7 @@ const SideBar = () => {
           <li className={styles.li}>
             <Link href="/dashboard" className={styles.link} passHref>
               <button className={styles.button}>
-                <BarChartOutlined color="primary" />
+                <BarChartOutlined style={{ color: "#118ab2" }} />
                 <h6 className={styles.title}>Kazançlar</h6>
               </button>
             </Link>
@@ -90,7 +90,7 @@ const SideBar = () => {
           <li className={styles.li}>
             <Link passHref href="/dashboard/footer" className={styles.link}>
               <button className={styles.button}>
-                <CallToAction color="primary" />
+                <CallToAction style={{ color: "#118ab2" }} />
                 <h6 className={styles.title}>Footer</h6>
               </button>
             </Link>

@@ -3,7 +3,7 @@
   width: 10vw;
   height: 100vh;
   flex: 1;
-  background-color: #f1faee;
+  background-color: #023047;
 }
 
 .bar {
@@ -25,8 +25,9 @@
 }
 
 .header {
-  font-weight: 600;
-  color: gray;
+  font-weight: 800;
+  font-size: 14px;
+  color: #f1faee;
   padding: 2rem 0 0 0;
   margin: 0;
 }
@@ -60,6 +61,7 @@
 .title {
   margin: 0;
   padding: 0;
+  color: #f1faee;
 }
 
 .button {
@@ -73,8 +75,9 @@
   gap: 4px;
   padding: 4px 10px;
   font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
 .button:hover {
-  background-color: lightgray;
+  background-color: #001219;
 }
