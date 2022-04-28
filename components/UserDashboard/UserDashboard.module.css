@@ -34,6 +34,27 @@
   color: #001219;
   text-align: start;
 }
+.qrs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+.qrsModal {
+  width: 56rem;
+  margin: 0 auto;
+  height: 48rem;
+  padding: 1rem 2rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  overflow: auto;
+}
 .deleteDescription {
   margin: 0 10px;
   background-color: lightgray;
@@ -160,12 +181,15 @@
   .menuButtons {
     width: 12rem !important;
   }
-}
-@media only screen and (max-width: 1280px) {
   .grid {
     height: 16rem !important;
   }
+  .qrsModal {
+    width: 90%;
+    height: 36rem;
+  }
 }
+
 @media only screen and (max-width: 1000px) {
   .box {
     gap: 1rem;
@@ -178,6 +202,10 @@
     display: flex;
     flex-direction: column;
     gap: 0;
+  }
+  .qrsModal {
+    width: 90%;
+    height: 52rem;
   }
 }
 @media only screen and (max-width: 500px) {
@@ -252,5 +280,9 @@
   }
   .headerFirst {
     font-size: 1rem;
+  }
+  .qrsModal {
+    width: 90%;
+    height: 36rem;
   }
 }

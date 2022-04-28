@@ -70,16 +70,10 @@ const UserDashboard = ({ order }) => {
   const [deleteId, setDeleteId] = useState("");
   const [secondStep, setSecondStep] = useState(false);
   const [tableNum, setTableNum] = useState(menu?.tableNum || null);
-  const [version, setVersion] = useState("");
+  const [version, setVersion] = useState(
+    order[0]?.product?.name === "Dijital Menü - V1" ? "v1" : "v2"
+  );
   const [QRCodes, setQRCodes] = useState([]);
-
-  useEffect(() => {
-    if (order[0]?.product?.name === "Dijital Menü - V1") {
-      setVersion("v1");
-    } else {
-      setVersion("v2");
-    }
-  }, [order]);
 
   const [deleteName, setDeleteName] = useState("");
   const [deleteCategory, setDeleteCategory] = useState(false);
@@ -116,6 +110,9 @@ const UserDashboard = ({ order }) => {
   const [openDeleteProduct, setOpenDelete] = useState(false);
   const [openAddCategory, setOpenAddCategory] = useState(false);
   const [openUploadLogo, setOpenUploadLogo] = useState(false);
+  const [openQRImages, setOpenQRImages] = useState(false);
+  const handleOpenQRImages = () => setOpenQRImages(true);
+  const handleCloseQRImages = () => setOpenQRImages(false);
   const handleOpenAddCategory = () => setOpenAddCategory(true);
   const handleCloseAddCategory = () => setOpenAddCategory(false);
   const handleOpenUploadLogo = () => setOpenUploadLogo(true);
@@ -409,7 +406,6 @@ const UserDashboard = ({ order }) => {
       enqueueSnackbar("Logo Yüklenemedi", { variant: "error" });
     }
   };
-
   useEffect(() => {
     var opts = {
       errorCorrectionLevel: "H",
@@ -423,7 +419,6 @@ const UserDashboard = ({ order }) => {
       opts
     ).then(setSrc);
   }, [menu?.storeName, version]);
-
   useEffect(() => {
     var opts = {
       errorCorrectionLevel: "H",
@@ -432,14 +427,15 @@ const UserDashboard = ({ order }) => {
       margin: 0,
       padding: 0,
     };
-    for (let i = 1; i < tableNum; i++) {
+    for (let i = 0; i < tableNum; i++) {
       QRCode.toDataURL(
-        `https://www.project-testenes.vercel.app.com/qr/${version}/${menu?.storeName}/${i}`,
+        `https://www.project-testenes.vercel.app.com/qr/${version}/${
+          menu?.storeName
+        }/${i + 1}`,
         opts
       ).then((url) => QRCodes.push(url));
     }
-  }, [menu?.storeName, version, tableNum, QRCodes]);
-
+  }, []);
   const columns = [
     {
       field: "name",
@@ -668,18 +664,19 @@ const UserDashboard = ({ order }) => {
                         </Stack>
                       </a>
                     </Link>
-                    <a href={src} download>
-                      <Stack direction="row" spacing={1}>
-                        <Button
-                          className={styles.qrButtons}
-                          variant="outlined"
-                          style={{ height: "2rem", width: "12rem" }}
-                          endIcon={<DownloadIcon />}
-                        >
-                          QR Kodu İndir
-                        </Button>
-                      </Stack>
-                    </a>
+
+                    <Stack direction="row" spacing={1}>
+                      <Button
+                        className={styles.qrButtons}
+                        variant="outlined"
+                        onClick={handleOpenQRImages}
+                        style={{ height: "2rem", width: "12rem" }}
+                        endIcon={<DownloadIcon />}
+                      >
+                        QR Kodları İndir
+                      </Button>
+                    </Stack>
+
                     {order[0]?.menuv2 && (
                       <Link
                         href={`/dashboard/${user?.id}/menu/${version}/${order[0]?._id}/orders`}
@@ -842,6 +839,44 @@ const UserDashboard = ({ order }) => {
                         </ListItem>
                       </List>
                     </form>
+                  </Box>
+                </ModalMui>
+                <ModalMui
+                  open={openQRImages}
+                  onClose={handleCloseQRImages}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box className={styles.qrsModal}>
+                    <h1 style={{ textAlign: "center", padding: "1rem" }}>
+                      QR Kodları
+                    </h1>
+                    <div className={styles.qrs}>
+                      {QRCodes.map((qr, i) => (
+                        <div
+                          key={i}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexDirection: "column",
+                            gap: "10px",
+                          }}
+                        >
+                          <p>Masa No.{i + 1}</p>
+                          <img style={{ width: "7rem" }} src={qr} />
+                          <a href={qr} download>
+                            <Button
+                              color="primary"
+                              style={{ width: "7rem" }}
+                              variant="contained"
+                            >
+                              indir
+                            </Button>
+                          </a>
+                        </div>
+                      ))}
+                    </div>
                   </Box>
                 </ModalMui>
                 <ModalMui
