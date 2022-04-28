@@ -1,20 +1,18 @@
-import React from "react";
-import DigitalMenuPrices from "./DigitalMenuPlans/DigitalMenuPlans";
-import styles from "./DigitalMenuPage.module.css";
+// Packages and Dependencies
+import React, { useEffect, useState } from "react";
 import DigitalMenuStepper from "./DigitalMenuStepper/DigitalMenuStepper";
 import StepperMobile from "./StepperMobile/StepperMobile";
 import LinkRouter from "next/link";
-import Footer from "../Footer/Footer";
-import { useEffect } from "react";
-import { useState } from "react";
 import { Link } from "react-scroll";
-import Image from "next/image";
-import digitalMenuMockup from "../../assets/image/DigitalMenuPanelMockup.png";
 import QRMenuMockup from "../../assets/image/QRMenuMockup.png";
 import FAQ from "../FAQ/FAQ";
 import ContactForm from "../ContactForm/ContactForm";
+import digitalMenuMockup from "../../assets/image/DigitalMenuPanelMockup.png";
+import Image from "next/image";
+// Styles
+import styles from "./DigitalMenuPage.module.css";
 
-const DigitalMenuPage = ({ products }) => {
+const DigitalMenuPage = () => {
   const [isMobile, setIsMobile] = useState();
   useEffect(() => {
     if (window.innerWidth <= 760) {
@@ -100,7 +98,7 @@ const DigitalMenuPage = ({ products }) => {
               <button className={styles.button}>Demo&apos;yu İncele</button>
             </LinkRouter>
           </div>
-          <div style={{ width: "14rem", height: "auto" }}>
+          <div className={styles.featuresImage2}>
             <Image
               src={QRMenuMockup}
               alt=""
@@ -131,9 +129,7 @@ const DigitalMenuPage = ({ products }) => {
           Fiyatlandırma
         </h3>
         <article>
-          <div>
-            <DigitalMenuPrices products={products} />
-          </div>
+          <div></div>
         </article>
         <h3 className={styles.articleHeader} id="faq">
           Sıkça Sorulan Sorular

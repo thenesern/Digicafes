@@ -1,6 +1,8 @@
+// Packages and Dependencies
 import React, { useState } from "react";
 import { Input } from "@nextui-org/react";
 import Cards from "react-credit-cards";
+// Styles
 import "react-credit-cards/es/styles-compiled.css";
 import styles from "./card.module.css";
 

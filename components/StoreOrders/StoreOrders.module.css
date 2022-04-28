@@ -35,7 +35,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 36rem;
+  height: 52rem;
   gap: 1rem;
   padding: 2rem;
 }
@@ -57,13 +57,15 @@
 @media only screen and (max-width: 1000px) {
   .grids {
     overflow: scroll !important;
-    height: 100%;
+    height: 64rem !important;
+    flex-direction: column;
+    gap: 2rem;
   }
   .grid {
     height: 40rem !important;
   }
   .orders {
-    margin: 4rem 0 0 0;
+    margin: 2rem 0 0 0;
     padding: 0;
   }
 }
@@ -71,7 +73,10 @@
 @media only screen and (max-width: 768px) {
   .grids {
     overflow: scroll !important;
-    height: 100%;
+    height: 48rem !important;
+    flex-direction: column;
+    padding: 0 10px;
+    margin: 0;
   }
   .grid {
     height: 20rem !important;

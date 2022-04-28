@@ -1,5 +1,7 @@
+// Packages and Dependencies
 import Link from "next/link";
 import React from "react";
+// Styles
 import styles from "./DigitalMenuHome.module.css";
 
 const DigitalMenuHome = () => {

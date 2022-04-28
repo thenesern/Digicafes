@@ -1,3 +1,4 @@
+// Packages and Dependencies
 import {
   BarChartOutlined,
   CallToAction,
@@ -9,6 +10,7 @@ import {
 } from "@material-ui/icons";
 import React from "react";
 import Link from "next/link";
+// Styles
 import styles from "./SideBar.module.css";
 
 const UserSideBar = () => {

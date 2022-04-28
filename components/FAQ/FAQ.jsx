@@ -1,5 +1,7 @@
+// Packages and Dependencies
 import React from "react";
 import { Collapse, Text } from "@nextui-org/react";
+// Styles
 import styles from "./FAQ.module.css";
 
 const FAQ = () => {

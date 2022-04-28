@@ -1,10 +1,11 @@
-import styles from "./User.module.css";
+// Packages and Dependencies
 import List from "./List";
 import { TextField } from "@material-ui/core";
 import { useState } from "react";
 import Cookies from "js-cookie";
-import Image from "next/image";
 import axios from "axios";
+// Styles
+import styles from "./User.module.css";
 
 const User = ({ orders }) => {
   let profile;

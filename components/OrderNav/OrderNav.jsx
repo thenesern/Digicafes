@@ -1,8 +1,8 @@
-import { ArrowUpwardTwoTone } from "@mui/icons-material";
-import { Button } from "@mui/material";
+// Packages and Dependencies
 import React, { useState, useEffect } from "react";
+// Styles
 import styles from "./OrderNav.module.css";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+
 const OrderNav = (props) => {
   const [dates, setDates] = useState(
     props.orders?.map((o) => o.createdAt.split(" ")[0])
@@ -93,7 +93,11 @@ const OrderNav = (props) => {
   return (
     <nav className={styles.nav}>
       <div className={styles.logo}>
-        <img src={props.storeLogo} alt="Logo" className={styles.storeLogo} />
+        {props?.storeLogo ? (
+          <img src={props?.storeLogo} alt="Logo" className={styles.storeLogo} />
+        ) : (
+          <h4>{props?.storeName.toUpperCase()}</h4>
+        )}
       </div>
       <div className={styles.favs}>
         <h3 className={styles.header}>En Sevilenler</h3>

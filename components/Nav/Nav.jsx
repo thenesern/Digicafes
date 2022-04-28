@@ -1,31 +1,29 @@
-// Dependencies
+// Packages and Dependencies
 import React, { useState, useContext, useEffect } from "react";
 import LinkRouter from "next/link";
 import Cookies from "js-cookie";
 import { Store } from "../../redux/store";
-import Router from "next/router";
 import { useSnackbar } from "notistack";
 import axios from "axios";
 import { Controller, useForm } from "react-hook-form";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import Backdrop from "@mui/material/Backdrop";
+import { Link } from "react-scroll";
+import { useRouter } from "next/router";
+import { Loading, Modal, Spacer } from "@nextui-org/react";
+import ModalMui from "@mui/material/Modal";
+import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
 // Styles
 import styles from "./Nav.module.css";
 import { AccountCircleRounded } from "@material-ui/icons";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Fade from "@mui/material/Fade";
 import { Button, TextField, List, ListItem, Menu } from "@material-ui/core";
-import { Loading, Modal, Spacer } from "@nextui-org/react";
-import ModalMui from "@mui/material/Modal";
-import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Box } from "@mui/system";
-import { Link } from "react-scroll";
-import { useRouter } from "next/router";
 
 const Nav = () => {
   const router = useRouter();
-
   const { state, dispatch } = useContext(Store);
   const [isFetching, setIsFetching] = useState(false);
   const [openMuiLogin, setOpenMuiLogin] = useState(false);
@@ -52,13 +50,6 @@ const Nav = () => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const scrollToHead = () => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
-  };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -68,7 +59,7 @@ const Nav = () => {
     setAnchorEl(null);
     dispatch({ type: "USER_LOGOUT" });
     Cookies.remove("userInfo");
-    Router.push("/");
+    router.push("/");
   };
 
   const loginHandler = async ({ email, password }) => {

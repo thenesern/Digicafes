@@ -1,10 +1,12 @@
+// Packages and Dependencies
 import React, { useRef } from "react";
 import emailjs from "@emailjs/browser";
 import { Button, Input, Textarea } from "@nextui-org/react";
-import styles from "./ContactForm.module.css";
 import { useState } from "react";
+// Styles
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ErrorIcon from "@mui/icons-material/Error";
+import styles from "./ContactForm.module.css";
 
 const ContactForm = () => {
   const form = useRef();

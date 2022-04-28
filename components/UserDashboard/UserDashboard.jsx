@@ -1,3 +1,4 @@
+// Packages and Dependencies
 import {
   Button,
   IconButton,
@@ -11,14 +12,11 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import styles from "./UserDashboard.module.css";
 import { DataGrid, trTR } from "@mui/x-data-grid";
-import Image from "next/image";
 import QRCode from "qrcode";
 import { fadeInRightBig } from "react-animations";
 import Radium, { StyleRoot } from "radium";
 import Cookies from "js-cookie";
-import CallMadeIcon from "@mui/icons-material/CallMade";
 import Box from "@mui/material/Box";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
 import ModalMui from "@mui/material/Modal";
@@ -30,12 +28,13 @@ import Select from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import { useTheme } from "@mui/material/styles";
 import Link from "next/link";
+import Stack from "@mui/material/Stack";
+import { useSnackbar } from "notistack";
+// Styles
+import styles from "./UserDashboard.module.css";
 import DownloadIcon from "@mui/icons-material/Download";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SendIcon from "@mui/icons-material/Send";
-import Stack from "@mui/material/Stack";
-import { useSnackbar } from "notistack";
 import QrCodeIcon from "@mui/icons-material/QrCode";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import ViewListIcon from "@mui/icons-material/ViewList";
@@ -69,7 +68,11 @@ const UserDashboard = ({ order }) => {
   const [products, setProducts] = useState([...(menu?.products || "")]);
   const arrayProducts = Array.from(products);
   const [deleteId, setDeleteId] = useState("");
+  const [secondStep, setSecondStep] = useState(false);
+  const [tableNum, setTableNum] = useState(menu?.tableNum || null);
   const [version, setVersion] = useState("");
+  const [QRCodes, setQRCodes] = useState([]);
+
   useEffect(() => {
     if (order[0]?.product?.name === "Dijital Menü - V1") {
       setVersion("v1");
@@ -150,6 +153,7 @@ const UserDashboard = ({ order }) => {
         `/api/qr/${version}/${storeName}/menu`,
         {
           storeName: storeName,
+          tableNum,
           createdAt,
           owner: order[0]?.user?._id,
         },
@@ -415,13 +419,28 @@ const UserDashboard = ({ order }) => {
       padding: 0,
     };
     QRCode.toDataURL(
-      `https://www.project-testenes.vercel.app.com/qr${version}/${menu?.storeName}`,
+      `https://www.project-testenes.vercel.app.com/qr/${version}/${menu?.storeName}/1`,
       opts
     ).then(setSrc);
-  }, [menu]);
+  }, [menu?.storeName, version]);
+
+  useEffect(() => {
+    var opts = {
+      errorCorrectionLevel: "H",
+      type: "image/png",
+      quality: 1,
+      margin: 0,
+      padding: 0,
+    };
+    for (let i = 1; i < tableNum; i++) {
+      QRCode.toDataURL(
+        `https://www.project-testenes.vercel.app.com/qr/${version}/${menu?.storeName}/${i}`,
+        opts
+      ).then((url) => QRCodes.push(url));
+    }
+  }, [menu?.storeName, version, tableNum, QRCodes]);
 
   const columns = [
-    { field: "_id", headerName: "Ürün Kodu", flex: 1.3 },
     {
       field: "name",
       headerName: "Ürün",
@@ -469,7 +488,6 @@ const UserDashboard = ({ order }) => {
     },
   ];
   const categoryColumns = [
-    { field: "_id", headerName: "Kategori Kodu", flex: 2 },
     {
       field: "name",
       headerName: "Kategori",
@@ -524,28 +542,69 @@ const UserDashboard = ({ order }) => {
             <Loading color="white" size="xl" />
             <Spacer />
           </Modal>
-          <StyleRoot>
-            <form className={styles.formFirst} style={animate.fadeInRightBig}>
-              <h2 className={styles.headerFirst}>
-                Lütfen İş Yerinizin Adını Giriniz
-              </h2>
-              <List className={styles.list}>
-                <ListItem>
-                  <TextField
-                    variant="outlined"
-                    fullWidth
-                    disabled={isFirst ? false : true}
-                    id="brandName"
-                    rules={{
-                      required: true,
-                      pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                    }}
-                    style={{ maxWidth: "24rem", minWidth: "18rem" }}
-                    onChange={(e) => setStoreName(e.target.value)}
-                    label="Dükkan Adı"
-                  ></TextField>
-                </ListItem>
-                {isFirst && (
+          {!secondStep && (
+            <StyleRoot>
+              <form className={styles.formFirst} style={animate.fadeInRightBig}>
+                <h2 className={styles.headerFirst}>
+                  Lütfen İş Yerinizin Adını Giriniz
+                </h2>
+                <List className={styles.list}>
+                  <ListItem>
+                    <TextField
+                      variant="outlined"
+                      disabled={isFirst ? false : true}
+                      id="brandName"
+                      rules={{
+                        required: true,
+                        pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                      }}
+                      style={{ width: "100%" }}
+                      onChange={(e) => setStoreName(e.target.value)}
+                      label="Dükkan Adı"
+                    ></TextField>
+                  </ListItem>
+                  {isFirst && (
+                    <ListItem>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        fullWidth
+                        color="primary"
+                        onClick={() => {
+                          if (storeName.length > 2) {
+                            setSecondStep(true);
+                          }
+                        }}
+                      >
+                        İlerle
+                      </Button>
+                    </ListItem>
+                  )}
+                </List>
+              </form>
+            </StyleRoot>
+          )}
+          {secondStep && (
+            <StyleRoot>
+              <form className={styles.formFirst} style={animate.fadeInRightBig}>
+                <h2 className={styles.headerFirst}>
+                  Lütfen İş Yerinizdeki Masa Sayısını Giriniz
+                </h2>
+                <List className={styles.list}>
+                  <ListItem>
+                    <TextField
+                      variant="outlined"
+                      disabled={isFirst ? false : true}
+                      id="brandName"
+                      rules={{
+                        required: true,
+                        pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                      }}
+                      style={{ width: "100%" }}
+                      onChange={(e) => setTableNum(e.target.value)}
+                      label="Masa Sayısı"
+                    ></TextField>
+                  </ListItem>
                   <ListItem>
                     <Button
                       variant="contained"
@@ -557,10 +616,10 @@ const UserDashboard = ({ order }) => {
                       Kaydet
                     </Button>
                   </ListItem>
-                )}
-              </List>
-            </form>
-          </StyleRoot>
+                </List>
+              </form>
+            </StyleRoot>
+          )}
         </div>
       )}
       {!isFirst && (

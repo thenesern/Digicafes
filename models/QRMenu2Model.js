@@ -7,6 +7,10 @@ const QRMenuSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    tableNum: {
+      type: Number,
+      required: true,
+    },
     storeLogo: {
       type: String,
     },

@@ -1,17 +1,8 @@
-// Dependencies
+// Packages and Dependencies
 import React from "react";
-import {
-  Facebook,
-  Instagram,
-  MailOutline,
-  Payment,
-  Phone,
-  Pinterest,
-  Room,
-  Twitter,
-} from "@material-ui/icons";
 import Link from "next/link";
 // Styles
+import { Facebook, Instagram } from "@material-ui/icons";
 import styles from "./Footer.module.css";
 
 const Footer = () => {

@@ -168,8 +168,8 @@
 }
 @media only screen and (max-width: 1000px) {
   .box {
-    gap: 2rem;
-    padding-top: 10rem;
+    gap: 1rem;
+    padding-top: 8rem;
   }
   .grid {
     height: 16rem !important;
@@ -183,6 +183,7 @@
 @media only screen and (max-width: 500px) {
   .container {
     height: 100%;
+    padding-top: 1rem;
   }
   .left {
     display: flex;
@@ -241,6 +242,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    gap: 2rem;
   }
   .actions {
     display: flex;
