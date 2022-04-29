@@ -11,21 +11,21 @@ const StoreOrders = (props) => {
       field: "tableNum",
       headerName: "Masa No.",
       headerClassName: "dark",
-      flex: 1,
+      flex: 2,
       editable: false,
     },
     {
       field: "createdAt",
       headerName: "Çağrı Zamanı",
       headerClassName: "dark",
-      flex: 1,
+      flex: 4,
       editable: false,
     },
     {
       field: "callName",
       headerName: "Çağrı Türü",
       headerClassName: "dark",
-      flex: 1,
+      flex: 4,
       editable: false,
     },
   ];
@@ -34,7 +34,7 @@ const StoreOrders = (props) => {
     {
       field: "name",
       headerName: "Sipariş",
-      flex: 1,
+      flex: 3,
       headerClassName: "dark",
       renderCell: (params) => {
         return (
@@ -55,7 +55,7 @@ const StoreOrders = (props) => {
     {
       field: "orderNotes",
       headerName: "Not",
-      flex: 1,
+      flex: 3,
       headerClassName: "dark",
     },
     {
@@ -68,7 +68,7 @@ const StoreOrders = (props) => {
     {
       field: "createdAt",
       headerName: "Sipariş Zamanı",
-      flex: 1,
+      flex: 2,
       headerClassName: "dark",
       editable: false,
     },

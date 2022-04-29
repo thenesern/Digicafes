@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styles from "./store.module.css";
-import db from "../../../../utils/db.js";
-import QRMenu from "../../../../models/QRMenu2Model.js";
+import db from "../../../../../utils/db.js";
+import QRMenu from "../../../../../models/QRMenu2Model.js";
 import { Link, Loading, Modal, Spacer } from "@nextui-org/react";
 import {
   Box,
@@ -17,7 +17,7 @@ import axios from "axios";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useEffect } from "react";
 
-const StoreMenu = ({ menu }) => {
+const StoreMenu = ({ menu, number }) => {
   const [open, setOpen] = useState(false);
   const [storeName, setStoreName] = useState(menu?.storeName);
   const Router = useRouter();
@@ -29,7 +29,7 @@ const StoreMenu = ({ menu }) => {
   const handleCloseWaiterModal = () => setWaiterModal(false);
   const handleCloseTableModal = () => setTableModal(false);
   const [callName, setCallName] = useState("");
-  const [tableNum, setTableNum] = useState(1);
+  const [tableNum, setTableNum] = useState(number);
   const [isSuccess, setIsSuccess] = useState(false);
   useEffect(() => {
     if (isSuccess) {
@@ -130,7 +130,7 @@ const StoreMenu = ({ menu }) => {
                     try {
                       setIsFetching(true);
                       Router.push(
-                        `/qr/v2/${menu?.storeName}/products/${m?.name}`
+                        `/qr/v2/${menu?.storeName}/${tableNum}/products/${m?.name}`
                       );
                     } catch (err) {
                       console.log(err);
@@ -225,7 +225,9 @@ const StoreMenu = ({ menu }) => {
               onClick={() => {
                 try {
                   setIsFetching(true);
-                  Router.push(`/qr/v2/${menu?.storeName}/products/${m?.name}`);
+                  Router.push(
+                    `/qr/v2/${menu?.storeName}/${tableNum}/products/${m?.name}`
+                  );
                 } catch (err) {
                   console.log(err);
                   setIsFetching(false);
@@ -249,6 +251,7 @@ const StoreMenu = ({ menu }) => {
 
 export async function getServerSideProps(context) {
   const { storeName } = context.query;
+  const { tableNum } = context.query;
   await db.connect();
   const menu = await QRMenu.findOne({
     storeName,
@@ -257,6 +260,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       menu: JSON.parse(JSON.stringify(menu)),
+      number: tableNum,
     },
   };
 }

@@ -31,7 +31,8 @@
 }
 
 .grids {
-  display: flex;
+  display: grid;
+  grid-template-columns: 7fr 3fr;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -56,6 +57,7 @@
 
 @media only screen and (max-width: 1000px) {
   .grids {
+    display: flex;
     overflow: scroll !important;
     height: 64rem !important;
     flex-direction: column;

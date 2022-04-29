@@ -1,8 +1,8 @@
 import { Router, useRouter } from "next/router";
 import React, { useContext } from "react";
 import styles from "./products.module.css";
-import db from "../../../../../utils/db.js";
-import QRMenu from "../../../../../models/QRMenu2Model.js";
+import db from "../../../../../../utils/db.js";
+import QRMenu from "../../../../../../models/QRMenu2Model.js";
 import Link from "next/link";
 import { Badge, Button } from "@material-ui/core";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
@@ -12,15 +12,17 @@ import { Box, Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { ShoppingCartOutlined } from "@material-ui/icons";
-import { Store } from "../../../../../redux/store";
-import Order from "../../../../../models/OrderModel";
-import Product from "../../../../../models/ProductModel";
+import { Store } from "../../../../../../redux/store";
+import Order from "../../../../../../models/OrderModel";
+import Product from "../../../../../../models/ProductModel";
 import { useEffect } from "react";
 import axios from "axios";
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
+import { GridCheckCircleIcon } from "@mui/x-data-grid";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
-const StoreMenu = ({ menu, category, order }) => {
+const StoreMenu = ({ menu, category, order, number }) => {
   const [storeName, setStoreName] = useState(menu?.storeName);
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
@@ -33,7 +35,7 @@ const StoreMenu = ({ menu, category, order }) => {
   const [productPrice, setProductPrice] = useState(null);
   const [orderNotes, setOrderNotes] = useState("");
   const [productDescription, setProductDescription] = useState("");
-  const [tableNum, setTableNum] = useState(1);
+  const [tableNum, setTableNum] = useState(number);
   const [cartTotal, setCartTotal] = useState(null);
   const [cartItems, setCartItems] = useState([...cart]);
   const [openIsSure, setOpenIsSure] = useState(false);
@@ -59,6 +61,14 @@ const StoreMenu = ({ menu, category, order }) => {
   };
   const [isFetching, setIsFetching] = useState(false);
   const filtered = menu?.products.filter((a) => a.category.includes(category));
+  const [isSuccess, setIsSuccess] = useState(false);
+  useEffect(() => {
+    if (isSuccess) {
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 2000);
+    }
+  }, [isSuccess]);
 
   useEffect(() => {
     if (isSure) {
@@ -71,10 +81,15 @@ const StoreMenu = ({ menu, category, order }) => {
     setIsFetching(true);
     const createdAt = new Date().toLocaleString("tr-TR");
     try {
-      await axios.patch(`/api/qr/v2/${storeName}/orders`, {
+      const response = await axios.patch(`/api/qr/v2/${storeName}/orders`, {
         orders: [{ cartItems, tableNum, createdAt, orderNotes }],
         storeName,
       });
+      if (response.data.status === "success") {
+        setIsSuccess(true);
+      } else {
+        setIsSuccess(false);
+      }
       setIsFetching(false);
       handleCloseCart();
     } catch (err) {
@@ -83,7 +98,7 @@ const StoreMenu = ({ menu, category, order }) => {
       console.log(err);
     }
   };
-  console.log(orderNotes);
+
   const addToCartHandler = ({ name, price, quantity, img }) => {
     if (cartItems.find((a) => a.name === name)) {
       cartItems.find((item) => item.name === name).quantity += quantity;
@@ -142,6 +157,25 @@ const StoreMenu = ({ menu, category, order }) => {
           </Badge>
         </div>
       </navbar>
+      <Modal
+        style={{ width: "90%", margin: "0 auto" }}
+        open={isSuccess}
+        onClose={() => setIsSuccess(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Modal.Body
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "3rem",
+          }}
+        >
+          <CheckCircleIcon style={{ fontSize: "8rem" }} color="success" />
+          <h1>Talebiniz iletildi.</h1>
+        </Modal.Body>
+      </Modal>
       <ul className={styles.list}>
         <Modal
           open={openModal}
@@ -374,6 +408,7 @@ const StoreMenu = ({ menu, category, order }) => {
 export async function getServerSideProps(context) {
   const { category } = context.query;
   const { storeName } = context.query;
+  const { tableNum } = context.query;
   await db.connect();
   const menu = await QRMenu.findOne({
     storeName: storeName,
@@ -388,6 +423,7 @@ export async function getServerSideProps(context) {
       menu: JSON.parse(JSON.stringify(menu)),
       category,
       order: JSON.parse(JSON.stringify(order)),
+      number: tableNum,
     },
   };
 }
