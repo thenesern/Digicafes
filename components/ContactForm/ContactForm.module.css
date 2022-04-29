@@ -70,8 +70,8 @@
 }
 @media only screen and (max-width: 500px) {
   .text {
-    width: 20rem !important;
-    margin: 0 1rem !important;
+    width: 16rem !important;
+    margin: 0 auto !important;
   }
   .container {
     flex-direction: column;

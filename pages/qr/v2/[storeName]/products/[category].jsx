@@ -6,7 +6,7 @@ import QRMenu from "../../../../../models/QRMenu2Model.js";
 import Link from "next/link";
 import { Badge, Button } from "@material-ui/core";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { Loading, Modal, Spacer } from "@nextui-org/react";
+import { Loading, Modal, Spacer, Textarea } from "@nextui-org/react";
 import { useState } from "react";
 import { Box, Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -31,6 +31,7 @@ const StoreMenu = ({ menu, category, order }) => {
   const [productName, setProductName] = useState("");
   const [productImage, setProductImage] = useState("");
   const [productPrice, setProductPrice] = useState(null);
+  const [orderNotes, setOrderNotes] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [tableNum, setTableNum] = useState(1);
   const [cartTotal, setCartTotal] = useState(null);
@@ -51,6 +52,7 @@ const StoreMenu = ({ menu, category, order }) => {
     setProductImage("");
     setProductPrice(null);
     setProductDescription("");
+    setOrderNotes("");
   };
   const [isFetching, setIsFetching] = useState(false);
   const filtered = menu?.products.filter((a) => a.category.includes(category));
@@ -67,9 +69,10 @@ const StoreMenu = ({ menu, category, order }) => {
     const createdAt = new Date().toLocaleString("tr-TR");
     try {
       await axios.patch(`/api/qr/v2/${storeName}/orders`, {
-        orders: [{ cartItems, tableNum, createdAt }],
+        orders: [{ cartItems, tableNum, createdAt, orderNotes }],
         storeName,
       });
+      setOrderNotes("");
       setIsFetching(false);
       handleCloseCart();
     } catch (err) {
@@ -78,6 +81,7 @@ const StoreMenu = ({ menu, category, order }) => {
       console.log(err);
     }
   };
+  console.log(orderNotes);
   const addToCartHandler = ({ name, price, quantity, img }) => {
     if (cartItems.find((a) => a.name === name)) {
       cartItems.find((item) => item.name === name).quantity += quantity;
@@ -130,7 +134,7 @@ const StoreMenu = ({ menu, category, order }) => {
             badgeContent={quantity}
             color="primary"
             onClick={handleOpenCart}
-            style={{ transform: "scale(0.9)" }}
+            style={{ padding: "6px" }}
           >
             <ShoppingCartOutlined style={{ color: "#f7ede2" }} />
           </Badge>
@@ -140,6 +144,7 @@ const StoreMenu = ({ menu, category, order }) => {
         <Modal
           open={openModal}
           className={styles.modal}
+          animated="true"
           onClose={handleCloseModal}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
@@ -159,70 +164,44 @@ const StoreMenu = ({ menu, category, order }) => {
           onClose={handleCloseCart}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
+          style={{
+            padding: "4px",
+            width: "92%",
+            maxHeight: "24rem",
+            overFlow: "auto",
+          }}
         >
-          <Box>
-            <Modal.Header>
-              <h2>Sepet Özeti</h2>
-            </Modal.Header>
-            <Modal.Body style={{ padding: "1rem 0" }}>
-              {cartItems?.map((item) => (
-                <>
-                  <div key={Math.random()} className={styles.cart}>
-                    <div className={styles.cartHeader}>
-                      <img src={item?.img} alt="" className={styles.cartImg} />
-                      <h4
-                        style={{
-                          maxWidth: "7rem",
-                          overflow: "scroll",
-                        }}
-                      >
-                        {item?.name}
-                      </h4>
-                    </div>
-                    <div className={styles.productQuantity}>
-                      <Button
-                        className={styles.buttons}
-                        variant="outlined"
-                        onClick={() => {
-                          if (item.quantity > 1) {
-                            item.quantity -= 1;
-                            setCartItems([...cart]);
-                            setCartTotal(
-                              cartItems.reduce(function (a, b) {
-                                return a + b.price * b.quantity;
-                              }, 0)
-                            );
-                            dispatch({ type: "CART", payload: cartItems });
-                          } else if (
-                            item.quantity - 1 === 0 &&
-                            cartItems.length - 1 !== 0
-                          ) {
-                            setCartItems(
-                              cartItems.filter((product) => product !== item)
-                            );
-                            setCartTotal(
-                              cart.reduce(function (a, b) {
-                                return a + b.price * b.quantity;
-                              }, 0)
-                            );
-                            dispatch({ type: "CART", payload: cartItems });
-                          } else {
-                            {
-                              setCartItems([]);
-                              setCartTotal(0);
-                              dispatch({ type: "CART", payload: [] });
-                            }
-                          }
-                        }}
-                      >
-                        <ArrowCircleDownIcon />
-                      </Button>
-                      <h4>x{item?.quantity}</h4>
-                      <Button
-                        variant="outlined"
-                        className={styles.buttons}
-                        onClick={() => {
-                          item.quantity += 1;
+          <Modal.Header>
+            <h2>Sepet Özeti</h2>
+          </Modal.Header>
+          <Modal.Body style={{ padding: "1rem 0" }}>
+            {cartItems?.map((item) => (
+              <>
+                <div key={Math.random()} className={styles.cart}>
+                  <div className={styles.cartHeader}>
+                    <img src={item?.img} alt="" className={styles.cartImg} />
+                    <h4
+                      style={{
+                        maxWidth: "8rem",
+                        overflow: "scroll",
+                        fontSize: "14px",
+                      }}
+                    >
+                      {item?.name}
+                    </h4>
+                  </div>
+                  <div className={styles.productQuantity}>
+                    <Button
+                      className={styles.buttons}
+                      variant="outlined"
+                      style={{
+                        minWidth: "1rem",
+                        backgroundColor: "transparent",
+                        border: "none",
+                      }}
+                      onClick={() => {
+                        if (item.quantity > 1) {
+                          item.quantity -= 1;
                           setCartItems([...cart]);
                           setCartTotal(
                             cartItems.reduce(function (a, b) {
@@ -230,31 +209,72 @@ const StoreMenu = ({ menu, category, order }) => {
                             }, 0)
                           );
                           dispatch({ type: "CART", payload: cartItems });
-                        }}
-                      >
-                        <ArrowCircleUpIcon />
-                      </Button>
-                    </div>
+                        } else if (
+                          item.quantity - 1 === 0 &&
+                          cartItems.length - 1 !== 0
+                        ) {
+                          setCartItems(
+                            cartItems.filter((product) => product !== item)
+                          );
+                          setCartTotal(
+                            cart.reduce(function (a, b) {
+                              return a + b.price * b.quantity;
+                            }, 0)
+                          );
+                          dispatch({ type: "CART", payload: cartItems });
+                        } else {
+                          {
+                            setCartItems([]);
+                            setCartTotal(0);
+                            dispatch({ type: "CART", payload: [] });
+                          }
+                        }
+                      }}
+                    >
+                      <ArrowCircleDownIcon style={{ fontSize: "2rem" }} />
+                    </Button>
+                    <h4>x{item?.quantity}</h4>
+                    <Button
+                      style={{
+                        minWidth: "1rem",
+                        backgroundColor: "transparent",
+                        border: "none",
+                      }}
+                      variant="outlined"
+                      className={styles.buttons}
+                      onClick={() => {
+                        item.quantity += 1;
+                        setCartItems([...cart]);
+                        setCartTotal(
+                          cartItems.reduce(function (a, b) {
+                            return a + b.price * b.quantity;
+                          }, 0)
+                        );
+                        dispatch({ type: "CART", payload: cartItems });
+                      }}
+                    >
+                      <ArrowCircleUpIcon style={{ fontSize: "2rem" }} />
+                    </Button>
                   </div>
-                </>
-              ))}
-              {cart.length === 0 && (
-                <p style={{ padding: "1rem" }}>Sepetiniz boş.</p>
-              )}
-            </Modal.Body>
-            <Modal.Footer className={styles.cartFooter}>
-              {cart.length > 0 && <div>Toplam: ₺{cartTotal}</div>}
-              {cart.length > 0 && (
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={handleOpenIsSure}
-                >
-                  Siparişi Onayla
-                </Button>
-              )}
-            </Modal.Footer>
-          </Box>
+                </div>
+              </>
+            ))}
+            {cart.length === 0 && (
+              <p style={{ padding: "1rem" }}>Sepetiniz boş.</p>
+            )}
+          </Modal.Body>
+          <Modal.Footer className={styles.cartFooter}>
+            {cart.length > 0 && <div>Toplam: ₺{cartTotal}</div>}
+            {cart.length > 0 && (
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleOpenIsSure}
+              >
+                Siparişi Onayla
+              </Button>
+            )}
+          </Modal.Footer>
         </Modal>
         <Modal
           style={{
@@ -272,16 +292,22 @@ const StoreMenu = ({ menu, category, order }) => {
         </Modal>
 
         <Modal
+          style={{ width: "92%", margin: "0 auto", padding: "4px" }}
           open={openIsSure}
           onClose={handleCloseOpenIsSure}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Modal.Header>
-            <h3>Dikkat</h3>
+          <Modal.Header style={{ display: "flex", flexDirection: "column" }}>
+            <h3 style={{ padding: "0", margin: "0" }}>Dikkat</h3>
+            <p>Siparişiniz iletilecek.</p>
           </Modal.Header>
           <Modal.Body>
-            <p>Sipariş restorana iletilsin mi?</p>
+            <h5>Not Ekle</h5>
+            <Textarea
+              placeholder="Mesajınız. (Boş Bırakabilirsiniz)"
+              onChange={(e) => setOrderNotes(e.target.value)}
+            ></Textarea>
           </Modal.Body>
           <Modal.Footer style={{ display: "flex", gap: "2rem" }}>
             <Button variant="outlined" onClick={handleCloseOpenIsSure}>

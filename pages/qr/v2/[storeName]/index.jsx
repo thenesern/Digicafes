@@ -5,6 +5,7 @@ import db from "../../../../utils/db.js";
 import QRMenu from "../../../../models/QRMenu2Model.js";
 import { Link, Loading, Modal, Spacer } from "@nextui-org/react";
 import {
+  Box,
   Button,
   Divider,
   IconButton,
@@ -13,23 +14,43 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import axios from "axios";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { useEffect } from "react";
 
 const StoreMenu = ({ menu }) => {
   const [open, setOpen] = useState(false);
   const [storeName, setStoreName] = useState(menu?.storeName);
   const Router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
+  const [waiterModal, setWaiterModal] = useState(false);
+  const [tableModal, setTableModal] = useState(false);
+  const handleOpenWaiterModal = () => setWaiterModal(true);
+  const handleOpenTableModal = () => setTableModal(true);
+  const handleCloseWaiterModal = () => setWaiterModal(false);
+  const handleCloseTableModal = () => setTableModal(false);
   const [callName, setCallName] = useState("");
   const [tableNum, setTableNum] = useState(1);
-
+  const [isSuccess, setIsSuccess] = useState(false);
+  useEffect(() => {
+    if (isSuccess) {
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 2000);
+    }
+  }, [isSuccess]);
   const handleCalls = async ({ callName }) => {
     setIsFetching(true);
     const createdAt = new Date().toLocaleString("tr-TR");
     try {
-      await axios.patch(`/api/qr/v2/${storeName}/calls`, {
+      const response = await axios.patch(`/api/qr/v2/${storeName}/calls`, {
         calls: [{ tableNum, createdAt, callName }],
         storeName,
       });
+      if (response.data.status === "success") {
+        setIsSuccess(true);
+      } else {
+        setIsSuccess(false);
+      }
       setIsFetching(false);
       setCallName("");
     } catch (err) {
@@ -40,6 +61,25 @@ const StoreMenu = ({ menu }) => {
 
   return (
     <div className={styles.container}>
+      <Modal
+        style={{ width: "90%", margin: "0 auto" }}
+        open={isSuccess}
+        onClose={() => setIsSuccess(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Modal.Body
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "3rem",
+          }}
+        >
+          <CheckCircleIcon style={{ fontSize: "8rem" }} color="success" />
+          <h1>Talebiniz iletildi.</h1>
+        </Modal.Body>
+      </Modal>
       <navbar className={styles.navbar}>
         {menu?.storeLogo?.includes("cloudinary") ? (
           <img src={menu?.storeLogo} alt="Logo" className={styles.logo} />
@@ -60,9 +100,7 @@ const StoreMenu = ({ menu }) => {
               variant="contained"
               style={{ margin: "10px auto", minWidth: "10rem" }}
               color="primary"
-              onClick={() => {
-                handleCalls({ callName: "Garson Çağrısı" });
-              }}
+              onClick={handleOpenWaiterModal}
             >
               Garson Çağır
             </Button>
@@ -70,9 +108,7 @@ const StoreMenu = ({ menu }) => {
               variant="contained"
               style={{ margin: "10px auto", minWidth: "10rem" }}
               color="primary"
-              onClick={() => {
-                handleCalls({ callName: "Hesap İsteği" });
-              }}
+              onClick={handleOpenTableModal}
             >
               Hesap İste
             </Button>
@@ -124,6 +160,64 @@ const StoreMenu = ({ menu }) => {
             <Loading color="white" size="xl" />
             <Spacer />
           </Modal.Body>
+        </Modal>
+        <Modal
+          style={{ width: "90%", margin: "0 auto" }}
+          onClose={handleCloseWaiterModal}
+          aria-labelledby="modal-title"
+          open={waiterModal}
+        >
+          <Modal.Header>
+            <h1>Emin misiniz?</h1>
+          </Modal.Header>
+          <Modal.Body style={{ margin: "1rem 10px" }}>
+            <p>Garson Çağrınız iletilecek.</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="contained" onClick={handleCloseWaiterModal}>
+              Vazgeç
+            </Button>
+            <Button
+              style={{ marginLeft: "2rem " }}
+              variant="contained"
+              color="secondary"
+              onClick={() => {
+                handleCalls({ callName: "Garson Çağrısı" });
+                handleCloseWaiterModal();
+              }}
+            >
+              Onayla
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        <Modal
+          style={{ width: "90%", margin: "0 auto" }}
+          onClose={handleCloseTableModal}
+          aria-labelledby="modal-title"
+          open={tableModal}
+        >
+          <Modal.Header>
+            <h1>Emin misiniz?</h1>
+          </Modal.Header>
+          <Modal.Body style={{ margin: "1rem 10px" }}>
+            <p>Hesap İsteğiniz iletilecek.</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="contained" onClick={handleCloseTableModal}>
+              Vazgeç
+            </Button>
+            <Button
+              style={{ marginLeft: "2rem " }}
+              variant="contained"
+              color="secondary"
+              onClick={() => {
+                handleCalls({ callName: "Hesap Çağrısı" });
+                handleCloseTableModal();
+              }}
+            >
+              Onayla
+            </Button>
+          </Modal.Footer>
         </Modal>
         {menu &&
           menu?.categories?.map((m) => (

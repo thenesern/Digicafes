@@ -53,6 +53,12 @@ const StoreOrders = (props) => {
       },
     },
     {
+      field: "orderNotes",
+      headerName: "Not",
+      flex: 1,
+      headerClassName: "dark",
+    },
+    {
       field: "tableNum",
       headerName: "Masa No.",
       flex: 1,

@@ -83,6 +83,9 @@ const QRMenuSchema = new mongoose.Schema(
         createdAt: {
           type: String,
         },
+        orderNotes: {
+          type: String,
+        },
         cartItems: [
           {
             name: {

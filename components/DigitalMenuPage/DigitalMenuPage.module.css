@@ -405,3 +405,19 @@
     transform: translate(0, 0);
   }
 }
+
+@media only screen and (max-width: 325px) {
+  .container {
+    padding-top: 10rem;
+  }
+  .image {
+    height: 10rem;
+  }
+  .image2 {
+    height: 10rem;
+  }
+  .featuresImage1 {
+    width: 16rem !important;
+    margin: 0 auto;
+  }
+}
