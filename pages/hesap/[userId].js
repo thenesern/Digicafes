@@ -31,8 +31,6 @@ const Hesap = () => {
           },
           { headers: { authorization: `Bearer ${userToken}` } }
         );
-        console.log(userOrder);
-        console.log(userToken);
         setUserOrder(userOrder?.data?.order);
         setIsFetching(false);
       } catch (err) {
@@ -52,26 +50,5 @@ const Hesap = () => {
     </>
   );
 };
-
-/* export async function getServerSideProps(context) {
-  const { userId } = context.query;
-  const signedUserId = JSON.parse(context.req.cookies["userInfo"])?.id || null;
-  const userToken = JSON.parse(context.req.cookies["userInfo"])?.toke || null;
-  if (signedUserId !== userId) {
-    return {
-      redirect: {
-        destination: "/404",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {
-      userId,
-      userToken,
-    },
-  };
-} */
 
 export default Hesap;

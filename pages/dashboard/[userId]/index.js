@@ -1,21 +1,42 @@
 import React from "react";
 import Nav from "../../../components/Nav/Nav";
-import User from "../../../models/UserModel";
-import Order from "../../../models/OrderModel";
-import db from "../../../utils/db";
 import styles from "./dashboard.module.css";
-import Product from "../../../models/ProductModel";
-import QRMenu1 from "../../../models/QRMenu1Model";
-import QRMenu2 from "../../../models/QRMenu2Model";
+
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
 import { useState } from "react";
+import axios from "axios";
+import { useEffect } from "react";
 
-const Dashboard = ({ orders, user }) => {
+const Dashboard = ({ userId, userToken }) => {
   const router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
-
+  const [orders, setOrders] = useState(null);
+  console.log(userId);
+  console.log(userToken);
+  useEffect(() => {
+    const getUserOrder = async () => {
+      setIsFetching(true);
+      try {
+        const userOrder = await axios.post(
+          "/api/order/user",
+          {
+            user: userId,
+          },
+          { headers: { authorization: `Bearer ${userToken}` } }
+        );
+        console.log(userOrder);
+        setOrders(userOrder.data.order);
+        setIsFetching(false);
+      } catch (err) {
+        setIsFetching(false);
+        console.log(err);
+      }
+    };
+    getUserOrder();
+  }, [userId]);
+  console.log(orders);
   return (
     <div className={styles.container}>
       <Nav />
@@ -35,7 +56,7 @@ const Dashboard = ({ orders, user }) => {
           </Modal.Body>
         </Modal>
         <h3 className={styles.title}>Yönetim Paneli</h3>
-        {orders.length > 0 &&
+        {orders?.length > 0 &&
           orders.map((order) => (
             <div key={order._id} className={styles.panel}>
               <div>
@@ -43,8 +64,8 @@ const Dashboard = ({ orders, user }) => {
                 <Link
                   href={
                     order?.product?.name === "Dijital Menü - V1"
-                      ? `/dashboard/${user}/menu/v1/${order._id}`
-                      : `/dashboard/${user}/menu/v2/${order._id}`
+                      ? `/dashboard/${userId}/menu/v1/${order._id}`
+                      : `/dashboard/${userId}/menu/v2/${order._id}`
                   }
                   passHref
                 >
@@ -123,7 +144,7 @@ const Dashboard = ({ orders, user }) => {
               </div>
             </div>
           ))}
-        {orders.length < 1 && (
+        {orders?.length < 1 && (
           <div className={styles.orderNotFound}>
             <img
               className={styles.orderNotFoundImage}
@@ -144,6 +165,7 @@ const Dashboard = ({ orders, user }) => {
 export async function getServerSideProps(context) {
   const { userId } = context.query;
   const signedUserId = JSON.parse(context.req.cookies["userInfo"])?.id || null;
+  const userToken = JSON.parse(context.req.cookies["userInfo"])?.token || null;
   if (signedUserId !== userId) {
     return {
       redirect: {
@@ -152,21 +174,11 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  await db.connect();
-  const orders = await Order.find({ user: userId })
-    .populate({
-      path: "product",
-      model: Product,
-    })
-    .populate({ path: "user", model: User })
-    .populate({ path: "menuv1", model: QRMenu1 })
-    .populate({ path: "menuv2", model: QRMenu2 });
 
-  await db.disconnect();
   return {
     props: {
-      orders: JSON.parse(JSON.stringify(orders)),
-      user: userId,
+      userId,
+      userToken,
     },
   };
 }

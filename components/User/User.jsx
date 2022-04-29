@@ -96,8 +96,10 @@ const User = ({ orders, isFetching }) => {
           <Loading style={{ margin: "0 auto" }} />
         ) : orders?.length > 0 ? (
           <List orders={orders} />
-        ) : (
+        ) : orders?.length === 0 ? (
           <h6 className={styles.notFound}>Sipariş bulunamadı.</h6>
+        ) : (
+          ""
         )}
       </div>
     </div>
