@@ -48,9 +48,14 @@ const DigitalMenuPage = () => {
             className={styles.image}
           />
           <img
-            src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/QRMenuMockup.png"
+            src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/tabletMockup.png"
             alt=""
             className={styles.image2}
+          />
+          <img
+            src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/QRMenuMockup.png"
+            alt=""
+            className={styles.image3}
           />
         </div>
       </div>
@@ -60,7 +65,7 @@ const DigitalMenuPage = () => {
         </h3>
         <article className={styles.first}>
           <div
-            style={{ width: "48rem", height: "auto" }}
+            style={{ width: "40rem", height: "auto" }}
             className={styles.featuresImage1}
           >
             <Image
@@ -73,45 +78,34 @@ const DigitalMenuPage = () => {
           <div className={styles.firstDes}>
             <h2 className={styles.firstHeader}>Dijital Menü Yönetim Paneli</h2>
             <ul className={styles.firstList}>
-              <li>İş Yerinize Özel Alt Alan Adı</li>
-              <li>Ürün Ekleme, Çıkarma ve Güncelleme Modülü</li>
-              <li>QR Kod Oluşturma Modülü</li>
+              <li>Sınırsız Ürün ve Kategori Modülü</li>
+              <li>Sınırsız Güncelleme Modülü</li>
+              <li>Otomatik QR Kod Oluşturma Modülü</li>
             </ul>
             <p>
-              Dijital Menü Yönetim Paneli üzerinden Menünüzü dilediğiniz şekilde
-              düzenleyebilirsiniz.
+              Dijital Menü Yönetim Paneli üzerinden Menünüzü dilediğiniz zaman,
+              dilediğiniz şekilde düzenleyebilirsiniz.
             </p>
           </div>
         </article>
+
         <article className={styles.second}>
           <div className={styles.secondDes}>
-            <h2 className={styles.secondHeader}>Dijital Menü</h2>
+            <h2 className={styles.secondHeader}>Dijital Menü Sipariş Paneli</h2>
             <ul className={styles.secondList}>
-              <li>Ergonomik Menü Tasarımı</li>
-              <li>Çoğu Akıllı Telefon Üzerinden Kolayca Ulaşılabilir</li>
-              <li>Çoklu Dil Desteği</li>
+              <li>Günlük, Haftalık ve Aylık Sipariş Performansı Modülü</li>
+              <li>Sipariş ve Çağrı Görüntüleme Modülleri</li>
             </ul>
             <p>
-              Dijital Menü, Kullanıcı Deneyimine odaklı tasarımı sayesinde
-              müşteri memnuniyetini artırır.
+              Dijital Menü Sipariş Paneli ile birlikte müşteri tarafından gelen
+              siparişleri ve çağrıları anlık olarak görebilir. İş yerinizin
+              sipariş performansını ve en sevilen ürünlerinizi
+              görüntüleyebilirsiniz.
             </p>
-            <LinkRouter href="/qr/v1/demo" passHref>
-              <button className={styles.button}>Demo&apos;yu İncele</button>
-            </LinkRouter>
           </div>
-          <div className={styles.featuresImage2}>
-            <Image
-              src={QRMenuMockup}
-              alt=""
-              layout="responsive"
-              objectFit="contain"
-            />
-          </div>
-        </article>
-        <article className={styles.third}>
           <div
-            style={{ width: "20rem", height: "auto" }}
-            className={styles.featureImage3}
+            style={{ width: "18rem", height: "auto" }}
+            className={styles.featuresImage2}
           >
             <Image
               layout="responsive"
@@ -120,17 +114,29 @@ const DigitalMenuPage = () => {
               alt=""
             />
           </div>
+        </article>
+        <article className={styles.third}>
+          {" "}
+          <div
+            className={styles.featuresImage3}
+            style={{ width: "12rem", height: "auto" }}
+          >
+            <Image
+              src={QRMenuMockup}
+              alt=""
+              layout="responsive"
+              objectFit="contain"
+            />
+          </div>
           <div className={styles.thirdDes}>
-            <h2 className={styles.thirdHeader}>Dijital Menü Sipariş Paneli</h2>
+            <h2 className={styles.thirdHeader}>Dijital Menü</h2>
             <ul className={styles.thirdList}>
-              <li>İş Yerinin Sipariş Performansı Modülü</li>
-              <li>Sipariş ve Çağrı Modülleri</li>
+              <li>Sepete Ürün Ekleme Modülü</li>
+              <li>Garson Çağır ve Adisyon İste Modülleri</li>
             </ul>
             <p>
-              Dijital Menü Sipariş Paneli ile birlikte müşteri tarafından gelen
-              siparişleri ve çağrıları anlık olarak görebilir. İş yerinizin
-              sipariş performansını ve en sevilen ürünlerinizi
-              görüntüleyebilirsiniz.
+              Dijital Menü, Kullanıcı Deneyimine odaklı tasarımı sayesinde
+              müşteri memnuniyetini artırır.
             </p>
           </div>
         </article>

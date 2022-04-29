@@ -16,7 +16,14 @@
   width: auto;
   height: 18rem;
   position: absolute;
-  right: 3%;
+  right: 5%;
+}
+.image3 {
+  z-index: 3;
+  width: auto;
+  height: 12rem;
+  position: absolute;
+  right: 24%;
 }
 .images {
   position: relative;
@@ -62,83 +69,48 @@
   margin: 0;
   padding: 0;
 }
-.first {
-  padding: 4rem 0;
-  background-color: #e07a5f;
-  width: 100%;
-  height: 100%;
-  gap: 2rem;
-  color: #ffe8d6;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-}
+.first,
+.second,
 .third {
-  padding: 4rem 2rem;
-  background-color: #e07a5f;
+  padding: 4rem 8rem;
   width: 100%;
   height: 100%;
-  gap: 4rem;
-  color: #ffe8d6;
   display: grid;
-  grid-template-columns: 4fr 6fr;
-  align-items: flex-start;
-  justify-content: center;
-  justify-items: flex-end;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns: 1fr 1fr;
+}
+.first,
+.third {
+  background-color: #e07a5f;
+  color: #ffe8d6;
 }
 
-.firstList {
-  line-height: 24px;
+.second {
+  background-color: #a8dadc;
+  color: #14213d;
 }
-
+.thirdDes,
+.secondDes,
 .firstDes {
   display: flex;
   align-items: flex-start;
   gap: 6px;
   justify-content: center;
   flex-direction: column;
+  padding: 0 6rem;
 }
-.thirdDes {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-  justify-content: center;
-  flex-direction: column;
-}
-
-.section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-}
-
-.second {
-  padding: 4rem 0;
-  background-color: #a8dadc;
-  width: 100%;
-  height: 100%;
-  gap: 4rem;
-  color: #14213d;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-.secondList {
+.firstList,
+.secondList,
+.thirdList {
   line-height: 24px;
 }
-
 .secondDes {
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
-  justify-content: center;
-  flex-direction: column;
+  padding: 0 2rem 0 10rem;
 }
-
+.thirdDes {
+  padding: 0;
+}
 .section {
   display: flex;
   flex-direction: column;
@@ -148,15 +120,6 @@
   justify-content: center;
 }
 
-.secondImage {
-  object-fit: contain;
-  width: auto;
-  height: 30rem;
-}
-.featuresImage2 {
-  width: 14rem;
-  height: auto;
-}
 .buttonFirst {
   position: relative;
   display: inline-block;
@@ -276,7 +239,19 @@
 
 @media only screen and (max-width: 1280px) {
   .image {
-    height: 18rem;
+    height: 22rem;
+  }
+  .image2 {
+    height: 16rem;
+    position: absolute;
+    z-index: 2;
+    right: 4% !important;
+  }
+  .image3 {
+    height: 12rem;
+    position: absolute;
+    z-index: 3;
+    right: 24% !important;
   }
   .featuresImage1 {
     width: 32rem !important;
@@ -284,6 +259,10 @@
   }
   .featuresImage2 {
     width: 12rem !important;
+    margin: 0 auto;
+  }
+  .featuresImage3 {
+    width: 10rem !important;
     margin: 0 auto;
   }
   .top {
@@ -301,7 +280,7 @@
     grid-template-columns: 7fr 3fr;
     padding: 4rem 6rem;
   }
-  .featureImage3 {
+  .featureimage2 {
     width: 18rem !important;
   }
 }
@@ -315,6 +294,18 @@
   .image {
     height: 22rem;
   }
+  .image2 {
+    height: 16rem;
+    position: absolute;
+    z-index: 2;
+    right: 4% !important;
+  }
+  .image3 {
+    height: 12rem;
+    position: absolute;
+    z-index: 3;
+    right: 24% !important;
+  }
   .header {
     font-size: 3rem;
   }
@@ -323,25 +314,26 @@
     margin: 0 auto;
   }
   .featuresImage2 {
-    width: 10rem !important;
-    height: auto !important;
+    width: 12rem !important;
   }
-  .featureImage3 {
-    width: 14rem !important;
+  .featuresImage3 {
+    width: 10rem !important;
   }
   .firstDes {
     font-size: 14px;
     padding: 2rem 0;
   }
+  .first,
+  .second,
+  .third {
+    padding: 2rem;
+  }
   .first {
     gap: 2rem;
-    display: grid;
-    padding: 2rem;
-    align-items: center;
-    justify-content: center;
   }
   .secondDes {
     font-size: 14px;
+    padding: 0 2rem;
   }
 }
 @media only screen and (max-width: 500px) {
@@ -355,7 +347,7 @@
   }
   .top {
     flex-direction: column;
-    gap: 8rem;
+    gap: 4rem;
     padding: 0 2rem;
   }
 
@@ -372,46 +364,48 @@
   .image {
     height: 12rem;
   }
-
-  .firstImage {
-    object-fit: contain;
-    width: auto;
-    height: 12rem;
+  .image2 {
+    height: 8rem;
+    position: absolute;
+    z-index: 2;
+    right: 4% !important;
   }
-  .first {
+  .image3 {
+    height: 6rem;
+    position: absolute;
+    z-index: 3;
+    right: 24% !important;
+  }
+
+  .first,
+  .second,
+  .third {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 2rem;
+  }
+  .second {
+    padding: 2rem 0;
+    gap: 2rem;
+  }
+  .third {
+    gap: 2rem;
+  }
+  .firstDes,
+  .secondDes,
+  .thirdDes {
+    font-size: 14px;
+  }
+  .secondDes {
+    padding: 0rem 2rem;
   }
   .featuresImage1 {
     height: auto;
     width: 18rem !important;
   }
-  .firstDes {
-    font-size: 12px;
-    padding: 1rem 0;
-  }
-  .third {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-items: center;
-  }
-  .secondImage {
-    height: 16rem;
-  }
-  .second {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 4rem 0;
-    justify-content: center;
-  }
-  .secondDes {
-    font-size: 14px;
-    padding: 0 2rem;
-  }
+
   .stepper {
     display: none;
   }

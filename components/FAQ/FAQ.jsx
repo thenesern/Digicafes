@@ -26,7 +26,7 @@ const FAQ = () => {
             Dijital Menü V1 ile menünüzü oluşturabilir, QR Kod kullanarak menüye
             ulaşabilirsiniz. Bu versiyonda amaç müşterinin menüyü sadece
             görüntülemesi üzerinedir. Dijital Menü V2 ise aynı menü üzerinden
-            sipariş verebilme özelliğini size sunar.
+            sipariş verme, garson çağırma vb. özellikleri size sunar.
           </Text>
         </Collapse>
       </Collapse.Group>

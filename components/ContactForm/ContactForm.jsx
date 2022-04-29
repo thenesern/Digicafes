@@ -85,14 +85,15 @@ const ContactForm = () => {
               underlined
               labelPlaceholder="E-Mail"
               color="success"
+              fullWidth
               name="user_email"
             />
           </div>
           <Textarea
             placeholder="Mesajınız."
             name="message"
-            className={styles.text}
-            style={{ width: "24rem", minHeight: "6rem" }}
+            fullWidth
+         
           />
           <Button
             onClick={(e) => {
