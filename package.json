@@ -42,6 +42,7 @@
     "react": "^17.0.2",
     "react-animations": "^1.0.0",
     "react-audio-player": "^0.17.0",
+    "react-bootstrap": "^2.3.1",
     "react-credit-cards": "^0.8.3",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.28.0",

@@ -220,6 +220,9 @@
     flex-direction: column;
     padding: 0;
   }
+  .modal {
+    width: 92%;
+  }
   .qr {
     display: flex;
     align-items: center;

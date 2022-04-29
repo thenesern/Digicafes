@@ -2,6 +2,8 @@ import "../styles/globals.css";
 import Head from "next/head";
 import { SnackbarProvider } from "notistack";
 import { StoreProvider } from "../redux/store";
+import { SSRProvider } from "react-bootstrap";
+
 function MyApp({ Component, pageProps }) {
   return (
     <StoreProvider>
@@ -15,7 +17,9 @@ function MyApp({ Component, pageProps }) {
       <SnackbarProvider
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <Component {...pageProps} />
+        <SSRProvider>
+          <Component {...pageProps} />
+        </SSRProvider>
       </SnackbarProvider>
     </StoreProvider>
   );

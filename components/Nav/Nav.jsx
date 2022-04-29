@@ -677,13 +677,6 @@ const Nav = () => {
         onOpen={() => setOpenMenu(true)}
         onClose={() => setOpenMenu(false)}
       >
-        <div>
-          <IconButton>
-            <ChevronRightIcon />
-          </IconButton>
-        </div>
-        <Divider />
-
         <div className={styles.right}>
           {user ? (
             <div className={styles.profileMenuMobile}>
