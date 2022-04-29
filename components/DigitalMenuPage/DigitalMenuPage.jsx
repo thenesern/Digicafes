@@ -5,6 +5,7 @@ import StepperMobile from "./StepperMobile/StepperMobile";
 import LinkRouter from "next/link";
 import { Link } from "react-scroll";
 import QRMenuMockup from "../../assets/image/QRMenuMockup.png";
+import TabletMockup from "../../assets/image/tabletMockup.png";
 import FAQ from "../FAQ/FAQ";
 import ContactForm from "../ContactForm/ContactForm";
 import digitalMenuMockup from "../../assets/image/DigitalMenuPanelMockup.png";
@@ -107,6 +108,32 @@ const DigitalMenuPage = () => {
             />
           </div>
         </article>
+        <article className={styles.third}>
+          <div
+            style={{ width: "20rem", height: "auto" }}
+            className={styles.featureImage3}
+          >
+            <Image
+              layout="responsive"
+              objectFit="contain"
+              src={TabletMockup}
+              alt=""
+            />
+          </div>
+          <div className={styles.thirdDes}>
+            <h2 className={styles.thirdHeader}>Dijital Menü Sipariş Paneli</h2>
+            <ul className={styles.thirdList}>
+              <li>İş Yerinin Sipariş Performansı Modülü</li>
+              <li>Sipariş ve Çağrı Modülleri</li>
+            </ul>
+            <p>
+              Dijital Menü Sipariş Paneli ile birlikte müşteri tarafından gelen
+              siparişleri ve çağrıları anlık olarak görebilir. İş yerinizin
+              sipariş performansını ve en sevilen ürünlerinizi
+              görüntüleyebilirsiniz.
+            </p>
+          </div>
+        </article>
         <h3 className={styles.articleHeader} id="process">
           İşleyiş
         </h3>
@@ -115,13 +142,13 @@ const DigitalMenuPage = () => {
             <DigitalMenuStepper />
           </div>
         </article>
-      
+
         <article>
           <div className={styles.stepperMobile}>
             <StepperMobile />
           </div>
         </article>
-      
+
         <article>
           <div></div>
         </article>

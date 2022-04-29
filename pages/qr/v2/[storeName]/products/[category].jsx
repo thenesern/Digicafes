@@ -44,7 +44,10 @@ const StoreMenu = ({ menu, category, order }) => {
     setOpenIsSure(true);
   };
   const handleOpenCart = () => setOpenCart(true);
-  const handleCloseCart = () => setOpenCart(false);
+  const handleCloseCart = () => {
+    setOpenCart(false);
+    setOrderNotes("");
+  };
   const handleCloseOpenIsSure = () => setOpenIsSure(false);
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -72,7 +75,6 @@ const StoreMenu = ({ menu, category, order }) => {
         orders: [{ cartItems, tableNum, createdAt, orderNotes }],
         storeName,
       });
-      setOrderNotes("");
       setIsFetching(false);
       handleCloseCart();
     } catch (err) {
