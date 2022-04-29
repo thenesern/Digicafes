@@ -4,10 +4,11 @@ import { TextField } from "@material-ui/core";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { Loading } from "@nextui-org/react";
 // Styles
 import styles from "./User.module.css";
 
-const User = ({ orders }) => {
+const User = ({ orders, isFetching }) => {
   let profile;
   if (Cookies.get("userInfo")) {
     profile = JSON.parse(Cookies.get("userInfo"));
@@ -88,9 +89,12 @@ const User = ({ orders }) => {
           </button>
         </form>
       </div>
+
       <div className={styles.right}>
         <h1 className={styles.title}>Siparişler</h1>
-        {orders?.length > 0 ? (
+        {isFetching ? (
+          <Loading style={{ margin: "0 auto" }} />
+        ) : orders?.length > 0 ? (
           <List orders={orders} />
         ) : (
           <h6 className={styles.notFound}>Sipariş bulunamadı.</h6>

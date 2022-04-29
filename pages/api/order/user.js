@@ -11,7 +11,6 @@ handler.use(isAuth);
 handler.post(async (req, res) => {
   try {
     await db.connect();
-    console.log(req.body);
     const order = await Order.find({ user: req.body.user })
       .populate({
         path: "product",
@@ -19,7 +18,6 @@ handler.post(async (req, res) => {
       })
       .populate({ path: "user", model: User });
     await db.disconnect();
-    console.log(order);
     res.send({ status: "success", order });
   } catch (err) {
     console.log(err);
