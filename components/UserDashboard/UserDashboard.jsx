@@ -375,6 +375,10 @@ const UserDashboard = ({ userOrder }) => {
       enqueueSnackbar("Kategori Eklenemedi", { variant: "error" });
     }
   };
+  function containsSpecialChars(str) {
+    const specialChars = /[`!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?~]/;
+    return specialChars.test(str);
+  }
   const uploadLogoHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -431,15 +435,17 @@ const UserDashboard = ({ userOrder }) => {
       margin: 0,
       padding: 0,
     };
-    for (let i = 0; i < tableNum; i++) {
-      QRCode.toDataURL(
-        `https://www.project-testenes.vercel.app.com/qr/${version}/${
-          menu?.storeName
-        }/${i + 1}`,
-        opts
-      ).then((url) => QRCodes.push(url));
+    if (!isFirst) {
+      for (let i = 0; i < tableNum; i++) {
+        QRCode.toDataURL(
+          `https://www.project-testenes.vercel.app.com/qr/${version}/${
+            menu?.storeName
+          }/${i + 1}`,
+          opts
+        ).then((url) => QRCodes.push(url));
+      }
     }
-  }, [tableNum]);
+  }, [tableNum, isFirst]);
   const columns = [
     {
       field: "name",
@@ -554,13 +560,22 @@ const UserDashboard = ({ userOrder }) => {
                       variant="outlined"
                       disabled={isFirst ? false : true}
                       id="brandName"
+                      autoFocus="true"
                       rules={{
                         required: true,
-                        pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
                       }}
                       style={{ width: "100%" }}
                       onChange={(e) => setStoreName(e.target.value)}
-                      label="Dükkan Adı"
+                      label="İş Yeri Adı"
+                      helperText={
+                        storeName.length === 0
+                          ? "Lütfen bir İş Yeri Adı yazınız."
+                          : storeName.length < 3
+                          ? "İş Yeri Adı minimum 3 karakter olmalıdır!"
+                          : containsSpecialChars(storeName) === true
+                          ? "İş Yeri Adınız Özel Karakter İçermemelidir!"
+                          : ""
+                      }
                     ></TextField>
                   </ListItem>
                   {isFirst && (
@@ -570,8 +585,12 @@ const UserDashboard = ({ userOrder }) => {
                         type="submit"
                         fullWidth
                         color="primary"
-                        onClick={() => {
-                          if (storeName.length > 2) {
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (
+                            storeName.length > 2 &&
+                            !containsSpecialChars(storeName)
+                          ) {
                             setSecondStep(true);
                           }
                         }}
@@ -595,13 +614,28 @@ const UserDashboard = ({ userOrder }) => {
                     <TextField
                       variant="outlined"
                       disabled={isFirst ? false : true}
-                      id="brandName"
+                      id="tableNum"
+                      type="number"
+                      autoFocus="true"
                       rules={{
                         required: true,
-                        pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
                       }}
                       style={{ width: "100%" }}
-                      onChange={(e) => setTableNum(e.target.value)}
+                      onChange={(e) => {
+                        e.preventDefault();
+                        setTableNum(+e.target.value);
+                      }}
+                      helperText={
+                        tableNum === undefined
+                          ? "Lütfen bir Masa Sayısı giriniz."
+                          : tableNum === 0
+                          ? "Masa Sayısı sıfır olamaz!"
+                          : tableNum < 0
+                          ? "Masa Sayısı Negatif bir değer olamaz!"
+                          : tableNum > 50
+                          ? "Masa Sayısı 50'yi geçmemelidir!"
+                          : ""
+                      }
                       label="Masa Sayısı"
                     ></TextField>
                   </ListItem>
@@ -611,7 +645,17 @@ const UserDashboard = ({ userOrder }) => {
                       type="submit"
                       fullWidth
                       color="primary"
-                      onClick={firstTimeHandler}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (
+                          tableNum !== undefined &&
+                          tableNum < 50 &&
+                          tableNum > 0 &&
+                          tableNum !== 0
+                        ) {
+                          firstTimeHandler(e);
+                        }
+                      }}
                     >
                       Kaydet
                     </Button>
