@@ -163,6 +163,21 @@ export async function getServerSideProps(context) {
     storeName: storeName,
   }).lean();
   await db.disconnect();
+
+  const order = await Order.findOne({ menuv1: menu?._id });
+  const newDate = new Date();
+  if (
+    new Date(order?.expiry?.toString()).getTime() > newDate.getTime() ===
+    false
+  ) {
+    return {
+      redirect: {
+        destination: "/404",
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
       menu: JSON.parse(JSON.stringify(menu)),

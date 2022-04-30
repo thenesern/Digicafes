@@ -420,6 +420,20 @@ export async function getServerSideProps(context) {
     path: "product",
     model: Product,
   });
+
+  const newDate = new Date();
+  if (
+    new Date(order?.expiry?.toString()).getTime() > newDate.getTime() ===
+    false
+  ) {
+    return {
+      redirect: {
+        destination: "/404",
+        permanent: false,
+      },
+    };
+  }
+
   await db.disconnect();
   return {
     props: {

@@ -16,6 +16,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import axios from "axios";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useEffect } from "react";
+import Order from "../../../../../models/OrderModel";
 
 const StoreMenu = ({ menu, number }) => {
   const [open, setOpen] = useState(false);
@@ -256,6 +257,21 @@ export async function getServerSideProps(context) {
   const menu = await QRMenu.findOne({
     storeName,
   });
+
+  const order = await Order.findOne({ menuv2: menu?._id });
+  const newDate = new Date();
+  if (
+    new Date(order?.expiry?.toString()).getTime() > newDate.getTime() ===
+    false
+  ) {
+    return {
+      redirect: {
+        destination: "/404",
+        permanent: false,
+      },
+    };
+  }
+
   await db.disconnect();
   return {
     props: {
