@@ -50,11 +50,12 @@ const MenuProps = {
   },
 };
 
-const UserDashboard = ({ order }) => {
+const UserDashboard = ({ userOrder }) => {
+  const [order, setOrder] = useState(userOrder[0] || null);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [file, setFile] = useState(null);
   const theme = useTheme();
-  const [menu, setMenu] = useState(order[0]?.menuv1 || order[0]?.menuv2 || "");
+  const [menu, setMenu] = useState(order?.menuv1 || order?.menuv2 || "");
   const [name, setName] = useState("");
   const [price, setPrice] = useState();
   const [description, setDescription] = useState("");
@@ -71,10 +72,9 @@ const UserDashboard = ({ order }) => {
   const [secondStep, setSecondStep] = useState(false);
   const [tableNum, setTableNum] = useState(menu?.tableNum || null);
   const [version, setVersion] = useState(
-    order[0]?.product?.name === "Dijital Menü - V1" ? "v1" : "v2"
+    order?.product?.name === "Dijital Menü - V1" ? "v1" : "v2"
   );
   const [QRCodes, setQRCodes] = useState([]);
-
   const [deleteName, setDeleteName] = useState("");
   const [deleteCategory, setDeleteCategory] = useState(false);
   const [storeLogo, setStoreLogo] = useState(
@@ -103,6 +103,9 @@ const UserDashboard = ({ order }) => {
     setDeleteId("");
   };
   let user;
+  useEffect(() => {
+    setTableNum(menu?.tableNum);
+  }, [menu]);
 
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
@@ -152,23 +155,24 @@ const UserDashboard = ({ order }) => {
           storeName: storeName,
           tableNum,
           createdAt,
-          owner: order[0]?.user?._id,
+          owner: order?.user?._id,
         },
         {
           headers: { authorization: `Bearer ${user.token}` },
         }
       );
-      await axios.patch(
+      const attachedOrder = await axios.patch(
         "/api/order/attachMenu",
         {
-          orderId: order[0]?._id,
+          orderId: order?._id,
           menuId: data?.menu?._id,
-          orderProduct: order[0]?.product?.name,
+          orderProduct: order?.product?.name,
         },
         {
           headers: { authorization: `Bearer ${user?.token}` },
         }
       );
+      setOrder(attachedOrder?.data?.order);
       setIsFirst(false);
       setIsFetchingForFirst(false);
     } catch (err) {
@@ -435,7 +439,7 @@ const UserDashboard = ({ order }) => {
         opts
       ).then((url) => QRCodes.push(url));
     }
-  }, []);
+  }, [tableNum]);
   const columns = [
     {
       field: "name",
@@ -664,7 +668,7 @@ const UserDashboard = ({ order }) => {
                         </Stack>
                       </a>
                     </Link>
-                    {order[0]?.menuv2 && (
+                    {order?.menuv2 && (
                       <Stack direction="row" spacing={1}>
                         <Button
                           className={styles.qrButtons}
@@ -678,9 +682,9 @@ const UserDashboard = ({ order }) => {
                       </Stack>
                     )}
 
-                    {order[0]?.menuv2 && (
+                    {order?.menuv2 && (
                       <Link
-                        href={`/dashboard/${user?.id}/menu/${version}/${order[0]?._id}/orders`}
+                        href={`/dashboard/${user?.id}/menu/${version}/${order?._id}/orders`}
                         passHref
                       >
                         <a target="_blank">
