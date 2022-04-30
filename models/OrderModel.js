@@ -7,6 +7,10 @@ const orderSchema = new mongoose.Schema(
       ref: "Product",
       required: true,
     },
+    expiry: {
+      type: Date,
+      required: true,
+    },
     menuv1: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "QRMenu1",

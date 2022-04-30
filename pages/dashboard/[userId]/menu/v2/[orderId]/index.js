@@ -39,6 +39,20 @@ export async function getServerSideProps(context) {
     })
     .populate({ path: "user", model: User })
     .populate({ path: "menuv2", model: QRMenu });
+
+  const newDate = new Date();
+  if (
+    new Date(order[0]?.expiry?.toString()).getTime() > newDate.getTime() ===
+    false
+  ) {
+    return {
+      redirect: {
+        destination: "/404",
+        permanent: false,
+      },
+    };
+  }
+
   await db.disconnect();
   return {
     props: {

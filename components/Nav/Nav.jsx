@@ -492,7 +492,7 @@ const Nav = () => {
                   color="primary"
                   onSubmit={handleSubmit(registerHandler)}
                 >
-                  Ücretsiz Dene
+                  Üye Ol
                 </Button>
               </ListItem>
             </List>

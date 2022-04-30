@@ -18,6 +18,7 @@ handler.post(async (req, res) => {
       product: req.body.product,
       user: req.body.user,
       createdAt: new Date().toLocaleString("tr-TR"),
+      expiry: req.body.expiry,
     });
     await newOrder.save();
     await db.disconnect();

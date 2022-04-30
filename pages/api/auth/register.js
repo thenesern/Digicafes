@@ -23,10 +23,14 @@ handler.post(async (req, res) => {
 
   const token = signToken(user);
 
+  let date = new Date();
+  date.setDate(date.getDate() + 14);
+
   const newOrder = new Order({
     product: "625d3a6821c87548216f71e0",
     user: user?._id,
     createdAt: req.body.createdAt,
+    expiry: date,
   });
   await newOrder.save();
   await db.disconnect();
