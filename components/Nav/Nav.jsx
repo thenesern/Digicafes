@@ -492,7 +492,7 @@ const Nav = () => {
                   color="primary"
                   onSubmit={handleSubmit(registerHandler)}
                 >
-                  Üye Ol
+                  Ücretsiz Dene
                 </Button>
               </ListItem>
             </List>
@@ -658,7 +658,7 @@ const Nav = () => {
               className={styles.signUp}
               onClick={() => handleOpenMuiRegister(true)}
             >
-              Üye Ol
+              Ücretsiz Dene
             </button>
           </li>
         )}
@@ -777,7 +777,7 @@ const Nav = () => {
                 Giriş Yap
               </button>
               <button className={styles.signUp} onClick={handleOpenMuiRegister}>
-                Üye Ol
+                Ücretsiz Dene
               </button>
             </div>
           )}

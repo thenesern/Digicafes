@@ -123,7 +123,10 @@ const StoreMenu = ({ menu, category, order, number }) => {
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
-        <Link href={`/qr/${version}/` + menu?.storeName} passHref>
+        <Link
+          href={`/qr/${version}/` + menu?.storeName + "/" + tableNum}
+          passHref
+        >
           <Button
             onClick={() => {
               try {
@@ -238,7 +241,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
                       onClick={() => {
                         if (item.quantity > 1) {
                           item.quantity -= 1;
-                          setCartItems([...cart]);
+                          setCartItems([...cartItems]);
                           setCartTotal(
                             cartItems.reduce(function (a, b) {
                               return a + b.price * b.quantity;
@@ -280,7 +283,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
                       className={styles.buttons}
                       onClick={() => {
                         item.quantity += 1;
-                        setCartItems([...cart]);
+                        setCartItems([...cartItems]);
                         setCartTotal(
                           cartItems.reduce(function (a, b) {
                             return a + b.price * b.quantity;

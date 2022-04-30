@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import User from "../../../models/UserModel";
 import db from "../../../utils/db";
 import { signToken } from "../../../utils/auth";
+import Order from "../../../models/OrderModel";
 
 const handler = nc();
 
@@ -19,8 +20,17 @@ handler.post(async (req, res) => {
     createdAt: req.body.createdAt,
   });
   const user = await newUser.save();
-  await db.disconnect();
+
   const token = signToken(user);
+
+  const newOrder = new Order({
+    product: "625d3a6821c87548216f71e0",
+    user: user?._id,
+    createdAt: req.body.createdAt,
+  });
+  await newOrder.save();
+  await db.disconnect();
+
   res.send({
     firstName: user.firstName,
     lastName: user.lastName,

@@ -8,13 +8,22 @@ import { Loading, Modal, Spacer } from "@nextui-org/react";
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
+import Cookies from "js-cookie";
 
-const Dashboard = ({ userId, userToken }) => {
+const Dashboard = () => {
   const router = useRouter();
+  const userId = router.query.userId;
   const [isFetching, setIsFetching] = useState(false);
   const [orders, setOrders] = useState(null);
-  console.log(userId);
-  console.log(userToken);
+  const [userToken, setUserToken] = useState(null);
+
+  useEffect(() => {
+    if (Cookies.get("userInfo")) {
+      const user = JSON.parse(Cookies.get("userInfo"));
+      setUserToken(user?.token);
+    }
+  }, []);
+
   useEffect(() => {
     const getUserOrder = async () => {
       setIsFetching(true);
@@ -26,7 +35,6 @@ const Dashboard = ({ userId, userToken }) => {
           },
           { headers: { authorization: `Bearer ${userToken}` } }
         );
-        console.log(userOrder);
         setOrders(userOrder.data.order);
         setIsFetching(false);
       } catch (err) {
@@ -35,8 +43,7 @@ const Dashboard = ({ userId, userToken }) => {
       }
     };
     getUserOrder();
-  }, [userId]);
-  console.log(orders);
+  }, [userId, userToken]);
   return (
     <div className={styles.container}>
       <Nav />
@@ -128,7 +135,7 @@ const Dashboard = ({ userId, userToken }) => {
                         ? new Date(
                             `${order?.menuv1?.updatedAt}`
                           ).toLocaleString("tr-TR")
-                        : "Henüz Oluşturulmadı"}
+                        : "Henüz Güncellenmedi"}
                     </p>
                   )}
                   {order?.product?.name === "Dijital Menü - V2" && (
@@ -137,7 +144,7 @@ const Dashboard = ({ userId, userToken }) => {
                         ? new Date(
                             `${order?.menuv2?.updatedAt}`
                           ).toLocaleString("tr-TR")
-                        : "Henüz Oluşturulmadı"}
+                        : "Henüz Güncellenmedi"}
                     </p>
                   )}
                 </div>
@@ -161,26 +168,5 @@ const Dashboard = ({ userId, userToken }) => {
     </div>
   );
 };
-
-export async function getServerSideProps(context) {
-  const { userId } = context.query;
-  const signedUserId = JSON.parse(context.req.cookies["userInfo"])?.id || null;
-  const userToken = JSON.parse(context.req.cookies["userInfo"])?.token || null;
-  if (signedUserId !== userId) {
-    return {
-      redirect: {
-        destination: "/404",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {
-      userId,
-      userToken,
-    },
-  };
-}
 
 export default Dashboard;

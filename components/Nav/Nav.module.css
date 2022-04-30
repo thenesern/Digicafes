@@ -394,4 +394,8 @@
     width: 92%;
     padding: 4px;
   }
+  .buttons {
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
 }

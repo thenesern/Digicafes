@@ -664,18 +664,19 @@ const UserDashboard = ({ order }) => {
                         </Stack>
                       </a>
                     </Link>
-
-                    <Stack direction="row" spacing={1}>
-                      <Button
-                        className={styles.qrButtons}
-                        variant="outlined"
-                        onClick={handleOpenQRImages}
-                        style={{ height: "2rem", width: "12rem" }}
-                        endIcon={<DownloadIcon />}
-                      >
-                        QR Kodları İndir
-                      </Button>
-                    </Stack>
+                    {order[0]?.menuv2 && (
+                      <Stack direction="row" spacing={1}>
+                        <Button
+                          className={styles.qrButtons}
+                          variant="outlined"
+                          onClick={handleOpenQRImages}
+                          style={{ height: "2rem", width: "12rem" }}
+                          endIcon={<DownloadIcon />}
+                        >
+                          QR Kodları İndir
+                        </Button>
+                      </Stack>
+                    )}
 
                     {order[0]?.menuv2 && (
                       <Link
@@ -1003,7 +1004,7 @@ const UserDashboard = ({ order }) => {
                           <p>
                             {deleteCategory ? "Kategori" : "Ürün"}
                             <span className={styles.deleteDescription}>
-                              {deleteName} ({deleteId})
+                              {deleteName}
                             </span>
                             silinecek.
                           </p>

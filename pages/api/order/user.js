@@ -12,7 +12,6 @@ const handler = nc();
 handler.use(isAuth);
 handler.post(async (req, res) => {
   try {
-    console.log(req.body);
     await db.connect();
     const order = await Order.find({ user: req.body.user })
       .populate({
