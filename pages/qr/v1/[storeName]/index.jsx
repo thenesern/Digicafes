@@ -7,6 +7,7 @@ import { Link, Loading, Modal, Spacer } from "@nextui-org/react";
 import { Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import Order from "../../../../models/OrderModel.js";
 
 const StoreMenu = ({ menu }) => {
   const [open, setOpen] = useState(false);

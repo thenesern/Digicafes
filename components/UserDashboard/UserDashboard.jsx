@@ -105,11 +105,13 @@ const UserDashboard = ({ userOrder }) => {
   let user;
   useEffect(() => {
     setTableNum(menu?.tableNum);
+    setStoreName(menu?.storeName);
   }, [menu]);
 
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
   }
+
   const [openDeleteProduct, setOpenDelete] = useState(false);
   const [openAddCategory, setOpenAddCategory] = useState(false);
   const [openUploadLogo, setOpenUploadLogo] = useState(false);

@@ -1,7 +1,7 @@
 import React from "react";
 import Nav from "../../../components/Nav/Nav";
 import styles from "./dashboard.module.css";
-
+import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
@@ -9,6 +9,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
+import Skeleton from "@mui/material/Skeleton";
+import Stack from "@mui/material/Stack";
 
 const Dashboard = () => {
   const router = useRouter();
@@ -16,7 +18,9 @@ const Dashboard = () => {
   const [isFetching, setIsFetching] = useState(false);
   const [orders, setOrders] = useState(null);
   const [userToken, setUserToken] = useState(null);
+  const newDate = new Date();
 
+  /*  console.log(new Date(orders[0]?.expiry?.toString()).getTime()); */
   useEffect(() => {
     if (Cookies.get("userInfo")) {
       const user = JSON.parse(Cookies.get("userInfo"));
@@ -35,7 +39,7 @@ const Dashboard = () => {
           },
           { headers: { authorization: `Bearer ${userToken}` } }
         );
-        setOrders(userOrder.data.order);
+        setOrders(userOrder?.data?.order);
         setIsFetching(false);
       } catch (err) {
         setIsFetching(false);
@@ -44,6 +48,7 @@ const Dashboard = () => {
     };
     getUserOrder();
   }, [userId, userToken]);
+
   return (
     <div className={styles.container}>
       <Nav />
@@ -63,7 +68,7 @@ const Dashboard = () => {
           </Modal.Body>
         </Modal>
         <h3 className={styles.title}>Yönetim Paneli</h3>
-        {orders?.length > 0 &&
+        {orders ? (
           orders.map((order) => (
             <div key={order._id} className={styles.panel}>
               <div>
@@ -149,8 +154,49 @@ const Dashboard = () => {
                   )}
                 </div>
               </div>
+              <div className={styles.infos}>
+                <div className={styles.infoCell}>
+                  {new Date(order?.expiry?.toString()).getTime() >
+                  newDate.getTime() ? (
+                    <div>
+                      <h4>Durum</h4>
+                      <p>
+                        Aktif (
+                        {
+                          new Date(
+                            new Date(order?.expiry?.toString()).getTime()
+                          )
+                            ?.toLocaleString()
+                            .split(" ")[0]
+                        }
+                        )
+                      </p>
+                    </div>
+                  ) : (
+                    <div>
+                      <h4>Durum</h4>
+                      <p>
+                        Paketinizin ücretli sürümü sonlandı. (
+                        {
+                          new Date(
+                            new Date(order?.expiry?.toString()).getTime()
+                          )
+                            ?.toLocaleString()
+                            .split(" ")[0]
+                        }
+                        )
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <Stack spacing={1} width={"100%"}>
+            <Skeleton width={"98%"} style={{ margin: "0 auto" }} height={200} />
+          </Stack>
+        )}
         {orders?.length < 1 && (
           <div className={styles.orderNotFound}>
             <img
@@ -164,7 +210,7 @@ const Dashboard = () => {
             </p>
           </div>
         )}
-      </div>
+      </div>{" "}
     </div>
   );
 };
