@@ -84,18 +84,6 @@ const SideBar = () => {
             </Link>
           </li>
         </ul>
-
-        <h6 className={styles.header}>Ana Sayfa</h6>
-        <ul className={styles.list}>
-          <li className={styles.li}>
-            <Link passHref href="/dashboard/footer" className={styles.link}>
-              <button className={styles.button}>
-                <CallToAction style={{ color: "#118ab2" }} />
-                <h6 className={styles.title}>Footer</h6>
-              </button>
-            </Link>
-          </li>
-        </ul>
       </div>
     </div>
   );

@@ -68,6 +68,8 @@ const UserDashboard = ({ userOrder }) => {
   const [addCategory, setAddCategory] = useState("");
   const [products, setProducts] = useState([...(menu?.products || "")]);
   const arrayProducts = Array.from(products);
+  const [categories, setCategories] = useState([...(menu?.categories || "")]);
+  const arrayCategories = Array.from(categories);
   const [deleteId, setDeleteId] = useState("");
   const [secondStep, setSecondStep] = useState(false);
   const [tableNum, setTableNum] = useState(menu?.tableNum || null);
@@ -84,9 +86,6 @@ const UserDashboard = ({ userOrder }) => {
   const [categoryNames, setCategoryNames] = useState([
     ...(menu?.categories?.map((c) => c?.name) || ""),
   ]);
-
-  const [categories, setCategories] = useState([...(menu?.categories || "")]);
-  const arrayCategories = Array.from(categories);
   const animate = {
     fadeInRightBig: {
       animation: "x 2s",
@@ -191,6 +190,7 @@ const UserDashboard = ({ userOrder }) => {
       ?.split(" ")
       .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
       .join(" ");
+
     if (menu?.products?.map((c) => c?.name).includes(betterProductName)) {
       handleCloseAddProduct();
       setAddCategory("");
@@ -219,7 +219,7 @@ const UserDashboard = ({ userOrder }) => {
       const updatedMenu = await axios.patch(
         `/api/qr/${version}/${menu?.storeName}/menu`,
         {
-          storeName: menu?.storeName,
+          storeName,
           products: arrayProducts,
         },
         {
@@ -570,9 +570,9 @@ const UserDashboard = ({ userOrder }) => {
                       onChange={(e) => setStoreName(e.target.value)}
                       label="İş Yeri Adı"
                       helperText={
-                        storeName.length === 0
+                        storeName?.length === 0
                           ? "Lütfen bir İş Yeri Adı yazınız."
-                          : storeName.length < 3
+                          : storeName?.length < 3
                           ? "İş Yeri Adı minimum 3 karakter olmalıdır!"
                           : containsSpecialChars(storeName) === true
                           ? "İş Yeri Adınız Özel Karakter İçermemelidir!"
@@ -590,7 +590,7 @@ const UserDashboard = ({ userOrder }) => {
                         onClick={(e) => {
                           e.preventDefault();
                           if (
-                            storeName.length > 2 &&
+                            storeName?.length > 2 &&
                             !containsSpecialChars(storeName)
                           ) {
                             setSecondStep(true);

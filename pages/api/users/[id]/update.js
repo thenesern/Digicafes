@@ -13,16 +13,24 @@ handler.patch(async (req, res) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
   });
+  const users = await User.find();
   await db.disconnect();
   const token = signToken(user);
-  res.send({
-    token,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: user.email,
-    id: user._id,
-    isAdmin: user.isAdmin,
-    signedIn: user.signedIn,
-  });
+  if (req.body.sender === "admin") {
+    res.send({
+      status: "success",
+      users,
+    });
+  } else {
+    res.send({
+      token,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: user.email,
+      id: user._id,
+      isAdmin: user.isAdmin,
+      signedIn: user.signedIn,
+    });
+  }
 });
 export default handler;

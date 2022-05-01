@@ -12,8 +12,13 @@ handler.delete(async (req, res) => {
   const user = await User.findById(req.query.id);
   if (user) {
     await user.remove();
+    const users = await User.find();
+    res.send({
+      status: "success",
+      message: "User removed successfully",
+      users,
+    });
     await db.disconnect();
-    res.send({ status: "success", message: "User removed successfully" });
   } else {
     await db.disconnect();
     res.send({ status: "error", message: "User Not Found" });

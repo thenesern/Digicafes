@@ -3,29 +3,37 @@ import { DataGrid } from "@mui/x-data-grid";
 import Link from "next/link";
 import { AccountBox, Delete } from "@material-ui/icons";
 import { useEffect } from "react";
-import { Box, Modal, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
 import { Store } from "../../../redux/store";
 import { useContext } from "react";
+import { Input, Modal } from "@nextui-org/react";
+import { Grid } from "@material-ui/core";
 
 const UserTable = (props) => {
+  const [users, setUsers] = useState(
+    props.users.filter((user) => user.isAdmin === false)
+  );
   const [id, setId] = useState();
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
-  const [isAdmin, setIsAdmin] = useState(false);
   const { state } = useContext(Store);
   const { userInfo } = state;
-  const handleDelete = async (id) => {
-    if (!isAdmin) {
-      try {
-        await axios.delete(`/api/users/${id}`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    }
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [pageSize, setPageSize] = useState(10);
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+    setId("");
+    setFirstName("");
+    setLastName("");
+  };
+  const handleCloseUpdate = () => {
+    setOpenUpdate(false);
+    setId("");
+    setFirstName("");
+    setLastName("");
   };
 
   const columns = [
@@ -86,80 +94,157 @@ const UserTable = (props) => {
       renderCell: (params) => {
         return (
           <div className={styles.actions}>
-            <Link
-              passHref
-              href={`/admin/dashboard/users/${params.row._id}`}
-              style={{ textDecoration: "none" }}
-            >
-              <button className={styles.viewButton}>
-                <AccountBox className={styles.viewIcon} />
-                Profil
-              </button>
-            </Link>
-            <button
-              className={styles.deleteButton}
+            <Button
+              variant="outlined"
+              className={styles.button}
+              color="warning"
               onClick={() => {
                 setId(params.row._id);
                 setFirstName(params.row.firstName);
                 setLastName(params.row.lastName);
-                setIsAdmin(params.row.isAdmin);
-                setOpen(true);
+                setOpenUpdate(true);
               }}
             >
-              <Delete className={styles.deleteIcon} />
-            </button>
+              <span>Düzenle</span>
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              className={styles.button}
+              onClick={() => {
+                setId(params.row._id);
+                setFirstName(params.row.firstName);
+                setLastName(params.row.lastName);
+                setOpenDelete(true);
+              }}
+            >
+              <span>Sil</span>
+            </Button>
           </div>
         );
       },
     },
   ];
-  const [open, setOpen] = useState(false);
-  const [pageSize, setPageSize] = useState(10);
 
-  const handleClose = () => setOpen(false);
+  const handleDelete = async (id) => {
+    try {
+      const users = await axios.delete("/api/users/" + id, {
+        headers: { authorization: `Bearer ${userInfo.token}` },
+      });
+      setUsers(users?.data?.users.filter((user) => user.isAdmin === false));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const updateHandler = async (e) => {
+    e.preventDefault();
+    const users = await axios.patch(
+      "/api/users/" + id + "/update",
+      {
+        firstName,
+        lastName,
+        id,
+        sender: "admin",
+      },
+      {
+        headers: { authorization: `Bearer ${userInfo.token}` },
+      }
+    );
+    setUsers(users?.data?.users.filter((user) => user.isAdmin === false));
+  };
   return (
     <div className={styles.datatable}>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={openDelete}
+        onClose={handleCloseDelete}
+        style={{ padding: "12px" }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box className={styles.box}>
-          <div className={styles.modalHeader}>
-            <Typography
-              id="modal-modal-title"
-              variant="h6"
-              component="h2"
-              style={{ fontWeight: "600", color: "#001219" }}
-            >
-              Emin misiniz?
-            </Typography>
-          </div>
-          <div className={styles.modalBody}>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Kullanıcı, ({firstName} {lastName}) silinecek.
-            </Typography>
-          </div>
-          <div className={styles.modalFooter}>
-            <button className={styles.discard} onClick={handleClose}>
-              Vazgeç
-            </button>
-            <button
-              className={styles.delete}
-              onClick={() => {
-                handleDelete(id);
-                handleClose();
-              }}
-            >
-              Onayla
-            </button>
-          </div>
-        </Box>
+        <Modal.Header>
+          <h1 style={{ textAlign: "start", width: "100%" }}>Emin misiniz?</h1>
+        </Modal.Header>
+        <Modal.Body style={{ margin: " 6px 0" }}>
+          <p>
+            Kullanıcı, ({firstName} {lastName}) silinecek.
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="outlined" onClick={handleCloseDelete}>
+            Vazgeç
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            style={{ marginLeft: "1rem" }}
+            onClick={() => {
+              handleDelete(id);
+              handleCloseDelete();
+            }}
+          >
+            Onayla
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        style={{ padding: "12px" }}
+        open={openUpdate}
+        onClose={handleCloseUpdate}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Modal.Header>
+          <h1>Kullanıcıyı Düzenle</h1>
+        </Modal.Header>
+        <Modal.Body
+          style={{
+            margin: " 6px 0",
+          }}
+        >
+          <Grid
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              justifyItems: "center",
+              width: "100%",
+              gap: "2rem",
+            }}
+          >
+            <Input
+              underlined
+              label="Ad"
+              initialValue={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            <Input
+              underlined
+              label="Soyad"
+              initialValue={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+          </Grid>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="outlined" onClick={handleCloseUpdate}>
+            Vazgeç
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            style={{ marginLeft: "1rem" }}
+            onClick={(e) => {
+              updateHandler(e);
+              handleCloseUpdate();
+            }}
+          >
+            Onayla
+          </Button>
+        </Modal.Footer>
       </Modal>
       <div className={styles.datatableTitle}>Kullanıcılar</div>
       <DataGrid
-        rows={props.users.filter((user) => user.isAdmin === false)}
+        rows={users}
         columns={columns}
         getRowId={(row) => row._id}
         disableSelectionOnClick
