@@ -11,6 +11,7 @@ const orderSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    quantity: [{ type: Number, required: true }],
     menuv1: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "QRMenu1",

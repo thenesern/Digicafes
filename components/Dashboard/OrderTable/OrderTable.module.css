@@ -1,6 +1,7 @@
 .datatable {
-  padding: 1rem 20px;
   height: 90%;
+  width: 100%;
+  padding: 1rem;
 }
 
 .datatableTitle {
@@ -14,7 +15,10 @@
   font-weight: bold;
   padding: 4px 0;
 }
-
+.title {
+  margin: 0;
+  padding: 0;
+}
 .link {
   text-decoration: none;
   color: green;

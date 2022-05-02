@@ -131,6 +131,7 @@ const Nav = () => {
         passwordConfirm,
         signedIn,
         createdAt,
+        quantity: [14],
       });
       dispatch({ type: "USER_LOGIN", payload: data });
       Cookies.set("userInfo", JSON.stringify(data));

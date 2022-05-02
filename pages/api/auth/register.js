@@ -31,6 +31,7 @@ handler.post(async (req, res) => {
     user: user?._id,
     createdAt: req.body.createdAt,
     expiry: date,
+    quantity: req.body.quantity,
   });
   await newOrder.save();
   await db.disconnect();

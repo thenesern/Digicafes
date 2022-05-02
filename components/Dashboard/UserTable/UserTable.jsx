@@ -40,12 +40,12 @@ const UserTable = (props) => {
     {
       field: "_id",
       headerName: "ID",
-      width: 300,
+      flex: 1,
     },
     {
       field: "firstName",
       headerName: "Ad",
-      width: 200,
+      flex: 1,
       renderCell: (params) => {
         return (
           <div className={styles.userListItem}>
@@ -58,7 +58,7 @@ const UserTable = (props) => {
     {
       field: "lastName",
       headerName: "Soyad",
-      width: 200,
+      flex: 1,
       renderCell: (params) => {
         return <div className={styles.userListItem}>{params.row.lastName}</div>;
       },
@@ -66,7 +66,7 @@ const UserTable = (props) => {
     {
       field: "createdAt",
       headerName: "Kayıt Tarihi",
-      width: 220,
+      flex: 1,
       renderCell: (params) => {
         return (
           <div className={styles.userListItem}>{params.row.createdAt}</div>
@@ -76,7 +76,7 @@ const UserTable = (props) => {
     {
       field: "signedIn",
       headerName: "Son Giriş",
-      width: 220,
+      flex: 1,
       renderCell: (params) => {
         return <div className={styles.userListItem}>{params.row.signedIn}</div>;
       },
@@ -90,13 +90,12 @@ const UserTable = (props) => {
     {
       field: "action",
       headerName: "İşlem",
-      width: 200,
+      flex: 1,
       renderCell: (params) => {
         return (
           <div className={styles.actions}>
             <Button
               variant="outlined"
-              className={styles.button}
               color="warning"
               onClick={() => {
                 setId(params.row._id);
@@ -110,7 +109,6 @@ const UserTable = (props) => {
             <Button
               variant="outlined"
               color="error"
-              className={styles.button}
               onClick={() => {
                 setId(params.row._id);
                 setFirstName(params.row.firstName);
@@ -167,7 +165,7 @@ const UserTable = (props) => {
         </Modal.Header>
         <Modal.Body style={{ margin: " 6px 0" }}>
           <p>
-            Kullanıcı, ({firstName} {lastName}) silinecek.
+            Kullanıcı ({firstName} {lastName}) silinecek.
           </p>
         </Modal.Body>
         <Modal.Footer>
@@ -199,7 +197,7 @@ const UserTable = (props) => {
         </Modal.Header>
         <Modal.Body
           style={{
-            margin: " 6px 0",
+            margin: " 12px 0",
           }}
         >
           <Grid

@@ -14,7 +14,7 @@ const DashboardMenuv1 = ({ userOrder }) => {
   return (
     <div>
       <Nav />
-      <UserDashboard order={userOrder} />
+      <UserDashboard userOrder={userOrder} />
     </div>
   );
 };

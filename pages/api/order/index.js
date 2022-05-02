@@ -19,41 +19,56 @@ handler.post(async (req, res) => {
       user: req.body.user,
       createdAt: new Date().toLocaleString("tr-TR"),
       expiry: req.body.expiry,
+      quantity: req.body.quantity,
     });
+
     await newOrder.save();
-    await db.disconnect();
+    const orders = await Order.find()
+      .populate({
+        path: "product",
+        model: Product,
+      })
+      .populate({ path: "user", model: User })
+      .populate({ path: "menuv1", model: QRMenu1 })
+      .populate({ path: "menuv2", model: QRMenu2 });
     res.send({
       status: "success",
       message: "Order saved successfully",
       id: newOrder._id,
+      orders,
     });
+    await db.disconnect();
   } catch (err) {
     console.log(err.message);
     await db.disconnect();
   }
 });
 
-/* handler.patch(async (req, res) => {
+handler.patch(async (req, res) => {
   try {
     await db.connect();
-    const product = await Product.findById();
     console.log(req.body);
-      const updatedOrder = await Order.findByIdAndUpdate(req.body.orderId, {
-      menuv1: req.body.menuId,
-    }).populate({
-      path: "menuv1",
-      model: QRMenu,
+    await Order.findByIdAndUpdate(req.body.id, {
+      expiry: req.body.expiry,
+      $push: { quantity: req.body.quantity },
     });
- 
+    const orders = await Order.find()
+      .populate({
+        path: "product",
+        model: Product,
+      })
+      .populate({ path: "user", model: User })
+      .populate({ path: "menuv1", model: QRMenu1 })
+      .populate({ path: "menuv2", model: QRMenu2 });
     await db.disconnect();
     res.send({
       status: "success",
       message: "order successfuly updated",
-      order: updatedOrder,
+      orders,
     });
   } catch (err) {
     console.log(err);
   }
-}); */
+});
 
 export default handler;

@@ -3,35 +3,76 @@ import { DataGrid } from "@mui/x-data-grid";
 import Link from "next/link";
 import { AccountBox, Delete } from "@material-ui/icons";
 import { useEffect } from "react";
-import { Box, Modal, Typography } from "@mui/material";
+import { Input, Modal } from "@nextui-org/react";
 import { useState } from "react";
 import axios from "axios";
 import { Store } from "../../../redux/store";
 import { useContext } from "react";
+import { Button, Grid } from "@mui/material";
+import { trTR } from "@mui/x-data-grid";
 
 const OrderTable = (props) => {
-  const [id, setId] = useState();
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [orders, setOrders] = useState(props.orders);
+  const [id, setId] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [productId, setProductId] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [planExpiry, setPlanExpiry] = useState(null);
+  const [productName, setProductName] = useState("");
   const { state } = useContext(Store);
+  const [orderExpiry, setOrderExpiry] = useState(null);
+  const [quantity, setQuantity] = useState([]);
   const { userInfo } = state;
+  let date = new Date();
+  date?.setDate(date?.getDate() + planExpiry);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [openNew, setOpenNew] = useState(false);
+  const [newOrderDate, setNewOrderDate] = useState(null);
+  const handleCloseUpdate = () => {
+    setOpenUpdate(false);
+    setOrderExpiry(null);
+    setPlanExpiry(null);
+  };
+  console.log(orders);
 
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+    setId(null);
+    setFirstName("");
+    setLastName("");
+    setProductName("");
+  };
+  const handleCloseNew = () => {
+    setOpenNew(false);
+    setId(null);
+    setProductId(null);
+    setPlanExpiry(null);
+    date = new Date();
+  };
+  useEffect(() => {
+    setNewOrderDate(
+      new Date(
+        new Date(orderExpiry)?.setDate(
+          new Date(orderExpiry)?.getDate() + planExpiry
+        )
+      )
+    );
+  }, [planExpiry, orderExpiry]);
   const columns = [
     {
       field: "_id",
-      headerName: "ID",
-      width: 300,
+      headerName: "Sipariş No.",
+      flex: 1.2,
     },
     {
       field: "firstName",
       headerName: "Ad",
-      width: 200,
+      width: 100,
       renderCell: (params) => {
         return (
           <div className={styles.userListItem}>
-            <img className={styles.userListImg} src={params.row.image} alt="" />
-            {params.row.firstName}
+            {params.row.user?.firstName}
           </div>
         );
       },
@@ -39,46 +80,449 @@ const OrderTable = (props) => {
     {
       field: "lastName",
       headerName: "Soyad",
-      width: 200,
-      renderCell: (params) => {
-        return <div className={styles.userListItem}>{params.row.lastName}</div>;
-      },
-    },
-    {
-      field: "createdAt",
-      headerName: "Kayıt Tarihi",
-      width: 220,
+      width: 100,
       renderCell: (params) => {
         return (
-          <div className={styles.userListItem}>{params.row.createdAt}</div>
+          <div className={styles.userListItem}>{params.row.user?.lastName}</div>
         );
-      },
-    },
-    {
-      field: "signedIn",
-      headerName: "Son Giriş",
-      width: 220,
-      renderCell: (params) => {
-        return <div className={styles.userListItem}>{params.row.signedIn}</div>;
       },
     },
     {
       field: "email",
       headerName: "E-mail",
-      width: 220,
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <div className={styles.userListItem}>{params.row.user?.email}</div>
+        );
+      },
+    },
+    {
+      field: "createdAt",
+      headerName: "Plan Başlangıç Tarihi",
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <div className={styles.userListItem}>
+            {params.row.createdAt.split(" ")[0]}
+          </div>
+        );
+      },
+    },
+    {
+      field: "expiry",
+      headerName: "Plan Bitiş Tarihi",
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <div className={styles.userListItem}>
+            {
+              new Date(new Date(params.row.expiry?.toString()).getTime())
+                ?.toLocaleString()
+                .split(" ")[0]
+            }
+          </div>
+        );
+      },
+    },
+    {
+      field: "quantity",
+      headerName: "Süreler",
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <div className={styles.userListItem}>
+            {params.row.quantity.map((q) => (
+              <span key={Math.random() + q}>{q} </span>
+            ))}
+          </div>
+        );
+      },
+    },
+    {
+      field: "productName",
+      headerName: "Plan Adı",
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <div className={styles.userListItem}>{params.row.product?.name}</div>
+        );
+      },
+    },
+    {
+      field: "storeName",
+      headerName: "İş Yeri Adı",
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <div className={styles.userListItem}>
+            {params.row.menuv1?.storeName ||
+              params.row.menuv2?.storeName ||
+              "Henüz Oluşturulmadı"}
+          </div>
+        );
+      },
+    },
+    {
+      field: "action",
+      headerName: "İşlem",
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <div>
+            <Button
+              variant="outlined"
+              color="warning"
+              onClick={() => {
+                setOpenUpdate(true);
+                setId(params.row._id);
+                setOrderExpiry(
+                  new Date(new Date(params.row.expiry?.toString()).getTime())
+                );
+              }}
+            >
+              <span>Düzenle</span>
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              style={{ marginLeft: "6px" }}
+              onClick={() => {
+                setId(params.row._id);
+                setFirstName(params.row.user?.firstName);
+                setLastName(params.row.user?.lastName);
+                setProductName(params.row.product?.name);
+                setOpenDelete(true);
+              }}
+            >
+              <span>Sil</span>
+            </Button>
+          </div>
+        );
+      },
     },
   ];
   const [open, setOpen] = useState(false);
   const [pageSize, setPageSize] = useState(10);
 
-  const handleClose = () => setOpen(false);
+  const handleDelete = async (id) => {
+    try {
+      const orders = await axios.delete("/api/orders/" + id, {
+        headers: { authorization: `Bearer ${userInfo.token}` },
+      });
+      setOrders(orders?.data?.orders);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleNewOrder = async (e) => {
+    e.preventDefault();
+    quantity.push(planExpiry);
+    try {
+      const orders = await axios.post(
+        "/api/order",
+        {
+          product: productId,
+          user: id,
+          expiry: date,
+          quantity,
+        },
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      setOrders(orders?.data?.orders);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleUpdateOrder = async (e) => {
+    e.preventDefault();
+    try {
+      const orders = await axios.patch(
+        "/api/order",
+        {
+          id,
+          quantity: planExpiry,
+          expiry: newOrderDate,
+        },
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      setOrders(orders?.data?.orders);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className={styles.datatable}>
-      <div className={styles.datatableTitle}>Siparişler</div>
+      <Modal
+        open={openDelete}
+        onClose={handleCloseDelete}
+        style={{ padding: "12px" }}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Modal.Header>
+          <h1 style={{ textAlign: "start", width: "100%" }}>Emin misiniz?</h1>
+        </Modal.Header>
+        <Modal.Body style={{ margin: " 12px 0" }}>
+          <p>
+            Sipariş ({firstName} {lastName}) ({productName}) silinecek.
+          </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="outlined" onClick={handleCloseDelete}>
+            Vazgeç
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            style={{ marginLeft: "1rem" }}
+            onClick={() => {
+              handleDelete(id);
+              handleCloseDelete();
+            }}
+          >
+            Onayla
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        open={openUpdate}
+        onClose={handleCloseUpdate}
+        style={{ padding: "12px" }}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Modal.Header>
+          <h1 style={{ textAlign: "start", width: "100%" }}>
+            Siparişi Düzenle
+          </h1>
+        </Modal.Header>
+        <Modal.Body style={{ margin: " 12px 0" }}>
+          <Input
+            underlined
+            label="Plan Bitiş Tarihi"
+            disabled
+            style={{ color: "black" }}
+            initialValue={
+              new Date(new Date(orderExpiry?.toString()).getTime())
+                ?.toLocaleString()
+                .split(" ")[0]
+            }
+          />
+          <h3>Süre Ekle</h3>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "1rem",
+            }}
+          >
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setPlanExpiry(30);
+              }}
+            >
+              1 AY
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setPlanExpiry(90);
+              }}
+            >
+              3 AY
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setPlanExpiry(180);
+              }}
+            >
+              6 AY
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setPlanExpiry(360);
+              }}
+            >
+              12 AY
+            </Button>
+          </div>
+          <div>
+            <h3>Özet</h3>
+            <Input
+              underlined
+              label="Yeni Plan Bitiş Tarihi"
+              disabled
+              style={{ color: "black" }}
+              value={
+                new Date(
+                  new Date(orderExpiry)?.setDate(
+                    new Date(orderExpiry)?.getDate() + planExpiry
+                  )
+                )
+                  .toLocaleString()
+                  .split(" ")[0]
+              }
+            />
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="outlined" onClick={handleCloseUpdate}>
+            Vazgeç
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            style={{ marginLeft: "1rem" }}
+            onClick={(e) => {
+              handleUpdateOrder(e);
+              handleCloseUpdate();
+            }}
+          >
+            Onayla
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        open={openNew}
+        onClose={handleCloseNew}
+        style={{ padding: "12px" }}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Modal.Header>
+          <h1 style={{ textAlign: "start", width: "100%" }}>Sipariş Oluştur</h1>
+        </Modal.Header>
+        <Modal.Body style={{ margin: " 12px 0" }}>
+          <Input
+            underlined
+            label="Kullanıcı ID"
+            onChange={(e) => setId(e.target.value)}
+          />
+          <h3>Paket</h3>
+          <Grid>
+            <Button
+              variant="contained"
+              onClick={() => setProductId("6258375f9e1d43dfdd2eb688")}
+            >
+              Dijital Menü V1
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => setProductId("625d3a6821c87548216f71e0")}
+              style={{ marginLeft: "1rem" }}
+            >
+              Dijital Menü V2
+            </Button>
+          </Grid>
+          <h3>Süre</h3>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Button variant="outlined" onClick={() => setPlanExpiry(30)}>
+              1 Ay
+            </Button>
+            <Button variant="outlined" onClick={() => setPlanExpiry(90)}>
+              3 Ay
+            </Button>
+            <Button variant="outlined" onClick={() => setPlanExpiry(180)}>
+              6 Ay
+            </Button>
+            <Button variant="outlined" onClick={() => setPlanExpiry(360)}>
+              12 Ay
+            </Button>
+          </div>
+          <div>
+            <h3>Özet</h3>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "100%",
+                gap: "2rem",
+              }}
+            >
+              <Input
+                underlined
+                label="Paket"
+                disabled
+                style={{ color: "black" }}
+                initialValue={
+                  productId === "6258375f9e1d43dfdd2eb688"
+                    ? "Dijital Menü V1"
+                    : productId === "625d3a6821c87548216f71e0"
+                    ? "Dijital Menü V2"
+                    : ""
+                }
+              />
+              <Input
+                underlined
+                label="Süre"
+                disabled
+                style={{ color: "black" }}
+                initialValue={
+                  planExpiry === 30
+                    ? "1 Ay"
+                    : planExpiry === 90
+                    ? "3 Ay"
+                    : planExpiry === 180
+                    ? "6 Ay"
+                    : planExpiry === 360
+                    ? "12 Ay"
+                    : ""
+                }
+              />
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="outlined" onClick={handleCloseNew}>
+            Vazgeç
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            style={{ marginLeft: "1rem" }}
+            onClick={(e) => {
+              handleNewOrder(e);
+              handleCloseNew();
+            }}
+          >
+            Onayla
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <div className={styles.datatableTitle}>
+        <h5 className={styles.title}>Siparişler</h5>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            setOpenNew(true);
+          }}
+        >
+          Sipariş Ekle
+        </Button>
+      </div>
       <DataGrid
-        rows={props.orders}
+        rows={orders}
         columns={columns}
         getRowId={(row) => row._id}
+        localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
         disableSelectionOnClick
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
