@@ -74,17 +74,17 @@ const ProductTable = (props) => {
     {
       field: "_id",
       headerName: "ID",
-      width: 300,
+      flex: 1,
     },
     {
       field: "name",
       headerName: "Ürün / Hizmet Adı",
-      width: 200,
+      flex: 1,
     },
     {
       field: "price",
       headerName: "Fiyat",
-      width: 100,
+      flex: 1,
       renderCell: (params) => {
         return <div className={styles.userListItem}>₺{params.row.price}</div>;
       },
@@ -92,43 +92,22 @@ const ProductTable = (props) => {
     {
       field: "description",
       headerName: "Açıklama",
-      width: 320,
+      flex: 1,
     },
     {
       field: "category",
       headerName: "Kategori",
-      width: 160,
+      flex: 1,
     },
     {
       field: "period",
       headerName: "Dönem",
-      width: 120,
+      flex: 1,
     },
     {
       field: "features",
       headerName: "Özellikler",
-      width: 220,
-    },
-    {
-      field: "action",
-      headerName: "İşlem",
-      width: 200,
-      renderCell: (params) => {
-        return (
-          <div className={styles.actions}>
-            <button
-              className={styles.deleteButton}
-              onClick={() => {
-                setId(params.row._id);
-                setName(params.row.name);
-                setOpen(true);
-              }}
-            >
-              <Delete className={styles.deleteIcon} />
-            </button>
-          </div>
-        );
-      },
+      flex: 1,
     },
   ];
   const [open, setOpen] = useState(false);
@@ -315,14 +294,6 @@ const ProductTable = (props) => {
       </Modal>
       <div className={styles.datatableTitle}>
         <h5 className={styles.title}>Ürünler / Hizmetler</h5>
-        <button
-          className={styles.button}
-          onClick={() => {
-            setOpenNew(true);
-          }}
-        >
-          Ürün / Hizmet Ekle
-        </button>
       </div>
       <DataGrid
         rows={props.products}
