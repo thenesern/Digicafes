@@ -21,6 +21,7 @@
     "@mui/x-data-grid-pro": "^5.9.0",
     "@nextui-org/react": "^1.0.2-beta.4",
     "@reduxjs/toolkit": "^1.8.0",
+    "aos": "^2.3.4",
     "axios": "^0.26.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.2",

@@ -3,7 +3,11 @@
   align-items: flex-start;
   flex-direction: column;
   justify-content: flex-start;
+  overflow: hidden;
   background-color: #fff;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw !important;
 }
 
 .image {
