@@ -12,6 +12,7 @@ import { Box, Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { ShoppingCartOutlined } from "@material-ui/icons";
+import Order from "../../../../../models/OrderModel";
 
 const StoreMenu = ({ menu, category }) => {
   const [open, setOpen] = useState(false);
@@ -162,9 +163,9 @@ export async function getServerSideProps(context) {
   const menu = await QRMenu.findOne({
     storeName: storeName,
   }).lean();
-  await db.disconnect();
 
   const order = await Order.findOne({ menuv1: menu?._id });
+  await db.disconnect();
   const newDate = new Date();
   if (
     new Date(order?.expiry?.toString()).getTime() > newDate.getTime() ===

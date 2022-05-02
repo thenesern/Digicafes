@@ -695,7 +695,14 @@ const UserDashboard = ({ userOrder }) => {
                     <img src={storeLogo} alt="Logo" className={styles.logo} />
                   </div>
                   <div className={styles.qrActions}>
-                    <Link href={`/qr/${version}/${menu?.storeName}/1`} passHref>
+                    <Link
+                      href={
+                        version === "v2"
+                          ? `/qr/${version}/${menu?.storeName}/1`
+                          : `/qr/${version}/${menu?.storeName}/`
+                      }
+                      passHref
+                    >
                       <a target="_blank">
                         <Stack direction="row" spacing={1}>
                           <Button
