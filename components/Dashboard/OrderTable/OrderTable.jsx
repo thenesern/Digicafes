@@ -528,6 +528,7 @@ const OrderTable = (props) => {
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         rowsPerPageOptions={[10, 20, 30]}
         pagination
+        className={styles.table}
       />
     </div>
   );

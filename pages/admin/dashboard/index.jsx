@@ -40,7 +40,7 @@ export const options = {
   },
 };
 
-const panel = ({ users, orders, products, userList }) => {
+const Panel = ({ users, orders, products, userList }) => {
   const date7 = new Date().toLocaleDateString("tr-TR", { weekday: "long" });
   const date6 = new Date(
     new Date().setDate(new Date().getDate() - 1)
@@ -140,13 +140,7 @@ const panel = ({ users, orders, products, userList }) => {
           <Widget type="products" products={products} />
           <Widget type="earnings" />
         </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <div className={styles.chart}>
           <Line options={options} data={data} width="1000" height="500" />
         </div>
       </div>
@@ -173,4 +167,4 @@ export async function getServerSideProps() {
   };
 }
 
-export default panel;
+export default Panel;

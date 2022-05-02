@@ -1,6 +1,6 @@
 .container {
   display: grid;
-  grid-template-columns: 0.1fr 1fr;
+  grid-template-columns: 1fr 9fr;
   width: 100%;
   height: 100vh;
 }
@@ -9,4 +9,19 @@
   display: flex;
   padding: 1rem 2rem 0 2rem;
   gap: 20px;
+}
+.chart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 820px) {
+  .widgets {
+    flex-direction: column;
+    flex: 1;
+  }
+  .chart {
+    display: none;
+  }
 }

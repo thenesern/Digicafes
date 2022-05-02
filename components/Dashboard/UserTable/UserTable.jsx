@@ -245,6 +245,7 @@ const UserTable = (props) => {
         rows={users}
         columns={columns}
         getRowId={(row) => row._id}
+        className={styles.table}
         disableSelectionOnClick
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

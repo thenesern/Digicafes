@@ -299,6 +299,7 @@ const ProductTable = (props) => {
         rows={props.products}
         columns={columns}
         getRowId={(row) => row._id}
+        className={styles.table}
         disableSelectionOnClick
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

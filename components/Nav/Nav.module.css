@@ -6,7 +6,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #1d3557;
+
+  background-color: transparent;
   z-index: 3;
   color: #fbeee0;
   transition: all 0.2s ease-in-out;
@@ -16,12 +17,12 @@
 
 .container.fixed {
   height: 7vh;
-  background: transparent;
-  backdrop-filter: blur(12px);
-  color: #1d3557;
+  background: #fff;
+
+  color: #001219;
 }
 .container.fixed .signIn {
-  color: #1d3557;
+  color: #001219;
   transition: all 0.2s ease-in-out;
   border-radius: 1rem;
 }
@@ -30,10 +31,14 @@
     rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
 }
 .container.fixed .menuButton {
-  color: #1d3557;
+  color: #001219;
 }
 .container.fixed .dropdown {
-  color: #1d3557 !important;
+  color: #001219 !important;
+}
+.container.fixed .signUp {
+  background-color: #c9184a;
+  color: #fbeee0;
 }
 .dropdown {
   color: #fbeee0 !important;
@@ -84,13 +89,13 @@
 }
 
 .signUp {
-  background-color: #005f73;
+  background-color: #fff;
   padding: 10px 2rem;
   border: none;
   cursor: pointer;
   border-radius: 1rem;
   font-weight: 600;
-  color: #fbeee0;
+  color: #001219;
 }
 
 .signUp:hover {
@@ -295,7 +300,7 @@
     justify-content: flex-start;
     width: 22rem;
     font-size: 20px;
-    background-color: #1d3557;
+    background-color: #001219;
     height: 100%;
     gap: 10px;
     align-items: center;
@@ -349,7 +354,7 @@
     flex-direction: column;
     justify-content: flex-start;
     width: 14rem;
-    background-color: #1d3557;
+    background-color: #001219;
     height: 100%;
     gap: 10px;
     font-size: 16px;

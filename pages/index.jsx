@@ -37,21 +37,6 @@ const DijitalMenu = () => {
           <div className={styles.topLeft}>
             <h1 className={styles.header}>Dijital Menü</h1>
             <p className={styles.description}>Baskı Maliyetlerinden Kurtulun</p>
-            <Link
-              data-aos-delay="600"
-              to="pricing"
-              data-aos="fade-right"
-              spy={true}
-              smooth={true}
-              offset={-80}
-            >
-              <button className={styles.buttonFirst}>
-                <span className={styles.circle} aria-hidden="true">
-                  <span className={`${styles.icon} ${styles.arrow}`}></span>
-                </span>
-                <span className={styles.text}>Hemen Başlayın</span>
-              </button>
-            </Link>
           </div>
           <div className={styles.images}>
             <img
@@ -73,10 +58,10 @@ const DijitalMenu = () => {
             />
           </div>
         </div>
-        <section className={styles.section} data-aos="fade-up">
-          <h3 className={styles.articleHeader} id="features">
-            Özellikler
-          </h3>
+        <div className={styles.firstButton}>
+          <button></button>
+        </div>
+        <section className={styles.section} data-aos="fade-up" id="features">
           <article className={styles.first}>
             <div
               style={{ width: "40rem", height: "auto" }}
@@ -161,10 +146,7 @@ const DijitalMenu = () => {
               </p>
             </div>
           </article>
-          <h3 className={styles.articleHeader} id="process">
-            İşleyiş
-          </h3>
-          <article className={styles.steps} data-aos="fade-up">
+          <article className={styles.steps} data-aos="fade-up" id="process">
             <div className={styles.stepper}>
               <DigitalMenuStepper />
             </div>
@@ -179,9 +161,9 @@ const DijitalMenu = () => {
           <article>
             <div></div>
           </article>
-          <h3 className={styles.articleHeader} id="faq">
+          <h1 className={styles.articleHeader} id="faq">
             Sıkça Sorulan Sorular
-          </h3>
+          </h1>
           <div data-aos="fade-up">
             <FAQ />
           </div>

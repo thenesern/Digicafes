@@ -1,6 +1,7 @@
 .datatable {
   padding: 1rem 20px;
   height: 90%;
+  overflow: scroll;
 }
 
 .datatableTitle {
@@ -40,4 +41,10 @@
   gap: 1rem;
   align-items: center;
   justify-content: center;
+}
+@media only screen and (max-width: 1280px) {
+  .table {
+    font-size: 12px !important;
+    width: 86rem;
+  }
 }
