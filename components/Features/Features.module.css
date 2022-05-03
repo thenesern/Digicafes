@@ -41,6 +41,8 @@
   gap: 10px;
   flex-direction: column;
   height: 16rem;
+  padding: 0;
+  margin: 0;
 }
 
 .articleDesc {
@@ -59,7 +61,14 @@
 
   .article {
     padding: 2rem;
-    width: 24rem;
-    height: 48rem;
+    width: 22rem;
+    height: 40rem;
+  }
+}
+@media only screen and (max-width: 340px) {
+  .article {
+    padding: 1rem;
+    width: 20rem;
+    height: 40rem;
   }
 }
