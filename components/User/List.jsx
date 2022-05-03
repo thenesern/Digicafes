@@ -1,5 +1,5 @@
 // Packages and Dependencies
-import React from "react";
+import React, { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -11,6 +11,11 @@ import Paper from "@mui/material/Paper";
 import styles from "./List.module.css";
 
 const List = ({ orders }) => {
+  const [orderList, setOrderList] = useState(
+    orders?.filter(
+      (order) => order?.quantity.length !== 1 && order?.quantity[0] !== 14
+    )
+  );
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -19,12 +24,10 @@ const List = ({ orders }) => {
             <TableCell>Sipariş Numarası</TableCell>
             <TableCell>Hizmet</TableCell>
             <TableCell>Tarih</TableCell>
-            <TableCell>Ödeme Yöntemi</TableCell>
-            <TableCell>Ödeme Tutarı</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {orders?.map((row) => (
+          {orderList?.map((row) => (
             <TableRow
               key={row._id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

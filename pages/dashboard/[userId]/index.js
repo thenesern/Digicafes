@@ -51,7 +51,7 @@ const Dashboard = () => {
 
   return (
     <div className={styles.container}>
-      <Nav />
+      <Nav color="#c9184a" position={"relative"} />
       <div className={styles.dashboard}>
         <Modal
           style={{

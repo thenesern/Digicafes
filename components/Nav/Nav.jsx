@@ -30,7 +30,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { Box } from "@mui/system";
 import { List, ListItem, TextField } from "@material-ui/core";
 
-const Nav = () => {
+const Nav = (props) => {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const [isFetching, setIsFetching] = useState(false);
@@ -175,6 +175,10 @@ const Nav = () => {
 
   return (
     <navbar
+      style={{
+        backgroundColor: `${props.color} !important`,
+        position: `${props.position} !important`,
+      }}
       className={
         !fix ? `${styles.container}` : `${styles.container} ${styles.fixed}`
       }
@@ -209,7 +213,7 @@ const Nav = () => {
             onClick={handleCloseMuiLogin}
             style={{
               position: "absolute",
-              right: "3%",
+              right: "5%",
               top: "3%",
               cursor: "pointer",
             }}
@@ -319,12 +323,11 @@ const Nav = () => {
         }}
       >
         <Box className={styles.registerBox}>
-          {" "}
           <span
             onClick={handleCloseMuiRegister}
             style={{
               position: "absolute",
-              right: "3%",
+              right: "5%",
               top: "3%",
               cursor: "pointer",
             }}

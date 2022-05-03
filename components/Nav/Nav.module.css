@@ -6,19 +6,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   background-color: transparent;
   z-index: 3;
   color: #fbeee0;
   transition: all 0.2s ease-in-out;
   position: fixed;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
 }
 
 .container.fixed {
   height: 7vh;
   background: #fff;
-
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
   color: #001219;
 }
 .container.fixed .signIn {

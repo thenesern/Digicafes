@@ -48,8 +48,7 @@ const User = ({ orders, isFetching }) => {
     e.preventDefault();
     setIsChanged(true);
   };
-  const [image, setImage] = useState("/defaultImage");
-  const url = profile?.image;
+
   return (
     <div className={styles.container}>
       <div className={styles.left}>
@@ -95,7 +94,7 @@ const User = ({ orders, isFetching }) => {
       <div className={styles.right}>
         <h1 className={styles.title}>Siparişler</h1>
         {!isFetching ? (
-          <List orders={orders} /> || (
+          <List orders={orders} style={{ height: "12rem" }} /> || (
             <h6 className={styles.notFound}>Sipariş bulunamadı.</h6>
           )
         ) : (

@@ -42,12 +42,12 @@ const Hesap = () => {
   }, [userId, userToken]);
 
   return (
-    <>
-      <Nav />
+    <div>
+      <Nav color={"#c9184a"} position={"relative"} />
       <div>
         <UserProfile orders={userOrder} isFetching={isFetching} />
       </div>
-    </>
+    </div>
   );
 };
 

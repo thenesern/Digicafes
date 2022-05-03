@@ -51,29 +51,33 @@ const DijitalMenu = () => {
       </Head>
       <Nav />
       <div className={styles.container}>
-        <div className={styles.top}>
-          <div className={styles.topLeft}>
-            <h1 className={styles.header}>Dijital Menü</h1>
-            <p className={styles.description}>Baskı Maliyetlerinden Kurtulun</p>
-          </div>
-          <div className={styles.images}>
-            <img
-              src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/DigitalMenuPanelMockup.png"
-              alt=""
-              className={styles.image}
-            />
-            <img
-              data-aos="fade-left"
-              src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/tabletMockup.png"
-              alt=""
-              className={styles.image2}
-            />
-            <img
-              data-aos="fade-right"
-              src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/QRMenuMockup.png"
-              alt=""
-              className={styles.image3}
-            />
+        <div className={styles.topBox}>
+          <div className={styles.top}>
+            <div className={styles.topLeft}>
+              <h1 className={styles.header}>Dijital Menü</h1>
+              <p className={styles.description}>
+                Baskı Maliyetlerinden Kurtulun
+              </p>
+            </div>
+            <div className={styles.images}>
+              <img
+                src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/DigitalMenuPanelMockup.png"
+                alt=""
+                className={styles.image}
+              />
+              <img
+                data-aos="fade-left"
+                src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/tabletMockup.png"
+                alt=""
+                className={styles.image2}
+              />
+              <img
+                data-aos="fade-right"
+                src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/QRMenuMockup.png"
+                alt=""
+                className={styles.image3}
+              />
+            </div>
           </div>
         </div>
         <section className={styles.section} data-aos="fade-up" id="features">
