@@ -58,9 +58,7 @@ const DijitalMenu = () => {
             />
           </div>
         </div>
-        <div className={styles.firstButton}>
-          <button></button>
-        </div>
+
         <section className={styles.section} data-aos="fade-up" id="features">
           <article className={styles.first}>
             <div
@@ -158,15 +156,17 @@ const DijitalMenu = () => {
             </div>
           </article>
 
-          <article>
-            <div></div>
+          <article className={styles.faq}>
+            <div>
+              <h1 className={styles.articleHeader} id="faq">
+                Sıkça Sorulan Sorular
+              </h1>
+              <div data-aos="fade-up">
+                <FAQ />
+              </div>
+            </div>
           </article>
-          <h1 className={styles.articleHeader} id="faq">
-            Sıkça Sorulan Sorular
-          </h1>
-          <div data-aos="fade-up">
-            <FAQ />
-          </div>
+
           <div data-aos="fade-up" style={{ width: "100%" }}>
             <ContactForm />
           </div>

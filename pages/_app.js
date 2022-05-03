@@ -8,7 +8,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <StoreProvider>
       <Head>
-        <title>Brand Name | Description</title>
+        <title>
+          Digicafes | Kafe, Restoran ve Bahçeler için Dijital Menü çözümleri.
+        </title>
         <meta
           name="viewport"
           content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1"

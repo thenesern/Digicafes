@@ -8,7 +8,7 @@ const PrivacyPolicy = () => {
     <div className={styles.container}>
       <h1 className={styles.header}>Gizlilik Politikası</h1>
       <h5 className={styles.subHeader}>
-        digysol.com olarak kişisel verilerinizin güvenliği hususuna azami
+        digicafes.com olarak kişisel verilerinizin güvenliği hususuna azami
         hassasiyet göstermekteyiz. Kişisel verileriniz 6698 sayılı Kişisel
         Verilerin Korunması Kanunu (“KVKK”)’na uygun olarak işlenmekte ve
         muhafaza edilmektedir.
@@ -17,7 +17,7 @@ const PrivacyPolicy = () => {
         <article>
           <h1>1. Kişisel Verilerinizin Ne Şekilde İşlenebileceği</h1>
           <p>
-            6698 sayılı KVKK uyarınca, digysol.com ile paylaştığınız kişisel
+            6698 sayılı KVKK uyarınca, digicafes.com ile paylaştığınız kişisel
             verileriniz, tamamen veya kısmen, otomatik olarak veyahut herhangi
             bir veri kayıt sisteminin parçası olmak kaydıyla otomatik olmayan
             yollarla elde edilerek, kaydedilerek, depolanarak, değiştirilerek,
@@ -55,10 +55,10 @@ const PrivacyPolicy = () => {
             Kuruluşlar Hakkında Bilgilendirme
           </h1>
           <p>
-            Yukarıda belirtilen amaçlarla, digysol.com ile paylaştığınız kişisel
-            verilerinizin aktarılabileceği kişi / kuruluşlar; ana
+            Yukarıda belirtilen amaçlarla, digicafes.com ile paylaştığınız
+            kişisel verilerinizin aktarılabileceği kişi / kuruluşlar; ana
             hissedarlarımız, hissedarlarımız, reklam verenler, doğrudan veya
-            dolaylı yurt içi / yurt dışı iştiraklerimiz; başta digysol.com
+            dolaylı yurt içi / yurt dışı iştiraklerimiz; başta digicafes.com
             altyapısını kullanan üye firmalar ve bunlarla sınırlı olmamak üzere
             sunulan hizmet ile ilgili kişi ve kuruluşlar olmak üzere,
             faaliyetlerimizi yürütmek üzere ve/veya Veri İşleyen sıfatı ile
@@ -72,7 +72,7 @@ const PrivacyPolicy = () => {
             Kişisel verileriniz,
             <br />
             <br />
-            digysol.com internet sitesi ve mobil uygulamalarındaki formlar ile
+            digicafes.com internet sitesi ve mobil uygulamalarındaki formlar ile
             ad, soyad, adres, telefon, iş veya özel e-posta adresi gibi bilgiler
             ile; kullanıcı adı ve şifresi kullanılarak giriş yapılan
             sayfalardaki tercihleri, gerçekleştirilen işlemlerin IP
@@ -80,7 +80,7 @@ const PrivacyPolicy = () => {
             süre ve detaylarını içeren veriler, konum verileri şeklinde;
             <br />
             <br />
-            digysol.com ile ticari ilişki kurmak, iş başvurusu yapmak, teklif
+            digicafes.com ile ticari ilişki kurmak, iş başvurusu yapmak, teklif
             vermek gibi amaçlarla, kartvizit, özgeçmiş (cv), teklif vermek ve
             sair yollarla kişisel verilerini paylaşan kişilerden alınan, fiziki
             veya sanal bir ortamda, yüz yüze ya da mesafeli, sözlü veya yazılı
@@ -118,7 +118,7 @@ const PrivacyPolicy = () => {
             olan diğer kamu kurum veya kuruluşlarına,
             <br />
             <br />
-            digysol.com ile ticari ilişki içinde bulunan ve telefon numaranıza
+            digicafes.com ile ticari ilişki içinde bulunan ve telefon numaranıza
             sahip tüzel kişilere,
             <br />
             <br />
@@ -128,7 +128,7 @@ const PrivacyPolicy = () => {
         <article>
           <h1>6. Kişisel Verilerin Saklanması Ve Korunması</h1>
           <p>
-            digysol.com , kişisel verilerinizin barındığı sistemleri ve veri
+            digicafes.com , kişisel verilerinizin barındığı sistemleri ve veri
             tabanlarını, KVKK’nun 12. Maddesi gereği kişisel verilerin hukuka
             aykırı olarak işlenmesini önlemekle, yetkisiz kişilerin erişimlerini
             engellemekle; muhafazalarını sağlamak amacıyla hash, şifreleme,
@@ -142,7 +142,7 @@ const PrivacyPolicy = () => {
         <article>
           <h1>7. 6698 Sayılı Kvkk Uyarınca Kişisel Veri Sahibinin Hakları</h1>
           <p>
-            Kişisel Veri Sahibi, digysol.com’a (veri sorumlusu) başvurarak
+            Kişisel Veri Sahibi, digicafes.com’a (veri sorumlusu) başvurarak
             kendisiyle ilgili; Kişisel veri işlenip işlenmediğini öğrenme,
             <br></br>
             Kişisel verileri işlenmişse buna ilişkin bilgi talep etme, Kişisel
@@ -167,24 +167,24 @@ const PrivacyPolicy = () => {
           <h1>8. İletişim ve Başvuru Yöntemi</h1>
           <p>
             Kişisel Veri Sahipleri, sorularını, görüşlerini veya taleplerini
-            iletisim@digysol.com e-posta adresine yöneltebilirler. digysol.com
-            iletilen taleplere, gerekçeli olmak ve 30 gün içinde cevap vermek
-            kaydıyla olumlu/olumsuz yanıtını, yazılı veya dijital ortamdan
-            verebilir. Taleplere ilişkin gerekli işlemlerin ücretsiz olması
-            esastır. Ancak işlemlerin bir maliyet gerektirmesi halinde,
-            digysol.com , ücret talebinde bulunma hakkını saklı tutar. Bu
+            iletisim@digicafes.com e-posta adresine yöneltebilirler.
+            digicafes.com iletilen taleplere, gerekçeli olmak ve 30 gün içinde
+            cevap vermek kaydıyla olumlu/olumsuz yanıtını, yazılı veya dijital
+            ortamdan verebilir. Taleplere ilişkin gerekli işlemlerin ücretsiz
+            olması esastır. Ancak işlemlerin bir maliyet gerektirmesi halinde,
+            digicafes.com , ücret talebinde bulunma hakkını saklı tutar. Bu
             ücretler, Kişisel Verilerin Korunması Kurulu tarafından, Kişisel
             Verilerin korunması Kanunu’nun 13. maddesine göre belirlenen tarife
             üzerinden belirlenir. Web sayfamızda, uygulamalarımızda ve diğer
             sair kanallarımızda kişisel verilerinizi paylaşarak Kişisel Veriler
             Politikamızı ve politikamızda yer alan işlenme, işlenme yöntemleri,
             verilerin aktarılması, satışı ve diğer ilgili hususlar hakkındaki
-            şartları, Bir sosyal medya uygulaması olan digysol.com ile
+            şartları, Bir sosyal medya uygulaması olan digicafes.com ile
             paylaşılan verilerin web sayfasında, uygulamalarda ve sosyal medya
             kanallarında kullanılmasını, bildirimlerde ve önerilerde
             bulunulmasını, üyelerin yararına olması şartıyla ticari anlamda
             üçüncü kişilerle paylaşılabileceğini ve yine bunun için kabulde
-            bulunduğunuzu, yasal haklarınızı kullanmadan önce digysol.com’a
+            bulunduğunuzu, yasal haklarınızı kullanmadan önce digicafes.com’a
             başvuruda bulunacağınızı KVKK’da büyük öneme haiz, belirli bir
             konuya ilişkin, bilgilendirilmeye dayanan ve özgür iradeyle
             açıklanan rıza şeklinde tanımlanan açık bir rıza ile kabul

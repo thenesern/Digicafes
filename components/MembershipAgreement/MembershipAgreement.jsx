@@ -6,7 +6,7 @@ const MembershipAgreement = () => {
     <div className={styles.container}>
       <h1 className={styles.header}>Üyelik Sözleşmesi</h1>
       <h5 className={styles.subHeader}>
-        İşbu üyelik sözleşmesinin konusu, digysol.com adlı sitede sunulan
+        İşbu üyelik sözleşmesinin konusu, digicafes.com adlı sitede sunulan
         hizmetlerin ve bu hizmetlerden yararlanma şartları ile aşağıda
         belirtilen tarafların hak ve yükümlülüklerinin belirlenmesidir.
       </h5>
@@ -14,46 +14,46 @@ const MembershipAgreement = () => {
         <article>
           <h1>1) TARAFLAR</h1>
           <p>
-            www.digysol.com adlı internet sitesinden (bundan böyle digysol.com
-            olarak anılacaktır) hizmet almak amacıyla üyelik talebi ile
-            imzalamak olduğunuz işbu üyelik sözleşmesi (bundan böyle “SÖZLEŞME”
-            olarak anılacaktır). Siteye üye olan ve herhangi bir şekilde site
-            içeriğine ulaşan kullanıcının sitede sağlanan hizmetlerden
-            yararlanabilmesi amacıyla düzenlenmiş olup, ilgili sitenin bulunduğu
-            elektronik ortamda, KULLANICI veya ÜYELER tarafından onaylanması
-            anında hüküm ifade edecektir.
+            www.digicafes.com adlı internet sitesinden (bundan böyle
+            digicafes.com olarak anılacaktır) hizmet almak amacıyla üyelik
+            talebi ile imzalamak olduğunuz işbu üyelik sözleşmesi (bundan böyle
+            “SÖZLEŞME” olarak anılacaktır). Siteye üye olan ve herhangi bir
+            şekilde site içeriğine ulaşan kullanıcının sitede sağlanan
+            hizmetlerden yararlanabilmesi amacıyla düzenlenmiş olup, ilgili
+            sitenin bulunduğu elektronik ortamda, KULLANICI veya ÜYELER
+            tarafından onaylanması anında hüküm ifade edecektir.
           </p>
         </article>
         <article>
           <h1>2) KULLANIM KOŞULLARI</h1>
           <p>
-            2.1 ÜYELER VE KULLANICILAR digysol.com sitesini kullanım konusunda
+            2.1 ÜYELER VE KULLANICILAR digicafes.com sitesini kullanım konusunda
             bilgilendirme amacı taşıyan aşağıda yazılı koşulları okuduğunu ve bu
             koşullara peşinen uyacağını kabul etmiş sayılmaktadır.
           </p>
           <p>
             2.2 Bu SİTE&apos;de sunulan hizmetler AES Softwares Şahıs Şirketi
             bundan böyle kısaca &apos;AES Softwares&apos; olarak anılacaktır)
-            tarafından sağlanmaktadır ve digysol.com’un yasal sahibi AES
+            tarafından sağlanmaktadır ve digicafes.com’un yasal sahibi AES
             Softwares olup, SİTE üzerinde her türlü kullanım ve tasarruf yetkisi
             AES Softwares’e aittir.
           </p>
           <p>
             2.3 İşbu üyelik sözleşmesi AES Softwares tarafından gerekli görülen
             koşullar altında ve değişik zamanlarda değiştirebilir ancak bu
-            değişiklikler düzenli olarak digysol.com’da yayınlanarak
+            değişiklikler düzenli olarak digicafes.com’da yayınlanarak
             KULLANICILAR’ın ve ÜYELER’in bilgisine sunulacak ve aynı tarihten
             itibaren geçerli olacaktır.
           </p>
           <p>
-            2.4 SİTE hizmetlerinden yararlanan ve digysol.com’a erişim sağlayan
-            her gerçek ve tüzel kişi, AES Softwares tarafından işbu kullanım
-            koşulları hükümlerinde yapılan her değişikliği, önceden kabul etmiş
-            sayılmaktadır.
+            2.4 SİTE hizmetlerinden yararlanan ve digicafes.com’a erişim
+            sağlayan her gerçek ve tüzel kişi, AES Softwares tarafından işbu
+            kullanım koşulları hükümlerinde yapılan her değişikliği, önceden
+            kabul etmiş sayılmaktadır.
           </p>
           <p>
-            2.5 AES Softwares digysol.com sitesi içeriğinde yer alan veya alacak
-            olan bilgileri, formları ve içeriği dilediği zaman değiştirme
+            2.5 AES Softwares digicafes.com sitesi içeriğinde yer alan veya
+            alacak olan bilgileri, formları ve içeriği dilediği zaman değiştirme
             hakkını saklı tutmaktadır.
           </p>
         </article>
@@ -68,21 +68,21 @@ const MembershipAgreement = () => {
           </p>
           <p>
             18 yaşından gün almış bireylerin gerçek kimlik bilgileri ile
-            digysol.com’da yer alan ilgili üyelik formunu eksiksiz doldurarak
+            digicafes.com’da yer alan ilgili üyelik formunu eksiksiz doldurarak
             üye olabilirler. ÜYE olmak isteyen şirketler (Şahıs ve ortaklar),
             Kolektif Şirketler, Adi Komandit Şirketler, Sermayesi Paylara
             Bölünmüş Komandit Şirketler, Limited Şirketler, Anonim Şirketler,
             Kooperatiflerin ve diğer kurumların tüzel bilgileri ile 18 yaşından
-            gün almış yasal yetkilisinin digysol.com’da yer alan ilgili üyelik
+            gün almış yasal yetkilisinin digicafes.com’da yer alan ilgili üyelik
             formunu eksiksiz doldurarak ÜYE olabilir ve kurumları adına işlem
             yapabilirler. &quot;üye adı&quot; üyeye özeldir ve aynı &quot; ÜYE
-            adı&quot; iki farklı ÜYE ‘ye verilmez. digysol.com’a üye olan
+            adı&quot; iki farklı ÜYE ‘ye verilmez. digicafes.com’a üye olan
             şahısların yanlış verdikleri bilgilerin tespit edilmesi halinde AES
             Softwares üyeliğin iptali / durdurulması hakkını saklı tutar.
           </p>
           <p>
-            3.2. KULLANICI : AES Softwares’e ait digysol.com sitesini alışveriş
-            yaparak ya da alışveriş yapmaksızın ziyaret eden kişidir.
+            3.2. KULLANICI : AES Softwares’e ait digicafes.com sitesini
+            alışveriş yaparak ya da alışveriş yapmaksızın ziyaret eden kişidir.
           </p>
           <p>
             3.3. ONAYLAMA İŞLEMİ: ÜYE tarafından, üyelik formunda belirtilen cep
@@ -91,25 +91,26 @@ const MembershipAgreement = () => {
             için yapılması gereken işlemdir.
           </p>
           <p>
-            3.4. LİNK: digysol.com üzerinden bir başka web sitesine, dosyalara,
-            içeriğe veya başka bir web sitesinden digysol.com’a, dosyalara ve
-            içeriğe erişimi mümkün kılan bağlantıdır.
+            3.4. LİNK: digicafes.com üzerinden bir başka web sitesine,
+            dosyalara, içeriğe veya başka bir web sitesinden digicafes.com’a,
+            dosyalara ve içeriğe erişimi mümkün kılan bağlantıdır.
           </p>
           <p>
-            3.5. İÇERİK: digysol.com sitesinden ve/veya herhangi bir web
+            3.5. İÇERİK: digicafes.com sitesinden ve/veya herhangi bir web
             sitesinden yayınlanan veya erişimi mümkün olan her türlü bilgi,
             dosya, resim, program, rakam, fiyat vs. görsel, yazınsal ve işitsel
             imgelerdir.
           </p>
           <p>
-            3.6. WEB SİTESİ KULLANIM KOŞULLARI VE ÜYELİK SÖZLEŞMESİ: digysol.com
-            vasıtasıyla sunulmakta olan ticari ve kişiye özel nitelikteki
-            hizmetlerden yararlanacak gerçek ve/veya tüzel kişilerle AES
-            Softwares arasında elektronik ortamda akdedilen işbu sözleşmedir.
+            3.6. WEB SİTESİ KULLANIM KOŞULLARI VE ÜYELİK SÖZLEŞMESİ:
+            digicafes.com vasıtasıyla sunulmakta olan ticari ve kişiye özel
+            nitelikteki hizmetlerden yararlanacak gerçek ve/veya tüzel kişilerle
+            AES Softwares arasında elektronik ortamda akdedilen işbu
+            sözleşmedir.
           </p>
           <p>
             3.7. KİŞİSEL BİLGİ: Üyenin kimliği, adresi, elektronik posta adresi,
-            telefon numarası, IP adresi, digysol.com’un hangi bölümlerini
+            telefon numarası, IP adresi, digicafes.com’un hangi bölümlerini
             ziyaret ettiği, domain tipi, browser tipi, ziyaret tarihi, saati vs
             bilgilerdir.
           </p>
@@ -117,68 +118,68 @@ const MembershipAgreement = () => {
         <article>
           <h1>4) HİZMETLERİN KAPSAMI</h1>
           <p>
-            4.1. AES Softwares’in, digysol.com üzerinden sunacağı hizmetler
+            4.1. AES Softwares’in, digicafes.com üzerinden sunacağı hizmetler
             genel itibariyle Tüketici Hukuku mevzuatında tanımlanan elektronik
             ticaretten ibarettir. ÜYELER ve KULLANICI’lar bu hususu kabul
             ettiklerini şimdiden kabul ve beyan ederler.
           </p>
           <p>
-            4.2. AES Softwares’in digysol.com üzerinden vereceği hizmetler
+            4.2. AES Softwares’in digicafes.com üzerinden vereceği hizmetler
             sınırlı sayıda olmamakla birlikte, bu hizmetlerin en önemlisi
-            www.digysol.com adresinde satışa sunulan dijital hizmetlerin; ÜYE
+            www.digicafes.com adresinde satışa sunulan dijital hizmetlerin; ÜYE
             tarafından bedeli ödendikten sonra, sistem tarafından gerekli
             hazırlıklar yapıldıktan sonra; mümkün olan en kısa sürede dijital
             hizmetin müşteriye AES Softwares adına direkt olarak sunulmasıdır.
           </p>
           <p>
-            4.3. AES Softwares, digysol.com üzerinden sunacağı hizmetlerin
+            4.3. AES Softwares, digicafes.com üzerinden sunacağı hizmetlerin
             kapsamını ve niteliğini belirlemekte tamamen serbest olup,
             hizmetlere ilişkin olarak yapacağı her türlü değişikliği
-            digysol.com’da yayınlamasıyla yürürlüğe girdiğini beyan eder. ÜYE ve
-            KULLANICILAR bu durumu şimdiden kabul ederler.
+            digicafes.com’da yayınlamasıyla yürürlüğe girdiğini beyan eder. ÜYE
+            ve KULLANICILAR bu durumu şimdiden kabul ederler.
           </p>
           <p>
-            4.4. digysol.com bünyesinde sunulacak hizmetlerden yararlanabilmek
+            4.4. digicafes.com bünyesinde sunulacak hizmetlerden yararlanabilmek
             için; kullanıcıların AES Softwares tarafından belirlenecek olan ve
-            digysol.com’un ilgili bölümünün içeriğinde belirtilen özellikleri
+            digicafes.com’un ilgili bölümünün içeriğinde belirtilen özellikleri
             taşıması gereklidir. AES Softwares, bu özellikleri belirlemekte
             tamamen serbest olup, özelliklere ilişkin olarak yapacağı
-            değişikliklerin digysol.com’da yayınlamasıyla yürürlüğe gireceğini
+            değişikliklerin digicafes.com’da yayınlamasıyla yürürlüğe gireceğini
             beyan eder. ÜYE ve KULLANICILAR bu durumu şimdiden kabul ederler.
           </p>
         </article>
         <article>
           <h1>5) GENEL HÜKÜMLER</h1>
           <p>
-            5.1. ÜYELER ya da KULLANICILAR, digysol.com sitesine üye olurken
+            5.1. ÜYELER ya da KULLANICILAR, digicafes.com sitesine üye olurken
             verdiği kişisel ve diğer sair bilgilerin kanunlar önünde doğru
-            olduğunu, digysol.com’un bu bilgilerin gerçeğe aykırılığı nedeniyle
-            uğrayacağı tüm zararları aynen ve derhal tazmin edeceğini beyan ve
-            taahhüt ederler.
+            olduğunu, digicafes.com’un bu bilgilerin gerçeğe aykırılığı
+            nedeniyle uğrayacağı tüm zararları aynen ve derhal tazmin edeceğini
+            beyan ve taahhüt ederler.
           </p>
           <p>
-            5.2. ÜYELER ya da KULLANICILAR, digysol.com internet sitesini
+            5.2. ÜYELER ya da KULLANICILAR, digicafes.com internet sitesini
             kullanırken yasal mevzuat hükümlerine riayet etmeyi ve bunları ihlal
             etmemeyi baştan kabul ve taahhüt eder. Aksi takdirde, doğacak tüm
             hukuki ve cezai yükümlülükler tamamen ve münhasıran KULLANICILARI
             veya ÜYELERİ bağlayacaktır.
           </p>
           <p>
-            5.3. ÜYELER ya da KULLANICILAR, digysol.com internet sitesini hiçbir
-            şekilde kamu düzenini bozucu, genel ahlaka aykırı, başkalarını
-            rahatsız ve taciz edici şekilde, yasalara aykırı bir amaç için,
-            başkalarının fikri ve telif haklarına tecavüz edecek şekilde
-            kullanamaz. Ayrıca, üye başkalarının hizmetleri kullanmasını
+            5.3. ÜYELER ya da KULLANICILAR, digicafes.com internet sitesini
+            hiçbir şekilde kamu düzenini bozucu, genel ahlaka aykırı,
+            başkalarını rahatsız ve taciz edici şekilde, yasalara aykırı bir
+            amaç için, başkalarının fikri ve telif haklarına tecavüz edecek
+            şekilde kullanamaz. Ayrıca, üye başkalarının hizmetleri kullanmasını
             önleyici veya zorlaştırıcı faaliyet (spam, virus, truva atı, vb.) ve
             işlemlerde bulunamaz.
           </p>
           <p>
             5.4. AES Softwares, üye verilerinin yetkisiz kişilerce okunmasından
             ve üye yazılım ve verilerine gelebilecek zararlardan dolayı sorumlu
-            olmayacaktır. ÜYELER ve KULLANICILAR, digysol.com internet sitesinin
-            kullanılmasından dolayı uğrayabileceği herhangi bir zarar yüzünden
-            AES Softwares&apos;den tazminat talep etmemeyi peşinen kabul
-            etmiştir.
+            olmayacaktır. ÜYELER ve KULLANICILAR, digicafes.com internet
+            sitesinin kullanılmasından dolayı uğrayabileceği herhangi bir zarar
+            yüzünden AES Softwares&apos;den tazminat talep etmemeyi peşinen
+            kabul etmiştir.
           </p>
           <p>
             5.5. SİTE üzerinden, AES Softwares’in kendi kontrolünde olmayan
@@ -188,10 +189,11 @@ const MembershipAgreement = () => {
             amacıyla konmuş olup herhangi bir web sitesini veya o siteyi işleten
             kişiyi desteklememektedir. Link verilen web sitesinin içerdiği
             bilgilere yönelik herhangi bir türde bir beyan veya garanti niteliği
-            taşımamaktadır. digysol.com üzerindeki linkler vasıtasıyla erişilen
-            web siteleri ve içerikleri hakkında AES Softwares&apos;in herhangi
-            bir sorumluluğu yoktur ve bu sitelerin kullanımıyla doğabilecek
-            zararlar, KULLANICI’ların ve ÜYE’lerin kendi sorumluluğundadır.
+            taşımamaktadır. digicafes.com üzerindeki linkler vasıtasıyla
+            erişilen web siteleri ve içerikleri hakkında AES Softwares&apos;in
+            herhangi bir sorumluluğu yoktur ve bu sitelerin kullanımıyla
+            doğabilecek zararlar, KULLANICI’ların ve ÜYE’lerin kendi
+            sorumluluğundadır.
           </p>
           <p>
             5.6. İşbu üyelik sözleşmesi içerisinde sayılan maddelerden bir ya da
@@ -203,13 +205,13 @@ const MembershipAgreement = () => {
             bulunma hakkı saklıdır.
           </p>
           <p>
-            5.7. digysol.com internet sitesi yazılım ve tasarımı AES Softwares
+            5.7. digicafes.com internet sitesi yazılım ve tasarımı AES Softwares
             mülkiyetinde olup, bunlara ilişkin telif hakkı ve/veya diğer fikri
             mülkiyet hakları ilgili kanunlarca korunmakta olup, bunlar ÜYE veya
             KULLANICILAR tarafından izinsiz kullanılamaz, iktisap edilemez ve
-            değiştirilemez. digysol.com sitesinde adı geçen başkaca şirketler ve
-            ürünleri sahiplerinin ticari markalarıdır ve ayrıca fikri mülkiyet
-            hakları kapsamında korunmaktadır.
+            değiştirilemez. digicafes.com sitesinde adı geçen başkaca şirketler
+            ve ürünleri sahiplerinin ticari markalarıdır ve ayrıca fikri
+            mülkiyet hakları kapsamında korunmaktadır.
           </p>
           <p>
             5.8. AES Softwares, ÜYE’nin kişisel bilgilerini yasal bir zorunluluk
@@ -220,34 +222,34 @@ const MembershipAgreement = () => {
             mercilere açıklama hakkına sahiptir.
           </p>
           <p>
-            5.9. AES Softwares, digysol.com mevcut olan bilgilerin doğruluk ve
+            5.9. AES Softwares, digicafes.com mevcut olan bilgilerin doğruluk ve
             güncelliğini sürekli olarak kontrol etmektedir. Ancak gösterilen
-            çabaya rağmen, digysol.com üzerindeki bilgiler güncel
-            değişikliklerin gerisinde kalabilir. digysol.com muhteviyatında yer
-            alan materyal ve bilgiler digysol.com sitesinde verildiği anda
+            çabaya rağmen, digicafes.com üzerindeki bilgiler güncel
+            değişikliklerin gerisinde kalabilir. digicafes.com muhteviyatında
+            yer alan materyal ve bilgiler digicafes.com sitesinde verildiği anda
             sunulmaktadır, ilgili hizmet veya bilginin güncel durumu ile
-            digysol.com’da yer alan durumu arasında farklılık olabilir.
-            digysol.com’da yer alan bilgilerin, güncelliği, doğruluğu, şartları,
-            kalitesi, performansı, pazarlanabilirliği, belli bir amaca uygunluğu
-            ve AES Softwares&apos;in digysol.com’da mevcut ve bunlarla sınırlı
-            olmayan, bunlarla bağlantılı veya bağımsız diğer bilgi, hizmet veya
-            ürünlere etkisi ile tamlığı hakkında herhangi bir sarih ya da zımni
-            garanti vermemektedir.
+            digicafes.com’da yer alan durumu arasında farklılık olabilir.
+            digicafes.com’da yer alan bilgilerin, güncelliği, doğruluğu,
+            şartları, kalitesi, performansı, pazarlanabilirliği, belli bir amaca
+            uygunluğu ve AES Softwares&apos;in digicafes.com’da mevcut ve
+            bunlarla sınırlı olmayan, bunlarla bağlantılı veya bağımsız diğer
+            bilgi, hizmet veya ürünlere etkisi ile tamlığı hakkında herhangi bir
+            sarih ya da zımni garanti vermemektedir.
           </p>
           <p>
             5.10. AES Softwares, işbu SİTE ve SİTE uzantısında mevcut her tür
-            hizmet, ürün, kampanya vs. bilgiler ve digysol.com kullanma
-            koşulları ile digysol.com’da sunulan bilgileri önceden bir ihtara
-            gerek olmaksızın değiştirme, digysol.com’u ve içeriğini yeniden
+            hizmet, ürün, kampanya vs. bilgiler ve digicafes.com kullanma
+            koşulları ile digicafes.com’da sunulan bilgileri önceden bir ihtara
+            gerek olmaksızın değiştirme, digicafes.com’u ve içeriğini yeniden
             düzenleme, yayını durdurma ve/veya duraklatma hakkını saklı tutar.
-            Değişiklikler, digysol.com sitesinde yayınlanmalarıyla yürürlüğe
-            girerler. digysol.com kullanımı ya da digysol.com’a giriş ile bu
+            Değişiklikler, digicafes.com sitesinde yayınlanmalarıyla yürürlüğe
+            girerler. digicafes.com kullanımı ya da digicafes.com’a giriş ile bu
             değişiklikler de kabul edilmiş sayılır. Bu koşullar link verilen
             diğer web sayfaları için de geçerlidir. Üye olan kişi haftalık
             bülten ve kampanya duyurularını e-mail ile almayı kabul eder.
           </p>
           <p>
-            5.11. digysol.com dâhilinde üçüncü kişiler tarafından sağlanan
+            5.11. digicafes.com dâhilinde üçüncü kişiler tarafından sağlanan
             hizmetlerden ve yayınlanan içeriklerden dolayı AES Softwares’in,
             işbirliği içinde bulunduğu kurumların, AES Softwares çalışanlarının
             ve yöneticilerinin, AES Softwares yetkili satıcılarının sorumluluğu
@@ -260,24 +262,24 @@ const MembershipAgreement = () => {
             etmemektedir.
           </p>
           <p>
-            5.12. digysol.com’u kullananlar, yalnızca hukuka uygun ve şahsi
-            amaçlarla digysol.com üzerinde işlem yapabilirler. KULLANICI’ların
-            ve ÜYE’lerin, digysol.com dâhilinde yaptığı her işlem ve eylemdeki
+            5.12. digicafes.com’u kullananlar, yalnızca hukuka uygun ve şahsi
+            amaçlarla digicafes.com üzerinde işlem yapabilirler. KULLANICI’ların
+            ve ÜYE’lerin, digicafes.com dâhilinde yaptığı her işlem ve eylemdeki
             hukuki ve cezai sorumlulukları kendilerine aittir. Her KULLANICI ve
             her ÜYE, AES Softwares ve/veya başka bir üçüncü kişinin haklarına
             tecavüz teşkil edecek nitelikteki herhangi bir faaliyette
-            bulunmayacağını taahhüt eder. KULLANICI ve ÜYE’lerin digysol.com
+            bulunmayacağını taahhüt eder. KULLANICI ve ÜYE’lerin digicafes.com
             üzerindeki faaliyetleri nedeniyle üçüncü kişilerin uğradıkları veya
             uğrayabilecekleri zararlardan dolayı AES Softwares&apos;in doğrudan
             ve/veya dolaylı hiçbir sorumluluğu yoktur.
           </p>
           <p>
-            5.13. AES Softwares, digysol.com üzerinden KULLANICI‘lar ve ÜYE‘ler
-            tarafından kendisine iletilen bilgileri &quot;Gizlilik
+            5.13. AES Softwares, digicafes.com üzerinden KULLANICI‘lar ve
+            ÜYE‘ler tarafından kendisine iletilen bilgileri &quot;Gizlilik
             Politikası&quot; hükümleri doğrultusunda kullanabilir. Bu bilgileri
             işleyebilir, bir veritabanı üzerinde tasnif edip muhafaza edebilir.
             AES Softwares aynı zamanda; KULLANICI ve ÜYE’nin kimliği, adresi,
-            elektronik posta adresi, telefon numarası, IP adresi, digysol.com
+            elektronik posta adresi, telefon numarası, IP adresi, digicafes.com
             hangi bölümlerini ziyaret ettiği, domain tipi, browser tipi, ziyaret
             tarihi, saati vs bilgileri de istatistiki değerlendirme,
             kampanyaların duyurusunu yapma ve kişiye yönelik hizmetler sunma
@@ -301,15 +303,15 @@ const MembershipAgreement = () => {
         <article>
           <h1>6) SORUMLULUĞUN SINIRLANDIRILMASI</h1>
           <p>
-            AES Softwares, digysol.com’a erişilmesi, digysol.com’un ya da
-            digysol.com’daki bilgilerin ve diğer verilerin programların vs.
+            AES Softwares, digicafes.com’a erişilmesi, digicafes.com’un ya da
+            digicafes.com’daki bilgilerin ve diğer verilerin programların vs.
             kullanılması sebebiyle, sözleşmenin ihlali, haksız fiil, ya da
             başkaca sebeplere binaen, doğabilecek doğrudan ya da dolaylı hiçbir
             zarardan sorumlu değildir. AES Softwares, sözleşmenin ihlali, haksız
             fiil, ihmal veya diğer sebepler neticesinde; işlemin kesintiye
             uğraması, hata, ihmal, kesinti hususunda herhangi bir sorumluluk
-            kabul etmez. digysol.com’a ya da link verilen diğer web sitelerine
-            erişilmesi ya da digysol.com’un kullanılması ile AES Softwares’in,
+            kabul etmez. digicafes.com’a ya da link verilen diğer web sitelerine
+            erişilmesi ya da digicafes.com’un kullanılması ile AES Softwares’in,
             kullanım/ziyaret sonucunda, doğabilecek her tür sorumluluktan,
             mahkeme ve diğer masraflar da dahil olmak üzere her tür zarar ve
             talep hakkından ayrı kılındığı kabul edilmektedir. KULLANICILAR ve
@@ -324,21 +326,22 @@ const MembershipAgreement = () => {
             AES Softwares, KULLANICI YA DA ÜYELER’e ilişkin bilgileri, işbu
             sözleşmenin sözleşmeye aykırılık teşkil etmedikçe yasal
             düzenlemelere uygun olarak kullanabilir. Elektronik Ticaret
-            işlemleri nedeniyle digysol.com’un tüketiciden elde ettiği kişisel
-            bilgi ve veriler digysol.com tarafından gizli bir şekilde tutulup
-            üçüncü kişiler ile paylaşılmaz. Ancak üye, digysol.com’a üye olurken
-            ve/veya başka yollarla geçmişte vermiş olduğu ve/veya gelecekte
-            vereceği kişisel bilgilerin ve alışveriş bilgilerinin ve alışveriş
-            ve/veya tüketici davranış bilgilerinin kendisine ürün ve hizmet
-            tanıtımları, reklamlar, kampanyalar, avantajlar, anketler ve diğer
-            müşteri memnuniyeti uygulamaları amaçlarıyla toplanmasına, DOL AES
-            Softwares ve bağlantılı organizasyonlar ile paylaşılmasına
-            digysol.com ve bağlantılı organizasyonlar tarafından kullanılmasına
-            ve arşivlenmesine izin verdiğini beyan ve kabul eder. Üye, aksini
-            bildirmediği sürece üyeliği sona erdiğinde de verilerin
-            toplanmasına, AES Softwares’in bağlantılı organizasyonlar ile
-            paylaşılmasına, digysol.com ve bağlantılı organizasyonlar tarafından
+            işlemleri nedeniyle digicafes.com’un tüketiciden elde ettiği kişisel
+            bilgi ve veriler digicafes.com tarafından gizli bir şekilde tutulup
+            üçüncü kişiler ile paylaşılmaz. Ancak üye, digicafes.com’a üye
+            olurken ve/veya başka yollarla geçmişte vermiş olduğu ve/veya
+            gelecekte vereceği kişisel bilgilerin ve alışveriş bilgilerinin ve
+            alışveriş ve/veya tüketici davranış bilgilerinin kendisine ürün ve
+            hizmet tanıtımları, reklamlar, kampanyalar, avantajlar, anketler ve
+            diğer müşteri memnuniyeti uygulamaları amaçlarıyla toplanmasına, DOL
+            AES Softwares ve bağlantılı organizasyonlar ile paylaşılmasına
+            digicafes.com ve bağlantılı organizasyonlar tarafından
             kullanılmasına ve arşivlenmesine izin verdiğini beyan ve kabul eder.
+            Üye, aksini bildirmediği sürece üyeliği sona erdiğinde de verilerin
+            toplanmasına, AES Softwares’in bağlantılı organizasyonlar ile
+            paylaşılmasına, digicafes.com ve bağlantılı organizasyonlar
+            tarafından kullanılmasına ve arşivlenmesine izin verdiğini beyan ve
+            kabul eder.
           </p>
         </article>
         <article>
@@ -357,11 +360,11 @@ const MembershipAgreement = () => {
             yürürlükte kalacak ve taraflar arası hüküm ve sonuçlarını doğurmaya
             devam edecek, kullanıcının üyelikten ayrılması veya geçici ya da
             kalıcı olarak üyeliğinin durdurulması halinde sona ermiş
-            sayılacaktır. digysol.com, ÜYELER’in ve KULLANICI’ların işbu
-            sözleşmeyi ya da digysol.com içinde yer alan üyelik ve hizmetlere
+            sayılacaktır. digicafes.com, ÜYELER’in ve KULLANICI’ların işbu
+            sözleşmeyi ya da digicafes.com içinde yer alan üyelik ve hizmetlere
             ilişkin belli kuralları ihlal etmeleri durumunda, sözleşmeyi tek
             taraflı olarak feshedebilecek ve KULLANICI YA DA ÜYELER fesih sebep
-            olacak fiilleri nedeniyle digysol.com sitesinin uğramış olduğu tüm
+            olacak fiilleri nedeniyle digicafes.com sitesinin uğramış olduğu tüm
             zararı tazmin edeceklerdir.
           </p>
         </article>
@@ -369,7 +372,7 @@ const MembershipAgreement = () => {
           <h1>10) MÜCBİR SEBEP</h1>
           <p>
             AES Softwares, hukuken mücbir sebep sayılan tüm durumlarda,
-            digysol.com sitesine ait işbu “üyelik sözleşmesinde geçen
+            digicafes.com sitesine ait işbu “üyelik sözleşmesinde geçen
             yükümlülükleri geç ifadan veya hiç ifa etmemekten dolayı herhangi
             bir sorumluluk kabul etmemektedir. Hukuken mücbir sebep sayılan bu
             hallerde, kullanıcılar tarafından gecikme veya ifa etmeme veya
@@ -381,7 +384,7 @@ const MembershipAgreement = () => {
         <article>
           <h1>11) UYGULANACAK HUKUK VE YETKİ</h1>
           <p>
-            İşbu Üyelik Sözleşmesi ve digysol.com’da yer alan hizmetlerden
+            İşbu Üyelik Sözleşmesi ve digicafes.com’da yer alan hizmetlerden
             yararlanılmasından kaynaklanacak ihtilaflar Türk Hukuku’na tabidir
             ve ANKARA Mahkemeleri ve İcra Daireleri yetkilidir. AES
             Softwares’in, KULLANICI ve ÜYE’nin bulunduğu ülkede dava açma hakkı
@@ -394,10 +397,10 @@ const MembershipAgreement = () => {
             İşbu Web Sitesi Kullanım Koşulları ve Üyelik Sözleşmesi, AES
             Softwares tarafından KULLANICI YA DA ÜYELER’e içeriğinde ilan
             edildiği tarihte yürürlülük kazanır. KULLANICI’lar ve ÜYE’ler, işbu
-            sözleşme hükümlerini digysol.com sitesini kullanmakla kabul etmiş
+            sözleşme hükümlerini digicafes.com sitesini kullanmakla kabul etmiş
             olmaktadırlar. AES Softwares, dilediği zaman işbu sözleşme
             hükümlerinde değişikliğe gidebilir, değişiklikler, sürüm numarası ve
-            değişiklik tarihi belirtilerek digysol.com üzerinden yayınlanır ve
+            değişiklik tarihi belirtilerek digicafes.com üzerinden yayınlanır ve
             aynı tarihte yürürlüğe girer.
           </p>
         </article>

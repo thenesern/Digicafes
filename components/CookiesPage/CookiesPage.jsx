@@ -24,7 +24,7 @@ const CookiesPage = () => {
         <article>
           <h1>Çerez Kullanımı</h1>
           <p>
-            İnternet sitemizden (www.digysol.com) en verimli şekilde
+            İnternet sitemizden (www.digicafes.com) en verimli şekilde
             faydalanabilmeniz ve kullanıcı deneyiminizi geliştirebilmek için
             Cookie kullanıyoruz. Web sitemize giriş yaptığınız zaman, sizlere,
             Cookie kullanımı kabul edip etmediğinize dair bir soru
@@ -51,22 +51,22 @@ const CookiesPage = () => {
         <article>
           <h1>Çerezlerin Kullanım Amaçları</h1>
           <p>
-            www.digysol.com tarafından kullanılmakta olan çerezlere ait kullanım
-            amaçları aşağıdaki gibidir:
+            www.digicafes.com tarafından kullanılmakta olan çerezlere ait
+            kullanım amaçları aşağıdaki gibidir:
             <br />
             <br />
-            Güvenlik amaçlı kullanımlar: www.digysol.com, sistemlerinin idaresi
-            ve güvenliğinin sağlanması amacıyla, bu sitedeki fonksiyonlardan
-            yararlanmayı sağlayan veyahut düzensiz davranışları tespit eden
-            çerezler kullanabilmektedir.
+            Güvenlik amaçlı kullanımlar: www.digicafes.com, sistemlerinin
+            idaresi ve güvenliğinin sağlanması amacıyla, bu sitedeki
+            fonksiyonlardan yararlanmayı sağlayan veyahut düzensiz davranışları
+            tespit eden çerezler kullanabilmektedir.
             <br />
             <br />
-            İşlevselliğe yönelik kullanımlar: www.digysol.com, sistemlerinin
+            İşlevselliğe yönelik kullanımlar: www.digicafes.com, sistemlerinin
             kullanımını kolaylaştırmak ve kullanıcı özelinde kullanım
             özellikleri sağlamak amacıyla, kullanıcıların bilgilerini ve geçmiş
             seçimlerini hatırlatan çerezler kullanabilmektedir. <br />
             <br />
-            Performansa yönelik kullanımlar: www.digysol.com, sistemlerinin
+            Performansa yönelik kullanımlar: www.digicafes.com, sistemlerinin
             performansının artırılması ve ölçülmesi amacıyla, gönderilen
             iletilerle olan etkileşimi ve kullanıcı davranışlarını değerlendiren
             ve analiz eden çerezler kullanabilmektedir.

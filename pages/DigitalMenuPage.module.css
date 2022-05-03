@@ -3,11 +3,11 @@
   align-items: flex-start;
   flex-direction: column;
   justify-content: flex-start;
-  overflow: hidden;
   background-color: #fff;
   margin: 0 !important;
   padding: 0 !important;
-  width: 100vw !important;
+  width: 100% !important;
+  overflow: hidden !important;
 }
 .image,
 .image2,
@@ -249,19 +249,27 @@
 .stepperMobile {
   display: none;
 }
-
+.steps {
+  padding: 6rem;
+}
+.faq {
+  padding: 10rem 6rem;
+}
 @media only screen and (max-width: 1280px) {
+  .top {
+    height: 75vh;
+  }
   .image {
-    height: 22rem;
+    height: 18rem;
   }
   .image2 {
-    height: 16rem;
+    height: 12rem;
     position: absolute;
     z-index: 2;
     right: 4% !important;
   }
   .image3 {
-    height: 12rem;
+    height: 10rem;
     position: absolute;
     z-index: 3;
     right: 24% !important;
@@ -282,19 +290,38 @@
     gap: 8rem;
     padding: 0;
   }
-
+  .header {
+    font-size: 2rem;
+  }
+  .description {
+    font-size: 1rem;
+    color: #fff;
+  }
   .first {
     gap: 0rem;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr 9fr;
+    padding: 4rem;
+    gap: 4rem;
   }
   .second {
     display: grid;
     grid-template-columns: 7fr 3fr;
     padding: 4rem 6rem;
   }
+  .third {
+    display: grid;
+    grid-template-columns: 3fr 7fr;
+    padding: 4rem 6rem;
+  }
   .featureimage2 {
     width: 18rem !important;
+  }
+  .steps {
+    padding: 4rem;
+  }
+  .faq {
+    padding: 6rem;
   }
 }
 
@@ -303,6 +330,7 @@
     flex-direction: column;
     gap: 8rem;
     padding: 0 2rem;
+    height: 100vh;
   }
   .image {
     height: 22rem;
@@ -323,7 +351,7 @@
     font-size: 3rem;
   }
   .featuresImage1 {
-    width: 22rem !important;
+    width: 32rem !important;
     margin: 0 auto;
   }
   .featuresImage2 {
@@ -332,21 +360,20 @@
   .featuresImage3 {
     width: 10rem !important;
   }
-  .firstDes {
+  .firstDes,
+  .secondDes,
+  .thirdDes {
     font-size: 14px;
-    padding: 2rem 0;
+    padding: 2rem;
   }
   .first,
   .second,
   .third {
-    padding: 2rem;
-  }
-  .first {
-    gap: 2rem;
-  }
-  .secondDes {
-    font-size: 14px;
-    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    padding: 8rem;
+    padding-top: 0;
   }
 }
 @media only screen and (max-width: 500px) {
@@ -369,10 +396,9 @@
   }
 
   .description {
-    font-size: 1rem;
+    font-size: 14px;
     padding: 0;
     margin: 1rem 0 2rem 0;
-    color: gray;
   }
   .image {
     height: 12rem;
@@ -399,21 +425,13 @@
     justify-content: center;
     padding: 2rem;
   }
-  .second {
-    padding: 2rem 0;
-    gap: 2rem;
-  }
-  .third {
-    gap: 2rem;
-  }
+
   .firstDes,
   .secondDes,
   .thirdDes {
-    font-size: 14px;
+    font-size: 12px;
   }
-  .secondDes {
-    padding: 0rem 2rem;
-  }
+
   .featuresImage1 {
     height: auto;
     width: 18rem !important;
@@ -424,7 +442,7 @@
   }
   .stepperMobile {
     display: block;
-    padding: 2rem;
+    padding: 0 2rem;
   }
 
   .articleHeaderMobile {
@@ -442,6 +460,9 @@
   }
   .buttonFirst:hover .arrow {
     transform: translate(0, 0);
+  }
+  .faq {
+    padding: 1rem;
   }
 }
 

@@ -18,9 +18,17 @@ import styles from "./Nav.module.css";
 import { AccountCircleRounded } from "@material-ui/icons";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Fade from "@mui/material/Fade";
-import { Button, TextField, List, ListItem, Menu } from "@material-ui/core";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Grow from "@mui/material/Grow";
+import Paper from "@mui/material/Paper";
+import Popper from "@mui/material/Popper";
+import MenuItem from "@mui/material/MenuItem";
+import MenuList from "@mui/material/MenuList";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Box } from "@mui/system";
+import { List, ListItem, TextField } from "@material-ui/core";
 
 const Nav = () => {
   const router = useRouter();
@@ -34,8 +42,6 @@ const Nav = () => {
   const handleCloseMuiRegister = () => setOpenMuiRegister(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [openMenu, setOpenMenu] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
   const {
     handleSubmit,
     control,
@@ -47,16 +53,40 @@ const Nav = () => {
     user = JSON.parse(Cookies.get("userInfo"));
   }
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    setOpen(false);
   };
 
+  function handleListKeyDown(event) {
+    if (event.key === "Tab") {
+      event.preventDefault();
+      setOpen(false);
+    } else if (event.key === "Escape") {
+      setOpen(false);
+    }
+  }
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevOpen = React.useRef(open);
+  React.useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus();
+    }
+
+    prevOpen.current = open;
+  }, [open]);
   const logoutHandler = () => {
-    setAnchorEl(null);
     dispatch({ type: "USER_LOGOUT" });
     Cookies.remove("userInfo");
     router.push("/");
@@ -251,10 +281,10 @@ const Nav = () => {
                 </ListItem>
                 <ListItem>
                   <Button
-                    variant="contained"
+                    variant="outlined"
+                    color="secondary"
                     type="submit"
                     fullWidth
-                    color="primary"
                     style={{ outline: "none" }}
                     onSubmit={handleSubmit(loginHandler)}
                   >
@@ -487,10 +517,10 @@ const Nav = () => {
               </div>
               <ListItem>
                 <Button
-                  variant="contained"
+                  variant="outlined"
+                  color="secondary"
                   type="submit"
                   fullWidth
-                  color="primary"
                   onSubmit={handleSubmit(registerHandler)}
                 >
                   Üye Ol
@@ -549,12 +579,13 @@ const Nav = () => {
         {user ? (
           <div className={styles.profileMenu}>
             <Button
-              id="fade-button"
-              aria-controls={open ? "fade-menu" : undefined}
-              aria-haspopup="true"
+              id="composition-button"
+              aria-controls={open ? "composition-menu" : undefined}
               aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
+              aria-haspopup="true"
               className={styles.dropdown}
+              ref={anchorRef}
+              onClick={handleToggle}
             >
               <AccountCircleRounded />
               <div className={styles.username}>
@@ -562,90 +593,114 @@ const Nav = () => {
                 <h6>{user?.lastName}</h6>
               </div>
             </Button>
-            <Menu
-              id="fade-menu"
-              MenuListProps={{
-                "aria-labelledby": "fade-button",
-              }}
-              anchorEl={anchorEl}
+            <Popper
               open={open}
-              onClose={handleClose}
-              TransitionComponent={Fade}
-              style={{
-                display: "flex",
-                alingItems: "center",
-                justifyContent: "center",
-                marginTop: "3rem",
-                marginLeft: "2rem",
-              }}
+              anchorEl={anchorRef.current}
+              role={undefined}
+              placement="bottom-start"
+              transition
+              disablePortal
             >
-              {user?.isAdmin === false ? (
-                <>
-                  <button
-                    className={styles.button}
-                    onClick={() => {
-                      if (router?.pathname !== "/hesap/[userId]") {
-                        setIsFetching(true);
-                      }
-                    }}
-                  >
-                    <LinkRouter
-                      href={"/hesap/" + user?.id}
-                      className={styles["menu-link"]}
-                      passHref
-                    >
-                      <button className={styles["link-item"]}>Hesabım</button>
-                    </LinkRouter>
-                  </button>
-                  <button
-                    className={styles.button}
-                    onClick={() => {
-                      if (router?.pathname !== "/dashboard/[userId]") {
-                        setIsFetching(true);
-                      }
-                    }}
-                  >
-                    <LinkRouter
-                      href={"/dashboard/" + user.id}
-                      passHref
-                      className={styles["menu-link"]}
-                    >
-                      <button className={styles["link-item"]}>
-                        <span>Yönetim Paneli</span>
-                      </button>
-                    </LinkRouter>
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    className={styles.button}
-                    onClick={() => {
-                      if (router?.pathname !== "/admin/dashboard") {
-                        setIsFetching(true);
-                      }
-                    }}
-                  >
-                    <LinkRouter
-                      href="/admin/dashboard"
-                      className={styles["menu-link"]}
-                      passHref
-                    >
-                      <button className={styles["link-item"]}>Panel</button>
-                    </LinkRouter>
-                  </button>
-                </>
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  style={{
+                    transformOrigin:
+                      placement === "bottom-start" ? "left top" : "left bottom",
+                  }}
+                >
+                  <Paper>
+                    <ClickAwayListener onClickAway={handleClose}>
+                      <MenuList
+                        autoFocusItem={open}
+                        id="composition-menu"
+                        aria-labelledby="composition-button"
+                        onKeyDown={handleListKeyDown}
+                      >
+                        {user?.isAdmin === false ? (
+                          <>
+                            <button
+                              className={styles.button}
+                              onClick={() => {
+                                if (router?.pathname !== "/hesap/[userId]") {
+                                  setIsFetching(true);
+                                }
+                              }}
+                            >
+                              <LinkRouter
+                                href={"/hesap/" + user?.id}
+                                className={styles["menu-link"]}
+                                passHref
+                              >
+                                <button className={styles["link-item"]}>
+                                  Hesabım
+                                </button>
+                              </LinkRouter>
+                            </button>
+                            <button
+                              className={styles.button}
+                              onClick={() => {
+                                if (
+                                  router?.pathname !== "/dashboard/[userId]"
+                                ) {
+                                  setIsFetching(true);
+                                }
+                              }}
+                            >
+                              <LinkRouter
+                                href={"/dashboard/" + user.id}
+                                passHref
+                                className={styles["menu-link"]}
+                              >
+                                <button className={styles["link-item"]}>
+                                  <span>Yönetim Paneli</span>
+                                </button>
+                              </LinkRouter>
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              className={styles.button}
+                              onClick={() => {
+                                if (router?.pathname !== "/admin/dashboard") {
+                                  setIsFetching(true);
+                                }
+                              }}
+                            >
+                              <LinkRouter
+                                href="/admin/dashboard"
+                                className={styles["menu-link"]}
+                                passHref
+                              >
+                                <button className={styles["link-item"]}>
+                                  Panel
+                                </button>
+                              </LinkRouter>
+                            </button>
+                          </>
+                        )}
+                        <button
+                          className={styles.button}
+                          onClick={logoutHandler}
+                        >
+                          <LinkRouter
+                            href="/"
+                            passHref
+                            className={styles["menu-link"]}
+                          >
+                            <button className={styles["link-item"]}>
+                              <span>Çıkış Yap</span>
+                              <LogoutIcon className={styles.icon} />
+                            </button>
+                          </LinkRouter>
+                        </button>
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
               )}
-
-              <button className={styles.button} onClick={logoutHandler}>
-                <LinkRouter href="/" passHref className={styles["menu-link"]}>
-                  <button className={styles["link-item"]}>
-                    <span>Çıkış Yap</span>
-                    <LogoutIcon className={styles.icon} />
-                  </button>
-                </LinkRouter>
-              </button>
-            </Menu>
+            </Popper>
           </div>
         ) : (
           <li className={styles.rightXL}>
@@ -682,12 +737,13 @@ const Nav = () => {
           {user ? (
             <div className={styles.profileMenuMobile}>
               <Button
-                id="fade-button"
-                aria-controls={open ? "fade-menu" : undefined}
-                aria-haspopup="true"
+                id="composition-button"
+                aria-controls={open ? "composition-menu" : undefined}
                 aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
+                aria-haspopup="true"
                 className={styles.dropdown}
+                ref={anchorRef}
+                onClick={handleToggle}
               >
                 <AccountCircleRounded />
                 <div className={styles.username}>
@@ -695,82 +751,116 @@ const Nav = () => {
                   <h6>{user?.lastName}</h6>
                 </div>
               </Button>
-              <Menu
-                id="fade-menu"
-                MenuListProps={{
-                  "aria-labelledby": "fade-button",
-                }}
-                anchorEl={anchorEl}
+              <Popper
                 open={open}
-                onClose={handleClose}
-                TransitionComponent={Fade}
-                style={{
-                  display: "flex",
-                  alingItems: "center",
-                  justifyContent: "center",
-                  marginTop: "3rem",
-                  marginLeft: "2rem",
-                }}
+                anchorEl={anchorRef.current}
+                role={undefined}
+                placement="bottom-start"
+                transition
+                disablePortal
               >
-                {user?.isAdmin === false ? (
-                  <>
-                    <button
-                      className={styles.button}
-                      onClick={() => {
-                        if (router?.pathname !== "/hesap/[userId]") {
-                          setIsFetching(true);
-                        }
-                      }}
-                    >
-                      <LinkRouter
-                        href={"/hesap/" + user?.id}
-                        className={styles["menu-link"]}
-                        passHref
-                      >
-                        <button className={styles["link-item"]}>Hesabım</button>
-                      </LinkRouter>
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button className={styles.button}>
-                      <LinkRouter
-                        href="/admin/dashboard"
-                        className={styles["menu-link"]}
-                        passHref
-                      >
-                        <button className={styles["link-item"]}>Panel</button>
-                      </LinkRouter>
-                    </button>
-                  </>
-                )}
-                <button
-                  className={styles.button}
-                  onClick={() => {
-                    if (router?.pathname !== "/dashboard/[userId]") {
-                      setIsFetching(true);
-                    }
-                  }}
-                >
-                  <LinkRouter
-                    href={"/dashboard/" + user.id}
-                    passHref
-                    className={styles["menu-link"]}
+                {({ TransitionProps, placement }) => (
+                  <Grow
+                    {...TransitionProps}
+                    style={{
+                      transformOrigin:
+                        placement === "bottom-start"
+                          ? "left top"
+                          : "left bottom",
+                    }}
                   >
-                    <button className={styles["link-item"]}>
-                      <span>Yönetim Paneli</span>
-                    </button>
-                  </LinkRouter>
-                </button>
-                <button className={styles.button} onClick={logoutHandler}>
-                  <LinkRouter href="/" passHref className={styles["menu-link"]}>
-                    <button className={styles["link-item"]}>
-                      <span>Çıkış Yap</span>
-                      <LogoutIcon className={styles.icon} />
-                    </button>
-                  </LinkRouter>
-                </button>
-              </Menu>
+                    <Paper>
+                      <ClickAwayListener onClickAway={handleClose}>
+                        <MenuList
+                          autoFocusItem={open}
+                          id="composition-menu"
+                          aria-labelledby="composition-button"
+                          onKeyDown={handleListKeyDown}
+                        >
+                          {user?.isAdmin === false ? (
+                            <>
+                              <button
+                                className={styles.button}
+                                onClick={() => {
+                                  if (router?.pathname !== "/hesap/[userId]") {
+                                    setIsFetching(true);
+                                  }
+                                }}
+                              >
+                                <LinkRouter
+                                  href={"/hesap/" + user?.id}
+                                  className={styles["menu-link"]}
+                                  passHref
+                                >
+                                  <button className={styles["link-item"]}>
+                                    Hesabım
+                                  </button>
+                                </LinkRouter>
+                              </button>
+                              <button
+                                className={styles.button}
+                                onClick={() => {
+                                  if (
+                                    router?.pathname !== "/dashboard/[userId]"
+                                  ) {
+                                    setIsFetching(true);
+                                  }
+                                }}
+                              >
+                                <LinkRouter
+                                  href={"/dashboard/" + user.id}
+                                  passHref
+                                  className={styles["menu-link"]}
+                                >
+                                  <button className={styles["link-item"]}>
+                                    <span>Yönetim Paneli</span>
+                                  </button>
+                                </LinkRouter>
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <button
+                                className={styles.button}
+                                onClick={() => {
+                                  if (router?.pathname !== "/admin/dashboard") {
+                                    setIsFetching(true);
+                                  }
+                                }}
+                              >
+                                <LinkRouter
+                                  href="/admin/dashboard"
+                                  className={styles["menu-link"]}
+                                  passHref
+                                >
+                                  <button className={styles["link-item"]}>
+                                    Panel
+                                  </button>
+                                </LinkRouter>
+                              </button>
+                            </>
+                          )}
+                          <button
+                            className={styles.button}
+                            onClick={logoutHandler}
+                          >
+                            <LinkRouter
+                              href="/"
+                              passHref
+                              className={styles["menu-link"]}
+                            >
+                              <button className={styles["link-item"]}>
+                                <span>Çıkış Yap</span>
+                                <LogoutIcon className={styles.icon} />
+                              </button>
+                            </LinkRouter>
+                          </button>
+                        </MenuList>
+                      </ClickAwayListener>
+                    </Paper>
+                  </Grow>
+                )}
+              </Popper>
             </div>
           ) : (
             <div className={styles.buttons}>

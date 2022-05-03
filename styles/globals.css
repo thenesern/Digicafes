@@ -2,11 +2,10 @@
 
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: "Montserrat", sans-serif;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-family: "Montserrat", sans-serif !important;
   scroll-behavior: smooth;
-  overflow: auto;
 }
 
 a {

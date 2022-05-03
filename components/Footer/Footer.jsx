@@ -17,9 +17,14 @@ const Footer = () => {
             <div className={styles.icon}>
               <Facebook />
             </div>
-            <div className={styles.icon}>
+            <a
+              href="https://www.instagram.com/digicafes"
+              target="_blank"
+              className={styles.icon}
+              rel="noreferrer"
+            >
               <Instagram />
-            </div>
+            </a>
           </div>
         </div>
       </div>

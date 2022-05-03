@@ -129,6 +129,7 @@
   width: 100%;
   cursor: pointer;
   display: flex;
+  font-family: "Montserrat", sans-serif !important;
   flex: 1;
   align-items: center;
   justify-content: flex-start;
@@ -177,9 +178,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 3rem;
-  width: 10rem;
-  gap: 12px;
 }
 
 .modal {
@@ -349,12 +347,13 @@
   .headers {
     display: none;
   }
+
   .right {
     padding: 1rem;
     flex-direction: column;
     justify-content: flex-start;
     width: 14rem;
-    background-color: #001219;
+    background-color: #fff;
     height: 100%;
     gap: 10px;
     font-size: 16px;
@@ -363,15 +362,17 @@
     color: #ffe8d6;
   }
   .signIn {
+    color: #212529;
     padding: 10px 16px;
   }
   .signUp {
     margin: 0;
-
+    background-color: #c9184a;
+    color: #ffe8d6;
     padding: 10px 24px;
   }
   .link {
-    color: #fbeee0;
+    color: #212529;
   }
   .buttons {
     display: flex;
@@ -402,5 +403,8 @@
   .buttons {
     flex-direction: column;
     margin-bottom: 1rem;
+  }
+  .dropdown {
+    color: #212529 !important;
   }
 }
