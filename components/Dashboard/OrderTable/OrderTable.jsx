@@ -34,7 +34,6 @@ const OrderTable = (props) => {
     setOrderExpiry(null);
     setPlanExpiry(null);
   };
-  console.log(orders);
 
   const handleCloseDelete = () => {
     setOpenDelete(false);
@@ -166,7 +165,7 @@ const OrderTable = (props) => {
     {
       field: "action",
       headerName: "İşlem",
-      flex: 1,
+      width: 200,
       renderCell: (params) => {
         return (
           <div>
@@ -518,18 +517,20 @@ const OrderTable = (props) => {
           Sipariş Ekle
         </Button>
       </div>
-      <DataGrid
-        rows={orders}
-        columns={columns}
-        getRowId={(row) => row._id}
-        localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
-        disableSelectionOnClick
-        pageSize={pageSize}
-        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-        rowsPerPageOptions={[10, 20, 30]}
-        pagination
-        className={styles.table}
-      />
+      <div className={styles.tableDiv}>
+        <DataGrid
+          rows={orders}
+          columns={columns}
+          getRowId={(row) => row._id}
+          localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
+          disableSelectionOnClick
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          rowsPerPageOptions={[10, 20, 30]}
+          pagination
+          className={styles.table}
+        />
+      </div>
     </div>
   );
 };

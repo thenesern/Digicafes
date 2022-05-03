@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import UserProfile from "../../components/User/User";
-import Nav from "../../components/Nav/Nav";
+import Nav2 from "../../components/Nav2/Nav";
 import { useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -43,7 +43,7 @@ const Hesap = () => {
 
   return (
     <div>
-      <Nav color={"#c9184a"} position={"relative"} />
+      <Nav2 />
       <div>
         <UserProfile orders={userOrder} isFetching={isFetching} />
       </div>

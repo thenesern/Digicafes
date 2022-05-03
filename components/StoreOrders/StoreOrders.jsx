@@ -16,16 +16,39 @@ const StoreOrders = (props) => {
     },
     {
       field: "createdAt",
-      headerName: "Çağrı Zamanı",
       headerClassName: "dark",
-      flex: 4,
+      hide: true,
       editable: false,
+      renderCell: (params) => {
+        return (
+          <span>{new Date(params.row.createdAt).toLocaleDateString()}</span>
+        );
+      },
+    },
+    {
+      field: "date",
+      headerName: "Çağrı Zamanı",
+      flex: 3,
+      headerClassName: "dark",
+      editable: false,
+      renderCell: (params) => {
+        return (
+          <div className={classes.gridDates}>
+            <span>
+              {new Date(params.row.createdAt).toLocaleString().split(" ")[0]}
+            </span>
+            <span>
+              {new Date(params.row.createdAt).toLocaleString().split(" ")[1]}
+            </span>
+          </div>
+        );
+      },
     },
     {
       field: "callName",
       headerName: "Çağrı Türü",
       headerClassName: "dark",
-      flex: 4,
+      flex: 3,
       editable: false,
     },
   ];
@@ -67,10 +90,33 @@ const StoreOrders = (props) => {
     },
     {
       field: "createdAt",
+      headerClassName: "dark",
+      hide: true,
+      editable: false,
+      renderCell: (params) => {
+        return (
+          <span>{new Date(params.row.createdAt).toLocaleDateString()}</span>
+        );
+      },
+    },
+    {
+      field: "date",
       headerName: "Sipariş Zamanı",
       flex: 2,
       headerClassName: "dark",
       editable: false,
+      renderCell: (params) => {
+        return (
+          <div className={classes.gridDates}>
+            <span>
+              {new Date(params.row.createdAt).toLocaleString().split(" ")[0]}
+            </span>
+            <span>
+              {new Date(params.row.createdAt).toLocaleString().split(" ")[1]}
+            </span>
+          </div>
+        );
+      },
     },
     {
       field: "price",
@@ -125,7 +171,7 @@ const StoreOrders = (props) => {
               height: 1,
               width: 1,
               "& .dark": {
-                backgroundColor: "#1d3557",
+                backgroundColor: "#264653",
                 color: "#fbeee0",
               },
             }}
@@ -149,7 +195,7 @@ const StoreOrders = (props) => {
               height: 1,
               width: 1,
               "& .dark": {
-                backgroundColor: "#1d3557",
+                backgroundColor: "#264653",
                 color: "#fbeee0",
               },
             }}

@@ -90,7 +90,7 @@ const UserTable = (props) => {
     {
       field: "action",
       headerName: "İşlem",
-      flex: 1,
+      width: 200,
       renderCell: (params) => {
         return (
           <div className={styles.actions}>
@@ -240,18 +240,20 @@ const UserTable = (props) => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <div className={styles.datatableTitle}>Kullanıcılar</div>
-      <DataGrid
-        rows={users}
-        columns={columns}
-        getRowId={(row) => row._id}
-        className={styles.table}
-        disableSelectionOnClick
-        pageSize={pageSize}
-        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-        rowsPerPageOptions={[10, 20, 30]}
-        pagination
-      />
+      <div className={styles.tableDiv}>
+        <span className={styles.datatableTitle}>Kullanıcılar</span>
+        <DataGrid
+          rows={users}
+          columns={columns}
+          getRowId={(row) => row._id}
+          className={styles.table}
+          disableSelectionOnClick
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          rowsPerPageOptions={[10, 20, 30]}
+          pagination
+        />
+      </div>
     </div>
   );
 };

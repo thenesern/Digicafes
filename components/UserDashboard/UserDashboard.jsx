@@ -50,7 +50,7 @@ const MenuProps = {
   },
 };
 
-const UserDashboard = ({ userOrder }) => {
+const UserDashboard = ({ userOrder, userId }) => {
   const [order, setOrder] = useState(userOrder[0] || null);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [file, setFile] = useState(null);
@@ -110,7 +110,6 @@ const UserDashboard = ({ userOrder }) => {
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
   }
-
   const [openDeleteProduct, setOpenDelete] = useState(false);
   const [openAddCategory, setOpenAddCategory] = useState(false);
   const [openUploadLogo, setOpenUploadLogo] = useState(false);
@@ -425,7 +424,7 @@ const UserDashboard = ({ userOrder }) => {
       padding: 0,
     };
     QRCode.toDataURL(
-      `https://www.project-testenes.vercel.app.com/qr/${version}/${menu?.storeName}/1`,
+      `https://www.digicafes.com/qr/${version}/${menu?.storeName}/1`,
       opts
     ).then(setSrc);
   }, [menu?.storeName, version]);
@@ -440,9 +439,7 @@ const UserDashboard = ({ userOrder }) => {
     if (!isFirst) {
       for (let i = 0; i < tableNum; i++) {
         QRCode.toDataURL(
-          `https://www.project-testenes.vercel.app.com/qr/${version}/${
-            menu?.storeName
-          }/${i + 1}`,
+          `https://www.digicafes.com/qr/${version}/${menu?.storeName}/${i + 1}`,
           opts
         ).then((url) => QRCodes.push(url));
       }
@@ -737,7 +734,7 @@ const UserDashboard = ({ userOrder }) => {
 
                     {order?.menuv2 && (
                       <Link
-                        href={`/dashboard/${user?.id}/menu/${version}/${order?._id}/orders`}
+                        href={`/dashboard/${userId}/menu/${version}/${order?._id}/orders`}
                         passHref
                       >
                         <a target="_blank">

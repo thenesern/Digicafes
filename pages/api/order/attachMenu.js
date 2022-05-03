@@ -12,7 +12,6 @@ handler.use(isAuth);
 handler.patch(async (req, res) => {
   try {
     await db.connect();
-    console.log(req.body);
     let updatedOrder;
     if (req.body.orderProduct === "Dijital Menü - V1") {
       updatedOrder = await Order.findByIdAndUpdate(req.body.orderId, {
@@ -31,7 +30,6 @@ handler.patch(async (req, res) => {
         model: QRMenu2,
       });
     }
-    console.log(updatedOrder);
     await db.disconnect();
     res.send({
       status: "success",

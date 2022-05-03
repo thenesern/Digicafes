@@ -1,5 +1,5 @@
 .datatable {
-  height: 90%;
+  height: 100vh;
   width: 100%;
   overflow: scroll;
   padding: 1rem;
@@ -62,10 +62,20 @@
   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
     rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
 }
-
+.tableDiv {
+  width: 100%;
+  height: 48rem;
+}
+.table {
+  overflow: scroll;
+  width: 100%;
+}
 @media only screen and (max-width: 1280px) {
   .table {
     font-size: 12px !important;
-    width: 86rem;
+  }
+  .tableDiv {
+    width: 100%;
+    height: 36rem;
   }
 }

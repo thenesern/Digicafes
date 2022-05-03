@@ -1,6 +1,6 @@
 .datatable {
   padding: 1rem 20px;
-  height: 90%;
+  height: 100vh;
   overflow: scroll;
 }
 
@@ -182,9 +182,20 @@
   flex-direction: column;
   gap: 1rem;
 }
+.tableDiv {
+  width: 100%;
+  height: 48rem;
+}
+.table {
+  overflow: scroll;
+  width: 100%;
+}
 @media only screen and (max-width: 1280px) {
   .table {
     font-size: 12px !important;
-    width: 86rem;
+  }
+  .tableDiv {
+    width: 100%;
+    height: 36rem;
   }
 }

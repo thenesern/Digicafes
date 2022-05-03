@@ -99,7 +99,11 @@ const StoreMenu = ({ menu, number }) => {
           <ul className={styles.navList}>
             <Button
               variant="contained"
-              style={{ margin: "10px auto", minWidth: "10rem" }}
+              style={{
+                margin: "10px auto",
+                minWidth: "10rem",
+                backgroundColor: "#457b9d",
+              }}
               color="primary"
               onClick={handleOpenWaiterModal}
             >
@@ -107,7 +111,11 @@ const StoreMenu = ({ menu, number }) => {
             </Button>
             <Button
               variant="contained"
-              style={{ margin: "10px auto", minWidth: "10rem" }}
+              style={{
+                margin: "10px auto",
+                minWidth: "10rem",
+                backgroundColor: "#457b9d",
+              }}
               color="primary"
               onClick={handleOpenTableModal}
             >

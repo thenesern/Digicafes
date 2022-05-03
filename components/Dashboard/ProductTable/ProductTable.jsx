@@ -295,17 +295,19 @@ const ProductTable = (props) => {
       <div className={styles.datatableTitle}>
         <h5 className={styles.title}>Ürünler / Hizmetler</h5>
       </div>
-      <DataGrid
-        rows={props.products}
-        columns={columns}
-        getRowId={(row) => row._id}
-        className={styles.table}
-        disableSelectionOnClick
-        pageSize={pageSize}
-        onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-        rowsPerPageOptions={[10, 20, 30]}
-        pagination
-      />
+      <div className={styles.tableDiv}>
+        <DataGrid
+          rows={props.products}
+          columns={columns}
+          getRowId={(row) => row._id}
+          className={styles.table}
+          disableSelectionOnClick
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          rowsPerPageOptions={[10, 20, 30]}
+          pagination
+        />
+      </div>
     </div>
   );
 };

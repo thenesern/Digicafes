@@ -577,19 +577,10 @@ const Nav = ({ change }) => {
                 <h5 className={styles.link}>İşleyiş</h5>
               </Link>
               <Link
-                to="paketler"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={200}
-              >
-                <h5 className={styles.link}>Paketler</h5>
-              </Link>
-              <Link
                 to="faq"
                 spy={true}
                 smooth={true}
-                offset={-200}
+                offset={-80}
                 duration={200}
               >
                 <h5 className={styles.link}>Sıkça Sorulan Sorular</h5>
@@ -922,15 +913,7 @@ const Nav = ({ change }) => {
               >
                 <h5 className={styles.link}>İşleyiş</h5>
               </Link>
-              <Link
-                to="paketler"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={200}
-              >
-                <h5 className={styles.link}>Paketler</h5>
-              </Link>
+
               <Link
                 to="faq"
                 spy={true}

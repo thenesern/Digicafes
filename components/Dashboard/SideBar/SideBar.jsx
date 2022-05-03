@@ -20,7 +20,7 @@ const SideBar = () => {
           <li className={styles.li}>
             <Link href="/" className={styles.link} passHref>
               <button className={styles.button}>
-                <Home style={{ color: "#118ab2" }} />
+                <Home style={{ color: "#f1faee" }} />
                 <h6 className={styles.title}>Ana Sayfa</h6>
               </button>
             </Link>
@@ -28,7 +28,7 @@ const SideBar = () => {
           <li className={styles.li}>
             <Link href="/admin/dashboard" className={styles.link} passHref>
               <button className={styles.button}>
-                <Home style={{ color: "#118ab2" }} />
+                <Home style={{ color: "#f1faee" }} />
                 <h6 className={styles.title}>Panel</h6>
               </button>
             </Link>
@@ -43,7 +43,7 @@ const SideBar = () => {
               className={styles.link}
             >
               <button className={styles.button}>
-                <Group style={{ color: "#118ab2" }} />
+                <Group style={{ color: "#f1faee" }} />
                 <h6 className={styles.title}>Kullanıcılar</h6>
               </button>
             </Link>
@@ -55,7 +55,7 @@ const SideBar = () => {
               passHref
             >
               <button className={styles.button}>
-                <ShoppingCartOutlined style={{ color: "#118ab2" }} />
+                <ShoppingCartOutlined style={{ color: "#f1faee" }} />
                 <h6 className={styles.title}>Siparişler</h6>
               </button>
             </Link>
@@ -67,7 +67,7 @@ const SideBar = () => {
               passHref
             >
               <button className={styles.button}>
-                <StoreMallDirectory style={{ color: "#118ab2" }} />
+                <StoreMallDirectory style={{ color: "#f1faee" }} />
                 <h6 className={styles.title}>Ürünler</h6>
               </button>
             </Link>
@@ -78,7 +78,7 @@ const SideBar = () => {
           <li className={styles.li}>
             <Link href="/dashboard" className={styles.link} passHref>
               <button className={styles.button}>
-                <BarChartOutlined style={{ color: "#118ab2" }} />
+                <BarChartOutlined style={{ color: "#f1faee" }} />
                 <h6 className={styles.title}>Kazançlar</h6>
               </button>
             </Link>

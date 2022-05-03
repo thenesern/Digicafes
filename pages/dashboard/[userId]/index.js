@@ -1,5 +1,5 @@
 import React from "react";
-import Nav from "../../../components/Nav/Nav";
+import Nav2 from "../../../components/Nav2/Nav";
 import styles from "./dashboard.module.css";
 import moment from "moment";
 import Link from "next/link";
@@ -51,7 +51,7 @@ const Dashboard = () => {
 
   return (
     <div className={styles.container}>
-      <Nav color="#c9184a" position={"relative"} />
+      <Nav2 />
       <div className={styles.dashboard}>
         <Modal
           style={{

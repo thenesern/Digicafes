@@ -79,7 +79,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
   }, [isSure]);
   const handleCartOrder = async () => {
     setIsFetching(true);
-    const createdAt = new Date().toLocaleString("tr-TR");
+    const createdAt = new Date();
     try {
       const response = await axios.patch(`/api/qr/v2/${storeName}/orders`, {
         orders: [{ cartItems, tableNum, createdAt, orderNotes }],
@@ -385,7 +385,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
                 color="primary"
                 style={{
                   borderRadius: " 0",
-                  backgroundColor: "#023047",
+                  backgroundColor: "#264653",
                   color: "#f7ede2",
                 }}
                 fullWidth

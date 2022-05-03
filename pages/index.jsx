@@ -19,6 +19,7 @@ import Aos from "aos";
 import { useEffect } from "react";
 import { useState } from "react";
 import "aos/dist/aos.css";
+import Features from "../components/Features/Features";
 const DijitalMenu = () => {
   useEffect(() => {
     Aos.init({ duration: 2000 });
@@ -56,7 +57,7 @@ const DijitalMenu = () => {
             <div className={styles.topLeft}>
               <h1 className={styles.header}>Dijital Menü</h1>
               <p className={styles.description}>
-                Baskı Maliyetlerinden Kurtulun
+                İş Yükü ve Menü Maliyetlerinden kurtulun
               </p>
             </div>
             <div className={styles.images}>
@@ -174,7 +175,9 @@ const DijitalMenu = () => {
               <StepperMobile />
             </div>
           </article>
-
+          <article>
+            <Features />
+          </article>
           <article className={styles.faq}>
             <div>
               <h1 className={styles.articleHeader} id="faq">

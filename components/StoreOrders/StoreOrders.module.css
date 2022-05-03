@@ -38,9 +38,14 @@
   width: 100%;
   height: 52rem;
   gap: 1rem;
-  padding: 2rem;
+  padding: 1rem;
 }
-
+.gridDates {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
 @media only screen and (max-width: 1280px) {
   .grids {
     overflow: scroll !important;

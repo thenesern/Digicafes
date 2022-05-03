@@ -47,7 +47,6 @@ handler.post(async (req, res) => {
 handler.patch(async (req, res) => {
   try {
     await db.connect();
-    console.log(req.body);
     await Order.findByIdAndUpdate(req.body.id, {
       expiry: req.body.expiry,
       $push: { quantity: req.body.quantity },

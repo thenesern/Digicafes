@@ -8,9 +8,9 @@
   justify-content: center;
   z-index: 5;
   color: #fbeee0;
+  background-color: #c9184a;
+  position: relative;
   transition: all 0.2s ease-in-out;
-  position: fixed;
-  background-color: transparent;
 }
 
 .container.fixed {

@@ -81,7 +81,7 @@ const QRMenuSchema = new mongoose.Schema(
       {
         tableNum: Number,
         createdAt: {
-          type: String,
+          type: Date,
         },
         orderNotes: {
           type: String,

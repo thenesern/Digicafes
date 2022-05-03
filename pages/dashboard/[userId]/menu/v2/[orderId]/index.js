@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import React from "react";
 import { useEffect } from "react";
-import Nav from "../../../../../../components/Nav/Nav";
+import Nav2 from "../../../../../../components/Nav2/Nav";
 import UserDashboard from "../../../../../../components/UserDashboard/UserDashboard";
 import Order from "../../../../../../models/OrderModel";
 import Product from "../../../../../../models/ProductModel";
@@ -10,11 +10,11 @@ import QRMenu from "../../../../../../models/QRMenu2Model";
 import User from "../../../../../../models/UserModel";
 import db from "../../../../../../utils/db";
 
-const DashboardMenuv2 = ({ userOrder }) => {
+const DashboardMenuv2 = ({ userOrder, userId }) => {
   return (
     <div>
-      <Nav />
-      <UserDashboard userOrder={userOrder} />
+      <Nav2 />
+      <UserDashboard userOrder={userOrder} userId={userId} />
     </div>
   );
 };
@@ -57,6 +57,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       userOrder: JSON.parse(JSON.stringify(order)),
+      userId,
     },
   };
 }

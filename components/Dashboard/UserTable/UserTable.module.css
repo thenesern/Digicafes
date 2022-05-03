@@ -1,6 +1,6 @@
 .datatable {
   padding: 1rem 20px;
-  height: 90%;
+  height: 100vh;
   overflow: scroll;
 }
 
@@ -15,7 +15,14 @@
   font-weight: bold;
   padding: 4px 0;
 }
-
+.tableDiv {
+  width: 100%;
+  height: 48rem;
+}
+.table {
+  overflow: scroll;
+  width: 100%;
+}
 .link {
   text-decoration: none;
   color: green;
@@ -45,6 +52,9 @@
 @media only screen and (max-width: 1280px) {
   .table {
     font-size: 12px !important;
-    width: 86rem;
+  }
+  .tableDiv {
+    width: 100%;
+    height: 36rem;
   }
 }

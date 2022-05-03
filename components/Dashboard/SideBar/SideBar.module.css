@@ -3,7 +3,7 @@
   width: 10vw;
   height: 100vh;
   flex: 1;
-  background-color: #023047;
+  background-color: #c9184a;
 }
 
 .bar {
@@ -79,5 +79,5 @@
 }
 
 .button:hover {
-  background-color: #001219;
+  background-color: #264653;
 }

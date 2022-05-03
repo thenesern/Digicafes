@@ -4,8 +4,12 @@ import React, { useState, useEffect } from "react";
 import styles from "./OrderNav.module.css";
 
 const OrderNav = (props) => {
+  let newDates = [];
   const [dates, setDates] = useState(
-    props.orders?.map((o) => o.createdAt.split(" ")[0])
+    props.orders?.map((o) => {
+      let createdAt = new Date(o.createdAt);
+      newDates.push(new Date(createdAt).toLocaleString().split(" ")[0]);
+    })
   );
   const [favs, setFavs] = useState(
     props.orders?.map((o) => o.cartItems.map((a) => a.name).toString())
@@ -57,11 +61,13 @@ const OrderNav = (props) => {
   }, []);
   const [length, setLength] = useState(null);
   for (let i = 0; i < length; i++) {
-    week.push(date.replace(date.split(".")[0], date.split(".")[0] - i));
+    week.push(date.replace(date.split(".")[0][1], date.split(".")[0][1] - i));
   }
   for (let i = 0; i < date.split(".")[0]; i++) {
     if (date.split(".")[0] !== 0) {
-      month.push(date.replace(date.split(".")[0], date.split(".")[0] - i));
+      month.push(
+        date.replace(date.split(".")[0][1], date.split(".")[0][1] - i)
+      );
     } else {
       return;
     }
@@ -79,13 +85,13 @@ const OrderNav = (props) => {
   const monthOrders = [];
   const d = new Date();
   let day = days[d.getDay()];
-  for (let i = 0; i < dates.length; i++) {
-    if (dates.some((ele) => week.includes(ele))) {
+  for (let i = 0; i < newDates.length; i++) {
+    if (newDates.some((ele) => week.includes(ele))) {
       weekOrders.push("true");
     }
   }
-  for (let i = 0; i < dates.length; i++) {
-    if (dates.some((ele) => month.includes(ele))) {
+  for (let i = 0; i < newDates.length; i++) {
+    if (newDates.some((ele) => month.includes(ele))) {
       monthOrders.push("true");
     }
   }
@@ -113,8 +119,8 @@ const OrderNav = (props) => {
           <div className={styles.periods}>
             <h6 className={styles.title}>Bugün</h6>
             <span>
-              {dates.map((a) => a === date).filter((d) => d === true).length ||
-                0}
+              {newDates.map((a) => a === date).filter((d) => d === true)
+                .length || 0}
             </span>
           </div>
           <div className={styles.periods}>
