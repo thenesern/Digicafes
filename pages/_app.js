@@ -15,6 +15,14 @@ function MyApp({ Component, pageProps }) {
           name="viewport"
           content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1"
         />
+        <meta
+          name="keywords"
+          content="Dijital Menü, QR Menü, Menü, Cafe, Restoran, Restoran Menü, Cafe Menü, Dijital QR Menü, digicafes.com, DigiCafes"
+        />
+        <meta
+          name="description"
+          content="Digicafes | Kafe, Restoran ve Bahçeler için Dijital Menü çözümleri."
+        />
       </Head>
       <SnackbarProvider
         anchorOrigin={{ vertical: "top", horizontal: "center" }}

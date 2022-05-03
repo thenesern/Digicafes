@@ -3,6 +3,7 @@ import Footer from "../components/Footer/Footer";
 import Nav from "../components/Nav/Nav";
 // Packages and Dependencies
 import LinkRouter from "next/link";
+import Head from "next/head";
 import { Link } from "react-scroll";
 import Image from "next/image";
 import digitalMenuMockup from "../assets/image/DigitalMenuPanelMockup.png";
@@ -31,6 +32,23 @@ const DijitalMenu = () => {
   }, []);
   return (
     <div>
+      <Head>
+        <title>
+          Digicafes | Kafe, Restoran ve Bahçeler için Dijital Menü çözümleri.
+        </title>
+        <meta
+          name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1"
+        />
+        <meta
+          name="keywords"
+          content="Dijital Menü, QR Menü, Menü, Cafe, Restoran, Restoran Menü, Cafe Menü, Dijital QR Menü, digicafes.com, DigiCafes"
+        />
+        <meta
+          name="description"
+          content="Digicafes | Kafe, Restoran ve Bahçeler için Dijital Menü çözümleri."
+        />
+      </Head>
       <Nav />
       <div className={styles.container}>
         <div className={styles.top}>
@@ -58,7 +76,6 @@ const DijitalMenu = () => {
             />
           </div>
         </div>
-
         <section className={styles.section} data-aos="fade-up" id="features">
           <article className={styles.first}>
             <div
@@ -72,7 +89,6 @@ const DijitalMenu = () => {
                 alt=""
               />
             </div>
-
             <div data-aos="fade-up" className={styles.firstDes}>
               <h2 className={styles.firstHeader}>
                 Dijital Menü Yönetim Paneli
@@ -119,7 +135,6 @@ const DijitalMenu = () => {
             </div>
           </article>
           <article className={styles.third}>
-            {" "}
             <div
               className={styles.featuresImage3}
               style={{ width: "12rem", height: "auto" }}

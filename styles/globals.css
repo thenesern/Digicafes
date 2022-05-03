@@ -6,6 +6,7 @@ body {
   margin: 0 !important;
   font-family: "Montserrat", sans-serif !important;
   scroll-behavior: smooth;
+  overflow: auto;
 }
 
 a {

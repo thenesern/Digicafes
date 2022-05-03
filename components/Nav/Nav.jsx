@@ -205,6 +205,17 @@ const Nav = () => {
         }}
       >
         <Box className={styles.loginBox}>
+          <span
+            onClick={handleCloseMuiLogin}
+            style={{
+              position: "absolute",
+              right: "3%",
+              top: "3%",
+              cursor: "pointer",
+            }}
+          >
+            X
+          </span>
           <div className={styles.wrapper}>
             <h1 className={styles.title}>Giriş Yap</h1>
             <div className={styles.signup}>
@@ -308,6 +319,18 @@ const Nav = () => {
         }}
       >
         <Box className={styles.registerBox}>
+          {" "}
+          <span
+            onClick={handleCloseMuiRegister}
+            style={{
+              position: "absolute",
+              right: "3%",
+              top: "3%",
+              cursor: "pointer",
+            }}
+          >
+            X
+          </span>
           <h1 className={styles.title}>Üye Ol</h1>
           <div className={styles.signin}>
             <p>Hesabınız var mı?</p>
