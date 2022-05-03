@@ -385,7 +385,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
                 color="primary"
                 style={{
                   borderRadius: " 0",
-                  backgroundColor: "#264653",
+                  backgroundColor: "#073b4c",
                   color: "#f7ede2",
                 }}
                 fullWidth
