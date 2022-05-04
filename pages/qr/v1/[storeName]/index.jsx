@@ -8,6 +8,7 @@ import { Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Order from "../../../../models/OrderModel.js";
+import Image from "next/image";
 
 const StoreMenu = ({ menu }) => {
   const [open, setOpen] = useState(false);
@@ -76,6 +77,8 @@ const StoreMenu = ({ menu }) => {
         {menu &&
           menu?.categories?.map((m) => (
             <div
+              key={m?.name}
+              className={styles.listItem}
               onClick={() => {
                 try {
                   setIsFetching(true);
@@ -85,10 +88,15 @@ const StoreMenu = ({ menu }) => {
                   setIsFetching(false);
                 }
               }}
-              key={m?.name}
-              className={styles.listItem}
-              style={{ backgroundImage: `url(${m?.image})` }}
             >
+              <div style={{ width: "100%", height: "100%" }}>
+                <Image
+                  layout="fill"
+                  src={m?.image}
+                  className={styles.img}
+                  alt={m?.name}
+                ></Image>
+              </div>
               <div className={styles.titleBack}>
                 <h3 className={styles.title}>{m?.name}</h3>
               </div>

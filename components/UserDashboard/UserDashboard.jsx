@@ -342,7 +342,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     try {
       setIsFetching(true);
       const uploadRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
+        "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload/q_auto,f_auto",
         data
       );
 
