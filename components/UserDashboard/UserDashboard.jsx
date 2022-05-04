@@ -54,12 +54,14 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [order, setOrder] = useState(userOrder[0] || null);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [file, setFile] = useState(null);
+  const [isPreview, setIsPreview] = useState(false);
   const theme = useTheme();
   const [menu, setMenu] = useState(order?.menuv1 || order?.menuv2 || "");
   const [name, setName] = useState("");
   const [price, setPrice] = useState();
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [updatedCategories, setUpdatedCategories] = useState([]);
   const [src, setSrc] = useState("");
   const [isFetching, setIsFetching] = useState(false);
   const [isFetchingForFirst, setIsFetchingForFirst] = useState(false);
@@ -69,13 +71,15 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [products, setProducts] = useState([...(menu?.products || "")]);
   const arrayProducts = Array.from(products);
   const [categories, setCategories] = useState([...(menu?.categories || "")]);
-  const arrayCategories = Array.from(categories);
+  let arrayCategories = Array.from(categories);
+
   const [deleteId, setDeleteId] = useState("");
   const [secondStep, setSecondStep] = useState(false);
   const [tableNum, setTableNum] = useState(menu?.tableNum || null);
   const [version, setVersion] = useState(
     order?.product?.name === "Dijital Menü - V1" ? "v1" : "v2"
   );
+
   const [QRCodes, setQRCodes] = useState([]);
   const [deleteName, setDeleteName] = useState("");
   const [deleteCategory, setDeleteCategory] = useState(false);
@@ -93,6 +97,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     },
   };
   const [openAddProduct, setOpenAddProduct] = useState(false);
+  const [updateCategory, setUpdateCategory] = useState("");
   const handleOpenAddProduct = () => setOpenAddProduct(true);
   const handleCloseAddProduct = () => setOpenAddProduct(false);
   const handleOpenDelete = () => setOpenDelete(true);
@@ -110,10 +115,17 @@ const UserDashboard = ({ userOrder, userId }) => {
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
   }
+  const [openUpdateCategory, setOpenUpdateCategory] = useState(false);
   const [openDeleteProduct, setOpenDelete] = useState(false);
   const [openAddCategory, setOpenAddCategory] = useState(false);
   const [openUploadLogo, setOpenUploadLogo] = useState(false);
   const [openQRImages, setOpenQRImages] = useState(false);
+  const handleOpenUpdateCategory = () => setOpenUpdateCategory(true);
+  const handleCloseUpdateCategory = () => {
+    setOpenUpdateCategory(false);
+    setFile(null);
+    setIsPreview(false);
+  };
   const handleOpenQRImages = () => setOpenQRImages(true);
   const handleCloseQRImages = () => setOpenQRImages(false);
   const handleOpenAddCategory = () => setOpenAddCategory(true);
@@ -244,6 +256,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       enqueueSnackbar("Ürün Eklenemedi", { variant: "error" });
     }
   };
+
   const deleteProductHandler = async () => {
     setIsFetching(true);
 
@@ -319,6 +332,74 @@ const UserDashboard = ({ userOrder, userId }) => {
       enqueueSnackbar("Kategori Silinemedi", { variant: "error" });
     }
     setIsFetching(false);
+  };
+  const handleUpdateCategory = async (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "uploads");
+    let betterCategoryName = addCategory
+      ?.split(" ")
+      .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
+      .join(" ");
+
+    if (categoryNames.includes(betterCategoryName)) {
+      handleCloseAddCategory();
+      setAddCategory("");
+      setFile(null);
+      setIsFetching(false);
+      return enqueueSnackbar("Bu isimde bir kategori zaten var.", {
+        variant: "error",
+      });
+    }
+    setUpdatedCategories(categories.filter((c) => c.name !== updateCategory));
+    try {
+      setIsFetching(true);
+      const uploadRes = await axios.post(
+        "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
+        data
+      );
+      setUpdatedCategories((prevState) => [
+        ...prevState,
+        { name: betterCategoryName, image: uploadRes?.data.url },
+      ]);
+      console.log(updatedCategories);
+
+      arrayCategories.push({
+        name: betterCategoryName,
+        image: uploadRes?.data?.url,
+      });
+      categoryNames.push(betterCategoryName);
+      console.log(updatedCategories);
+
+      handleCloseUpdateCategory();
+      setFile(null);
+    } catch (err) {
+      console.log(err);
+      setIsFetching(false);
+      setAddCategory("");
+      setFile(null);
+      enqueueSnackbar("Kategori Eklenemedi", { variant: "error" });
+    }
+  };
+  const handleSendUpdatedCategories = async () => {
+    try {
+      const updatedMenu = await axios.patch(
+        `/api/qr/${version}/${menu?.storeName}/categories`,
+        {
+          storeName,
+          categories: updatedCategories,
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
+      setCategories(updatedMenu?.data?.menu?.categories);
+      setIsFetching(false);
+      enqueueSnackbar("Kategori Eklendi", { variant: "success" });
+    } catch (err) {
+      console.log(err);
+    }
   };
   const addCategoryHandler = async (e) => {
     e.preventDefault();
@@ -445,6 +526,11 @@ const UserDashboard = ({ userOrder, userId }) => {
       }
     }
   }, [tableNum, isFirst]);
+  useEffect(() => {
+    if (updatedCategories.length > 0) {
+      handleSendUpdatedCategories();
+    }
+  }, [updatedCategories]);
   const columns = [
     {
       field: "name",
@@ -483,7 +569,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                 setDeleteName(params?.row.name);
               }}
               variant="outlined"
-              startIcon={<DeleteIcon color="error" />}
+              color="error"
             >
               Sil
             </Button>
@@ -515,13 +601,25 @@ const UserDashboard = ({ userOrder, userId }) => {
           <Stack direction="row" spacing={2}>
             <Button
               onClick={() => {
+                handleOpenUpdateCategory();
+                setAddCategory(params.row.name);
+                setUpdateCategory(params.row.name);
+                setFile(params.row.image);
+              }}
+              variant="outlined"
+              color="warning"
+            >
+              Düzenle
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => {
                 handleOpenDelete();
                 setDeleteId(params?.row._id);
                 setDeleteName(params?.row.name);
                 setDeleteCategory(true);
               }}
-              variant="outlined"
-              startIcon={<DeleteIcon color="error" />}
             >
               Sil
             </Button>
@@ -935,6 +1033,78 @@ const UserDashboard = ({ userOrder, userId }) => {
                     </div>
                   </Box>
                 </ModalMui>
+                <Modal
+                  style={{ padding: "6px", width: "100%" }}
+                  open={openUpdateCategory}
+                  onClose={handleCloseUpdateCategory}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Modal.Header>
+                    <h2>Kategori Düzenle</h2>
+                  </Modal.Header>
+                  <Modal.Body>
+                    <form
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                        gap: "2rem",
+                        padding: "1rem",
+                      }}
+                    >
+                      <Input
+                        fullWidth
+                        label="Kategori Adı"
+                        value={addCategory}
+                        onChange={(e) => setAddCategory(e.target.value)}
+                      />
+                      <Input
+                        fullWidth
+                        accept="image/*"
+                        label="Kategori Görseli"
+                        id="icon-button-file"
+                        onChange={(e) => {
+                          setFile(e.target.files[0]);
+                          setIsPreview(true);
+                        }}
+                        type="file"
+                      />
+                      {isPreview ? (
+                        <img
+                          src={URL.createObjectURL(file)}
+                          width="300px"
+                          height="300px"
+                          style={{ objectFit: "contain" }}
+                        ></img>
+                      ) : (
+                        <img
+                          src={file}
+                          width="300px"
+                          height="300px"
+                          style={{ objectFit: "contain" }}
+                        ></img>
+                      )}
+                    </form>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button color="primary" variant="outlined">
+                      Vazgeç
+                    </Button>
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      onClick={(e) => {
+                        handleUpdateCategory(e);
+                      }}
+                      style={{ marginLeft: "1rem" }}
+                    >
+                      Onayla
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
                 <ModalMui
                   open={openAddCategory}
                   onClose={handleCloseAddCategory}
