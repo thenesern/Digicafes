@@ -32,7 +32,7 @@ const Features = () => {
   );
 
   return (
-    <section className={styles.section} data-aos="fade-up" id="paketler">
+    <section className={styles.section} id="paketler">
       <article className={styles.article} data-aos="fade-right">
         <h2 className={styles.header}>Dijital Menü V1</h2>
         <ul className={styles.list}>

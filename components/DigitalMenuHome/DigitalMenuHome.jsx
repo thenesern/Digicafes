@@ -15,7 +15,7 @@ const DigitalMenuHome = () => {
         />
       </div>
       <div className={styles.right}>
-        <h1 className={styles.header}>Baskı Maliyetlerinden Kurtulun</h1>
+        <h1 className={styles.header}>Baskı Maliyetlerinden kurtulun</h1>
         <ul className={styles.list}>
           <li>
             <h5 className={styles.title}>Menünüz her zaman elinizin altında</h5>

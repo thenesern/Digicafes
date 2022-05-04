@@ -57,7 +57,7 @@ const DijitalMenu = () => {
             <div className={styles.topLeft}>
               <h1 className={styles.header}>Dijital Menü</h1>
               <p className={styles.description}>
-                İş Yükü ve Menü Maliyetlerinden kurtulun
+                İş Yükü ve Menü Maliyetlerinden Kurtulun
               </p>
             </div>
             <div className={styles.images}>
