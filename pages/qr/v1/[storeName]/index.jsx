@@ -97,8 +97,11 @@ const StoreMenu = ({ menu }) => {
                 }
               }}
             >
-              <div style={{ width: "100%", height: "100%" }}>
+              <div
+                style={{ width: "100%", height: "100%", position: "relative" }}
+              >
                 <Image
+                  priority
                   layout="fill"
                   src={m?.image}
                   className={styles.img}
