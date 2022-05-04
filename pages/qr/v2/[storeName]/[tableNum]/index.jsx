@@ -17,6 +17,7 @@ import axios from "axios";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useEffect } from "react";
 import Order from "../../../../../models/OrderModel";
+import Image from "next/image";
 
 const StoreMenu = ({ menu, number }) => {
   const [open, setOpen] = useState(false);
@@ -231,6 +232,8 @@ const StoreMenu = ({ menu, number }) => {
         {menu &&
           menu?.categories?.map((m) => (
             <div
+              key={m?.name}
+              className={styles.listItem}
               onClick={() => {
                 try {
                   setIsFetching(true);
@@ -242,10 +245,15 @@ const StoreMenu = ({ menu, number }) => {
                   setIsFetching(false);
                 }
               }}
-              key={m?.name}
-              className={styles.listItem}
-              style={{ backgroundImage: `url(${m?.image})` }}
             >
+              <div style={{ width: "100%", height: "100%" }}>
+                <Image
+                  layout="fill"
+                  src={m?.image}
+                  className={styles.img}
+                  alt={m?.name}
+                ></Image>
+              </div>
               <div className={styles.titleBack}>
                 <h3 className={styles.title}>{m?.name}</h3>
               </div>

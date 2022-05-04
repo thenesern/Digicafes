@@ -16,7 +16,8 @@
   list-style: none;
   width: 100%;
   height: 100%;
-  padding: 0;
+  padding: 6px;
+  gap: 6px;
   margin: 0;
   display: grid;
   grid-template-columns: 1fr;
@@ -25,12 +26,12 @@
 }
 .logo {
   object-fit: contain;
-  width: 4rem;
+  width: 2rem;
   height: auto;
 }
 .listItem {
   height: 8rem;
-  border: 1px solid lightgray;
+  border: 2px solid #001219;
   display: flex;
   cursor: pointer;
   align-items: center;
@@ -93,7 +94,10 @@
   align-items: flex-start;
   list-style: none;
   padding: 1rem;
+  margin: 0;
+
   gap: 4px;
+  height: 100%;
   font-size: 14px;
 }
 .navList li {

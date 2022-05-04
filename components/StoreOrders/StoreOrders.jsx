@@ -4,6 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { trTR } from "@mui/x-data-grid";
 // Styles
 import classes from "./StoreOrders.module.css";
+import { useState } from "react";
 
 const StoreOrders = (props) => {
   const callColumns = [
@@ -93,11 +94,6 @@ const StoreOrders = (props) => {
       headerClassName: "dark",
       hide: true,
       editable: false,
-      renderCell: (params) => {
-        return (
-          <span>{new Date(params.row.createdAt).toLocaleDateString()}</span>
-        );
-      },
     },
     {
       field: "date",
@@ -105,6 +101,11 @@ const StoreOrders = (props) => {
       flex: 2,
       headerClassName: "dark",
       editable: false,
+      renderCell: (params) => {
+        return (
+          <span>{new Date(params.row.createdAt).toLocaleDateString()}</span>
+        );
+      },
       renderCell: (params) => {
         return (
           <div className={classes.gridDates}>

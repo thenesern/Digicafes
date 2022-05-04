@@ -31,11 +31,18 @@ const StoreMenu = ({ menu }) => {
           onOpen={() => setOpen(true)}
           onClose={() => setOpen(false)}
         >
-          <IconButton>
-            <ChevronRightIcon onClick={() => setOpen(true)} />
-            <Divider />
-          </IconButton>
           <ul className={styles.navList}>
+            <h3
+              style={{
+                borderBottom: "1px solid #f1faee",
+                color: "#f1faee",
+                width: "100%",
+                paddingBottom: "10px",
+                textAlign: "center",
+              }}
+            >
+              Menü
+            </h3>
             {menu &&
               menu?.categories?.map((m) => (
                 <li
@@ -74,6 +81,7 @@ const StoreMenu = ({ menu }) => {
             <Spacer />
           </Modal.Body>
         </Modal>
+
         {menu &&
           menu?.categories?.map((m) => (
             <div
