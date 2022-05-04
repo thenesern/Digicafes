@@ -3,7 +3,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    formats: ["image/avif", "image/webp"],
+    formats: ["image/png", "image/jpg", "image/jpeg", "image/webp"],
     domains: ["res.cloudinary.com"],
   },
   sounds: {
