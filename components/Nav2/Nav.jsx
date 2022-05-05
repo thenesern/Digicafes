@@ -13,6 +13,8 @@ import { useRouter } from "next/router";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
 import ModalMui from "@mui/material/Modal";
 import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
+import logoDark from "../../.next/static/media/digi_dark_logo.svg";
+import Image from "next/image";
 // Styles
 import styles from "./Nav.module.css";
 import { AccountCircleRounded } from "@material-ui/icons";
@@ -554,7 +556,13 @@ const Nav = ({ change }) => {
       <ul className={styles.list}>
         <li className={styles.left}>
           <LinkRouter href="/" passHref>
-            <h6 className={styles.logo}>Logo</h6>
+            <Image
+              style={{ cursor: "pointer" }}
+              src={logoDark}
+              objectFit="contain"
+              width="100px"
+              height="100px"
+            ></Image>
           </LinkRouter>
           {router.pathname === "/" && (
             <div className={styles.headers}>

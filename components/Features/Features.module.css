@@ -84,8 +84,9 @@
 }
 @media only screen and (max-width: 375px) {
   .article {
-    width: 22rem;
+    width: 20rem;
+    font-size: 10px;
     height: 48rem;
-    padding: 0;
+    padding: 0 2rem;
   }
 }

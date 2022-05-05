@@ -7,6 +7,9 @@ import styles from "./FAQ.module.css";
 const FAQ = () => {
   return (
     <div className={styles.container}>
+      <h1 className={styles.articleHeader} id="faq">
+        Sıkça Sorulan Sorular
+      </h1>
       <Collapse.Group bordered>
         <Collapse title="Dijital Menü Nedir?">
           <Text>

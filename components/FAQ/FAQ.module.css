@@ -4,7 +4,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   padding: 1rem 8rem;
+}
+.articleHeader {
+  text-align: center;
 }
 @media only screen and (max-width: 1440px) {
   .container {
@@ -25,5 +29,6 @@
 @media only screen and (max-width: 375px) {
   .container {
     font-size: 12px;
+    padding: 4rem 0;
   }
 }

@@ -12,6 +12,7 @@ import { Link } from "react-scroll";
 import { useRouter } from "next/router";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
 import ModalMui from "@mui/material/Modal";
+import Image from "next/image";
 import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
 // Styles
 import styles from "./Nav.module.css";
@@ -29,6 +30,8 @@ import Button from "@mui/material/Button";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Box } from "@mui/system";
 import { List, ListItem, TextField } from "@material-ui/core";
+import logoDark from "../../.next/static/media/digi_dark_logo.svg";
+import logo from "../../.next/static/media/digi_logo.svg";
 
 const Nav = ({ change }) => {
   const router = useRouter();
@@ -554,7 +557,23 @@ const Nav = ({ change }) => {
       <ul className={styles.list}>
         <li className={styles.left}>
           <LinkRouter href="/" passHref>
-            <h6 className={styles.logo}>Logo</h6>
+            {!fix ? (
+              <Image
+                style={{ cursor: "pointer" }}
+                src={logoDark}
+                objectFit="contain"
+                width="100px"
+                height="100px"
+              ></Image>
+            ) : (
+              <Image
+                style={{ cursor: "pointer" }}
+                src={logo}
+                width="100px"
+                objectFit="contain"
+                height="100px"
+              ></Image>
+            )}
           </LinkRouter>
           {router.pathname === "/" && (
             <div className={styles.headers}>

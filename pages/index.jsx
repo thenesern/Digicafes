@@ -180,9 +180,7 @@ const DijitalMenu = () => {
           </article>
           <article className={styles.faq}>
             <div>
-              <h1 className={styles.articleHeader} id="faq">
-                Sıkça Sorulan Sorular
-              </h1>
+             
               <div data-aos="fade-up">
                 <FAQ />
               </div>

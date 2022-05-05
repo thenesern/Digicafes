@@ -567,8 +567,18 @@
     height: 10rem;
   }
   .image2 {
-    height: 10rem;
+    height: 7rem;
+    position: absolute;
+    z-index: 2;
+    right: 4% !important;
   }
+  .image3 {
+    height: 5rem;
+    position: absolute;
+    z-index: 3;
+    right: 24% !important;
+  }
+
   .featuresImage1 {
     width: 16rem !important;
     margin: 0 auto;

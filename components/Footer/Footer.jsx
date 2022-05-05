@@ -1,6 +1,7 @@
 // Packages and Dependencies
 import React from "react";
-import Link from "next/link";
+import Image from "next/image";
+import logo from "../../.next/static/media/digi_dark_logo.svg";
 // Styles
 import { Facebook, Instagram } from "@material-ui/icons";
 import styles from "./Footer.module.css";
@@ -10,7 +11,13 @@ const Footer = () => {
     <div className={styles.container}>
       <div className={styles.footer}>
         <div>
-          <h1 className={styles.logo}>Logo</h1>
+          <Image
+            style={{ cursor: "pointer" }}
+            src={logo}
+            width="200px"
+            objectFit="contain"
+            height="100px"
+          ></Image>
         </div>
         <div className={styles.right}>
           <div className={styles["social-container"]}>
