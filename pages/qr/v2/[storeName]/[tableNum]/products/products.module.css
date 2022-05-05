@@ -77,6 +77,13 @@
   width: 92% !important;
   margin: 0 auto !important;
 }
+.li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  flex: 1;
+}
 .listItem {
   min-height: 10rem;
   border: 1px solid lightgray;
@@ -99,18 +106,23 @@
 
 .name {
   font-size: 14px;
+  width: 100%;
   color: #14213d;
-  padding: 0 1rem;
 }
 
 .bottom {
   width: 100%;
+  min-height: 7rem;
+  display: flex;
+  padding: 0 10px;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .price {
   font-weight: 600;
   color: #fb8500;
-  padding: 0 1rem;
 }
 
 .navList {

@@ -72,7 +72,6 @@ const UserDashboard = ({ userOrder, userId }) => {
   const arrayProducts = Array.from(products);
   const [categories, setCategories] = useState([...(menu?.categories || "")]);
   let arrayCategories = Array.from(categories);
-
   const [deleteId, setDeleteId] = useState("");
   const [secondStep, setSecondStep] = useState(false);
   const [tableNum, setTableNum] = useState(menu?.tableNum || null);
@@ -198,6 +197,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     data.append("file", file);
     data.append("upload_preset", "uploads");
     let betterProductName = name
+      .toLowerCase()
       ?.split(" ")
       .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
       .join(" ");
@@ -286,7 +286,6 @@ const UserDashboard = ({ userOrder, userId }) => {
     }
     setIsFetching(false);
   };
-
   const deleteCategoryHandler = async () => {
     setIsFetching(true);
     if (
@@ -339,13 +338,17 @@ const UserDashboard = ({ userOrder, userId }) => {
     data.append("file", file);
     data.append("upload_preset", "uploads");
     let betterCategoryName = addCategory
+      .toLowerCase()
       ?.split(" ")
       .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
       .join(" ");
 
-    if (categoryNames.includes(betterCategoryName)) {
+    if (
+      categoryNames.includes(betterCategoryName && typeof file !== "object")
+    ) {
       handleCloseAddCategory();
       setAddCategory("");
+      setUpdateCategory("");
       setFile(null);
       setIsFetching(false);
       return enqueueSnackbar("Bu isimde bir kategori zaten var.", {
@@ -363,23 +366,19 @@ const UserDashboard = ({ userOrder, userId }) => {
         ...prevState,
         { name: betterCategoryName, image: uploadRes?.data.url },
       ]);
-      console.log(updatedCategories);
 
       arrayCategories.push({
         name: betterCategoryName,
         image: uploadRes?.data?.url,
       });
       categoryNames.push(betterCategoryName);
-      console.log(updatedCategories);
-
       handleCloseUpdateCategory();
+      setAddCategory("");
       setFile(null);
     } catch (err) {
       console.log(err);
-      setIsFetching(false);
       setAddCategory("");
       setFile(null);
-      enqueueSnackbar("Kategori Eklenemedi", { variant: "error" });
     }
   };
   const handleSendUpdatedCategories = async () => {
@@ -396,17 +395,20 @@ const UserDashboard = ({ userOrder, userId }) => {
       );
       setCategories(updatedMenu?.data?.menu?.categories);
       setIsFetching(false);
-      enqueueSnackbar("Kategori Eklendi", { variant: "success" });
+      enqueueSnackbar("Kategori Güncellendi", { variant: "success" });
     } catch (err) {
       console.log(err);
+      setIsFetching(false);
     }
   };
+
   const addCategoryHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "uploads");
     let betterCategoryName = addCategory
+      .toLowerCase()
       ?.split(" ")
       .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
       .join(" ");
@@ -451,6 +453,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       enqueueSnackbar("Kategori Eklendi", { variant: "success" });
     } catch (err) {
       console.log(err);
+      handleCloseAddCategory();
       setIsFetching(false);
       setAddCategory("");
       setFile(null);
@@ -569,7 +572,6 @@ const UserDashboard = ({ userOrder, userId }) => {
                 setDeleteName(params?.row.name);
               }}
               variant="outlined"
-              color="error"
             >
               Sil
             </Button>
@@ -865,6 +867,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                 <Button
                   variant="contained"
                   type="submit"
+                  color="primary"
                   disabled={categories.length > 0 ? false : true}
                   onClick={handleOpenAddProduct}
                   style={{ margin: "1rem", width: "16rem" }}
@@ -1073,12 +1076,13 @@ const UserDashboard = ({ userOrder, userId }) => {
                         type="file"
                       />
                       {isPreview ? (
-                        <img
+                        /*    <img
                           src={URL.createObjectURL(file)}
                           width="300px"
                           height="300px"
                           style={{ objectFit: "contain" }}
-                        ></img>
+                        ></img> */
+                        ""
                       ) : (
                         <img
                           src={file}
@@ -1090,14 +1094,38 @@ const UserDashboard = ({ userOrder, userId }) => {
                     </form>
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button color="primary" variant="outlined">
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      onClick={() => {
+                        handleCloseUpdateCategory();
+                        setUpdateCategory("");
+                        setAddCategory("");
+                        setFile("");
+                        setIsPreview(false);
+                      }}
+                    >
                       Vazgeç
                     </Button>
                     <Button
                       color="secondary"
                       variant="contained"
                       onClick={(e) => {
-                        handleUpdateCategory(e);
+                        if (
+                          addCategory != updateCategory ||
+                          typeof file === "object"
+                        ) {
+                          handleUpdateCategory(e);
+                        } else {
+                          handleCloseUpdateCategory();
+                          setUpdateCategory("");
+                          setAddCategory("");
+                          setFile("");
+                          setIsPreview(false);
+                          enqueueSnackbar("Değişiklik Yapılmadı", {
+                            variant: "info",
+                          });
+                        }
                       }}
                       style={{ marginLeft: "1rem" }}
                     >
@@ -1274,6 +1302,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   className={styles.menuButtons}
                   variant="contained"
                   type="submit"
+                  color="primary"
                   onClick={handleOpenAddCategory}
                   style={{ margin: "1rem", width: "16rem" }}
                 >
@@ -1283,6 +1312,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   className={styles.menuButtons}
                   variant="contained"
                   type="submit"
+                  color="primary"
                   onClick={handleOpenUploadLogo}
                   style={{ margin: "1rem", width: "16rem" }}
                 >

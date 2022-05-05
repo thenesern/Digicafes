@@ -363,7 +363,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
         </Modal>
         {menu &&
           filtered?.map((m) => (
-            <li key={m?.name}>
+            <li key={m?.name} className={styles.li}>
               <div
                 className={styles.listItem}
                 onClick={() => {
