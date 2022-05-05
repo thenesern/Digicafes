@@ -88,6 +88,12 @@
     margin: 2rem 1rem;
     padding: 0;
   }
+  .infos {
+    font-size: 14px;
+  }
+  .panel {
+    gap: 2rem;
+  }
 }
 @media only screen and (max-width: 1000px) {
   .container {
@@ -97,9 +103,6 @@
     padding: 0;
   }
 
-  .dashboard {
-    padding-top: 8rem;
-  }
   .panel {
     display: flex;
     flex-direction: column;
@@ -109,10 +112,6 @@
   }
 }
 @media only screen and (max-width: 500px) {
-  .dashboard {
-    padding-top: 5rem;
-  }
-
   .infos {
     display: flex;
     flex-direction: column;

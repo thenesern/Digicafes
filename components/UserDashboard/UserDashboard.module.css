@@ -181,6 +181,9 @@
   .menuButtons {
     width: 12rem !important;
   }
+  .data {
+    font-size: 14px;
+  }
   .grid {
     height: 16rem !important;
   }

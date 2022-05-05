@@ -20,7 +20,6 @@ const Dashboard = () => {
   const [userToken, setUserToken] = useState(null);
   const newDate = new Date();
 
-  /*  console.log(new Date(orders[0]?.expiry?.toString()).getTime()); */
   useEffect(() => {
     if (Cookies.get("userInfo")) {
       const user = JSON.parse(Cookies.get("userInfo"));

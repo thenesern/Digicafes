@@ -61,7 +61,6 @@ const StoreMenu = ({ menu, number }) => {
       console.log(err);
     }
   };
-  console.log(menu.categories.length);
   return (
     <div className={styles.container}>
       <Modal

@@ -528,8 +528,6 @@ const UserDashboard = ({ userOrder, userId }) => {
       }
     }
   }, [tableNum, isFirst]);
-  console.log(storeName);
-  console.log(storeName);
   useEffect(() => {
     if (updatedCategories.length > 0) {
       handleSendUpdatedCategories();
@@ -562,11 +560,19 @@ const UserDashboard = ({ userOrder, userId }) => {
     {
       field: "actions",
       headerName: "Yönetim",
-      flex: 1,
+      width: 200,
       renderCell: (params) => {
         return (
           <Stack direction="row" spacing={2}>
             <Button
+              variant="outlined"
+              color="warning"
+              style={{ fontSize: "12px", fontWeight: "500", width: "5rem" }}
+            >
+              Düzenle
+            </Button>
+            <Button
+              style={{ fontSize: "12px", fontWeight: "500", width: "5rem" }}
               onClick={() => {
                 handleOpenDelete();
                 setDeleteId(params?.row._id);
@@ -598,7 +604,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     {
       field: "actions",
       headerName: "Yönetim",
-      flex: 1,
+      width: 200,
       renderCell: (params) => {
         return (
           <Stack direction="row" spacing={2}>
@@ -609,6 +615,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                 setUpdateCategory(params.row.name);
                 setFile(params.row.image);
               }}
+              style={{ fontSize: "12px", fontWeight: "500", width: "5rem" }}
               variant="outlined"
               color="warning"
             >
@@ -616,6 +623,7 @@ const UserDashboard = ({ userOrder, userId }) => {
             </Button>
             <Button
               variant="outlined"
+              style={{ fontSize: "12px", fontWeight: "500", width: "5rem" }}
               color="error"
               onClick={() => {
                 handleOpenDelete();
