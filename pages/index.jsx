@@ -63,7 +63,7 @@ const DijitalMenu = () => {
             <div className={styles.images}>
               <div
                 className={styles.image}
-                style={{ width: "32rem", height: "auto" }}
+                style={{ width: "36rem", height: "auto" }}
               >
                 <Image
                   src={digitalMenuMockup}
@@ -74,7 +74,7 @@ const DijitalMenu = () => {
               </div>
               <div
                 className={styles.image2}
-                style={{ width: "10rem", height: "auto" }}
+                style={{ width: "12rem", height: "auto" }}
               >
                 <Image
                   layout="responsive"
@@ -86,7 +86,7 @@ const DijitalMenu = () => {
               </div>
               <div
                 className={styles.image3}
-                style={{ width: "6rem", height: "auto" }}
+                style={{ width: "7rem", height: "auto" }}
               >
                 <Image
                   data-aos="fade-right"

@@ -560,7 +560,7 @@ const Nav = ({ change }) => {
               style={{ cursor: "pointer" }}
               src={logoDark}
               objectFit="contain"
-              width="100px"
+              width="160px"
               height="100px"
             ></Image>
           </LinkRouter>
