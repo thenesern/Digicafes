@@ -68,10 +68,14 @@
   margin: 0 auto !important;
 }
 .li {
+  border: 1px solid lightgray;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  cursor: pointer;
+  width: 100%;
   flex-direction: column;
+  align-items: flex-start;
+  border-radius: 1rem 1rem 0 0;
+  justify-content: space-between;
 }
 .list {
   list-style: none;
@@ -86,14 +90,8 @@
 }
 
 .listItem {
-  border: 1px solid lightgray;
-  display: flex;
-  cursor: pointer;
   width: 100%;
-  flex-direction: column;
-  align-items: flex-start;
-  border-radius: 1rem 1rem 0 0;
-  justify-content: space-between;
+  height: 100%;
 }
 .cart {
   cursor: pointer;
@@ -109,6 +107,7 @@
   font-size: 14px;
   color: #14213d;
   margin: 0;
+  height: 3rem;
   padding: 10px 10px 0 10px;
 }
 
