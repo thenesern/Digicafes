@@ -116,7 +116,6 @@
 
 .bottom {
   width: 100%;
-  display: flex;
   align-items: flex-start;
   justify-content: space-between;
   flex-direction: column;
@@ -127,6 +126,7 @@
 .price {
   font-weight: 600;
   color: #fb8500;
+  margin-bottom: 0;
 }
 
 .navList {
