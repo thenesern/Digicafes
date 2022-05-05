@@ -363,21 +363,20 @@ const StoreMenu = ({ menu, category, order, number }) => {
         </Modal>
         {menu &&
           filtered?.map((m) => (
-            <li key={m?.name} className={styles.li}>
-              <div
-                className={styles.listItem}
-                onClick={() => {
-                  setProductName(m?.name);
-                  setProductImage(m?.image);
-                  setProductPrice(m?.price);
-                  setProductDescription(m?.description);
-                  handleOpenModal();
-                }}
-              >
-                <img className={styles.img} src={m?.image} alt="" />
-                <h3 className={styles.name}>{m?.name}</h3>
-                <p className={styles.price}>₺{m?.price}</p>
-              </div>
+            <li
+              key={m?.name}
+              className={styles.listItem}
+              onClick={() => {
+                setProductName(m?.name);
+                setProductImage(m?.image);
+                setProductPrice(m?.price);
+                setProductDescription(m?.description);
+                handleOpenModal();
+              }}
+            >
+              <img className={styles.img} src={m?.image} alt="" />
+              <h3 className={styles.name}>{m?.name}</h3>
+              <p className={styles.price}>₺{m?.price}</p>
               <Button
                 variant="outlined"
                 color="primary"
