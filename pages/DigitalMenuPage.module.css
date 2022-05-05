@@ -261,19 +261,13 @@
 }
 @media only screen and (max-width: 1440px) {
   .image {
-    height: 18rem;
+    width: 32rem !important;
   }
   .image2 {
-    height: 12rem;
-    position: absolute;
-    z-index: 2;
-    right: 4% !important;
+    width: 10rem !important;
   }
   .image3 {
-    height: 10rem;
-    position: absolute;
-    z-index: 3;
-    right: 24% !important;
+    width: 5rem !important;
   }
   .header {
     font-size: 2rem;
@@ -305,21 +299,7 @@
   .top {
     height: 75vh;
   }
-  .image {
-    height: 18rem;
-  }
-  .image2 {
-    height: 12rem;
-    position: absolute;
-    z-index: 2;
-    right: 4% !important;
-  }
-  .image3 {
-    height: 10rem;
-    position: absolute;
-    z-index: 3;
-    right: 24% !important;
-  }
+
   .featuresImage1 {
     width: 32rem !important;
     margin: 0 auto;
@@ -399,7 +379,7 @@
     width: 10rem !important;
   }
 }
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 840px) {
   .top {
     flex-direction: column;
     gap: 8rem;
@@ -407,19 +387,14 @@
     height: 100vh;
   }
   .image {
-    height: 22rem;
+    width: 36rem !important;
   }
   .image2 {
-    height: 16rem;
-    position: absolute;
-    z-index: 2;
-    right: 4% !important;
+    width: 12rem !important;
   }
   .image3 {
-    height: 12rem;
-    position: absolute;
-    z-index: 3;
-    right: 24% !important;
+    width: 6rem !important;
+    right: 32%;
   }
   .header {
     font-size: 3rem;
@@ -478,21 +453,6 @@
     font-size: 14px;
     padding: 0;
     margin: 1rem 0 2rem 0;
-  }
-  .image {
-    height: 12rem;
-  }
-  .image2 {
-    height: 8rem;
-    position: absolute;
-    z-index: 2;
-    right: 4% !important;
-  }
-  .image3 {
-    height: 6rem;
-    position: absolute;
-    z-index: 3;
-    right: 24% !important;
   }
 
   .first,
@@ -561,22 +521,16 @@
     margin-top: 3rem;
   }
   .description {
-    font-size: 14px;
+    font-size: 12px;
   }
   .image {
-    height: 10rem;
+    width: 16rem !important;
   }
   .image2 {
-    height: 7rem;
-    position: absolute;
-    z-index: 2;
-    right: 4% !important;
+    width: 5rem !important;
   }
   .image3 {
-    height: 5rem;
-    position: absolute;
-    z-index: 3;
-    right: 24% !important;
+    width: 3rem !important;
   }
 
   .featuresImage1 {

@@ -61,23 +61,41 @@ const DijitalMenu = () => {
               </p>
             </div>
             <div className={styles.images}>
-              <img
-                src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/DigitalMenuPanelMockup.png"
-                alt=""
+              <div
                 className={styles.image}
-              />
-              <img
-                data-aos="fade-left"
-                src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/tabletMockup.png"
-                alt=""
+                style={{ width: "32rem", height: "auto" }}
+              >
+                <Image
+                  src={digitalMenuMockup}
+                  layout="responsive"
+                  objectFit="contain"
+                  alt=""
+                />
+              </div>
+              <div
                 className={styles.image2}
-              />
-              <img
-                data-aos="fade-right"
-                src="https://raw.githubusercontent.com/thenesern/project/master/assets/image/QRMenuMockup.png"
-                alt=""
+                style={{ width: "10rem", height: "auto" }}
+              >
+                <Image
+                  layout="responsive"
+                  objectFit="contain"
+                  data-aos="fade-left"
+                  src={TabletMockup}
+                  alt=""
+                />
+              </div>
+              <div
                 className={styles.image3}
-              />
+                style={{ width: "6rem", height: "auto" }}
+              >
+                <Image
+                  data-aos="fade-right"
+                  src={QRMenuMockup}
+                  alt=""
+                  layout="responsive"
+                  objectFit="contain"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -180,7 +198,6 @@ const DijitalMenu = () => {
           </article>
           <article className={styles.faq}>
             <div>
-             
               <div data-aos="fade-up">
                 <FAQ />
               </div>
