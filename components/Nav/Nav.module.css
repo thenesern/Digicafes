@@ -273,7 +273,17 @@
 .profileMenuMobile {
   display: none;
 }
-
+@media only screen and (max-width: 1440px) {
+  .container {
+    font-size: 14px;
+  }
+  .signIn {
+    font-size: 12px;
+  }
+  .signUp {
+    font-size: 12px;
+  }
+}
 @media only screen and (max-width: 1000px) {
   .modal {
     width: 100%;

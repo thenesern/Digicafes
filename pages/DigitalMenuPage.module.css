@@ -259,6 +259,49 @@
 .faq {
   padding: 10rem 6rem;
 }
+@media only screen and (max-width: 1440px) {
+  .image {
+    height: 18rem;
+  }
+  .image2 {
+    height: 12rem;
+    position: absolute;
+    z-index: 2;
+    right: 4% !important;
+  }
+  .image3 {
+    height: 10rem;
+    position: absolute;
+    z-index: 3;
+    right: 24% !important;
+  }
+  .header {
+    font-size: 2rem;
+  }
+  .description {
+    font-size: 14px;
+  }
+  .featuresImage1 {
+    width: 30rem !important;
+    margin: 0 auto;
+  }
+  .featuresImage2 {
+    width: 12rem !important;
+    margin: 0 auto;
+  }
+  .featuresImage3 {
+    width: 10rem !important;
+    margin: 0 auto;
+  }
+  .firstDes,
+  .secondDes,
+  .thirdDes {
+    padding: 3rem;
+    font-size: 14px;
+  }
+}
+@media only screen and (max-width: 1366px) {
+}
 @media only screen and (max-width: 1280px) {
   .top {
     height: 75vh;
