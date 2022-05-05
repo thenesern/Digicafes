@@ -93,6 +93,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     fadeInRightBig: {
       animation: "x 2s",
       animationName: Radium.keyframes(fadeInRightBig, "fadeInRightBig"),
+      animationName: Radium.keyframes(fadeInRightBig, "fadeInRightBig"),
     },
   };
   const [openAddProduct, setOpenAddProduct] = useState(false);
@@ -506,10 +507,10 @@ const UserDashboard = ({ userOrder, userId }) => {
       padding: 0,
     };
     QRCode.toDataURL(
-      `https://www.digicafes.com/qr/${version}/${menu?.storeName}/1`,
+      `https://www.digicafes.com/qr/${version}/${storeName}/1`,
       opts
     ).then(setSrc);
-  }, [menu?.storeName, version]);
+  }, [menu?.storeName, version, storeName]);
   useEffect(() => {
     var opts = {
       errorCorrectionLevel: "H",
@@ -527,6 +528,8 @@ const UserDashboard = ({ userOrder, userId }) => {
       }
     }
   }, [tableNum, isFirst]);
+  console.log(storeName);
+  console.log(storeName);
   useEffect(() => {
     if (updatedCategories.length > 0) {
       handleSendUpdatedCategories();
