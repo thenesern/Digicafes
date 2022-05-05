@@ -437,6 +437,15 @@
   .container {
     padding-top: 2rem;
   }
+  .image {
+    width: 20rem !important;
+  }
+  .image2 {
+    width: 7rem !important;
+  }
+  .image3 {
+    width: 4rem !important;
+  }
   .top {
     flex-direction: column;
     height: 100vh;
