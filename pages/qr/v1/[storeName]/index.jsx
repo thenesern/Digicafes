@@ -9,6 +9,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Order from "../../../../models/OrderModel.js";
 import Image from "next/image";
+import FmdBadIcon from "@mui/icons-material/FmdBad";
 
 const StoreMenu = ({ menu }) => {
   const [open, setOpen] = useState(false);
@@ -32,17 +33,19 @@ const StoreMenu = ({ menu }) => {
           onClose={() => setOpen(false)}
         >
           <ul className={styles.navList}>
-            <h3
-              style={{
-                borderBottom: "1px solid #f1faee",
-                color: "#f1faee",
-                width: "100%",
-                paddingBottom: "10px",
-                textAlign: "center",
-              }}
-            >
-              Menü
-            </h3>
+            {!menu?.categories.length == 0 && (
+              <h3
+                style={{
+                  borderBottom: "1px solid #f1faee",
+                  color: "#f1faee",
+                  width: "100%",
+                  paddingBottom: "10px",
+                  textAlign: "center",
+                }}
+              >
+                Menü
+              </h3>
+            )}
             {menu &&
               menu?.categories?.map((m) => (
                 <li
@@ -65,55 +68,68 @@ const StoreMenu = ({ menu }) => {
           </ul>
         </SwipeableDrawer>
       </navbar>
+      {menu?.categories.length == 0 && (
+        <div className={styles.notFound}>
+          <FmdBadIcon style={{ fontSize: "3rem", color: "#001219" }} />
+          <h3>Bu iş yerinde Dijital Menü henüz düzenlenmedi.</h3>
+        </div>
+      )}
+      {menu?.categories.length > 0 && (
+        <ul className={styles.list}>
+          <Modal
+            style={{
+              background: "transparent",
+              boxShadow: "none",
+            }}
+            preventClose
+            aria-labelledby="modal-title"
+            open={isFetching}
+          >
+            <Modal.Body>
+              <Loading color="white" size="xl" />
+              <Spacer />
+            </Modal.Body>
+          </Modal>
 
-      <ul className={styles.list}>
-        <Modal
-          style={{
-            background: "transparent",
-            boxShadow: "none",
-          }}
-          preventClose
-          aria-labelledby="modal-title"
-          open={isFetching}
-        >
-          <Modal.Body>
-            <Loading color="white" size="xl" />
-            <Spacer />
-          </Modal.Body>
-        </Modal>
-
-        {menu &&
-          menu?.categories?.map((m) => (
-            <div
-              key={m?.name}
-              className={styles.listItem}
-              onClick={() => {
-                try {
-                  setIsFetching(true);
-                  Router.push(`/qr/v1/${menu?.storeName}/products/${m?.name}`);
-                } catch (err) {
-                  console.log(err);
-                  setIsFetching(false);
-                }
-              }}
-            >
+          {menu &&
+            menu?.categories?.map((m) => (
               <div
-                style={{ width: "100%", height: "100%", position: "relative" }}
+                key={m?.name}
+                className={styles.listItem}
+                onClick={() => {
+                  try {
+                    setIsFetching(true);
+                    Router.push(
+                      `/qr/v1/${menu?.storeName}/products/${m?.name}`
+                    );
+                  } catch (err) {
+                    console.log(err);
+                    setIsFetching(false);
+                  }
+                }}
               >
-                <Image
-                  priority
-                  layout="fill"
-                  src={m?.image}
-                  className={styles.img}
-                  alt={m?.name}
-                ></Image>
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    position: "relative",
+                  }}
+                >
+                  <Image
+                    priority
+                    layout="fill"
+                    src={m?.image}
+                    className={styles.img}
+                    alt={m?.name}
+                  ></Image>
+                </div>
+                <div className={styles.titleBack}>
+                  <h3 className={styles.title}>{m?.name}</h3>
+                </div>
               </div>
-              <div className={styles.titleBack}>
-                <h3 className={styles.title}>{m?.name}</h3>
-              </div>
-            </div>
-          ))}
-      </ul>
+            ))}
+        </ul>
+      )}
 
       <footer></footer>
     </div>

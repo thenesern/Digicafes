@@ -18,6 +18,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useEffect } from "react";
 import Order from "../../../../../models/OrderModel";
 import Image from "next/image";
+import FmdBadIcon from "@mui/icons-material/FmdBad";
 
 const StoreMenu = ({ menu, number }) => {
   const [open, setOpen] = useState(false);
@@ -60,7 +61,7 @@ const StoreMenu = ({ menu, number }) => {
       console.log(err);
     }
   };
-
+  console.log(menu.categories.length);
   return (
     <div className={styles.container}>
       <Modal
@@ -86,7 +87,7 @@ const StoreMenu = ({ menu, number }) => {
         {menu?.storeLogo?.includes("cloudinary") ? (
           <img src={menu?.storeLogo} alt="Logo" className={styles.logo} />
         ) : (
-          <h6 className={styles.logo}>{menu?.storeLogo}</h6>
+          <h4 className={styles.storeName}>{menu?.storeName.toUpperCase()}</h4>
         )}
         <IconButton onClick={() => setOpen(true)}>
           <MenuIcon style={{ color: "white", fontSize: "2rem" }} />
@@ -122,17 +123,19 @@ const StoreMenu = ({ menu, number }) => {
             >
               Hesap İste
             </Button>
-            <h3
-              style={{
-                borderBottom: "1px solid #f1faee",
-                color: "#f1faee",
-                width: "100%",
-                paddingBottom: "10px",
-                textAlign: "center",
-              }}
-            >
-              Menü
-            </h3>
+            {!menu?.categories.length == 0 && (
+              <h3
+                style={{
+                  borderBottom: "1px solid #f1faee",
+                  color: "#f1faee",
+                  width: "100%",
+                  paddingBottom: "10px",
+                  textAlign: "center",
+                }}
+              >
+                Menü
+              </h3>
+            )}
             {menu &&
               menu?.categories?.map((m) => (
                 <li
@@ -155,114 +158,125 @@ const StoreMenu = ({ menu, number }) => {
           </ul>
         </SwipeableDrawer>
       </navbar>
-
-      <ul className={styles.list}>
-        <Modal
-          style={{
-            background: "transparent",
-            boxShadow: "none",
-          }}
-          preventClose
-          aria-labelledby="modal-title"
-          open={isFetching}
-        >
-          <Modal.Body>
-            <Loading color="white" size="xl" />
-            <Spacer />
-          </Modal.Body>
-        </Modal>
-        <Modal
-          style={{ width: "90%", margin: "0 auto" }}
-          onClose={handleCloseWaiterModal}
-          aria-labelledby="modal-title"
-          open={waiterModal}
-        >
-          <Modal.Header>
-            <h1>Emin misiniz?</h1>
-          </Modal.Header>
-          <Modal.Body style={{ margin: "1rem 10px" }}>
-            <p>Garson Çağrınız iletilecek.</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="contained" onClick={handleCloseWaiterModal}>
-              Vazgeç
-            </Button>
-            <Button
-              style={{ marginLeft: "2rem " }}
-              variant="contained"
-              color="secondary"
-              onClick={() => {
-                handleCalls({ callName: "Garson Çağrısı" });
-                handleCloseWaiterModal();
-              }}
-            >
-              Onayla
-            </Button>
-          </Modal.Footer>
-        </Modal>
-        <Modal
-          style={{ width: "90%", margin: "0 auto" }}
-          onClose={handleCloseTableModal}
-          aria-labelledby="modal-title"
-          open={tableModal}
-        >
-          <Modal.Header>
-            <h1>Emin misiniz?</h1>
-          </Modal.Header>
-          <Modal.Body style={{ margin: "1rem 10px" }}>
-            <p>Hesap İsteğiniz iletilecek.</p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="contained" onClick={handleCloseTableModal}>
-              Vazgeç
-            </Button>
-            <Button
-              style={{ marginLeft: "2rem " }}
-              variant="contained"
-              color="secondary"
-              onClick={() => {
-                handleCalls({ callName: "Hesap Çağrısı" });
-                handleCloseTableModal();
-              }}
-            >
-              Onayla
-            </Button>
-          </Modal.Footer>
-        </Modal>
-        {menu &&
-          menu?.categories?.map((m) => (
-            <div
-              key={m?.name}
-              className={styles.listItem}
-              onClick={() => {
-                try {
-                  setIsFetching(true);
-                  Router.push(
-                    `/qr/v2/${menu?.storeName}/${tableNum}/products/${m?.name}`
-                  );
-                } catch (err) {
-                  console.log(err);
-                  setIsFetching(false);
-                }
-              }}
-            >
-              <div
-                style={{ width: "100%", height: "100%", position: "relative" }}
+      {menu?.categories.length == 0 && (
+        <div className={styles.notFound}>
+          <FmdBadIcon style={{ fontSize: "3rem", color: "#001219" }} />
+          <h3>Bu iş yerinde Dijital Menü henüz düzenlenmedi.</h3>
+        </div>
+      )}
+      {menu?.categories.length > 0 && (
+        <ul className={styles.list}>
+          <Modal
+            style={{
+              background: "transparent",
+              boxShadow: "none",
+            }}
+            preventClose
+            aria-labelledby="modal-title"
+            open={isFetching}
+          >
+            <Modal.Body>
+              <Loading color="white" size="xl" />
+              <Spacer />
+            </Modal.Body>
+          </Modal>
+          <Modal
+            style={{ width: "90%", margin: "0 auto" }}
+            onClose={handleCloseWaiterModal}
+            aria-labelledby="modal-title"
+            open={waiterModal}
+          >
+            <Modal.Header>
+              <h1>Emin misiniz?</h1>
+            </Modal.Header>
+            <Modal.Body style={{ margin: "1rem 10px" }}>
+              <p>Garson Çağrınız iletilecek.</p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="contained" onClick={handleCloseWaiterModal}>
+                Vazgeç
+              </Button>
+              <Button
+                style={{ marginLeft: "2rem " }}
+                variant="contained"
+                color="secondary"
+                onClick={() => {
+                  handleCalls({ callName: "Garson Çağrısı" });
+                  handleCloseWaiterModal();
+                }}
               >
-                <Image
-                  priority
-                  layout="fill"
-                  src={m?.image}
-                  className={styles.img}
-                  alt={m?.name}
-                ></Image>
+                Onayla
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          <Modal
+            style={{ width: "90%", margin: "0 auto" }}
+            onClose={handleCloseTableModal}
+            aria-labelledby="modal-title"
+            open={tableModal}
+          >
+            <Modal.Header>
+              <h1>Emin misiniz?</h1>
+            </Modal.Header>
+            <Modal.Body style={{ margin: "1rem 10px" }}>
+              <p>Hesap İsteğiniz iletilecek.</p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="contained" onClick={handleCloseTableModal}>
+                Vazgeç
+              </Button>
+              <Button
+                style={{ marginLeft: "2rem " }}
+                variant="contained"
+                color="secondary"
+                onClick={() => {
+                  handleCalls({ callName: "Hesap Çağrısı" });
+                  handleCloseTableModal();
+                }}
+              >
+                Onayla
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          {menu &&
+            menu?.categories?.map((m) => (
+              <div
+                key={m?.name}
+                className={styles.listItem}
+                onClick={() => {
+                  try {
+                    setIsFetching(true);
+                    Router.push(
+                      `/qr/v2/${menu?.storeName}/${tableNum}/products/${m?.name}`
+                    );
+                  } catch (err) {
+                    console.log(err);
+                    setIsFetching(false);
+                  }
+                }}
+              >
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    position: "relative",
+                  }}
+                >
+                  <Image
+                    priority
+                    layout="fill"
+                    src={m?.image}
+                    className={styles.img}
+                    alt={m?.name}
+                  ></Image>
+                </div>
+                <div className={styles.titleBack}>
+                  <h3 className={styles.title}>{m?.name}</h3>
+                </div>
               </div>
-              <div className={styles.titleBack}>
-                <h3 className={styles.title}>{m?.name}</h3>
-              </div>
-            </div>
-          ))}
-      </ul>
+            ))}
+        </ul>
+      )}
 
       <footer></footer>
     </div>

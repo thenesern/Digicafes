@@ -796,8 +796,8 @@ const UserDashboard = ({ userOrder, userId }) => {
                     <Link
                       href={
                         version === "v2"
-                          ? `/qr/${version}/${menu?.storeName}/1`
-                          : `/qr/${version}/${menu?.storeName}/`
+                          ? `/qr/${version}/${storeName}/1`
+                          : `/qr/${version}/${storeName}/`
                       }
                       passHref
                     >
