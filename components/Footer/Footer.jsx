@@ -1,7 +1,7 @@
 // Packages and Dependencies
 import React from "react";
 import Image from "next/image";
-import logo from "../../.next/static/media/digi_dark_logo.svg";
+import logo from "../../assets/digi_dark_logo.svg";
 // Styles
 import { Facebook, Instagram } from "@material-ui/icons";
 import styles from "./Footer.module.css";

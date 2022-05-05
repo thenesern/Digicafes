@@ -30,8 +30,8 @@ import Button from "@mui/material/Button";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Box } from "@mui/system";
 import { List, ListItem, TextField } from "@material-ui/core";
-import logoDark from "../../.next/static/media/digi_dark_logo.svg";
-import logo from "../../.next/static/media/digi_logo.svg";
+import logoDark from "../../assets/digi_dark_logo.svg";
+import logo from "../../assets/digi_logo.svg";
 
 const Nav = ({ change }) => {
   const router = useRouter();

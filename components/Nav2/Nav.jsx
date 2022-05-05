@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
 import ModalMui from "@mui/material/Modal";
 import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
-import logoDark from "../../.next/static/media/digi_dark_logo.svg";
+import logoDark from "../../assets/digi_dark_logo.svg";
 import Image from "next/image";
 // Styles
 import styles from "./Nav.module.css";
