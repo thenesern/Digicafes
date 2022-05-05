@@ -152,10 +152,8 @@ const StoreMenu = ({ menu, category }) => {
               }}
             >
               <img className={styles.img} src={m?.image} alt="" />
-              <div className={styles.bottom}>
-                <h3 className={styles.name}>{m?.name}</h3>
-                <p className={styles.price}>₺{m?.price}</p>
-              </div>
+              <h3 className={styles.name}>{m?.name}</h3>
+              <p className={styles.price}>₺{m?.price}</p>
             </li>
           ))}
       </ul>
