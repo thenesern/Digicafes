@@ -938,7 +938,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             id="name"
                             onChange={(e) => setName(e.target.value)}
                             label="Ürün Adı"
-                            inputProps={{ type: "text" }}
+                            inputProps={{ type: "text", maxLength: 20 }}
                             helperText="Örnek: Izgara Köfte, Kaşarlı Tost, Sufle"
                           ></TextField>
                         </ListItem>
@@ -1147,7 +1147,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             fullWidth
                             id="category"
                             label="Kategori"
-                            inputProps={{ type: "text" }}
+                            inputProps={{ type: "text", maxLength: 16 }}
                             onChange={(e) => setAddCategory(e.target.value)}
                             helperText="Örnek: Ana Yemek, Kahvaltılar, Tatlılar"
                           ></TextField>
