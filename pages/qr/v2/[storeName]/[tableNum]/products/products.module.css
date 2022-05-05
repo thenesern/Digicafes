@@ -67,16 +67,7 @@
   width: 92% !important;
   margin: 0 auto !important;
 }
-.li {
-  border: 1px solid lightgray;
-  display: flex;
-  cursor: pointer;
-  width: 100%;
-  flex-direction: column;
-  align-items: flex-start;
-  border-radius: 1rem 1rem 0 0;
-  justify-content: space-between;
-}
+
 .list {
   list-style: none;
   width: 100%;
@@ -90,8 +81,14 @@
 }
 
 .listItem {
+  border: 1px solid lightgray;
+  display: flex;
+  cursor: pointer;
   width: 100%;
-  height: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 1rem 1rem 0 0;
+  justify-content: space-between;
 }
 .cart {
   cursor: pointer;
