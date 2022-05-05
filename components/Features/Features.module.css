@@ -58,6 +58,14 @@
     width: 30rem;
   }
 }
+@media only screen and (max-width: 1024px) {
+  .section {
+    font-size: 12px;
+  }
+  .article {
+    width: 26rem;
+  }
+}
 @media only screen and (max-width: 800px) {
   .section {
     flex-direction: column;
@@ -74,10 +82,10 @@
     height: 40rem;
   }
 }
-@media only screen and (max-width: 340px) {
+@media only screen and (max-width: 375px) {
   .article {
-    padding: 1rem;
-    width: 20rem;
-    height: 40rem;
+    width: 22rem;
+    height: 48rem;
+    padding: 0;
   }
 }

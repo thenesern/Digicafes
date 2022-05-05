@@ -59,6 +59,12 @@
     font-size: 14px;
   }
 }
+@media only screen and (max-width: 1024px) {
+  .container {
+    padding: 4rem 2rem;
+    font-size: 12px;
+  }
+}
 @media only screen and (max-width: 800px) {
   .container {
     flex-direction: column;
@@ -77,5 +83,13 @@
   }
   .header {
     font-size: 13px;
+  }
+}
+@media only screen and (max-width: 375px) {
+  .container {
+    font-size: 12px;
+  }
+  .header {
+    font-size: 12px;
   }
 }

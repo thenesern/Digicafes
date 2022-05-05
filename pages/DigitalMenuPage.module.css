@@ -300,8 +300,7 @@
     font-size: 14px;
   }
 }
-@media only screen and (max-width: 1366px) {
-}
+
 @media only screen and (max-width: 1280px) {
   .top {
     height: 75vh;
@@ -371,7 +370,35 @@
     padding: 6rem;
   }
 }
-
+@media only screen and (max-width: 1024px) {
+  .top {
+    gap: 6rem;
+  }
+  .topLeft {
+    max-width: 30rem;
+  }
+  .first,
+  .second,
+  .third {
+    gap: 2rem;
+  }
+  .firstDes,
+  .secondDes,
+  .thirdDes {
+    padding: 3rem;
+    font-size: 12px;
+  }
+  .featuresImage1 {
+    width: 26rem !important;
+    margin: 0 auto;
+  }
+  .featuresImage2 {
+    width: 12rem !important;
+  }
+  .featuresImage3 {
+    width: 10rem !important;
+  }
+}
 @media only screen and (max-width: 800px) {
   .top {
     flex-direction: column;
@@ -518,9 +545,16 @@
   }
 }
 
-@media only screen and (max-width: 325px) {
+@media only screen and (max-width: 375px) {
   .container {
     padding-top: 10rem;
+    font-size: 12px;
+  }
+  .stepper {
+    display: none;
+  }
+  .stepperMobile {
+    padding: 4rem 2rem;
   }
   .header {
     font-size: 1.8rem;
@@ -538,5 +572,10 @@
   .featuresImage1 {
     width: 16rem !important;
     margin: 0 auto;
+  }
+  .firstHeader,
+  .secondHeader,
+  .thirdHeader {
+    font-size: 16px;
   }
 }
