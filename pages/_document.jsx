@@ -5,7 +5,7 @@ class MyDocument extends Document {
     return (
       <Html lang="tr">
         <Head>
-          <link rel="icon" type="image/png" href="../assets/favdigi.png" />
+          <link rel="icon" href="/favicon.ico" />
         </Head>
         <body>
           <Main />

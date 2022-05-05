@@ -13,6 +13,7 @@ import DigitalMenuStepper from "../components/DigitalMenuPage/DigitalMenuStepper
 import StepperMobile from "../components/DigitalMenuPage/StepperMobile/StepperMobile";
 import FAQ from "../components/FAQ/FAQ";
 import ContactForm from "../components/ContactForm/ContactForm";
+import favicon from "../public/favicon.ico";
 // Styles
 import styles from "./DigitalMenuPage.module.css";
 import Aos from "aos";
@@ -34,6 +35,7 @@ const DijitalMenu = () => {
   return (
     <div>
       <Head>
+        <link rel="shortcut icon" type="image/x-icon" href={favicon.src} />
         <title>
           Digicafes | Kafe, Restoran ve Bahçeler için Dijital Menü çözümleri.
         </title>
