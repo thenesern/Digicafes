@@ -23,6 +23,12 @@ function MyApp({ Component, pageProps }) {
           name="description"
           content="Digicafes | Kafe, Restoran ve Bahçeler için Dijital Menü çözümleri."
         />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="../assets/favicon-32x32.png"
+        ></link>
       </Head>
       <SnackbarProvider
         anchorOrigin={{ vertical: "top", horizontal: "center" }}

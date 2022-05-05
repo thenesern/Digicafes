@@ -35,7 +35,9 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <span className={styles.description}>©2022 Tüm hakları saklıdır.</span>
+      <span className={styles.description}>
+        ©{new Date().getFullYear()} Tüm hakları saklıdır.
+      </span>
     </div>
   );
 };

@@ -170,6 +170,24 @@
   font-size: 14px;
   gap: 1px;
 }
+@media only screen and (max-width: 1600px) {
+  .box {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  .menuButtons {
+    margin: 0;
+    padding: 0;
+  }
+}
+@media only screen and (max-width: 1366px) {
+  .menuButtons {
+    margin-bottom: 0 !important;
+  }
+  .grid {
+    height: 16rem !important;
+  }
+}
 @media only screen and (max-width: 1280px) {
   .box {
     padding: 1rem;
@@ -205,6 +223,11 @@
   .qrsModal {
     width: 90%;
     height: 52rem;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .grid {
+    height: 14rem !important;
   }
 }
 @media only screen and (max-width: 500px) {

@@ -4,7 +4,9 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="tr">
-        <Head />
+        <Head>
+          <link rel="icon" type="image/png" href="../assets/favdigi.png" />
+        </Head>
         <body>
           <Main />
           <NextScript />

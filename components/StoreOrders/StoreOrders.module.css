@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  height: 100%;
+  height: 86vh;
 }
 .gridImage {
   width: 3rem;
@@ -46,6 +46,16 @@
   justify-content: center;
   gap: 10px;
 }
+@media only screen and (max-width: 1600px) {
+  .grids {
+    height: 48rem !important;
+  }
+}
+@media only screen and (max-width: 1366px) {
+  .grids {
+    height: 40rem !important;
+  }
+}
 @media only screen and (max-width: 1280px) {
   .grids {
     overflow: scroll !important;
@@ -60,7 +70,7 @@
   }
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 1024px) {
   .grids {
     display: flex;
     overflow: scroll !important;
@@ -78,9 +88,12 @@
 }
 
 @media only screen and (max-width: 768px) {
+  .container {
+    height: 70vh;
+  }
   .grids {
     overflow: scroll !important;
-    height: 48rem !important;
+    height: 42rem !important;
     flex-direction: column;
     padding: 0 10px;
     margin: 0;
