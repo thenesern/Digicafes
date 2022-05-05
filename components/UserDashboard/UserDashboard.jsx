@@ -202,7 +202,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
       .join(" ");
 
-    if (menu?.products?.map((c) => c?.name).includes(betterProductName)) {
+    if (products?.map((c) => c?.name).includes(betterProductName)) {
       handleCloseAddProduct();
       setAddCategory("");
       setIsFetching(false);
@@ -303,9 +303,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       setCategories(
         arrayCategories.filter((category) => category._id !== deleteId)
       );
-      setCategoryNames(
-        categoryNames.filter((category) => category !== deleteName)
-      );
+      setCategoryNames(menu?.categories?.map((c) => c?.name));
       const newCategories = arrayCategories.filter(
         (category) => category._id !== deleteId
       );

@@ -54,6 +54,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 100vh !important;
   padding-top: 5rem;
 }
 .back {
@@ -61,18 +62,7 @@
   padding-left: 4px;
   color: #f7ede2;
 }
-.list {
-  list-style: none;
-  width: 100%;
-  height: 100%;
-  padding: 1rem;
-  gap: 1rem;
-  margin: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  justify-content: center;
-}
+
 .modal {
   width: 92% !important;
   margin: 0 auto !important;
@@ -84,11 +74,25 @@
   flex-direction: column;
   flex: 1;
 }
+.list {
+  list-style: none;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1rem;
+  margin: 0;
+}
+
 .listItem {
-  min-height: 10rem;
+  min-height: 7rem;
   border: 1px solid lightgray;
   display: flex;
   cursor: pointer;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   border-radius: 1rem 1rem 0 0;
@@ -112,7 +116,7 @@
 
 .bottom {
   width: 100%;
-  min-height: 7rem;
+  min-height: 5rem;
   display: flex;
   padding: 0 10px;
   align-items: flex-start;
