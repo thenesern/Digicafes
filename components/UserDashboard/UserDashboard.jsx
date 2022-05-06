@@ -67,6 +67,7 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [isFetchingForFirst, setIsFetchingForFirst] = useState(false);
   const [isFirst, setIsFirst] = useState(false);
   const [storeName, setStoreName] = useState(menu?.storeName || "");
+  const [storeLinkName, setStoreLinkName] = useState(menu?.storeLinkName || "");
   const [addCategory, setAddCategory] = useState("");
   const [products, setProducts] = useState([...(menu?.products || "")]);
   const arrayProducts = Array.from(products);
@@ -96,6 +97,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       animationName: Radium.keyframes(fadeInRightBig, "fadeInRightBig"),
     },
   };
+  console.log(storeLinkName);
   const [openAddProduct, setOpenAddProduct] = useState(false);
   const [updateCategory, setUpdateCategory] = useState("");
   const handleOpenAddProduct = () => setOpenAddProduct(true);
@@ -110,6 +112,7 @@ const UserDashboard = ({ userOrder, userId }) => {
   useEffect(() => {
     setTableNum(menu?.tableNum);
     setStoreName(menu?.storeName);
+    setStoreLinkName(menu?.storeLinkName);
   }, [menu]);
 
   if (Cookies.get("userInfo")) {
@@ -165,6 +168,7 @@ const UserDashboard = ({ userOrder, userId }) => {
         `/api/qr/${version}/${storeName}/menu`,
         {
           storeName: storeName,
+          storeLinkName: storeLinkName,
           tableNum,
           createdAt,
           owner: order?.user?._id,
@@ -507,10 +511,10 @@ const UserDashboard = ({ userOrder, userId }) => {
       padding: 0,
     };
     QRCode.toDataURL(
-      `https://www.digicafes.com/qr/${version}/${storeName}/1`,
+      `https://www.digicafes.com/qr/${version}/${storeLinkName}/1`,
       opts
     ).then(setSrc);
-  }, [menu?.storeName, version, storeName]);
+  }, [menu?.storeLinkName, version, storeLinkName]);
   useEffect(() => {
     var opts = {
       errorCorrectionLevel: "H",
@@ -522,7 +526,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     if (!isFirst) {
       for (let i = 0; i < tableNum; i++) {
         QRCode.toDataURL(
-          `https://www.digicafes.com/qr/${version}/${menu?.storeName}/${i + 1}`,
+          `https://www.digicafes.com/qr/${version}/${storeLinkName}/${i + 1}`,
           opts
         ).then((url) => QRCodes.push(url));
       }
@@ -673,7 +677,21 @@ const UserDashboard = ({ userOrder, userId }) => {
                         required: true,
                       }}
                       style={{ width: "100%" }}
-                      onChange={(e) => setStoreName(e.target.value)}
+                      onChange={(e) => {
+                        setStoreName(e.target.value.trim());
+                        setStoreLinkName(
+                          e.target.value
+                            .trim()
+                            .toLowerCase()
+                            .replaceAll(" ", "-")
+                            .replaceAll("ç", "c")
+                            .replaceAll("ı", "i")
+                            .replaceAll("ü", "u")
+                            .replaceAll("ğ", "g")
+                            .replaceAll("ö", "o")
+                            .replaceAll("ş", "s")
+                        );
+                      }}
                       label="İş Yeri Adı"
                       helperText={
                         storeName?.length === 0
@@ -804,8 +822,8 @@ const UserDashboard = ({ userOrder, userId }) => {
                     <Link
                       href={
                         version === "v2"
-                          ? `/qr/${version}/${storeName}/1`
-                          : `/qr/${version}/${storeName}/`
+                          ? `/qr/${version}/${storeLinkName}/1`
+                          : `/qr/${version}/${storeLinkName}/`
                       }
                       passHref
                     >

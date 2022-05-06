@@ -11,6 +11,7 @@ handler.post(async (req, res) => {
   await db.connect();
   const newMenu = new QRMenu({
     storeName: req.body.storeName,
+    storeLinkName: req.body.storeLinkName,
     createdAt: req.body.createdAt,
     categories: req.body.categories,
     owner: req.body.owner,
