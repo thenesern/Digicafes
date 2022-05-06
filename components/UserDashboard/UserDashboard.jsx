@@ -332,7 +332,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     }
     setIsFetching(false);
   };
-  console.log(updatedCategories);
+
   const handleUpdateCategory = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -536,7 +536,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     if (updatedCategories.length > 0) {
       handleSendUpdatedCategories();
     }
-  }, [updatedCategories.length]);
+  }, [updatedCategories]);
   const columns = [
     {
       field: "name",
