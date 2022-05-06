@@ -142,7 +142,7 @@ const StoreMenu = ({ menu, number }) => {
                     try {
                       setIsFetching(true);
                       Router.push(
-                        `/qr/v2/${menu?.storeName}/${tableNum}/products/${m?.name}`
+                        `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${m?.name}`
                       );
                     } catch (err) {
                       console.log(err);
@@ -246,7 +246,7 @@ const StoreMenu = ({ menu, number }) => {
                   try {
                     setIsFetching(true);
                     Router.push(
-                      `/qr/v2/${menu?.storeName}/${tableNum}/products/${m?.name}`
+                      `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${m?.name}`
                     );
                   } catch (err) {
                     console.log(err);

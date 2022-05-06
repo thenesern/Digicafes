@@ -97,7 +97,6 @@ const UserDashboard = ({ userOrder, userId }) => {
       animationName: Radium.keyframes(fadeInRightBig, "fadeInRightBig"),
     },
   };
-  console.log(storeLinkName);
   const [openAddProduct, setOpenAddProduct] = useState(false);
   const [updateCategory, setUpdateCategory] = useState("");
   const handleOpenAddProduct = () => setOpenAddProduct(true);
@@ -157,7 +156,9 @@ const UserDashboard = ({ userOrder, userId }) => {
       setIsFirst(true);
     }
   }, [menu]);
-
+  useEffect(() => {
+    setCategoryNames(menu?.categories?.map((c) => c?.name));
+  }, [menu?.categories, categories]);
   const firstTimeHandler = async (e) => {
     e.preventDefault();
     const createdAt = new Date().toLocaleString("tr-TR");
@@ -308,7 +309,6 @@ const UserDashboard = ({ userOrder, userId }) => {
       setCategories(
         arrayCategories.filter((category) => category._id !== deleteId)
       );
-      setCategoryNames(menu?.categories?.map((c) => c?.name));
       const newCategories = arrayCategories.filter(
         (category) => category._id !== deleteId
       );
@@ -384,6 +384,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       setFile(null);
     }
   };
+
   const handleSendUpdatedCategories = async () => {
     try {
       const updatedMenu = await axios.patch(
@@ -396,7 +397,11 @@ const UserDashboard = ({ userOrder, userId }) => {
           headers: { authorization: `Bearer ${user.token}` },
         }
       );
-      setCategories(updatedMenu?.data?.menu?.categories);
+      if (updatedMenu?.data.menu) {
+        setCategories(updatedMenu?.data?.menu?.categories);
+      } else {
+        setCategories(updatedMenu?.data?.menu?.categories);
+      }
       setIsFetching(false);
       enqueueSnackbar("Kategori Güncellendi", { variant: "success" });
     } catch (err) {
@@ -536,7 +541,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     if (updatedCategories.length > 0) {
       handleSendUpdatedCategories();
     }
-  }, [updatedCategories]);
+  }, [updatedCategories.length]);
   const columns = [
     {
       field: "name",

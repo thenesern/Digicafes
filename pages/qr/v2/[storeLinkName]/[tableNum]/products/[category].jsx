@@ -124,7 +124,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
     <div className={styles.container}>
       <navbar className={styles.navbar}>
         <Link
-          href={`/qr/${version}/` + menu?.storeName + "/" + tableNum}
+          href={`/qr/${version}/` + menu?.storeLinkName + "/" + tableNum}
           passHref
         >
           <Button
@@ -363,18 +363,19 @@ const StoreMenu = ({ menu, category, order, number }) => {
         </Modal>
         {menu &&
           filtered?.map((m) => (
-            <li
-              key={m?.name}
-              className={styles.listItem}
-              onClick={() => {
-                setProductName(m?.name);
-                setProductImage(m?.image);
-                setProductPrice(m?.price);
-                setProductDescription(m?.description);
-                handleOpenModal();
-              }}
-            >
-              <img className={styles.img} src={m?.image} alt="" />
+            <li key={m?.name} className={styles.listItem}>
+              <img
+                className={styles.img}
+                src={m?.image}
+                alt=""
+                onClick={() => {
+                  setProductName(m?.name);
+                  setProductImage(m?.image);
+                  setProductPrice(m?.price);
+                  setProductDescription(m?.description);
+                  handleOpenModal();
+                }}
+              />
               <h3 className={styles.name}>{m?.name}</h3>
               <p className={styles.price}>₺{m?.price}</p>
               <Button
@@ -407,11 +408,11 @@ const StoreMenu = ({ menu, category, order, number }) => {
 
 export async function getServerSideProps(context) {
   const { category } = context.query;
-  const { storeName } = context.query;
+  const { storeLinkName } = context.query;
   const { tableNum } = context.query;
   await db.connect();
   const menu = await QRMenu.findOne({
-    storeName: storeName,
+    storeLinkName,
   }).lean();
   const order = await Order.findOne({ menuv2: menu?._id }).populate({
     path: "product",

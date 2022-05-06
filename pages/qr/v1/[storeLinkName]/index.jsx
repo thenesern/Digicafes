@@ -53,7 +53,7 @@ const StoreMenu = ({ menu }) => {
                     try {
                       setIsFetching(true);
                       Router.push(
-                        `/qr/v1/${menu?.storeName}/products/${m?.name}`
+                        `/qr/v1/${menu?.storeLinkName}/products/${m?.name}`
                       );
                     } catch (err) {
                       console.log(err);
@@ -100,7 +100,7 @@ const StoreMenu = ({ menu }) => {
                   try {
                     setIsFetching(true);
                     Router.push(
-                      `/qr/v1/${menu?.storeName}/products/${m?.name}`
+                      `/qr/v1/${menu?.storeLinkName}/products/${m?.name}`
                     );
                   } catch (err) {
                     console.log(err);
@@ -137,10 +137,10 @@ const StoreMenu = ({ menu }) => {
 };
 
 export async function getServerSideProps(context) {
-  const { storeName } = context.query;
+  const { storeLinkName } = context.query;
   await db.connect();
   const menu = await QRMenu.findOne({
-    storeName,
+    storeLinkName,
   });
 
   const order = await Order.findOne({ menuv1: menu?._id });
