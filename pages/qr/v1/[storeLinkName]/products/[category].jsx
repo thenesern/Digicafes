@@ -163,10 +163,10 @@ const StoreMenu = ({ menu, category }) => {
 
 export async function getServerSideProps(context) {
   const { category } = context.query;
-  const { storeName } = context.query;
+  const { storeLinkName } = context.query;
   await db.connect();
   const menu = await QRMenu.findOne({
-    storeName: storeName,
+    storeLinkName,
   }).lean();
 
   const order = await Order.findOne({ menuv1: menu?._id });
