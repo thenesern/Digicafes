@@ -87,9 +87,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     menu?.storeLogo ||
       "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1650137521/uploads/logoDefault_ez8obk.png"
   );
-  const [categoryNames, setCategoryNames] = useState([
-    ...(menu?.categories?.map((c) => c?.name) || ""),
-  ]);
+
   const animate = {
     fadeInRightBig: {
       animation: "x 2s",
@@ -97,6 +95,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       animationName: Radium.keyframes(fadeInRightBig, "fadeInRightBig"),
     },
   };
+
   const [openAddProduct, setOpenAddProduct] = useState(false);
   const [updateCategory, setUpdateCategory] = useState("");
   const handleOpenAddProduct = () => setOpenAddProduct(true);
@@ -156,9 +155,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       setIsFirst(true);
     }
   }, [menu]);
-  useEffect(() => {
-    setCategoryNames(menu?.categories?.map((c) => c?.name));
-  }, [menu?.categories, categories]);
+
   const firstTimeHandler = async (e) => {
     e.preventDefault();
     const createdAt = new Date().toLocaleString("tr-TR");
@@ -335,6 +332,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     }
     setIsFetching(false);
   };
+  console.log(updatedCategories);
   const handleUpdateCategory = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -347,7 +345,8 @@ const UserDashboard = ({ userOrder, userId }) => {
       .join(" ");
 
     if (
-      categoryNames.includes(betterCategoryName && typeof file !== "object")
+      categories.filter((c) => c.name === betterCategoryName).length !== 0 &&
+      typeof file !== "object"
     ) {
       handleCloseAddCategory();
       setAddCategory("");
@@ -358,23 +357,23 @@ const UserDashboard = ({ userOrder, userId }) => {
         variant: "error",
       });
     }
-    setUpdatedCategories(categories.filter((c) => c.name !== updateCategory));
+
     try {
       setIsFetching(true);
       const uploadRes = await axios.post(
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
         data
       );
-      setUpdatedCategories((prevState) => [
-        ...prevState,
-        { name: betterCategoryName, image: uploadRes?.data.url },
-      ]);
 
-      arrayCategories.push({
-        name: betterCategoryName,
-        image: uploadRes?.data?.url,
-      });
-      categoryNames.push(betterCategoryName);
+      let newCategories = categories.filter((c) => c.name !== updateCategory);
+
+      const addCategory = () => {
+        setUpdatedCategories([
+          ...newCategories,
+          { name: betterCategoryName, image: uploadRes?.data.url },
+        ]);
+      };
+      addCategory();
       handleCloseUpdateCategory();
       setAddCategory("");
       setFile(null);
@@ -384,7 +383,6 @@ const UserDashboard = ({ userOrder, userId }) => {
       setFile(null);
     }
   };
-
   const handleSendUpdatedCategories = async () => {
     try {
       const updatedMenu = await axios.patch(
@@ -409,7 +407,6 @@ const UserDashboard = ({ userOrder, userId }) => {
       setIsFetching(false);
     }
   };
-
   const addCategoryHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -421,7 +418,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
       .join(" ");
 
-    if (categoryNames.includes(betterCategoryName)) {
+    if (categories.filter((c) => c.name === betterCategoryName).length !== 0) {
       handleCloseAddCategory();
       setAddCategory("");
       setFile(null);
@@ -441,8 +438,6 @@ const UserDashboard = ({ userOrder, userId }) => {
         name: betterCategoryName,
         image: uploadRes?.data?.url,
       });
-      categoryNames.push(betterCategoryName);
-
       const updatedMenu = await axios.patch(
         `/api/qr/${version}/${menu?.storeName}/categories`,
         {
@@ -951,16 +946,16 @@ const UserDashboard = ({ userOrder, userId }) => {
                             )}
                             MenuProps={MenuProps}
                           >
-                            {categoryNames.map((name) => (
+                            {categories.map((category) => (
                               <MenuItem
-                                key={name}
-                                value={name}
+                                key={category.name}
+                                value={category.name}
                                 style={{
                                   padding: "10px",
                                   width: "100%",
                                 }}
                               >
-                                {name}
+                                {category.name}
                               </MenuItem>
                             ))}
                           </Select>
@@ -1209,7 +1204,10 @@ const UserDashboard = ({ userOrder, userId }) => {
                             type="submit"
                             fullWidth
                             onClick={(e) => {
-                              if (categoryNames.includes(addCategory)) {
+                              if (
+                                categories.filter((c) => c.name === addCategory)
+                                  .length !== 0
+                              ) {
                                 handleCloseAddCategory();
                                 enqueueSnackbar(
                                   "Zaten bu isimde bir kategoriniz var",
