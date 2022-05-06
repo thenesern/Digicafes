@@ -35,7 +35,7 @@ const StoreMenu = ({ menu, category }) => {
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
-        <Link href={"/qr/v1/" + menu?.storeName} passHref>
+        <Link href={"/qr/v1/" + menu?.storeLinkName} passHref>
           <Button
             onClick={() => {
               try {
@@ -69,7 +69,6 @@ const StoreMenu = ({ menu, category }) => {
             onClose={() => setOpen(false)}
           >
             <ul className={styles.navList}>
-              {" "}
               <h3
                 style={{
                   borderBottom: "1px solid #f1faee",
@@ -88,7 +87,7 @@ const StoreMenu = ({ menu, category }) => {
                       try {
                         setIsFetching(true);
                         Router.push(
-                          `/qr/v1/${menu?.storeName}/products/${m?.name}`
+                          `/qr/v1/${menu?.storeLinkName}/products/${m?.name}`
                         );
                       } catch (err) {
                         console.log(err);
