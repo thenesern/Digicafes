@@ -56,13 +56,18 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [file, setFile] = useState(null);
   const [isPreview, setIsPreview] = useState(false);
   const theme = useTheme();
+  const [updateProduct, setUpdateProduct] = useState("");
+  const [updatePrice, setUpdatePrice] = useState("");
+  const [updateDescription, setUpdateDescription] = useState("");
   const [menu, setMenu] = useState(order?.menuv1 || order?.menuv2 || "");
   const [name, setName] = useState("");
   const [price, setPrice] = useState();
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [updatedCategories, setUpdatedCategories] = useState([]);
+  const [updatedProducts, setUpdatedProducts] = useState([]);
   const [src, setSrc] = useState("");
+  const [updateProductCategory, setUpdateProductCategory] = useState();
   const [isFetching, setIsFetching] = useState(false);
   const [isFetchingForFirst, setIsFetchingForFirst] = useState(false);
   const [isFirst, setIsFirst] = useState(false);
@@ -76,6 +81,8 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [deleteId, setDeleteId] = useState("");
   const [secondStep, setSecondStep] = useState(false);
   const [tableNum, setTableNum] = useState(menu?.tableNum || null);
+  const [category, setCategory] = useState([]);
+
   const [version, setVersion] = useState(
     order?.product?.name === "Dijital Menü - V1" ? "v1" : "v2"
   );
@@ -97,7 +104,7 @@ const UserDashboard = ({ userOrder, userId }) => {
   };
 
   const [openAddProduct, setOpenAddProduct] = useState(false);
-  const [updateCategory, setUpdateCategory] = useState("");
+  const [updateCategory, setUpdateCategory] = useState([]);
   const handleOpenAddProduct = () => setOpenAddProduct(true);
   const handleCloseAddProduct = () => setOpenAddProduct(false);
   const handleOpenDelete = () => setOpenDelete(true);
@@ -117,10 +124,20 @@ const UserDashboard = ({ userOrder, userId }) => {
     user = JSON.parse(Cookies.get("userInfo"));
   }
   const [openUpdateCategory, setOpenUpdateCategory] = useState(false);
+  const [openUpdateProduct, setOpenUpdateProduct] = useState(false);
   const [openDeleteProduct, setOpenDelete] = useState(false);
   const [openAddCategory, setOpenAddCategory] = useState(false);
   const [openUploadLogo, setOpenUploadLogo] = useState(false);
   const [openQRImages, setOpenQRImages] = useState(false);
+  const handleCloseUpdateProduct = () => {
+    setOpenUpdateProduct(false);
+    setFile(null);
+    setUpdatePrice(null);
+    setUpdateDescription("");
+    setUpdateProductCategory(null);
+    setIsPreview(false);
+  };
+  const handleOpenUpdateProduct = () => setOpenUpdateProduct(true);
   const handleOpenUpdateCategory = () => setOpenUpdateCategory(true);
   const handleCloseUpdateCategory = () => {
     setOpenUpdateCategory(false);
@@ -133,7 +150,6 @@ const UserDashboard = ({ userOrder, userId }) => {
   const handleCloseAddCategory = () => setOpenAddCategory(false);
   const handleOpenUploadLogo = () => setOpenUploadLogo(true);
   const handleCloseUploadLogo = () => setOpenUploadLogo(false);
-  const [category, setCategory] = useState([]);
   const handleChange = (event) => {
     const {
       target: { value },
@@ -143,7 +159,15 @@ const UserDashboard = ({ userOrder, userId }) => {
       typeof value === "string" ? value.split(",") : value
     );
   };
-
+  const handleUpdateChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setUpdateProductCategory(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
   const {
     handleSubmit,
     control,
@@ -192,6 +216,44 @@ const UserDashboard = ({ userOrder, userId }) => {
     } catch (err) {
       console.log(err);
       setIsFetchingForFirst(false);
+    }
+  };
+  const handleUpdateProduct = async (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "uploads");
+    let betterProductName = updateProduct
+      .toLowerCase()
+      ?.split(" ")
+      .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
+      .join(" ");
+
+    try {
+      setIsFetching(true);
+      const uploadRes = await axios.post(
+        "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
+        data
+      );
+
+      let newProducts = products.filter((c) => c.name !== name);
+
+      const addCategory = () => {
+        setUpdatedProducts([
+          ...newProducts,
+          {
+            name: betterProductName,
+            price: updatePrice,
+            description: updateDescription,
+            category: updateProductCategory,
+            image: uploadRes?.data.url,
+          },
+        ]);
+      };
+      addCategory();
+      handleCloseUpdateProduct();
+    } catch (err) {
+      console.log(err);
     }
   };
   const addProductHandler = async (e) => {
@@ -383,6 +445,30 @@ const UserDashboard = ({ userOrder, userId }) => {
       setFile(null);
     }
   };
+  const handleSendUpdatedProducts = async () => {
+    try {
+      const updatedMenu = await axios.patch(
+        `/api/qr/${version}/${menu?.storeName}/menu`,
+        {
+          storeName,
+          products: updatedProducts,
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
+      if (updatedMenu?.data.menu) {
+        setProducts(updatedMenu?.data?.menu?.products);
+      } else {
+        setProducts(updatedMenu?.data?.menu?.products);
+      }
+      setIsFetching(false);
+      enqueueSnackbar("Ürün Güncellendi", { variant: "success" });
+    } catch (err) {
+      console.log(err);
+      setIsFetching(false);
+    }
+  };
   const handleSendUpdatedCategories = async () => {
     try {
       const updatedMenu = await axios.patch(
@@ -537,6 +623,11 @@ const UserDashboard = ({ userOrder, userId }) => {
       handleSendUpdatedCategories();
     }
   }, [updatedCategories]);
+  useEffect(() => {
+    if (updatedProducts.length > 0) {
+      handleSendUpdatedProducts();
+    }
+  }, [updatedProducts]);
   const columns = [
     {
       field: "name",
@@ -571,6 +662,18 @@ const UserDashboard = ({ userOrder, userId }) => {
             <Button
               variant="outlined"
               color="warning"
+              onClick={() => {
+                handleOpenUpdateProduct();
+                setName(params.row.name);
+                setUpdateProduct(params.row.name);
+                setUpdatePrice(params.row.price);
+                setPrice(params.row.price);
+                setDescription(params.row.description);
+                setUpdateDescription(params.row.description);
+                setUpdateProductCategory(params.row.category);
+                setCategory(params.row.category);
+                setFile(params.row.image);
+              }}
               style={{ fontSize: "12px", fontWeight: "500", width: "5rem" }}
             >
               Düzenle
@@ -1160,6 +1263,224 @@ const UserDashboard = ({ userOrder, userId }) => {
                     </Button>
                   </Modal.Footer>
                 </Modal>
+                <ModalMui
+                  style={{ padding: "6px", width: "100%" }}
+                  open={openUpdateProduct}
+                  onClose={handleCloseUpdateProduct}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box className={styles.modal}>
+                    <form
+                      style={{
+                        width: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                        gap: "2rem",
+                        padding: "2rem",
+                      }}
+                    >
+                      <h2>Ürün Düzenle</h2>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: " center",
+                          width: "100%",
+                          gap: "2rem",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <div>
+                          <InputLabel style={{ margin: "10px 0" }}>
+                            Ürün Adı
+                          </InputLabel>
+                          <Input
+                            label="Ürün Adı"
+                            value={updateProduct}
+                            inputProps={{ maxLength: 16 }}
+                            onChange={(e) => setUpdateProduct(e.target.value)}
+                          />{" "}
+                        </div>
+                        <div>
+                          <InputLabel style={{ margin: "10px 0" }}>
+                            Ürün Fiyatı
+                          </InputLabel>
+                          <Input
+                            label="Ürün Fiyatı"
+                            value={updatePrice}
+                            type="number"
+                            onChange={(e) => setUpdatePrice(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div style={{ width: "100%" }}>
+                        <InputLabel style={{ margin: "10px 0" }}>
+                          Ürün Açıklaması
+                        </InputLabel>
+                        <Input
+                          fullWidth
+                          label="Ürün Açıklaması"
+                          value={updateDescription}
+                          inputProps={{ maxLength: 100 }}
+                          onChange={(e) => setUpdateDescription(e.target.value)}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: " center",
+                          width: "100%",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <div>
+                          <InputLabel style={{ margin: "10px 0" }}>
+                            Ürün Kategorisi
+                          </InputLabel>
+                          <Select
+                            style={{ minWidth: "7rem" }}
+                            labelId="demo-multiple-chip-label"
+                            id="demo-multiple-chip"
+                            multiple
+                            value={updateProductCategory}
+                            onChange={handleUpdateChange}
+                            input={
+                              <OutlinedInput
+                                id="select-multiple-chip"
+                                label="Kategori"
+                              />
+                            }
+                            renderValue={(selected) => (
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexWrap: "wrap",
+                                  gap: 0.5,
+                                }}
+                              >
+                                {selected.map((value) => (
+                                  <Chip key={value} label={value} />
+                                ))}
+                              </Box>
+                            )}
+                            MenuProps={MenuProps}
+                          >
+                            {categories.map((category) => (
+                              <MenuItem
+                                key={category.name}
+                                value={category.name}
+                                style={{
+                                  padding: "10px",
+                                  width: "100%",
+                                }}
+                              >
+                                {category.name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </div>
+                        <div>
+                          <InputLabel style={{ margin: "10px 0" }}>
+                            Ürün Görseli
+                          </InputLabel>
+                          <Input
+                            accept="image/*"
+                            label="Ürün Görseli"
+                            id="icon-button-file"
+                            style={{ width: "14rem" }}
+                            onChange={(e) => {
+                              setFile(e.target.files[0]);
+                              setIsPreview(true);
+                            }}
+                            type="file"
+                          />
+                        </div>
+                      </div>
+                      {isPreview ? (
+                        /*    <img
+                          src={URL.createObjectURL(file)}
+                          width="300px"
+                          height="300px"
+                          style={{ objectFit: "contain" }}
+                        ></img> */
+                        ""
+                      ) : (
+                        <img
+                          src={file}
+                          width="300px"
+                          height="300px"
+                          style={{ objectFit: "contain" }}
+                        ></img>
+                      )}{" "}
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "100%",
+                          justifyContent: "flex-end",
+                          gap: "10px",
+                        }}
+                      >
+                        <Button
+                          color="primary"
+                          variant="outlined"
+                          onClick={() => {
+                            handleCloseUpdateProduct();
+                            setFile("");
+                            setIsPreview(false);
+                            setUpdateProduct("");
+                            setUpdatePrice(null);
+                            setUpdateDescription("");
+                            setUpdateProductCategory(null);
+                          }}
+                        >
+                          Vazgeç
+                        </Button>
+                        <Button
+                          color="secondary"
+                          variant="contained"
+                          onClick={(e) => {
+                            console.log(updateProduct);
+                            console.log(name);
+                            console.log(updatePrice);
+                            console.log(price);
+                            console.log(updateDescription);
+                            console.log(description);
+                            console.log(updateProductCategory);
+                            console.log(category);
+                            console.log(file);
+                            if (
+                              name !== updateProduct ||
+                              price !== updatePrice ||
+                              description !== updateDescription ||
+                              category.length !==
+                                updateProductCategory.length ||
+                              typeof file === "object"
+                            ) {
+                              handleUpdateProduct(e);
+                            } else {
+                              handleCloseUpdateProduct();
+                              setFile("");
+                              setIsPreview(false);
+                              setUpdateProduct("");
+                              setUpdatePrice(null);
+                              setUpdateDescription("");
+                              setUpdateProductCategory(null);
+                              enqueueSnackbar("Değişiklik Yapılmadı", {
+                                variant: "info",
+                              });
+                            }
+                          }}
+                          style={{ marginLeft: "1rem" }}
+                        >
+                          Onayla
+                        </Button>
+                      </div>
+                    </form>
+                  </Box>
+                </ModalMui>
                 <ModalMui
                   open={openAddCategory}
                   onClose={handleCloseAddCategory}
