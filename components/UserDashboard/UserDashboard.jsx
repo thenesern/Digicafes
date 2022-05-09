@@ -1152,7 +1152,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         >
                           <p>Masa No.{i + 1}</p>
                           <img style={{ width: "7rem" }} src={qr} />
-                          <a href={qr} download>
+                          <a href={qr} download={`Masa ${i + 1}`}>
                             <Button
                               color="primary"
                               style={{ width: "7rem" }}
