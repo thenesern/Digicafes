@@ -121,7 +121,9 @@
 .li {
   list-style: none;
 }
-
+.listTypeImage {
+  width: 12rem;
+}
 .product {
   display: flex;
   align-items: center;
@@ -243,6 +245,12 @@
   }
   .modal {
     width: 92%;
+  }
+  .listTypeHeader {
+    font-size: 12px;
+  }
+  .listTypeImage {
+    width: 7rem;
   }
   .qr {
     display: flex;

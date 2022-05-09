@@ -263,8 +263,10 @@ const UserDashboard = ({ userOrder, userId }) => {
   };
   const handleUpdateListType = async (e) => {
     e.preventDefault();
+    setIsFetching(true);
     if (listType === menu?.listType) {
       handleCloseListType();
+      setIsFetching(false);
       return enqueueSnackbar("Listeleme türü zaten aynı", {
         variant: "error",
       });
@@ -282,11 +284,13 @@ const UserDashboard = ({ userOrder, userId }) => {
       );
       setMenu(menu?.data?.menu);
       handleCloseListType();
+      setIsFetching(false);
       return enqueueSnackbar(`Listeleme türü değiştirildi`, {
         variant: "success",
       });
     } catch (err) {
       console.log(err);
+      setIsFetching(false);
       handleCloseListType();
     }
   };
@@ -1608,15 +1612,16 @@ const UserDashboard = ({ userOrder, userId }) => {
                           }}
                         >
                           <input
+                            style={{ cursor: "pointer" }}
                             type="radio"
                             name="listType"
                             checked={listType === "text" ? true : false}
                             onChange={() => setListType("text")}
                           ></input>
-                          <h3>Sadece Metin</h3>
+                          <h3 className={styles.listTypeHeader}>Sadece Metin</h3>
                           <img
-                            width={160}
-                            src="https://res.cloudinary.com/dlyjd3mnb/image/upload/v1652113868/gnkdoxudspftzstfcohb.png"
+                            className={styles.listTypeImage}
+                            src="https://res.cloudinary.com/dlyjd3mnb/image/upload/v1652116621/h3ap73zblrlw6uows3bk.png"
                           />
                         </div>
                         <div
@@ -1629,14 +1634,17 @@ const UserDashboard = ({ userOrder, userId }) => {
                           }}
                         >
                           <input
+                            style={{ cursor: "pointer" }}
                             checked={listType === "image" ? true : false}
                             type="radio"
                             name="listType"
                             onChange={() => setListType("image")}
                           ></input>
-                          <h3>Görsel ile birlikte</h3>
+                          <h3 className={styles.listTypeHeader}>
+                            Görsel ile birlikte
+                          </h3>
                           <img
-                            width={160}
+                            className={styles.listTypeImage}
                             src="https://res.cloudinary.com/dlyjd3mnb/image/upload/v1652113749/p7kovtut5b2mls3qjask.png"
                           />
                         </div>
