@@ -82,7 +82,8 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [secondStep, setSecondStep] = useState(false);
   const [tableNum, setTableNum] = useState(menu?.tableNum || null);
   const [category, setCategory] = useState([]);
-
+  const [listType, setListType] = useState(menu?.listType || null);
+  console.log(listType);
   const [version, setVersion] = useState(
     order?.product?.name === "Dijital Menü - V1" ? "v1" : "v2"
   );
@@ -129,6 +130,7 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [openAddCategory, setOpenAddCategory] = useState(false);
   const [openUploadLogo, setOpenUploadLogo] = useState(false);
   const [openQRImages, setOpenQRImages] = useState(false);
+  const [openListType, setOpenListType] = useState(false);
   const handleCloseUpdateProduct = () => {
     setOpenUpdateProduct(false);
     setFile(null);
@@ -149,6 +151,8 @@ const UserDashboard = ({ userOrder, userId }) => {
   const handleOpenAddCategory = () => setOpenAddCategory(true);
   const handleCloseAddCategory = () => setOpenAddCategory(false);
   const handleOpenUploadLogo = () => setOpenUploadLogo(true);
+  const handleOpenListType = () => setOpenListType(true);
+  const handleCloseListType = () => setOpenListType(false);
   const handleCloseUploadLogo = () => setOpenUploadLogo(false);
   const handleChange = (event) => {
     const {
@@ -192,6 +196,7 @@ const UserDashboard = ({ userOrder, userId }) => {
           storeName: storeName,
           storeLinkName: storeLinkName,
           tableNum,
+          listType: "text",
           createdAt,
           owner: order?.user?._id,
         },
@@ -254,6 +259,35 @@ const UserDashboard = ({ userOrder, userId }) => {
       handleCloseUpdateProduct();
     } catch (err) {
       console.log(err);
+    }
+  };
+  const handleUpdateListType = async (e) => {
+    e.preventDefault();
+    if (listType === menu?.listType) {
+      handleCloseListType();
+      return enqueueSnackbar("Listeleme türü zaten aynı", {
+        variant: "error",
+      });
+    }
+    try {
+      const menu = await axios.patch(
+        `/api/qr/${version}/${menu?.storeName}/listType`,
+        {
+          storeName,
+          listType,
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
+      setMenu(menu?.data?.menu);
+      handleCloseListType();
+      return enqueueSnackbar(`Listeleme türü değiştirildi`, {
+        variant: "success",
+      });
+    } catch (err) {
+      console.log(err);
+      handleCloseListType();
     }
   };
   const addProductHandler = async (e) => {
@@ -1549,6 +1583,91 @@ const UserDashboard = ({ userOrder, userId }) => {
                     </form>
                   </Box>
                 </ModalMui>
+                <ModalMui open={openListType} onClose={handleCloseListType}>
+                  <Box className={styles.modal}>
+                    <h2 style={{ textAlign: "center", padding: "1rem" }}>
+                      Listeleme Türünü Değiştir
+                    </h2>
+                    <form>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "4rem",
+                          padding: "2rem",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexDirection: "column",
+                            gap: "1rem",
+                          }}
+                        >
+                          <input
+                            type="radio"
+                            name="listType"
+                            checked={listType === "text" ? true : false}
+                            onChange={() => setListType("text")}
+                          ></input>
+                          <h3>Sadece Metin</h3>
+                          <img
+                            width={160}
+                            src="https://res.cloudinary.com/dlyjd3mnb/image/upload/v1652113868/gnkdoxudspftzstfcohb.png"
+                          />
+                        </div>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexDirection: "column",
+                            gap: "1rem",
+                          }}
+                        >
+                          <input
+                            checked={listType === "image" ? true : false}
+                            type="radio"
+                            name="listType"
+                            onChange={() => setListType("image")}
+                          ></input>
+                          <h3>Görsel ile birlikte</h3>
+                          <img
+                            width={160}
+                            src="https://res.cloudinary.com/dlyjd3mnb/image/upload/v1652113749/p7kovtut5b2mls3qjask.png"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "100%",
+                          justifyContent: "flex-end",
+                          gap: "2rem",
+                          padding: "2rem",
+                        }}
+                      >
+                        <Button
+                          variant="outlined"
+                          onClick={handleCloseListType}
+                        >
+                          Vazgeç
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={handleUpdateListType}
+                        >
+                          Onayla
+                        </Button>
+                      </div>
+                    </form>
+                  </Box>
+                </ModalMui>
                 <ModalMui
                   open={openUploadLogo}
                   onClose={handleCloseUploadLogo}
@@ -1668,6 +1787,16 @@ const UserDashboard = ({ userOrder, userId }) => {
                   style={{ margin: "1rem", width: "16rem" }}
                 >
                   Logo Yükle
+                </Button>
+                <Button
+                  className={styles.menuButtons}
+                  variant="contained"
+                  type="submit"
+                  color="primary"
+                  onClick={handleOpenListType}
+                  style={{ margin: "1rem", width: "16rem" }}
+                >
+                  Listeleme Türü
                 </Button>
               </div>
             </div>

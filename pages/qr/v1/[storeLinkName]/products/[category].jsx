@@ -19,6 +19,7 @@ const StoreMenu = ({ menu, category }) => {
   const [openModal, setOpenModal] = useState(false);
   const [productName, setProductName] = useState("");
   const [productImage, setProductImage] = useState("");
+  const [listType, setListType] = useState(menu?.listType);
   const Router = useRouter();
   const [productDescription, setProductDescription] = useState("");
   const [productPrice, setProductPrice] = useState(null);
@@ -102,60 +103,90 @@ const StoreMenu = ({ menu, category }) => {
             </ul>
           </SwipeableDrawer>
         </div>
-      </navbar>
-      <ul className={styles.list}>
-        <Modal
-          open={openModal}
-          style={{
-            width: "92%",
-            margin: "0 auto",
-          }}
-          onClose={handleCloseModal}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box>
-            <div className={styles.modalHeader}>
-              <h3>{productName}</h3>
-              <span>₺{productPrice}</span>
-            </div>
-            <img src={productImage} alt="Menu" className={styles.modalImage} />
-            <p className={styles.modalDesc}>{productDescription}</p>
-          </Box>
-        </Modal>
-        <Modal
-          style={{
-            background: "transparent",
-            boxShadow: "none",
-          }}
-          preventClose
-          aria-labelledby="modal-title"
-          open={isFetching}
-        >
-          <Modal.Body>
-            <Loading color="white" size="xl" />
-            <Spacer />
-          </Modal.Body>
-        </Modal>
-        {menu &&
-          filtered?.map((m) => (
-            <li
-              className={styles.listItem}
-              key={m?.name}
-              onClick={() => {
-                setProductName(m?.name);
-                setProductImage(m?.image);
-                setProductPrice(m?.price);
-                setProductDescription(m?.description);
-                handleOpenModal();
-              }}
-            >
-              <img className={styles.img} src={m?.image} alt="" />
-              <h3 className={styles.name}>{m?.name}</h3>
-              <p className={styles.price}>₺{m?.price}</p>
-            </li>
-          ))}
-      </ul>
+      </navbar>{" "}
+      <Modal
+        open={openModal}
+        style={{
+          width: "92%",
+          margin: "0 auto",
+        }}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box>
+          <div className={styles.modalHeader}>
+            <h3>{productName}</h3>
+            <span>₺{productPrice}</span>
+          </div>
+          <img src={productImage} alt="Menu" className={styles.modalImage} />
+          <p className={styles.modalDesc}>{productDescription}</p>
+        </Box>
+      </Modal>
+      <Modal
+        style={{
+          background: "transparent",
+          boxShadow: "none",
+        }}
+        preventClose
+        aria-labelledby="modal-title"
+        open={isFetching}
+      >
+        <Modal.Body>
+          <Loading color="white" size="xl" />
+          <Spacer />
+        </Modal.Body>
+      </Modal>
+      {listType === "image" ? (
+        <ul className={styles.list}>
+          {menu &&
+            filtered?.map((m) => (
+              <li
+                className={styles.listItem}
+                key={m?.name}
+                onClick={() => {
+                  setProductName(m?.name);
+                  setProductImage(m?.image);
+                  setProductPrice(m?.price);
+                  setProductDescription(m?.description);
+                  handleOpenModal();
+                }}
+              >
+                <img className={styles.img} src={m?.image} alt="" />
+                <h3 className={styles.name}>{m?.name}</h3>
+                <p className={styles.price}>₺{m?.price}</p>
+              </li>
+            ))}
+        </ul>
+      ) : (
+        <ul className={styles.textList}>
+          <h2 style={{ textAlign: "center", marginTop: "0", color: "#001219" }}>
+            {category}
+          </h2>
+          {menu &&
+            filtered?.map((m) => (
+              <li key={m?.name} className={styles.textListItem}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    gap: "1rem",
+                  }}
+                >
+                  <div>
+                    <h3 className={styles.textListName}>{m?.name}</h3>
+                    {m?.description && (
+                      <p className={styles.textListDesc}>{m?.description}</p>
+                    )}
+                  </div>
+                  <p className={styles.textListPrice}>₺{m?.price}</p>
+                </div>
+              </li>
+            ))}
+        </ul>
+      )}
       <footer></footer>
     </div>
   );

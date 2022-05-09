@@ -12,6 +12,10 @@ const QRMenuSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    listType: {
+      type: String,
+      required: true,
+    },
     tableNum: {
       type: Number,
       required: true,
@@ -36,7 +40,7 @@ const QRMenuSchema = new mongoose.Schema(
         },
         description: {
           type: String,
-          required: true,
+          required: false,
         },
         category: [
           {
@@ -58,7 +62,7 @@ const QRMenuSchema = new mongoose.Schema(
         },
         image: {
           type: String,
-          required: false,
+          required: true,
         },
       },
     ],

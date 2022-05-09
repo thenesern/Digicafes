@@ -31,6 +31,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
   const [openModal, setOpenModal] = useState(false);
   const [openCart, setOpenCart] = useState(false);
   const [productName, setProductName] = useState("");
+  const [listType, setListType] = useState(menu?.listType);
   const [productImage, setProductImage] = useState("");
   const [productPrice, setProductPrice] = useState(null);
   const [orderNotes, setOrderNotes] = useState("");
@@ -179,68 +180,110 @@ const StoreMenu = ({ menu, category, order, number }) => {
           <h1>Talebiniz iletildi.</h1>
         </Modal.Body>
       </Modal>
-      <ul className={styles.list}>
-        <Modal
-          open={openModal}
-          className={styles.modal}
-          animated="true"
-          onClose={handleCloseModal}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box>
-            <div className={styles.modalHeader}>
-              <h3>{productName}</h3>
-              <span>₺{productPrice}</span>
-            </div>
-            <img src={productImage} alt="Menu" className={styles.modalImage} />
-            <p className={styles.modalDesc}>{productDescription}</p>
-          </Box>
-        </Modal>
-        <Modal
-          open={openCart}
-          className={styles.cartModal}
-          onClose={handleCloseCart}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-          style={{
-            padding: "4px",
-            width: "92%",
-            maxHeight: "24rem",
-            overFlow: "auto",
-          }}
-        >
-          <Modal.Header>
-            <h2>Sepet Özeti</h2>
-          </Modal.Header>
-          <Modal.Body style={{ padding: "1rem 0" }}>
-            {cartItems?.map((item) => (
-              <>
-                <div key={Math.random()} className={styles.cart}>
-                  <div className={styles.cartHeader}>
-                    <img src={item?.img} alt="" className={styles.cartImg} />
-                    <h4
-                      style={{
-                        maxWidth: "8rem",
-                        overflow: "scroll",
-                        fontSize: "14px",
-                      }}
-                    >
-                      {item?.name}
-                    </h4>
-                  </div>
-                  <div className={styles.productQuantity}>
-                    <Button
-                      className={styles.buttons}
-                      variant="outlined"
-                      style={{
-                        minWidth: "1rem",
-                        backgroundColor: "transparent",
-                        border: "none",
-                      }}
-                      onClick={() => {
-                        if (item.quantity > 1) {
-                          item.quantity -= 1;
+      <Modal
+        open={openModal}
+        className={styles.modal}
+        animated="true"
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box>
+          <div className={styles.modalHeader}>
+            <h3>{productName}</h3>
+            <span>₺{productPrice}</span>
+          </div>
+          <img src={productImage} alt="Menu" className={styles.modalImage} />
+          <p className={styles.modalDesc}>{productDescription}</p>
+        </Box>
+      </Modal>
+      <Modal
+        open={openCart}
+        className={styles.cartModal}
+        onClose={handleCloseCart}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        style={{
+          padding: "4px",
+          width: "92%",
+          maxHeight: "24rem",
+          overFlow: "auto",
+        }}
+      >
+        <Modal.Header>
+          <h2>Sepet Özeti</h2>
+        </Modal.Header>
+        <Modal.Body style={{ padding: "1rem 0" }}>
+          {listType === "image"
+            ? cartItems?.map((item) => (
+                <>
+                  <div key={Math.random()} className={styles.cart}>
+                    <div className={styles.cartHeader}>
+                      <img src={item?.img} alt="" className={styles.cartImg} />
+                      <h4
+                        style={{
+                          maxWidth: "8rem",
+                          overflow: "scroll",
+                          fontSize: "14px",
+                        }}
+                      >
+                        {item?.name}
+                      </h4>
+                    </div>
+                    <div className={styles.productQuantity}>
+                      <Button
+                        className={styles.buttons}
+                        variant="outlined"
+                        style={{
+                          minWidth: "1rem",
+                          backgroundColor: "transparent",
+                          border: "none",
+                        }}
+                        onClick={() => {
+                          if (item.quantity > 1) {
+                            item.quantity -= 1;
+                            setCartItems([...cartItems]);
+                            setCartTotal(
+                              cartItems.reduce(function (a, b) {
+                                return a + b.price * b.quantity;
+                              }, 0)
+                            );
+                            dispatch({ type: "CART", payload: cartItems });
+                          } else if (
+                            item.quantity - 1 === 0 &&
+                            cartItems.length - 1 !== 0
+                          ) {
+                            setCartItems(
+                              cartItems.filter((product) => product !== item)
+                            );
+                            setCartTotal(
+                              cart.reduce(function (a, b) {
+                                return a + b.price * b.quantity;
+                              }, 0)
+                            );
+                            dispatch({ type: "CART", payload: cartItems });
+                          } else {
+                            {
+                              setCartItems([]);
+                              setCartTotal(0);
+                              dispatch({ type: "CART", payload: [] });
+                            }
+                          }
+                        }}
+                      >
+                        <ArrowCircleDownIcon style={{ fontSize: "2rem" }} />
+                      </Button>
+                      <h4>x{item?.quantity}</h4>
+                      <Button
+                        style={{
+                          minWidth: "1rem",
+                          backgroundColor: "transparent",
+                          border: "none",
+                        }}
+                        variant="outlined"
+                        className={styles.buttons}
+                        onClick={() => {
+                          item.quantity += 1;
                           setCartItems([...cartItems]);
                           setCartTotal(
                             cartItems.reduce(function (a, b) {
@@ -248,159 +291,255 @@ const StoreMenu = ({ menu, category, order, number }) => {
                             }, 0)
                           );
                           dispatch({ type: "CART", payload: cartItems });
-                        } else if (
-                          item.quantity - 1 === 0 &&
-                          cartItems.length - 1 !== 0
-                        ) {
-                          setCartItems(
-                            cartItems.filter((product) => product !== item)
-                          );
+                        }}
+                      >
+                        <ArrowCircleUpIcon style={{ fontSize: "2rem" }} />
+                      </Button>
+                    </div>
+                  </div>
+                </>
+              ))
+            : cartItems?.map((item) => (
+                <>
+                  <div key={Math.random()} className={styles.cart}>
+                    <div className={styles.cartHeader}>
+                      <h4
+                        style={{
+                          maxWidth: "8rem",
+                          overflow: "scroll",
+                          fontSize: "14px",
+                        }}
+                      >
+                        {item?.name}
+                      </h4>
+                    </div>
+                    <div className={styles.productQuantity}>
+                      <Button
+                        className={styles.buttons}
+                        variant="outlined"
+                        style={{
+                          minWidth: "1rem",
+                          backgroundColor: "transparent",
+                          border: "none",
+                        }}
+                        onClick={() => {
+                          if (item.quantity > 1) {
+                            item.quantity -= 1;
+                            setCartItems([...cartItems]);
+                            setCartTotal(
+                              cartItems.reduce(function (a, b) {
+                                return a + b.price * b.quantity;
+                              }, 0)
+                            );
+                            dispatch({ type: "CART", payload: cartItems });
+                          } else if (
+                            item.quantity - 1 === 0 &&
+                            cartItems.length - 1 !== 0
+                          ) {
+                            setCartItems(
+                              cartItems.filter((product) => product !== item)
+                            );
+                            setCartTotal(
+                              cart.reduce(function (a, b) {
+                                return a + b.price * b.quantity;
+                              }, 0)
+                            );
+                            dispatch({ type: "CART", payload: cartItems });
+                          } else {
+                            {
+                              setCartItems([]);
+                              setCartTotal(0);
+                              dispatch({ type: "CART", payload: [] });
+                            }
+                          }
+                        }}
+                      >
+                        <ArrowCircleDownIcon style={{ fontSize: "2rem" }} />
+                      </Button>
+                      <h4>x{item?.quantity}</h4>
+                      <Button
+                        style={{
+                          minWidth: "1rem",
+                          backgroundColor: "transparent",
+                          border: "none",
+                        }}
+                        variant="outlined"
+                        className={styles.buttons}
+                        onClick={() => {
+                          item.quantity += 1;
+                          setCartItems([...cartItems]);
                           setCartTotal(
-                            cart.reduce(function (a, b) {
+                            cartItems.reduce(function (a, b) {
                               return a + b.price * b.quantity;
                             }, 0)
                           );
                           dispatch({ type: "CART", payload: cartItems });
-                        } else {
-                          {
-                            setCartItems([]);
-                            setCartTotal(0);
-                            dispatch({ type: "CART", payload: [] });
-                          }
-                        }
-                      }}
-                    >
-                      <ArrowCircleDownIcon style={{ fontSize: "2rem" }} />
-                    </Button>
-                    <h4>x{item?.quantity}</h4>
-                    <Button
-                      style={{
-                        minWidth: "1rem",
-                        backgroundColor: "transparent",
-                        border: "none",
-                      }}
-                      variant="outlined"
-                      className={styles.buttons}
-                      onClick={() => {
-                        item.quantity += 1;
-                        setCartItems([...cartItems]);
-                        setCartTotal(
-                          cartItems.reduce(function (a, b) {
-                            return a + b.price * b.quantity;
-                          }, 0)
-                        );
-                        dispatch({ type: "CART", payload: cartItems });
-                      }}
-                    >
-                      <ArrowCircleUpIcon style={{ fontSize: "2rem" }} />
-                    </Button>
+                        }}
+                      >
+                        <ArrowCircleUpIcon style={{ fontSize: "2rem" }} />
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </>
-            ))}
-            {cart.length === 0 && (
-              <p style={{ padding: "1rem" }}>Sepetiniz boş.</p>
-            )}
-          </Modal.Body>
-          <Modal.Footer className={styles.cartFooter}>
-            {cart.length > 0 && <div>Toplam: ₺{cartTotal}</div>}
-            {cart.length > 0 && (
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleOpenIsSure}
-              >
-                Siparişi Onayla
-              </Button>
-            )}
-          </Modal.Footer>
-        </Modal>
-        <Modal
-          style={{
-            background: "transparent",
-            boxShadow: "none",
-          }}
-          preventClose
-          aria-labelledby="modal-title"
-          open={isFetching}
-        >
-          <Modal.Body>
-            <Loading color="white" size="xl" />
-            <Spacer />
-          </Modal.Body>
-        </Modal>
+                </>
+              ))}
 
-        <Modal
-          style={{ width: "92%", margin: "0 auto", padding: "4px" }}
-          open={openIsSure}
-          onClose={handleCloseOpenIsSure}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Modal.Header style={{ display: "flex", flexDirection: "column" }}>
-            <h3 style={{ padding: "0", margin: "0" }}>Dikkat</h3>
-            <p>Siparişiniz iletilecek.</p>
-          </Modal.Header>
-          <Modal.Body>
-            <h5>Not Ekle</h5>
-            <Textarea
-              placeholder="Mesajınız. (Boş Bırakabilirsiniz)"
-              onChange={(e) => setOrderNotes(e.target.value)}
-            ></Textarea>
-          </Modal.Body>
-          <Modal.Footer style={{ display: "flex", gap: "2rem" }}>
-            <Button variant="outlined" onClick={handleCloseOpenIsSure}>
-              Vazgeç
-            </Button>
+          {cart.length === 0 && (
+            <p style={{ padding: "1rem" }}>Sepetiniz boş.</p>
+          )}
+        </Modal.Body>
+        <Modal.Footer className={styles.cartFooter}>
+          {cart.length > 0 && <div>Toplam: ₺{cartTotal}</div>}
+          {cart.length > 0 && (
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => setIsSure(true)}
+              onClick={handleOpenIsSure}
             >
-              Onayla
+              Siparişi Onayla
             </Button>
-          </Modal.Footer>
-        </Modal>
-        {menu &&
-          filtered?.map((m) => (
-            <li key={m?.name} className={styles.listItem}>
-              <img
-                className={styles.img}
-                src={m?.image}
-                alt=""
-                onClick={() => {
-                  setProductName(m?.name);
-                  setProductImage(m?.image);
-                  setProductPrice(m?.price);
-                  setProductDescription(m?.description);
-                  handleOpenModal();
-                }}
-              />
-              <h3 className={styles.name}>{m?.name}</h3>
-              <p className={styles.price}>₺{m?.price}</p>
-              <Button
-                variant="outlined"
-                color="primary"
-                style={{
-                  borderRadius: " 0",
-                  backgroundColor: "#073b4c",
-                  color: "#f7ede2",
-                }}
-                fullWidth
-                onClick={() =>
-                  addToCartHandler({
-                    name: m?.name,
-                    price: m?.price,
-                    img: m?.image,
-                    quantity: 1,
-                  })
-                }
-              >
-                Sepete Ekle
-              </Button>
-            </li>
-          ))}
-      </ul>
+          )}
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        style={{
+          background: "transparent",
+          boxShadow: "none",
+        }}
+        preventClose
+        aria-labelledby="modal-title"
+        open={isFetching}
+      >
+        <Modal.Body>
+          <Loading color="white" size="xl" />
+          <Spacer />
+        </Modal.Body>
+      </Modal>
+
+      <Modal
+        style={{ width: "92%", margin: "0 auto", padding: "4px" }}
+        open={openIsSure}
+        onClose={handleCloseOpenIsSure}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Modal.Header style={{ display: "flex", flexDirection: "column" }}>
+          <h3 style={{ padding: "0", margin: "0" }}>Dikkat</h3>
+          <p>Siparişiniz iletilecek.</p>
+        </Modal.Header>
+        <Modal.Body>
+          <h5>Not Ekle</h5>
+          <Textarea
+            placeholder="Mesajınız. (Boş Bırakabilirsiniz)"
+            onChange={(e) => setOrderNotes(e.target.value)}
+          ></Textarea>
+        </Modal.Body>
+        <Modal.Footer style={{ display: "flex", gap: "2rem" }}>
+          <Button variant="outlined" onClick={handleCloseOpenIsSure}>
+            Vazgeç
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => setIsSure(true)}
+          >
+            Onayla
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {listType === "image" ? (
+        <ul className={styles.list}>
+          {menu &&
+            filtered?.map((m) => (
+              <li key={m?.name} className={styles.listItem}>
+                <img
+                  className={styles.img}
+                  src={m?.image}
+                  alt=""
+                  onClick={() => {
+                    setProductName(m?.name);
+                    setProductImage(m?.image);
+                    setProductPrice(m?.price);
+                    setProductDescription(m?.description);
+                    handleOpenModal();
+                  }}
+                />
+                <h3 className={styles.name}>{m?.name}</h3>
+                <p className={styles.price}>₺{m?.price}</p>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  style={{
+                    borderRadius: " 0",
+                    backgroundColor: "#073b4c",
+                    color: "#f7ede2",
+                  }}
+                  fullWidth
+                  onClick={() =>
+                    addToCartHandler({
+                      name: m?.name,
+                      price: m?.price,
+                      img: m?.image,
+                      quantity: 1,
+                    })
+                  }
+                >
+                  Sepete Ekle
+                </Button>
+              </li>
+            ))}
+        </ul>
+      ) : (
+        <ul className={styles.textList}>
+          <h2 style={{ textAlign: "center", marginTop: "0", color: "#001219" }}>
+            {category}
+          </h2>
+          {menu &&
+            filtered?.map((m) => (
+              <li key={m?.name} className={styles.textListItem}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "100%",
+                    gap: "1rem",
+                  }}
+                >
+                  <div>
+                    <h3 className={styles.textListName}>{m?.name}</h3>
+                    {m?.description && (
+                      <p className={styles.textListDesc}>{m?.description}</p>
+                    )}
+                  </div>
+                  <p className={styles.textListPrice}>₺{m?.price}</p>
+                </div>
+                <button
+                  style={{
+                    borderRadius: " 0",
+                    backgroundColor: "#073b4c",
+                    color: "#f7ede2",
+                    width: "2rem",
+                    height: "2rem",
+                    margin: "0",
+                    borderRadius: "1rem",
+                    padding: "0",
+                    border: "none",
+                  }}
+                  onClick={() =>
+                    addToCartHandler({
+                      name: m?.name,
+                      price: m?.price,
+                      img: m?.image,
+                      quantity: 1,
+                    })
+                  }
+                >
+                  <span>+</span>
+                </button>
+              </li>
+            ))}
+        </ul>
+      )}
       <footer></footer>
     </div>
   );
