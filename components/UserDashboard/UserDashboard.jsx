@@ -1409,8 +1409,8 @@ const UserDashboard = ({ userOrder, userId }) => {
                       ) : (
                         <img
                           src={file}
-                          width="300px"
-                          height="300px"
+                          width="160px"
+                          height="160px"
                           style={{ objectFit: "contain" }}
                         ></img>
                       )}{" "}
