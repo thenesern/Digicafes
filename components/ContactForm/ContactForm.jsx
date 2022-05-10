@@ -70,31 +70,29 @@ const ContactForm = () => {
             <div className={styles.name}>
               <Input
                 underlined
-                labelPlaceholder="Adınız"
+                placeholder="Adınız"
                 color="success"
                 name="firstName"
+                style={{ color: "white" }}
               />
               <Input
                 underlined
                 name="lastName"
-                labelPlaceholder="Soyadınız"
+                placeholder="Soyadınız"
                 color="success"
+                style={{ color: "white" }}
               />
             </div>
             <Input
               underlined
-              labelPlaceholder="E-Mail"
+              placeholder="E-Mail"
               color="success"
               fullWidth
+              style={{ color: "white" }}
               name="user_email"
             />
           </div>
-          <Textarea
-            placeholder="Mesajınız."
-            name="message"
-            fullWidth
-         
-          />
+          <Textarea placeholder="Mesajınız." name="message" fullWidth />
           <Button
             onClick={(e) => {
               sendEmail(e);
