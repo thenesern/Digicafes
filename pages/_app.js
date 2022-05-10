@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }) {
     <StoreProvider>
       <Head>
         <title>
-          Digicafes | Kafe, Restoran ve Bahçeler için Dijital Menü çözümleri.
+          Digicafes | Kafe, Restoran ve Oteller için Dijital Menü çözümleri.
         </title>
         <meta
           name="viewport"
@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
         />
         <meta
           name="description"
-          content="Digicafes | Kafe, Restoran ve Bahçeler için Dijital Menü çözümleri."
+          content="Digicafes | Kafe, Restoran ve Oteller için Dijital Menü çözümleri."
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>

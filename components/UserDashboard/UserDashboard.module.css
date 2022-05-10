@@ -181,6 +181,9 @@
     margin: 0;
     padding: 0;
   }
+  .menuButtons {
+    width: 12rem !important;
+  }
 }
 @media only screen and (max-width: 1366px) {
   .menuButtons {

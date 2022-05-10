@@ -72,7 +72,13 @@ const StoreMenu = ({ menu, category, order, number }) => {
       }, 2000);
     }
   }, [isSuccess]);
-
+  useEffect(() => {
+    setCartTotal(
+      cartItems.reduce(function (a, b) {
+        return a + b.price * b.quantity;
+      }, 0)
+    );
+  }, [cartItems]);
   useEffect(() => {
     if (isSure) {
       handleCartOrder();

@@ -37,7 +37,7 @@ const DijitalMenu = () => {
       <Head>
         <link rel="shortcut icon" type="image/x-icon" href={favicon.src} />
         <title>
-          Digicafes | Kafe, Restoran ve Bahçeler için Dijital Menü çözümleri.
+          Digicafes | Kafe, Restoran ve Oteller için Dijital Menü çözümleri.
         </title>
         <meta
           name="viewport"
@@ -49,7 +49,7 @@ const DijitalMenu = () => {
         />
         <meta
           name="description"
-          content="Digicafes | Kafe, Restoran ve Bahçeler için Dijital Menü çözümleri."
+          content="Digicafes | Kafe, Restoran ve Oteller için Dijital Menü çözümleri."
         />
       </Head>
       <Nav />
