@@ -173,6 +173,7 @@
 }
 .modalImage {
   width: 100%;
+  min-height: 12rem;
   height: 16rem;
   object-fit: cover;
 }

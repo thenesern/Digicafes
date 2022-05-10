@@ -83,7 +83,6 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [tableNum, setTableNum] = useState(menu?.tableNum || null);
   const [category, setCategory] = useState([]);
   const [listType, setListType] = useState(menu?.listType || null);
-  console.log(listType);
   const [version, setVersion] = useState(
     order?.product?.name === "Dijital Menü - V1" ? "v1" : "v2"
   );
@@ -151,7 +150,10 @@ const UserDashboard = ({ userOrder, userId }) => {
   const handleOpenAddCategory = () => setOpenAddCategory(true);
   const handleCloseAddCategory = () => setOpenAddCategory(false);
   const handleOpenUploadLogo = () => setOpenUploadLogo(true);
-  const handleOpenListType = () => setOpenListType(true);
+  const handleOpenListType = () => {
+    setOpenListType(true);
+    setListType(menu?.listType);
+  };
   const handleCloseListType = () => setOpenListType(false);
   const handleCloseUploadLogo = () => setOpenUploadLogo(false);
   const handleChange = (event) => {
@@ -318,10 +320,13 @@ const UserDashboard = ({ userOrder, userId }) => {
     }
     try {
       setIsFetching(true);
-      const uploadRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
-        data
-      );
+      let uploadRes;
+      if (file) {
+        uploadRes = await axios.post(
+          "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
+          data
+        );
+      }
 
       arrayProducts.push({
         name: betterProductName,
@@ -1480,15 +1485,6 @@ const UserDashboard = ({ userOrder, userId }) => {
                           color="secondary"
                           variant="contained"
                           onClick={(e) => {
-                            console.log(updateProduct);
-                            console.log(name);
-                            console.log(updatePrice);
-                            console.log(price);
-                            console.log(updateDescription);
-                            console.log(description);
-                            console.log(updateProductCategory);
-                            console.log(category);
-                            console.log(file);
                             if (
                               name !== updateProduct ||
                               price !== updatePrice ||
