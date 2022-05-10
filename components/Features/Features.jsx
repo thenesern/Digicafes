@@ -81,7 +81,6 @@ const Features = () => {
           <li>Dijital Menü Sipariş Paneli</li>
           <li>Dijital Menü Sipariş Modülü</li>
           <li>Dijital Menü Garson Çağır ve Adisyon İste Modülü</li>
-          <li>7 / 24 Canlı Destek</li>
         </ul>
         <p className={styles.articleDesc}>
           Dijital Menü V2 ile müşterilerinize Dijital Menü deneyimi sunarken
