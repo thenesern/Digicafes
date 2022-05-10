@@ -131,8 +131,9 @@
   font-size: 14px;
   color: #14213d;
   margin: 0;
-  height: 3rem;
   padding: 10px 10px 0 10px;
+  overflow: scroll;
+  max-width: 10rem;
 }
 
 .price {

@@ -1108,7 +1108,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             id="name"
                             onChange={(e) => setName(e.target.value)}
                             label="Ürün Adı"
-                            inputProps={{ type: "text", maxLength: 20 }}
+                            inputProps={{ type: "text", maxLength: 38 }}
                             helperText="Örnek: Izgara Köfte, Kaşarlı Tost, Sufle"
                           ></TextField>
                         </ListItem>
@@ -1337,7 +1337,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                           <Input
                             label="Ürün Adı"
                             value={updateProduct}
-                            inputProps={{ maxLength: 16 }}
+                            inputProps={{ maxLength: 38 }}
                             onChange={(e) => setUpdateProduct(e.target.value)}
                           />{" "}
                         </div>
@@ -1535,7 +1535,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             fullWidth
                             id="category"
                             label="Kategori"
-                            inputProps={{ type: "text", maxLength: 16 }}
+                            inputProps={{ type: "text", maxLength: 38 }}
                             onChange={(e) => setAddCategory(e.target.value)}
                             helperText="Örnek: Ana Yemek, Kahvaltılar, Tatlılar"
                           ></TextField>
@@ -1618,7 +1618,9 @@ const UserDashboard = ({ userOrder, userId }) => {
                             checked={listType === "text" ? true : false}
                             onChange={() => setListType("text")}
                           ></input>
-                          <h3 className={styles.listTypeHeader}>Sadece Metin</h3>
+                          <h3 className={styles.listTypeHeader}>
+                            Sadece Metin
+                          </h3>
                           <img
                             className={styles.listTypeImage}
                             src="https://res.cloudinary.com/dlyjd3mnb/image/upload/v1652116621/h3ap73zblrlw6uows3bk.png"
