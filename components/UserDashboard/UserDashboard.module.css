@@ -192,6 +192,9 @@
   .grid {
     height: 16rem !important;
   }
+  .left {
+    flex: 0;
+  }
 }
 @media only screen and (max-width: 1280px) {
   .box {
