@@ -14,6 +14,7 @@ import StepperMobile from "../components/DigitalMenuPage/StepperMobile/StepperMo
 import FAQ from "../components/FAQ/FAQ";
 import ContactForm from "../components/ContactForm/ContactForm";
 import favicon from "../public/favicon.ico";
+import whatsapp from "../assets/image/whatsapp.png";
 // Styles
 import styles from "./DigitalMenuPage.module.css";
 import Aos from "aos";
@@ -54,6 +55,15 @@ const DijitalMenu = () => {
       </Head>
       <Nav />
       <div className={styles.container}>
+        <div className={styles.wpBtn}>
+          <a
+            href="https://api.whatsapp.com/send?phone=905012345324"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Image layout="responsive" objectFit="contain" src={whatsapp} />
+          </a>
+        </div>
         <div className={styles.topBox}>
           <div className={styles.top}>
             <div className={styles.topLeft}>
