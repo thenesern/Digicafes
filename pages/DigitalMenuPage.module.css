@@ -13,8 +13,8 @@
   position: fixed !important;
   width: 3rem !important;
   height: 3rem !important;
-  bottom: 3% !important;
-  left: 2%;
+  bottom: 1rem !important;
+  left: 1rem;
   z-index: 12;
   cursor: pointer;
 }
