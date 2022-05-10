@@ -13,8 +13,8 @@
   position: fixed !important;
   width: 3rem !important;
   height: 3rem !important;
-  bottom: 1rem !important;
-  left: 1rem;
+  bottom: 2rem !important;
+  left: 2rem;
   z-index: 12;
   cursor: pointer;
 }
@@ -452,6 +452,7 @@
   .image2 {
     width: 7rem !important;
   }
+
   .image3 {
     width: 4rem !important;
   }
