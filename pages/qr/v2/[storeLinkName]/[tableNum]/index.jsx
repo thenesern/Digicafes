@@ -2,8 +2,9 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styles from "./store.module.css";
 import db from "../../../../../utils/db.js";
+import { Loading, Modal, Spacer, Textarea, Link } from "@nextui-org/react";
+import { Badge } from "@material-ui/core";
 import QRMenu from "../../../../../models/QRMenu2Model.js";
-import { Link, Loading, Modal, Spacer } from "@nextui-org/react";
 import {
   Box,
   Button,
@@ -18,7 +19,12 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useEffect } from "react";
 import Order from "../../../../../models/OrderModel";
 import Image from "next/image";
+import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
+import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 import FmdBadIcon from "@mui/icons-material/FmdBad";
+import { useContext } from "react";
+import { Store } from "../../../../../redux/store";
+import { ShoppingCartOutlined } from "@material-ui/icons";
 
 const StoreMenu = ({ menu, number }) => {
   const [open, setOpen] = useState(false);
@@ -29,11 +35,21 @@ const StoreMenu = ({ menu, number }) => {
   const [tableModal, setTableModal] = useState(false);
   const handleOpenWaiterModal = () => setWaiterModal(true);
   const handleOpenTableModal = () => setTableModal(true);
+  const [cartTotal, setCartTotal] = useState(null);
+  const [orderNotes, setOrderNotes] = useState("");
   const handleCloseWaiterModal = () => setWaiterModal(false);
   const handleCloseTableModal = () => setTableModal(false);
+  const { state, dispatch } = useContext(Store);
+  const [isSure, setIsSure] = useState(false);
   const [callName, setCallName] = useState("");
+  const { cart } = state;
+  const [cartItems, setCartItems] = useState([...cart]);
   const [tableNum, setTableNum] = useState(number);
+  const [openIsSure, setOpenIsSure] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [openCart, setOpenCart] = useState(false);
+  const [listType, setListType] = useState(menu?.listType);
+  const quantity = cart?.length;
   useEffect(() => {
     if (isSuccess) {
       setTimeout(() => {
@@ -41,6 +57,56 @@ const StoreMenu = ({ menu, number }) => {
       }, 2000);
     }
   }, [isSuccess]);
+  const handleOpenCart = () => {
+    setOpenCart(true);
+  };
+  useEffect(() => {
+    setCartTotal(
+      cartItems.reduce(function (a, b) {
+        return a + b.price * b.quantity;
+      }, 0)
+    );
+  }, [cartItems]);
+  const handleCloseCart = () => {
+    setOpenCart(false);
+    setOrderNotes("");
+  };
+  const handleCloseOpenIsSure = () => setOpenIsSure(false);
+  const handleOpenIsSure = () => {
+    setOpenCart(false);
+    setOpenIsSure(true);
+  };
+
+  useEffect(() => {
+    if (isSure) {
+      handleCartOrder();
+      setIsSure(false);
+      dispatch({ type: "CART", payload: [] });
+      setCartItems([]);
+      handleCloseOpenIsSure();
+    }
+  }, [isSure]);
+  const handleCartOrder = async () => {
+    setIsFetching(true);
+    const createdAt = new Date();
+    try {
+      const response = await axios.patch(`/api/qr/v2/${storeName}/orders`, {
+        orders: [{ cartItems, tableNum, createdAt, orderNotes }],
+        storeName,
+      });
+      if (response.data.status === "success") {
+        setIsSuccess(true);
+      } else {
+        setIsSuccess(false);
+      }
+      setIsFetching(false);
+      handleCloseCart();
+    } catch (err) {
+      setIsFetching(false);
+      handleCloseCart();
+      console.log(err);
+    }
+  };
   const handleCalls = async ({ callName }) => {
     setIsFetching(true);
     const createdAt = new Date().toLocaleString("tr-TR");
@@ -81,16 +147,261 @@ const StoreMenu = ({ menu, number }) => {
           <CheckCircleIcon style={{ fontSize: "8rem" }} color="success" />
           <h1>Talebiniz iletildi.</h1>
         </Modal.Body>
+      </Modal>{" "}
+      <Modal
+        style={{ width: "92%", margin: "0 auto", padding: "4px" }}
+        open={openIsSure}
+        onClose={handleCloseOpenIsSure}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Modal.Header style={{ display: "flex", flexDirection: "column" }}>
+          <h3 style={{ padding: "0", margin: "0" }}>Dikkat</h3>
+          <p>Siparişiniz iletilecek.</p>
+        </Modal.Header>
+        <Modal.Body>
+          <h5>Not Ekle</h5>
+          <Textarea
+            placeholder="Mesajınız. (Boş Bırakabilirsiniz)"
+            onChange={(e) => setOrderNotes(e.target.value)}
+          ></Textarea>
+        </Modal.Body>
+        <Modal.Footer style={{ display: "flex", gap: "2rem" }}>
+          <Button variant="outlined" onClick={handleCloseOpenIsSure}>
+            Vazgeç
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => setIsSure(true)}
+          >
+            Onayla
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        open={openCart}
+        className={styles.cartModal}
+        onClose={handleCloseCart}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        style={{
+          padding: "4px",
+          width: "92%",
+          margin: "0 auto",
+          maxHeight: "24rem",
+          overFlow: "auto",
+        }}
+      >
+        <Modal.Header>
+          <h2>Sepet Özeti</h2>
+        </Modal.Header>
+        <Modal.Body style={{ padding: "1rem 0" }}>
+          {listType === "image"
+            ? cartItems?.map((item) => (
+                <>
+                  <div key={Math.random()} className={styles.cart}>
+                    <div className={styles.cartHeader}>
+                      <img src={item?.img} alt="" className={styles.cartImg} />
+                      <h4
+                        style={{
+                          maxWidth: "8rem",
+                          overflow: "scroll",
+                          fontSize: "14px",
+                        }}
+                      >
+                        {item?.name}
+                      </h4>
+                    </div>
+                    <div className={styles.productQuantity}>
+                      <Button
+                        className={styles.buttons}
+                        variant="outlined"
+                        style={{
+                          minWidth: "1rem",
+                          backgroundColor: "transparent",
+                          border: "none",
+                        }}
+                        onClick={() => {
+                          if (item.quantity > 1) {
+                            item.quantity -= 1;
+                            setCartItems([...cartItems]);
+                            setCartTotal(
+                              cartItems.reduce(function (a, b) {
+                                return a + b.price * b.quantity;
+                              }, 0)
+                            );
+                            dispatch({ type: "CART", payload: cartItems });
+                          } else if (
+                            item.quantity - 1 === 0 &&
+                            cartItems.length - 1 !== 0
+                          ) {
+                            setCartItems(
+                              cartItems.filter((product) => product !== item)
+                            );
+                            setCartTotal(
+                              cart.reduce(function (a, b) {
+                                return a + b.price * b.quantity;
+                              }, 0)
+                            );
+                            dispatch({ type: "CART", payload: cartItems });
+                          } else {
+                            {
+                              setCartItems([]);
+                              setCartTotal(0);
+                              dispatch({ type: "CART", payload: [] });
+                            }
+                          }
+                        }}
+                      >
+                        <ArrowCircleDownIcon style={{ fontSize: "2rem" }} />
+                      </Button>
+                      <h4>x{item?.quantity}</h4>
+                      <Button
+                        style={{
+                          minWidth: "1rem",
+                          backgroundColor: "transparent",
+                          border: "none",
+                        }}
+                        variant="outlined"
+                        className={styles.buttons}
+                        onClick={() => {
+                          item.quantity += 1;
+                          setCartItems([...cartItems]);
+                          setCartTotal(
+                            cartItems.reduce(function (a, b) {
+                              return a + b.price * b.quantity;
+                            }, 0)
+                          );
+                          dispatch({ type: "CART", payload: cartItems });
+                        }}
+                      >
+                        <ArrowCircleUpIcon style={{ fontSize: "2rem" }} />
+                      </Button>
+                    </div>
+                  </div>
+                </>
+              ))
+            : cartItems?.map((item) => (
+                <>
+                  <div key={Math.random()} className={styles.cart}>
+                    <div className={styles.cartHeader}>
+                      <h4
+                        style={{
+                          maxWidth: "8rem",
+                          overflow: "scroll",
+                          fontSize: "14px",
+                        }}
+                      >
+                        {item?.name}
+                      </h4>
+                    </div>
+                    <div className={styles.productQuantity}>
+                      <Button
+                        className={styles.buttons}
+                        variant="outlined"
+                        style={{
+                          minWidth: "1rem",
+                          backgroundColor: "transparent",
+                          border: "none",
+                        }}
+                        onClick={() => {
+                          if (item.quantity > 1) {
+                            item.quantity -= 1;
+                            setCartItems([...cartItems]);
+                            setCartTotal(
+                              cartItems.reduce(function (a, b) {
+                                return a + b.price * b.quantity;
+                              }, 0)
+                            );
+                            dispatch({ type: "CART", payload: cartItems });
+                          } else if (
+                            item.quantity - 1 === 0 &&
+                            cartItems.length - 1 !== 0
+                          ) {
+                            setCartItems(
+                              cartItems.filter((product) => product !== item)
+                            );
+                            setCartTotal(
+                              cart.reduce(function (a, b) {
+                                return a + b.price * b.quantity;
+                              }, 0)
+                            );
+                            dispatch({ type: "CART", payload: cartItems });
+                          } else {
+                            {
+                              setCartItems([]);
+                              setCartTotal(0);
+                              dispatch({ type: "CART", payload: [] });
+                            }
+                          }
+                        }}
+                      >
+                        <ArrowCircleDownIcon style={{ fontSize: "2rem" }} />
+                      </Button>
+                      <h4>x{item?.quantity}</h4>
+                      <Button
+                        style={{
+                          minWidth: "1rem",
+                          backgroundColor: "transparent",
+                          border: "none",
+                        }}
+                        variant="outlined"
+                        className={styles.buttons}
+                        onClick={() => {
+                          item.quantity += 1;
+                          setCartItems([...cartItems]);
+                          setCartTotal(
+                            cartItems.reduce(function (a, b) {
+                              return a + b.price * b.quantity;
+                            }, 0)
+                          );
+                          dispatch({ type: "CART", payload: cartItems });
+                        }}
+                      >
+                        <ArrowCircleUpIcon style={{ fontSize: "2rem" }} />
+                      </Button>
+                    </div>
+                  </div>
+                </>
+              ))}
+
+          {cart.length === 0 && (
+            <p style={{ padding: "1rem" }}>Sepetiniz boş.</p>
+          )}
+        </Modal.Body>
+        <Modal.Footer className={styles.cartFooter}>
+          {cart.length > 0 && <div>Toplam: ₺{cartTotal}</div>}
+          {cart.length > 0 && (
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleOpenIsSure}
+            >
+              Siparişi Onayla
+            </Button>
+          )}
+        </Modal.Footer>
       </Modal>
       <navbar className={styles.navbar}>
+        <IconButton onClick={() => setOpen(true)}>
+          <MenuIcon style={{ color: "white", fontSize: "2rem" }} />
+        </IconButton>
         {menu?.storeLogo?.includes("cloudinary") ? (
           <img src={menu?.storeLogo} alt="Logo" className={styles.logo} />
         ) : (
           <h4 className={styles.storeName}>{menu?.storeName.toUpperCase()}</h4>
         )}
-        <IconButton onClick={() => setOpen(true)}>
-          <MenuIcon style={{ color: "white", fontSize: "2rem" }} />
-        </IconButton>
+        <div className={styles.cart}>
+          <Badge
+            badgeContent={quantity}
+            color="primary"
+            onClick={handleOpenCart}
+            style={{ padding: "6px" }}
+          >
+            <ShoppingCartOutlined style={{ color: "#f7ede2" }} />
+          </Badge>
+        </div>
         <SwipeableDrawer
           anchor="right"
           open={open}
@@ -276,7 +587,6 @@ const StoreMenu = ({ menu, number }) => {
             ))}
         </ul>
       )}
-
       <footer></footer>
     </div>
   );
