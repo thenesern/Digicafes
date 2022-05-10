@@ -238,10 +238,13 @@ const UserDashboard = ({ userOrder, userId }) => {
 
     try {
       setIsFetching(true);
-      const uploadRes = await axios.post(
-        "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
-        data
-      );
+      let uploadRes;
+      if (file) {
+        uploadRes = await axios.post(
+          "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
+          data
+        );
+      }
 
       let newProducts = products.filter((c) => c.name !== name);
 
