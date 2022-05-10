@@ -60,6 +60,8 @@ const StoreMenu = ({ menu, category, order, number }) => {
     setProductDescription("");
     setOrderNotes("");
   };
+  console.log(cartItems);
+  console.log(cart);
   const [isFetching, setIsFetching] = useState(false);
   const filtered = menu?.products.filter((a) => a.category.includes(category));
   const [isSuccess, setIsSuccess] = useState(false);
@@ -75,6 +77,8 @@ const StoreMenu = ({ menu, category, order, number }) => {
     if (isSure) {
       handleCartOrder();
       setIsSure(false);
+      dispatch({ type: "CART", payload: [] });
+      setCartItems([]);
       handleCloseOpenIsSure();
     }
   }, [isSure]);
