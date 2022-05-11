@@ -34,6 +34,14 @@ handler.post(async (req, res) => {
     quantity: req.body.quantity,
   });
   await newOrder.save();
+  const newOrder2 = new Order({
+    product: "6258375f9e1d43dfdd2eb688",
+    user: user?._id,
+    createdAt: req.body.createdAt,
+    expiry: date,
+    quantity: req.body.quantity,
+  });
+  await newOrder2.save();
   await db.disconnect();
 
   res.send({
