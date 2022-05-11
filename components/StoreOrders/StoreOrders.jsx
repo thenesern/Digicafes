@@ -2,11 +2,19 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { trTR } from "@mui/x-data-grid";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 // Styles
 import classes from "./StoreOrders.module.css";
 import { useState } from "react";
+import moment from "moment";
 
 const StoreOrders = (props) => {
+  const now = new Date();
+  const date3 = moment(now).subtract(3, "minutes").toDate();
+  const date2 = moment(now).subtract(2, "minutes").toDate();
+  const date1 = moment(now).subtract(1, "minutes").toDate();
+  const date = moment(now).subtract(0, "minutes").toDate();
+
   const callColumns = [
     {
       field: "tableNum",
@@ -58,7 +66,7 @@ const StoreOrders = (props) => {
     {
       field: "name",
       headerName: "Sipariş",
-      flex: 3,
+      flex: 2,
       headerClassName: "dark",
       renderCell: (params) => {
         return (
@@ -115,6 +123,56 @@ const StoreOrders = (props) => {
             <span>
               {new Date(params.row.createdAt).toLocaleString().split(" ")[1]}
             </span>
+
+            {new Date(params.row.createdAt).toLocaleString().split(" ")[0] ===
+            new Date().toLocaleString().split(" ")[0] ? (
+              new Date(params.row.createdAt)
+                .toLocaleString()
+                .split(" ")[1]
+                .split(":")[0] ===
+              new Date().toLocaleString().split(" ")[1].split(":")[0] ? (
+                +date.toLocaleString("tr-TR").split(" ")[1].split(":")[1] ===
+                +new Date(params.row.createdAt)
+                  .toLocaleString("tr-TR")
+                  .split(" ")[1]
+                  .split(":")[1] ? (
+                  <AccessTimeIcon color="error" />
+                ) : date1
+                    .toLocaleString("tr-TR")
+                    .split(" ")[1]
+                    .split(":")[1] ===
+                  +new Date(params.row.createdAt)
+                    .toLocaleString("tr-TR")
+                    .split(" ")[1]
+                    .split(":")[1] ? (
+                  <AccessTimeIcon color="error" />
+                ) : +date2
+                    .toLocaleString("tr-TR")
+                    .split(" ")[1]
+                    .split(":")[1] ===
+                  +new Date(params.row.createdAt)
+                    .toLocaleString("tr-TR")
+                    .split(" ")[1]
+                    .split(":")[1] ? (
+                  <AccessTimeIcon color="error" />
+                ) : +date3
+                    .toLocaleString("tr-TR")
+                    .split(" ")[1]
+                    .split(":")[1] ===
+                  +new Date(params.row.createdAt)
+                    .toLocaleString("tr-TR")
+                    .split(" ")[1]
+                    .split(":")[1] ? (
+                  <AccessTimeIcon color="error" />
+                ) : (
+                  ""
+                )
+              ) : (
+                ""
+              )
+            ) : (
+              ""
+            )}
           </div>
         );
       },

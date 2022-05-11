@@ -34,7 +34,6 @@ const StoreOrderPanel = ({ data, order }) => {
       setTimeout(() => setRefreshToken(Math.random()), 15000);
     });
   }, [refreshToken]);
-
   async function retrieveData() {
     try {
       const menus = await axios.post(`/api/qr/v2/${storeName}/orders`, {

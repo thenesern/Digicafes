@@ -227,11 +227,14 @@ const StoreMenu = ({ menu, number }) => {
         <Modal.Body>
           <h5>Not Ekle</h5>
           <Textarea
+            style={{ fontSize: "12px" }}
             placeholder="Mesajınız. (Boş Bırakabilirsiniz)"
             onChange={(e) => setOrderNotes(e.target.value)}
           ></Textarea>
         </Modal.Body>
-        <Modal.Footer style={{ display: "flex", gap: "2rem" }}>
+        <Modal.Footer
+          style={{ display: "flex", justifyContent: "space-between" }}
+        >
           <Button variant="outlined" onClick={handleCloseOpenIsSure}>
             Vazgeç
           </Button>
@@ -646,10 +649,12 @@ const StoreMenu = ({ menu, number }) => {
               <Modal.Header>
                 <h1>Emin misiniz?</h1>
               </Modal.Header>
-              <Modal.Body style={{ margin: "1rem 10px" }}>
+              <Modal.Body style={{ margin: "1rem 10px", textAlign: "center" }}>
                 <p>Garson Çağrınız iletilecek.</p>
               </Modal.Body>
-              <Modal.Footer>
+              <Modal.Footer
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
                 <Button variant="contained" onClick={handleCloseWaiterModal}>
                   Vazgeç
                 </Button>
@@ -676,9 +681,13 @@ const StoreMenu = ({ menu, number }) => {
                 <h1>Emin misiniz?</h1>
               </Modal.Header>
               <Modal.Body style={{ margin: "1rem 10px" }}>
-                <p>Hesap İsteğiniz iletilecek.</p>
+                <p style={{ textAlign: "center" }}>
+                  Hesap İsteğiniz iletilecek.
+                </p>
               </Modal.Body>
-              <Modal.Footer>
+              <Modal.Footer
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
                 <Button variant="contained" onClick={handleCloseTableModal}>
                   Vazgeç
                 </Button>
