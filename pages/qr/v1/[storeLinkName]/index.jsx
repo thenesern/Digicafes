@@ -96,7 +96,7 @@ const StoreMenu = ({ menu }) => {
                       try {
                         setIsFetching(true);
                         Router.push(
-                          `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${fav?.category[0]}`
+                          `/qr/v1/${menu?.storeLinkName}/products/${fav?.category[0]}`
                         );
                       } catch (err) {
                         console.log(err);
