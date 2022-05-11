@@ -25,7 +25,7 @@
   grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 2rem;
   padding: 1rem;
 }
 .favsBox {
@@ -35,7 +35,7 @@
   flex-direction: column;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-  width: 90%;
+  width: 96%;
   margin: 1rem auto;
 }
 .favsName {
