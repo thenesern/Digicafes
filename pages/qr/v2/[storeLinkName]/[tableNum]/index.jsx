@@ -4,6 +4,7 @@ import styles from "./store.module.css";
 import db from "../../../../../utils/db.js";
 import { Loading, Modal, Spacer, Textarea, Link } from "@nextui-org/react";
 import { Badge } from "@material-ui/core";
+import digicafes from "../../../../../assets/digi_logo.svg";
 import QRMenu from "../../../../../models/QRMenu2Model.js";
 import {
   Box,
@@ -49,6 +50,42 @@ const StoreMenu = ({ menu, number }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [openCart, setOpenCart] = useState(false);
   const [listType, setListType] = useState(menu?.listType);
+  const [favs, setFavs] = useState(
+    menu?.orders?.map((o) => o.cartItems.map((a) => a.name).toString())
+  );
+  const [favItem, setFavItem] = useState();
+  const [favItem2, setFavItem2] = useState();
+  const [favItem3, setFavItem3] = useState();
+  let m = 0;
+  const [favItemCount, setFavItemCount] = useState(null);
+
+  function setFavItems() {
+    for (let i = 0; i < favs?.length; i++) {
+      for (let j = i; j < favs?.length; j++) {
+        if (favs[i] == favs[j]) m++;
+        if (favItemCount < m) {
+          favItemCount = m;
+          if (favs[i].split(",")) {
+            setFavItem(favs[i].split(",")[0]);
+          }
+          if (favs[i - 1]?.split(",")) {
+            setFavItem2(favs[i - 1].split(",")[0]);
+            setFavItem3(favs[i - 1].split(",")[1]);
+          } else {
+            setFavItem(favs[i]);
+            setFavItem2(favs[i - 1]);
+            setFavItem2(favs[i - 2]);
+          }
+          setFavItemCount(favItemCount);
+        }
+      }
+      m = 0;
+    }
+  }
+  useEffect(() => {
+    setFavItems();
+  }, []);
+
   const quantity = cart?.length;
   useEffect(() => {
     if (isSuccess) {
@@ -86,6 +123,7 @@ const StoreMenu = ({ menu, number }) => {
       handleCloseOpenIsSure();
     }
   }, [isSure]);
+
   const handleCartOrder = async () => {
     setIsFetching(true);
     const createdAt = new Date();
@@ -475,119 +513,202 @@ const StoreMenu = ({ menu, number }) => {
         </div>
       )}
       {menu?.categories.length > 0 && (
-        <ul className={styles.list}>
-          <Modal
-            style={{
-              background: "transparent",
-              boxShadow: "none",
-            }}
-            preventClose
-            aria-labelledby="modal-title"
-            open={isFetching}
-          >
-            <Modal.Body>
-              <Loading color="white" size="xl" />
-              <Spacer />
-            </Modal.Body>
-          </Modal>
-          <Modal
-            style={{ width: "90%", margin: "0 auto" }}
-            onClose={handleCloseWaiterModal}
-            aria-labelledby="modal-title"
-            open={waiterModal}
-          >
-            <Modal.Header>
-              <h1>Emin misiniz?</h1>
-            </Modal.Header>
-            <Modal.Body style={{ margin: "1rem 10px" }}>
-              <p>Garson Çağrınız iletilecek.</p>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="contained" onClick={handleCloseWaiterModal}>
-                Vazgeç
-              </Button>
-              <Button
-                style={{ marginLeft: "2rem " }}
-                variant="contained"
-                color="secondary"
-                onClick={() => {
-                  handleCalls({ callName: "Garson Çağrısı" });
-                  handleCloseWaiterModal();
-                }}
-              >
-                Onayla
-              </Button>
-            </Modal.Footer>
-          </Modal>
-          <Modal
-            style={{ width: "90%", margin: "0 auto" }}
-            onClose={handleCloseTableModal}
-            aria-labelledby="modal-title"
-            open={tableModal}
-          >
-            <Modal.Header>
-              <h1>Emin misiniz?</h1>
-            </Modal.Header>
-            <Modal.Body style={{ margin: "1rem 10px" }}>
-              <p>Hesap İsteğiniz iletilecek.</p>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="contained" onClick={handleCloseTableModal}>
-                Vazgeç
-              </Button>
-              <Button
-                style={{ marginLeft: "2rem " }}
-                variant="contained"
-                color="secondary"
-                onClick={() => {
-                  handleCalls({ callName: "Hesap Çağrısı" });
-                  handleCloseTableModal();
-                }}
-              >
-                Onayla
-              </Button>
-            </Modal.Footer>
-          </Modal>
-          {menu &&
-            menu?.categories?.map((m) => (
-              <div
-                key={m?.name}
-                className={styles.listItem}
-                onClick={() => {
-                  try {
-                    setIsFetching(true);
-                    Router.push(
-                      `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${m?.name}`
-                    );
-                  } catch (err) {
-                    console.log(err);
-                    setIsFetching(false);
-                  }
-                }}
-              >
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    position: "relative",
+        <>
+          {menu?.orders.length >= 3 && (
+            <div className={styles.favsBox}>
+              <h3 className={styles.favsHeader}>En Sevilenler</h3>
+              <div className={styles.favs}>
+                {menu?.products
+                  .filter((p) => p.name === favItem2)
+                  .map((a) => (
+                    <div
+                      key={a?._id}
+                      onClick={() => {
+                        try {
+                          setIsFetching(true);
+                          Router.push(
+                            `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${a?.category[0]}`
+                          );
+                        } catch (err) {
+                          console.log(err);
+                          setIsFetching(false);
+                        }
+                      }}
+                      className={styles.favsItem}
+                    >
+                      <img src={a?.image} className={styles.favsImage} />
+                      <h4 className={styles.favsName}>{a?.name}</h4>
+                    </div>
+                  ))}
+                {menu?.products
+                  .filter((p) => p.name === favItem)
+                  .map((a) => (
+                    <div
+                      key={a?._id}
+                      className={styles.favsItem}
+                      onClick={() => {
+                        try {
+                          setIsFetching(true);
+                          Router.push(
+                            `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${a?.category[0]}`
+                          );
+                        } catch (err) {
+                          console.log(err);
+                          setIsFetching(false);
+                        }
+                      }}
+                    >
+                      <img src={a?.image} className={styles.favsImage} />
+                      <h4 className={styles.favsName}>{a?.name}</h4>
+                    </div>
+                  ))}
+                {menu?.products
+                  .filter((p) => p.name === favItem3)
+                  .map((a) => (
+                    <div
+                      key={a?._id}
+                      className={styles.favsItem}
+                      onClick={() => {
+                        try {
+                          setIsFetching(true);
+                          Router.push(
+                            `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${a?.category[0]}`
+                          );
+                        } catch (err) {
+                          console.log(err);
+                          setIsFetching(false);
+                        }
+                      }}
+                    >
+                      {a?.image && (
+                        <img src={a?.image} className={styles.favsImage} />
+                      )}
+                      <h4 className={styles.favsName}>{a?.name}</h4>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
+          <ul className={styles.list}>
+            <Modal
+              style={{
+                background: "transparent",
+                boxShadow: "none",
+              }}
+              preventClose
+              aria-labelledby="modal-title"
+              open={isFetching}
+            >
+              <Modal.Body>
+                <Loading color="white" size="xl" />
+                <Spacer />
+              </Modal.Body>
+            </Modal>
+            <Modal
+              style={{ width: "90%", margin: "0 auto" }}
+              onClose={handleCloseWaiterModal}
+              aria-labelledby="modal-title"
+              open={waiterModal}
+            >
+              <Modal.Header>
+                <h1>Emin misiniz?</h1>
+              </Modal.Header>
+              <Modal.Body style={{ margin: "1rem 10px" }}>
+                <p>Garson Çağrınız iletilecek.</p>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="contained" onClick={handleCloseWaiterModal}>
+                  Vazgeç
+                </Button>
+                <Button
+                  style={{ marginLeft: "2rem " }}
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => {
+                    handleCalls({ callName: "Garson Çağrısı" });
+                    handleCloseWaiterModal();
                   }}
                 >
-                  <Image
-                    priority
-                    layout="fill"
-                    src={m?.image}
-                    className={styles.img}
-                    alt={m?.name}
-                  ></Image>
+                  Onayla
+                </Button>
+              </Modal.Footer>
+            </Modal>
+            <Modal
+              style={{ width: "90%", margin: "0 auto" }}
+              onClose={handleCloseTableModal}
+              aria-labelledby="modal-title"
+              open={tableModal}
+            >
+              <Modal.Header>
+                <h1>Emin misiniz?</h1>
+              </Modal.Header>
+              <Modal.Body style={{ margin: "1rem 10px" }}>
+                <p>Hesap İsteğiniz iletilecek.</p>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="contained" onClick={handleCloseTableModal}>
+                  Vazgeç
+                </Button>
+                <Button
+                  style={{ marginLeft: "2rem " }}
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => {
+                    handleCalls({ callName: "Hesap Çağrısı" });
+                    handleCloseTableModal();
+                  }}
+                >
+                  Onayla
+                </Button>
+              </Modal.Footer>
+            </Modal>
+            {menu &&
+              menu?.categories?.map((m) => (
+                <div
+                  key={m?.name}
+                  className={styles.listItem}
+                  onClick={() => {
+                    try {
+                      setIsFetching(true);
+                      Router.push(
+                        `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${m?.name}`
+                      );
+                    } catch (err) {
+                      console.log(err);
+                      setIsFetching(false);
+                    }
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      position: "relative",
+                    }}
+                  >
+                    <Image
+                      priority
+                      layout="fill"
+                      src={m?.image}
+                      className={styles.img}
+                      alt={m?.name}
+                    ></Image>
+                  </div>
+                  <div className={styles.titleBack}>
+                    <h3 className={styles.title}>{m?.name}</h3>
+                  </div>
                 </div>
-                <div className={styles.titleBack}>
-                  <h3 className={styles.title}>{m?.name}</h3>
-                </div>
-              </div>
-            ))}
-        </ul>
+              ))}
+          </ul>
+        </>
       )}
-      <footer></footer>
+      <footer className={styles.footer}>
+        <p>Kafe, Restoran ve Oteller için Dijital Menü çözümleri.</p>
+        <a href="mailto: support@digicafes.com">
+          <Image src={digicafes} width={160} height={160} />
+        </a>
+        <span>©{new Date().getFullYear()} Tüm hakları saklıdır.</span>
+      </footer>
     </div>
   );
 };
