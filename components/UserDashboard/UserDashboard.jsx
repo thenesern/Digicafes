@@ -894,7 +894,11 @@ const UserDashboard = ({ userOrder, userId }) => {
                           e.preventDefault();
                           if (
                             storeName?.length > 2 &&
-                            !containsSpecialChars(storeName)
+                            !containsSpecialChars(storeName) &&
+                            menusv1.filter((s) => s.storeName === storeName)
+                              .length === 0 &&
+                            menusv2.filter((s) => s.storeName === storeName)
+                              .length === 0
                           ) {
                             setSecondStep(true);
                           }
