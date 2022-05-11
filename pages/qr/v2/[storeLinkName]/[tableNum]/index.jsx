@@ -85,7 +85,29 @@ const StoreMenu = ({ menu, number }) => {
   useEffect(() => {
     setFavItems();
   }, []);
-
+  useEffect(() => {
+    if (
+      menu?.products.filter(
+        (p) => p?.name?.toLowerCase() === favItem?.toLowerCase()
+      ).length === 0
+    ) {
+      setFavItem(menu?.products[1].name);
+    }
+    if (
+      menu?.products.filter(
+        (p) => p?.name?.toLowerCase() === favItem2?.toLowerCase()
+      ).length === 0
+    ) {
+      setFavItem2(menu?.products[1].name);
+    }
+    if (
+      menu?.products.filter(
+        (p) => p?.name?.toLowerCase() === favItem3?.toLowerCase()
+      ).length === 0
+    ) {
+      setFavItem3(menu?.products[1].name);
+    }
+  }, [favItem, favItem2, favItem3]);
   const quantity = cart?.length;
   useEffect(() => {
     if (isSuccess) {
@@ -165,6 +187,7 @@ const StoreMenu = ({ menu, number }) => {
       console.log(err);
     }
   };
+
   return (
     <div className={styles.container}>
       <Modal
@@ -519,7 +542,9 @@ const StoreMenu = ({ menu, number }) => {
               <h3 className={styles.favsHeader}>En Sevilenler</h3>
               <div className={styles.favs}>
                 {menu?.products
-                  .filter((p) => p.name === favItem2)
+                  .filter(
+                    (p) => p?.name?.toLowerCase() === favItem2?.toLowerCase()
+                  )
                   .map((a) => (
                     <div
                       key={a?._id}
@@ -541,7 +566,9 @@ const StoreMenu = ({ menu, number }) => {
                     </div>
                   ))}
                 {menu?.products
-                  .filter((p) => p.name === favItem)
+                  .filter(
+                    (p) => p?.name?.toLowerCase() === favItem?.toLowerCase()
+                  )
                   .map((a) => (
                     <div
                       key={a?._id}
@@ -563,7 +590,9 @@ const StoreMenu = ({ menu, number }) => {
                     </div>
                   ))}
                 {menu?.products
-                  .filter((p) => p.name === favItem3)
+                  .filter(
+                    (p) => p?.name?.toLowerCase() === favItem3?.toLowerCase()
+                  )
                   .map((a) => (
                     <div
                       key={a?._id}
