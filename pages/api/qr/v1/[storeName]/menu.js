@@ -7,6 +7,12 @@ const handler = nc();
 
 handler.use(isAuth);
 
+handler.get(async (req, res) => {
+  await db.connect();
+  const menusv1 = await QRMenu.find();
+  res.json({ status: "success", menusv1 });
+});
+
 handler.post(async (req, res) => {
   await db.connect();
   const newMenu = new QRMenu({

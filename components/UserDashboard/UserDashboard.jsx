@@ -83,6 +83,8 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [tableNum, setTableNum] = useState(menu?.tableNum || null);
   const [category, setCategory] = useState([]);
   const [listType, setListType] = useState(menu?.listType || null);
+  const [menusv1, setMenusv1] = useState([]);
+  const [menusv2, setMenusv2] = useState([]);
   const [version, setVersion] = useState(
     order?.product?.name === "Dijital Menü - V1" ? "v1" : "v2"
   );
@@ -165,6 +167,29 @@ const UserDashboard = ({ userOrder, userId }) => {
       typeof value === "string" ? value.split(",") : value
     );
   };
+
+  useEffect(() => {
+    if (isFirst) {
+      const getMenus = async () => {
+        await axios
+          .get("/api/qr/v1/menus", {
+            headers: { authorization: `Bearer ${user.token}` },
+          })
+          .then((response) => {
+            setMenusv1(response.data.menusv1);
+          });
+        await axios
+          .get("/api/qr/v2/menus", {
+            headers: { authorization: `Bearer ${user.token}` },
+          })
+          .then((response) => {
+            setMenusv2(response.data.menusv2);
+          });
+      };
+      getMenus();
+    }
+  }, [isFirst]);
+
   const handleUpdateChange = (event) => {
     const {
       target: { value },
@@ -849,6 +874,11 @@ const UserDashboard = ({ userOrder, userId }) => {
                           ? "İş Yeri Adı minimum 3 karakter olmalıdır!"
                           : containsSpecialChars(storeName) === true
                           ? "İş Yeri Adınız Özel Karakter İçermemelidir!"
+                          : menusv1.filter((s) => s.storeName === storeName)
+                              .length > 0 ||
+                            menusv2.filter((s) => s.storeName === storeName)
+                              .length > 0
+                          ? "Bu iş yeri adı kullanılmaktadır. Lütfen başka bir ad giriniz."
                           : ""
                       }
                     ></TextField>
