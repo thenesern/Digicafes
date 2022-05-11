@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import styles from "./store.module.css";
 import db from "../../../../../utils/db.js";
 import { Loading, Modal, Spacer, Textarea, Link } from "@nextui-org/react";
@@ -69,12 +69,38 @@ const StoreMenu = ({ menu, number }) => {
             setFavItem(favs[i].split(",")[0]);
           }
           if (favs[i - 1]?.split(",")) {
-            setFavItem2(favs[i - 1].split(",")[0]);
-            setFavItem3(favs[i - 1].split(",")[1]);
+            setFavItem2(favs[i - 1]?.split(",")[0]);
+            setFavItem3(favs[i - 1]?.split(",")[1]);
           } else {
             setFavItem(favs[i]);
             setFavItem2(favs[i - 1]);
             setFavItem2(favs[i - 2]);
+          }
+          if (
+            menu?.products.filter(
+              (p) =>
+                p?.name?.toLowerCase() === favs[i]?.split(",")[0]?.toLowerCase()
+            ).length === 0
+          ) {
+            setFavItem(menu?.products[1].name);
+          }
+          if (
+            menu?.products.filter(
+              (p) =>
+                p?.name?.toLowerCase() ===
+                favs[i - 1]?.split(",")[0]?.toLowerCase()
+            ).length === 0
+          ) {
+            setFavItem2(menu?.products[1].name);
+          }
+          if (
+            menu?.products.filter(
+              (p) =>
+                p?.name?.toLowerCase() ===
+                favs[i - 1]?.split(",")[1]?.toLowerCase()
+            ).length === 0
+          ) {
+            setFavItem3(menu?.products[1].name);
           }
           setFavItemCount(favItemCount);
         }
@@ -82,32 +108,10 @@ const StoreMenu = ({ menu, number }) => {
       m = 0;
     }
   }
-  useEffect(() => {
+  useLayoutEffect(() => {
     setFavItems();
   }, []);
-  useEffect(() => {
-    if (
-      menu?.products.filter(
-        (p) => p?.name?.toLowerCase() === favItem?.toLowerCase()
-      ).length === 0
-    ) {
-      setFavItem(menu?.products[1].name);
-    }
-    if (
-      menu?.products.filter(
-        (p) => p?.name?.toLowerCase() === favItem2?.toLowerCase()
-      ).length === 0
-    ) {
-      setFavItem2(menu?.products[1].name);
-    }
-    if (
-      menu?.products.filter(
-        (p) => p?.name?.toLowerCase() === favItem3?.toLowerCase()
-      ).length === 0
-    ) {
-      setFavItem3(menu?.products[1].name);
-    }
-  }, [favItem, favItem2, favItem3]);
+
   const quantity = cart?.length;
   useEffect(() => {
     if (isSuccess) {
