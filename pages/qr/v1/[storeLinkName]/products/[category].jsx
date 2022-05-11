@@ -103,7 +103,7 @@ const StoreMenu = ({ menu, category }) => {
             </ul>
           </SwipeableDrawer>
         </div>
-      </navbar>{" "}
+      </navbar>
       <Modal
         open={openModal}
         style={{

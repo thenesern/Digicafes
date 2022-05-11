@@ -10,11 +10,20 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Order from "../../../../models/OrderModel.js";
 import Image from "next/image";
 import FmdBadIcon from "@mui/icons-material/FmdBad";
+import digicafes from "../../../../assets/digi_logo.svg";
+import { useEffect } from "react";
 
 const StoreMenu = ({ menu }) => {
   const [open, setOpen] = useState(false);
   const Router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
+  const max = menu?.products.length;
+  const min = 1;
+  const [favs, setFavs] = useState();
+  const [array, setArray] = useState([]);
+  useEffect(() => {
+    setArray(menu?.products.sort(() => Math.random() - 0.5).splice(0, 3));
+  }, []);
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
@@ -75,63 +84,97 @@ const StoreMenu = ({ menu }) => {
         </div>
       )}
       {menu?.categories.length > 0 && (
-        <ul className={styles.list}>
-          <Modal
-            style={{
-              background: "transparent",
-              boxShadow: "none",
-            }}
-            preventClose
-            aria-labelledby="modal-title"
-            open={isFetching}
-          >
-            <Modal.Body>
-              <Loading color="white" size="xl" />
-              <Spacer />
-            </Modal.Body>
-          </Modal>
+        <>
+          {menu?.products.length > 3 && (
+            <div className={styles.favsBox}>
+              <h3 className={styles.favsHeader}>En Sevilenler</h3>
+              <div className={styles.favs}>
+                {array?.map((fav) => (
+                  <div
+                    key={fav?._id}
+                    onClick={() => {
+                      try {
+                        setIsFetching(true);
+                        Router.push(
+                          `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${fav?.category[0]}`
+                        );
+                      } catch (err) {
+                        console.log(err);
+                        setIsFetching(false);
+                      }
+                    }}
+                    className={styles.favsItem}
+                  >
+                    <img src={fav?.image} className={styles.favsImage} />
+                    <h4 className={styles.favsName}>{fav?.name}</h4>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          <ul className={styles.list}>
+            <Modal
+              style={{
+                background: "transparent",
+                boxShadow: "none",
+              }}
+              preventClose
+              aria-labelledby="modal-title"
+              open={isFetching}
+            >
+              <Modal.Body>
+                <Loading color="white" size="xl" />
+                <Spacer />
+              </Modal.Body>
+            </Modal>
 
-          {menu &&
-            menu?.categories?.map((m) => (
-              <div
-                key={m?.name}
-                className={styles.listItem}
-                onClick={() => {
-                  try {
-                    setIsFetching(true);
-                    Router.push(
-                      `/qr/v1/${menu?.storeLinkName}/products/${m?.name}`
-                    );
-                  } catch (err) {
-                    console.log(err);
-                    setIsFetching(false);
-                  }
-                }}
-              >
+            {menu &&
+              menu?.categories?.map((m) => (
                 <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    position: "relative",
+                  key={m?.name}
+                  className={styles.listItem}
+                  onClick={() => {
+                    try {
+                      setIsFetching(true);
+                      Router.push(
+                        `/qr/v1/${menu?.storeLinkName}/products/${m?.name}`
+                      );
+                    } catch (err) {
+                      console.log(err);
+                      setIsFetching(false);
+                    }
                   }}
                 >
-                  <Image
-                    priority
-                    layout="fill"
-                    src={m?.image}
-                    className={styles.img}
-                    alt={m?.name}
-                  ></Image>
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      position: "relative",
+                    }}
+                  >
+                    <Image
+                      priority
+                      layout="fill"
+                      src={m?.image}
+                      className={styles.img}
+                      alt={m?.name}
+                    ></Image>
+                  </div>
+                  <div className={styles.titleBack}>
+                    <h3 className={styles.title}>{m?.name}</h3>
+                  </div>
                 </div>
-                <div className={styles.titleBack}>
-                  <h3 className={styles.title}>{m?.name}</h3>
-                </div>
-              </div>
-            ))}
-        </ul>
+              ))}
+          </ul>
+        </>
       )}
-
-      <footer></footer>
+      <footer className={styles.footer}>
+        <p>Kafe, Restoran ve Oteller için Dijital Menü çözümleri.</p>
+        <a href="mailto: support@digicafes.com">
+          <Image src={digicafes} width={160} height={160} />
+        </a>
+        <span>©{new Date().getFullYear()} Tüm hakları saklıdır.</span>
+      </footer>
     </div>
   );
 };

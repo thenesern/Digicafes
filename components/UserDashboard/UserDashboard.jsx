@@ -1381,7 +1381,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             value={updateProduct}
                             inputProps={{ maxLength: 38 }}
                             onChange={(e) => setUpdateProduct(e.target.value)}
-                          />{" "}
+                          />
                         </div>
                         <div>
                           <InputLabel style={{ margin: "10px 0" }}>
@@ -1493,7 +1493,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                           height="160px"
                           style={{ objectFit: "contain" }}
                         ></img>
-                      )}{" "}
+                      )}
                       <div
                         style={{
                           display: "flex",

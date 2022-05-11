@@ -212,7 +212,7 @@ const StoreMenu = ({ menu, number }) => {
           <CheckCircleIcon style={{ fontSize: "8rem" }} color="success" />
           <h1>Talebiniz iletildi.</h1>
         </Modal.Body>
-      </Modal>{" "}
+      </Modal>
       <Modal
         style={{ width: "92%", margin: "0 auto", padding: "4px" }}
         open={openIsSure}
