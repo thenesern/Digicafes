@@ -1,13 +1,8 @@
 import React from "react";
 import styles from "./Widget.module.css";
 
-import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
-import { useEffect } from "react";
-import db from "../../../utils/db.js";
-import axios from "axios";
 import {
-  MonetizationOnOutlined,
   PersonOutlined,
   ShoppingCartOutlined,
   StoreMallDirectoryTwoTone,
@@ -45,20 +40,6 @@ const Widget = (props) => {
         ),
       };
       break;
-    case "earnings":
-      data = {
-        title: "Kazançlar",
-        isMoney: false,
-        link: "/admin/dashboard/kazanclar",
-        amount: props.earnings,
-        icon: (
-          <MonetizationOnOutlined
-            className={styles.icon}
-            style={{ color: "#606c38" }}
-          />
-        ),
-      };
-      break;
     case "products":
       data = {
         title: "Ürünler",
@@ -83,7 +64,7 @@ const Widget = (props) => {
         <span className={styles.counter}>
           {data?.isMoney && "$"} {data?.amount}
         </span>
-        <Link href={data.link} className={styles.link} passHref>
+        <Link href={data?.link} className={styles.link} passHref>
           <h6 className={styles.link}>Sayfaya Git - {data?.title}</h6>
         </Link>
       </div>

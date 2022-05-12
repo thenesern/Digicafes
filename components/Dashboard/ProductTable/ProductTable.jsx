@@ -74,7 +74,7 @@ const ProductTable = (props) => {
     {
       field: "_id",
       headerName: "ID",
-      flex: 1,
+      flex: 2,
     },
     {
       field: "name",
@@ -107,7 +107,7 @@ const ProductTable = (props) => {
     {
       field: "features",
       headerName: "Özellikler",
-      flex: 1,
+      flex: 2,
     },
   ];
   const [open, setOpen] = useState(false);

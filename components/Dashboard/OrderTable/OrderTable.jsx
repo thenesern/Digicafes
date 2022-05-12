@@ -62,12 +62,12 @@ const OrderTable = (props) => {
     {
       field: "_id",
       headerName: "Sipariş No.",
-      flex: 1.2,
+      flex: 2,
     },
     {
       field: "firstName",
       headerName: "Ad",
-      width: 100,
+      flex: 1,
       renderCell: (params) => {
         return (
           <div className={styles.userListItem}>
@@ -79,7 +79,7 @@ const OrderTable = (props) => {
     {
       field: "lastName",
       headerName: "Soyad",
-      width: 100,
+      flex: 1,
       renderCell: (params) => {
         return (
           <div className={styles.userListItem}>{params.row.user?.lastName}</div>
@@ -89,7 +89,7 @@ const OrderTable = (props) => {
     {
       field: "email",
       headerName: "E-mail",
-      flex: 1,
+      width: 200,
       renderCell: (params) => {
         return (
           <div className={styles.userListItem}>{params.row.user?.email}</div>
@@ -141,10 +141,12 @@ const OrderTable = (props) => {
     {
       field: "productName",
       headerName: "Plan Adı",
-      flex: 1,
+      width: 60,
       renderCell: (params) => {
         return (
-          <div className={styles.userListItem}>{params.row.product?.name}</div>
+          <div className={styles.userListItem}>
+            {params.row.product?.name.split("-")[1]}
+          </div>
         );
       },
     },
@@ -165,7 +167,7 @@ const OrderTable = (props) => {
     {
       field: "action",
       headerName: "İşlem",
-      width: 200,
+      width: 170,
       renderCell: (params) => {
         return (
           <div>
@@ -180,7 +182,19 @@ const OrderTable = (props) => {
                 );
               }}
             >
-              <span>Düzenle</span>
+              <span
+                style={{
+                  margin: "0",
+                  padding: "0",
+                  fontSize: "12px",
+                  width: "3rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                Düzenle
+              </span>
             </Button>
             <Button
               variant="outlined"
@@ -194,7 +208,19 @@ const OrderTable = (props) => {
                 setOpenDelete(true);
               }}
             >
-              <span>Sil</span>
+              <span
+                style={{
+                  margin: "0",
+                  padding: "0",
+                  fontSize: "12px",
+                  width: "1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                Sil
+              </span>
             </Button>
           </div>
         );

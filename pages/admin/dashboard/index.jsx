@@ -138,7 +138,6 @@ const Panel = ({ users, orders, products, userList }) => {
           <Widget type="users" users={users} />
           <Widget type="orders" orders={orders} />
           <Widget type="products" products={products} />
-          <Widget type="earnings" />
         </div>
         <div className={styles.chart}>
           <Line options={options} data={data} width="1000" height="500" />
@@ -148,13 +147,24 @@ const Panel = ({ users, orders, products, userList }) => {
   );
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   await db.connect();
-  const users = await User.find();
-  const orders = await Order.find();
-  const products = await Product.find();
+  const [users, orders, products] = await Promise.all([
+    await User.find(),
+    await Order.find(),
+    await Product.find(),
+  ]);
   await db.disconnect();
 
+  const signedUser = JSON.parse(context.req.cookies["userInfo"]) || null;
+  if (!signedUser.isAdmin) {
+    return {
+      redirect: {
+        destination: "/404",
+        permanent: false,
+      },
+    };
+  }
   return {
     props: {
       users: JSON.parse(

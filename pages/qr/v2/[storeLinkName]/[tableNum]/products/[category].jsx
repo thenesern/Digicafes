@@ -199,7 +199,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
       >
         <Box>
           <div className={styles.modalHeader}>
-            <h3>{productName}</h3>
+            <h3 className={styles.descHeader}>{productName}</h3>
             <span>₺{productPrice}</span>
           </div>
           <img src={productImage} alt="Menu" className={styles.modalImage} />

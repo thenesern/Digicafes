@@ -163,6 +163,9 @@
   width: 100%;
   cursor: pointer;
 }
+.descHeader {
+  font-size: 14px;
+}
 .modalHeader {
   display: flex;
   align-items: center;

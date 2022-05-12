@@ -73,17 +73,6 @@ const SideBar = () => {
             </Link>
           </li>
         </ul>
-        <h6 className={styles.header}>Kazançlar</h6>
-        <ul className={styles.list}>
-          <li className={styles.li}>
-            <Link href="/dashboard" className={styles.link} passHref>
-              <button className={styles.button}>
-                <BarChartOutlined style={{ color: "#f1faee" }} />
-                <h6 className={styles.title}>Kazançlar</h6>
-              </button>
-            </Link>
-          </li>
-        </ul>
       </div>
     </div>
   );

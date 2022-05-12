@@ -40,7 +40,7 @@ const UserTable = (props) => {
     {
       field: "_id",
       headerName: "ID",
-      flex: 1,
+      flex: 2,
     },
     {
       field: "firstName",
@@ -66,7 +66,7 @@ const UserTable = (props) => {
     {
       field: "createdAt",
       headerName: "Kayıt Tarihi",
-      flex: 1,
+      flex: 1.5,
       renderCell: (params) => {
         return (
           <div className={styles.userListItem}>{params.row.createdAt}</div>
@@ -76,7 +76,7 @@ const UserTable = (props) => {
     {
       field: "signedIn",
       headerName: "Son Giriş",
-      flex: 1,
+      flex: 1.5,
       renderCell: (params) => {
         return <div className={styles.userListItem}>{params.row.signedIn}</div>;
       },
@@ -84,13 +84,13 @@ const UserTable = (props) => {
     {
       field: "email",
       headerName: "E-mail",
-      width: 220,
+      width: 200,
     },
 
     {
       field: "action",
       headerName: "İşlem",
-      width: 200,
+      width: 180,
       renderCell: (params) => {
         return (
           <div className={styles.actions}>
@@ -104,7 +104,19 @@ const UserTable = (props) => {
                 setOpenUpdate(true);
               }}
             >
-              <span>Düzenle</span>
+              <span
+                style={{
+                  margin: "0",
+                  padding: "0",
+                  fontSize: "12px",
+                  width: "3rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                Düzenle
+              </span>
             </Button>
             <Button
               variant="outlined"
@@ -116,7 +128,19 @@ const UserTable = (props) => {
                 setOpenDelete(true);
               }}
             >
-              <span>Sil</span>
+              <span
+                style={{
+                  margin: "0",
+                  padding: "0",
+                  fontSize: "12px",
+                  width: "1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                Sil
+              </span>
             </Button>
           </div>
         );

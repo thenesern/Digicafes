@@ -49,12 +49,12 @@
   align-items: center;
   justify-content: center;
 }
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 1366px) {
   .table {
     font-size: 12px !important;
   }
   .tableDiv {
     width: 100%;
-    height: 36rem;
+    height: 40rem;
   }
 }
