@@ -17,6 +17,7 @@ const StoreMenu = ({ menu }) => {
   const [open, setOpen] = useState(false);
   const Router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
+  const [listType, setListType] = useState(menu?.listType);
   const max = menu?.products.length;
   const min = 1;
   const [favs, setFavs] = useState();
@@ -89,26 +90,46 @@ const StoreMenu = ({ menu }) => {
             <div className={styles.favsBox}>
               <h3 className={styles.favsHeader}>En Sevilenler</h3>
               <div className={styles.favs}>
-                {array?.map((fav) => (
-                  <div
-                    key={fav?._id}
-                    onClick={() => {
-                      try {
-                        setIsFetching(true);
-                        Router.push(
-                          `/qr/v1/${menu?.storeLinkName}/products/${fav?.category[0]}`
-                        );
-                      } catch (err) {
-                        console.log(err);
-                        setIsFetching(false);
-                      }
-                    }}
-                    className={styles.favsItem}
-                  >
-                    <img src={fav?.image} className={styles.favsImage} />
-                    <h4 className={styles.favsName}>{fav?.name}</h4>
-                  </div>
-                ))}
+                {listType === "image"
+                  ? array?.map((fav) => (
+                      <div
+                        key={fav?._id}
+                        onClick={() => {
+                          try {
+                            setIsFetching(true);
+                            Router.push(
+                              `/qr/v1/${menu?.storeLinkName}/products/${fav?.category[0]}`
+                            );
+                          } catch (err) {
+                            console.log(err);
+                            setIsFetching(false);
+                          }
+                        }}
+                        className={styles.favsItem}
+                      >
+                        <img src={fav?.image} className={styles.favsImage} />
+                        <h4 className={styles.favsName}>{fav?.name}</h4>
+                      </div>
+                    ))
+                  : array?.map((fav) => (
+                      <div
+                        key={fav?._id}
+                        onClick={() => {
+                          try {
+                            setIsFetching(true);
+                            Router.push(
+                              `/qr/v1/${menu?.storeLinkName}/products/${fav?.category[0]}`
+                            );
+                          } catch (err) {
+                            console.log(err);
+                            setIsFetching(false);
+                          }
+                        }}
+                        className={styles.favsItem}
+                      >
+                        <h4 className={styles.favsName}>{fav?.name}</h4>
+                      </div>
+                    ))}
               </div>
             </div>
           )}

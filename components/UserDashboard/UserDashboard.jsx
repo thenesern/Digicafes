@@ -61,6 +61,7 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [updateDescription, setUpdateDescription] = useState("");
   const [menu, setMenu] = useState(order?.menuv1 || order?.menuv2 || "");
   const [name, setName] = useState("");
+  const [subCategory, setSubCategory] = useState("");
   const [price, setPrice] = useState();
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -362,6 +363,7 @@ const UserDashboard = ({ userOrder, userId }) => {
         description,
         category,
         image: uploadRes?.data.url,
+        subCategory,
       });
       const updatedMenu = await axios.patch(
         `/api/qr/${version}/${menu?.storeName}/menu`,
@@ -380,6 +382,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       setName("");
       setDescription("");
       setPrice("");
+      setSubCategory("");
       setFile(null);
       enqueueSnackbar("Ürün Eklendi", { variant: "success" });
     } catch (err) {
@@ -1155,6 +1158,16 @@ const UserDashboard = ({ userOrder, userId }) => {
                             ))}
                           </Select>
                         </FormControl>
+                        <ListItem>
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="subCategory"
+                            onChange={(e) => setSubCategory(e.target.value)}
+                            label="Alt Kategori Adı (Boş Bırakabilirsiniz.)"
+                            inputProps={{ type: "text", maxLength: 38 }}
+                          ></TextField>
+                        </ListItem>
                         <ListItem>
                           <TextField
                             variant="outlined"

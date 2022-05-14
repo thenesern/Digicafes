@@ -13,6 +13,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { ShoppingCartOutlined } from "@material-ui/icons";
 import Order from "../../../../../models/OrderModel";
+import { useEffect } from "react";
 
 const StoreMenu = ({ menu, category }) => {
   const [open, setOpen] = useState(false);
@@ -24,6 +25,16 @@ const StoreMenu = ({ menu, category }) => {
   const [productDescription, setProductDescription] = useState("");
   const [productPrice, setProductPrice] = useState(null);
   const handleOpenModal = () => setOpenModal(true);
+  const [hasSubCategories, setHasSubCategories] = useState(
+    menu?.products.filter((p) => p.subCategory)
+  );
+  const [subCategories, setSubCategories] = useState(
+    hasSubCategories.map((c) => c.subCategory)
+  );
+  const [uniqueSubCategories, setUniqueSubCategories] = useState([
+    ...new Set(subCategories),
+  ]);
+
   const handleCloseModal = () => {
     setOpenModal(false);
     setProductName("");
@@ -32,7 +43,9 @@ const StoreMenu = ({ menu, category }) => {
     setProductDescription("");
   };
   const [isFetching, setIsFetching] = useState(false);
-  const filtered = menu?.products.filter((a) => a.category.includes(category));
+  const filtered = menu?.products.filter(
+    (a) => a.category.includes(category) && !a.subCategory
+  );
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
@@ -138,26 +151,74 @@ const StoreMenu = ({ menu, category }) => {
         </Modal.Body>
       </Modal>
       {listType === "image" ? (
-        <ul className={styles.list}>
-          {menu &&
-            filtered?.map((m) => (
-              <li
-                className={styles.listItem}
-                key={m?.name}
-                onClick={() => {
-                  setProductName(m?.name);
-                  setProductImage(m?.image);
-                  setProductPrice(m?.price);
-                  setProductDescription(m?.description);
-                  handleOpenModal();
-                }}
-              >
-                <img className={styles.img} src={m?.image} alt="" />
-                <h3 className={styles.name}>{m?.name}</h3>
-                <p className={styles.price}>₺{m?.price}</p>
-              </li>
-            ))}
-        </ul>
+        <>
+          {hasSubCategories.filter((c) => c.category.includes(category))
+            .length > 0
+            ? uniqueSubCategories.map((s) => (
+                <div
+                  key={s.name}
+                  style={{
+                    backgroundColor: "#F9F3EE",
+                    padding: "1rem",
+                    width: "90%",
+                    margin: "0 auto",
+                    borderRadius: "1rem",
+                  }}
+                >
+                  <h3
+                    key={s}
+                    style={{
+                      width: "100%",
+                      padding: "1rem 0",
+                      margin: "0",
+                      textAlign: "center",
+                    }}
+                  >
+                    {s}
+                  </h3>
+                  {hasSubCategories
+                    .filter((c) => c.subCategory === s)
+                    .map((c) => (
+                      <li
+                        className={styles.listItem}
+                        key={c?.name}
+                        onClick={() => {
+                          setProductName(c?.name);
+                          setProductImage(c?.image);
+                          setProductPrice(c?.price);
+                          setProductDescription(c?.description);
+                          handleOpenModal();
+                        }}
+                      >
+                        <img className={styles.img} src={c?.image} alt="" />
+                        <h3 className={styles.name}>{c?.name}</h3>
+                        <p className={styles.price}>₺{c?.price}</p>
+                      </li>
+                    ))}
+                </div>
+              ))
+            : ""}
+          <ul className={styles.list}>
+            {menu &&
+              filtered?.map((m) => (
+                <li
+                  className={styles.listItem}
+                  key={m?.name}
+                  onClick={() => {
+                    setProductName(m?.name);
+                    setProductImage(m?.image);
+                    setProductPrice(m?.price);
+                    setProductDescription(m?.description);
+                    handleOpenModal();
+                  }}
+                >
+                  <img className={styles.img} src={m?.image} alt="" />
+                  <h3 className={styles.name}>{m?.name}</h3>
+                  <p className={styles.price}>₺{m?.price}</p>
+                </li>
+              ))}
+          </ul>
+        </>
       ) : (
         <ul className={styles.textList}>
           <h2 style={{ textAlign: "center", marginTop: "0", color: "#001219" }}>
@@ -185,6 +246,46 @@ const StoreMenu = ({ menu, category }) => {
                 </div>
               </li>
             ))}
+          {hasSubCategories.filter((c) => c.category.includes(category))
+            .length > 0
+            ? uniqueSubCategories.map((s) => (
+                <div
+                  key={s.name}
+                  style={{
+                    backgroundColor: "#F9F3EE",
+                    padding: "1rem",
+                    borderRadius: "1rem",
+                  }}
+                >
+                  <h3
+                    key={s}
+                    style={{
+                      width: "100%",
+                      padding: "1rem 0",
+                      margin: "0",
+                      textAlign: "center",
+                    }}
+                  >
+                    {s}
+                  </h3>
+                  {hasSubCategories
+                    .filter((c) => c.subCategory === s)
+                    .map((c) => (
+                      <div key={c.name}>
+                        <div>
+                          <h3 className={styles.textListName}>{c?.name}</h3>
+                          {c?.description && (
+                            <p className={styles.textListDesc}>
+                              {c?.description}
+                            </p>
+                          )}
+                        </div>
+                        <p className={styles.textListPrice}>₺{c?.price}</p>
+                      </div>
+                    ))}
+                </div>
+              ))
+            : ""}
         </ul>
       )}
       <footer></footer>

@@ -44,6 +44,10 @@ const QRMenuSchema = new mongoose.Schema(
             required: true,
           },
         ],
+        subCategory: {
+          type: String,
+          unique: true,
+        },
         image: {
           type: String,
           required: false,

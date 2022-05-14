@@ -22,6 +22,7 @@ handler.post(async (req, res) => {
     categories: req.body.categories,
     owner: req.body.owner,
     listType: req.body.listType,
+    subCategory: req.body.subCategory,
   });
   const menu = await newMenu.save();
   await db.disconnect();
