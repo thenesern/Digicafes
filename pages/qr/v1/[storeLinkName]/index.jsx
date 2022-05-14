@@ -30,7 +30,7 @@ const StoreMenu = ({ menu }) => {
         {menu?.storeLogo?.includes("cloudinary") ? (
           <img src={menu?.storeLogo} alt="Logo" className={styles.logo} />
         ) : (
-          <h6 className={styles.logo}>{menu?.storeLogo}</h6>
+          <h4 className={styles.storeName}>{menu?.storeName.toUpperCase()}</h4>
         )}
         <IconButton onClick={() => setOpen(true)}>
           <MenuIcon style={{ color: "white", fontSize: "2rem" }} />

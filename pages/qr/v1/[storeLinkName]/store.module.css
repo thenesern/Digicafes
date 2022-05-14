@@ -12,7 +12,10 @@
   justify-content: center;
   border: 2px solid #fff;
 }
-
+.storeName {
+  color: #fff;
+  padding: 0 10px;
+}
 .list {
   list-style: none;
   width: 100%;
@@ -156,4 +159,22 @@
   line-height: 14px;
   cursor: pointer;
   color: #ffe8d6;
+}
+
+@media only screen and (max-width: 500px) {
+  .notFound {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 0;
+    height: 100vh;
+    flex-direction: column;
+    font-size: 12px;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  .notFound {
+    font-size: 10px;
+  }
 }
