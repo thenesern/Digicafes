@@ -668,7 +668,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       padding: 0,
     };
     QRCode.toDataURL(
-      `https://www.digicafes.com/qr/${version}/${storeLinkName}/1`,
+      `https://www.digicafes.com/qr/${version}/${storeLinkName}`,
       opts
     ).then(setSrc);
   }, [menu?.storeLinkName, version, storeLinkName]);
@@ -1040,6 +1040,18 @@ const UserDashboard = ({ userOrder, userId }) => {
                           QR Kodları İndir
                         </Button>
                       </Stack>
+                    )}
+                    {order?.menuv1 && (
+                      <a href={src} download={`${storeName}`}>
+                        <Button
+                          variant="outlined"
+                          className={styles.qrButtons}
+                          style={{ height: "2rem", width: "12rem" }}
+                          endIcon={<DownloadIcon />}
+                        >
+                          QR Kodu İndir
+                        </Button>
+                      </a>
                     )}
 
                     {order?.menuv2 && (
