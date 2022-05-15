@@ -26,15 +26,17 @@ const StoreMenu = ({ menu, category }) => {
   const [productPrice, setProductPrice] = useState(null);
   const handleOpenModal = () => setOpenModal(true);
   const [hasSubCategories, setHasSubCategories] = useState(
-    menu?.products.filter((p) => p.subCategory)
+    menu?.products?.filter(
+      (p) => p?.category?.includes(category) && p?.subCategory
+    )
   );
   const [subCategories, setSubCategories] = useState(
     hasSubCategories.map((c) => c.subCategory)
   );
+
   const [uniqueSubCategories, setUniqueSubCategories] = useState([
     ...new Set(subCategories),
   ]);
-
   const handleCloseModal = () => {
     setOpenModal(false);
     setProductName("");

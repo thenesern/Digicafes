@@ -317,7 +317,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       console.log(err);
     }
   };
-  const handleUpdateGallery = async (e) => {
+  const x = async (e) => {
     e.preventDefault();
     const data = new FormData();
     const data2 = new FormData();
@@ -2025,7 +2025,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         <Button
                           variant="contained"
                           color="secondary"
-                          onClick={handleUpdateGallery}
+                          onClick={x}
                         >
                           Onayla
                         </Button>
