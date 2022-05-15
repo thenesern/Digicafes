@@ -42,7 +42,9 @@ const StoreMenu = ({ menu, category, order, number }) => {
   const [openIsSure, setOpenIsSure] = useState(false);
   const [isSure, setIsSure] = useState(false);
   const [hasSubCategories, setHasSubCategories] = useState(
-    menu?.products.filter((p) => p.subCategory)
+    menu?.products.filter(
+      (p) => p?.category?.includes(category) && p?.subCategory
+    )
   );
   const [subCategories, setSubCategories] = useState(
     hasSubCategories.map((c) => c.subCategory)

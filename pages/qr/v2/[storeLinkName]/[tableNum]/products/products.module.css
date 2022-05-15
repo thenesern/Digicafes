@@ -95,6 +95,7 @@
   margin: 0;
   padding: 0;
   font-size: 14px;
+  font-weight: 500;
 }
 .listItem {
   border: 1px solid lightgray;
