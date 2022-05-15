@@ -313,9 +313,9 @@ const StoreMenu = ({ menu, category }) => {
         <div className={styles.gallery}>
           {menu?.gallery?.images.map((i) => (
             <img
-              key={i.image}
+              key={i?.image}
               className={styles.galleryImages}
-              src={i.image}
+              src={i?.image}
             ></img>
           ))}
         </div>

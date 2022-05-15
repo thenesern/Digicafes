@@ -41,6 +41,15 @@ const StoreMenu = ({ menu, category, order, number }) => {
   const [cartItems, setCartItems] = useState([...cart]);
   const [openIsSure, setOpenIsSure] = useState(false);
   const [isSure, setIsSure] = useState(false);
+  const [hasSubCategories, setHasSubCategories] = useState(
+    menu?.products.filter((p) => p.subCategory)
+  );
+  const [subCategories, setSubCategories] = useState(
+    hasSubCategories.map((c) => c.subCategory)
+  );
+  const [uniqueSubCategories, setUniqueSubCategories] = useState([
+    ...new Set(subCategories),
+  ]);
   const handleOpenModal = () => setOpenModal(true);
   const handleOpenIsSure = () => {
     setOpenCart(false);
@@ -62,7 +71,9 @@ const StoreMenu = ({ menu, category, order, number }) => {
   };
 
   const [isFetching, setIsFetching] = useState(false);
-  const filtered = menu?.products.filter((a) => a.category.includes(category));
+  const filtered = menu?.products.filter(
+    (a) => a.category.includes(category) && !a.subCategory
+  );
   const [isSuccess, setIsSuccess] = useState(false);
   useEffect(() => {
     if (isSuccess) {
@@ -423,7 +434,6 @@ const StoreMenu = ({ menu, category, order, number }) => {
           <Spacer />
         </Modal.Body>
       </Modal>
-
       <Modal
         style={{ width: "92%", margin: "0 auto", padding: "4px" }}
         open={openIsSure}
@@ -456,52 +466,107 @@ const StoreMenu = ({ menu, category, order, number }) => {
         </Modal.Footer>
       </Modal>
       {listType === "image" ? (
-        <ul className={styles.list}>
-          {menu &&
-            filtered?.map((m) => (
-              <li key={m?.name} className={styles.listItem}>
-                <img
-                  className={styles.img}
-                  src={m?.image}
-                  alt=""
-                  onClick={() => {
-                    setProductName(m?.name);
-                    setProductImage(m?.image);
-                    setProductPrice(m?.price);
-                    setProductDescription(m?.description);
-                    handleOpenModal();
-                  }}
-                />
-                <h3 className={styles.name}>{m?.name}</h3>
-                <p className={styles.price}>₺{m?.price}</p>
-                <Button
-                  variant="outlined"
-                  color="primary"
+        <>
+          {hasSubCategories.filter((c) => c.category.includes(category))
+            .length > 0
+            ? uniqueSubCategories.map((s) => (
+                <div
+                  key={s.name}
                   style={{
-                    borderRadius: " 0",
-                    backgroundColor: "#073b4c",
-                    color: "#f7ede2",
+                    backgroundColor: "#F9F3EE",
+                    padding: "1rem",
+                    width: "90%",
+                    margin: "0 auto",
+                    borderRadius: "1rem",
                   }}
-                  fullWidth
-                  onClick={() =>
-                    addToCartHandler({
-                      name: m?.name,
-                      price: m?.price,
-                      img: m?.image,
-                      quantity: 1,
-                    })
-                  }
                 >
-                  Sepete Ekle
-                </Button>
-              </li>
-            ))}
-        </ul>
+                  <h3
+                    key={s}
+                    style={{
+                      width: "100%",
+                      padding: "1rem 0",
+                      margin: "0",
+                      textAlign: "center",
+                    }}
+                  >
+                    {s}
+                  </h3>
+                  {hasSubCategories
+                    .filter((c) => c.subCategory === s)
+                    .map((c) => (
+                      <li
+                        className={styles.listItem}
+                        key={c?.name}
+                        onClick={() => {
+                          setProductName(c?.name);
+                          setProductImage(c?.image);
+                          setProductPrice(c?.price);
+                          setProductDescription(c?.description);
+                          handleOpenModal();
+                        }}
+                      >
+                        <img className={styles.img} src={c?.image} alt="" />
+                        <h3 className={styles.name}>{c?.name}</h3>
+                        <p className={styles.price}>₺{c?.price}</p>
+                      </li>
+                    ))}
+                </div>
+              ))
+            : ""}
+          <ul className={styles.list}>
+            {menu &&
+              filtered?.map((m) => (
+                <li key={m?.name} className={styles.listItem}>
+                  <img
+                    className={styles.img}
+                    src={m?.image}
+                    alt=""
+                    onClick={() => {
+                      setProductName(m?.name);
+                      setProductImage(m?.image);
+                      setProductPrice(m?.price);
+                      setProductDescription(m?.description);
+                      handleOpenModal();
+                    }}
+                  />
+                  <h3 className={styles.name}>{m?.name}</h3>
+                  <p className={styles.price}>₺{m?.price}</p>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    style={{
+                      borderRadius: " 0",
+                      backgroundColor: "#073b4c",
+                      color: "#f7ede2",
+                    }}
+                    fullWidth
+                    onClick={() =>
+                      addToCartHandler({
+                        name: m?.name,
+                        price: m?.price,
+                        img: m?.image,
+                        quantity: 1,
+                      })
+                    }
+                  >
+                    Sepete Ekle
+                  </Button>
+                </li>
+              ))}
+          </ul>
+        </>
       ) : (
         <ul className={styles.textList}>
-          <h2 style={{ textAlign: "center", marginTop: "0", color: "#001219" }}>
-            {category}
-          </h2>
+          {category === "gallery" ? (
+            <h2 style={{ textAlign: "center" }}>{menu?.gallery?.name}</h2>
+          ) : (
+            <h2
+              style={{ textAlign: "center", marginTop: "0", color: "#001219" }}
+            >
+              {category}
+            </h2>
+          )}
+
           {menu &&
             filtered?.map((m) => (
               <li key={m?.name} className={styles.textListItem}>
@@ -550,7 +615,71 @@ const StoreMenu = ({ menu, category, order, number }) => {
                 </button>
               </li>
             ))}
+          {hasSubCategories.filter((c) => c.category.includes(category))
+            .length > 0
+            ? uniqueSubCategories.map((s) => (
+                <div
+                  key={s.name}
+                  style={{
+                    backgroundColor: "#F9F3EE",
+                    padding: "1rem",
+                    borderRadius: "1rem",
+                  }}
+                >
+                  <h3
+                    key={s}
+                    style={{
+                      width: "100%",
+                      padding: "1rem 0",
+                      margin: "0",
+                      textAlign: "center",
+                    }}
+                  >
+                    {s}
+                  </h3>
+                  {hasSubCategories
+                    .filter((c) => c.subCategory === s)
+                    .map((c) => (
+                      <div
+                        key={c.name}
+                        style={{
+                          display: "flex",
+                          alignItems: "flex-start",
+                          width: "100%",
+                          justifyContent: "space-between",
+                          marginBottom: "10px",
+                          paddingBottom: "4px",
+                          borderBottom: "1px solid lightgray",
+                        }}
+                      >
+                        <div>
+                          <h3 className={styles.textListName}>{c?.name}</h3>
+                          {c?.description && (
+                            <p className={styles.textListDesc}>
+                              {c?.description}
+                            </p>
+                          )}
+                        </div>
+                        <p className={styles.textListPrice}>₺{c?.price}</p>
+                      </div>
+                    ))}
+                </div>
+              ))
+            : ""}
         </ul>
+      )}
+      {category === "gallery" ? (
+        <div className={styles.gallery}>
+          {menu?.gallery?.images.map((i) => (
+            <img
+              key={i?.image}
+              className={styles.galleryImages}
+              src={i?.image}
+            ></img>
+          ))}
+        </div>
+      ) : (
+        ""
       )}
       <footer></footer>
     </div>

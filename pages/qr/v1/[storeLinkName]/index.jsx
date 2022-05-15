@@ -164,7 +164,7 @@ const StoreMenu = ({ menu }) => {
                 <Image
                   priority
                   layout="fill"
-                  src={menu?.gallery?.galleryImage}
+                  src={menu?.gallery?.galleryImage || ""}
                   className={styles.img}
                   alt={menu?.gallery?.name}
                 ></Image>
@@ -222,7 +222,7 @@ const StoreMenu = ({ menu }) => {
                       src={m?.image}
                       className={styles.img}
                       alt={m?.name}
-                    ></Image>
+                    />
                   </div>
                   <div className={styles.titleBack}>
                     <h3 className={styles.title}>{m?.name}</h3>

@@ -58,6 +58,10 @@ const StoreMenu = ({ menu, number }) => {
   const [favItem3, setFavItem3] = useState();
   let m = 0;
   const [favItemCount, setFavItemCount] = useState(null);
+  const sorted = menu.categories.sort((a, b) => {
+    if (a.order < b.order) return -1;
+    return a.order > b.order ? 1 : 0;
+  });
 
   function setFavItems() {
     for (let i = 0; i < favs?.length; i++) {
@@ -514,8 +518,9 @@ const StoreMenu = ({ menu, number }) => {
                 Menü
               </h3>
             )}
+
             {menu &&
-              menu?.categories?.map((m) => (
+              sorted?.map((m) => (
                 <li
                   onClick={() => {
                     try {
@@ -705,7 +710,7 @@ const StoreMenu = ({ menu, number }) => {
               </Modal.Footer>
             </Modal>
             {menu &&
-              menu?.categories?.map((m) => (
+              sorted?.map((m) => (
                 <div
                   key={m?.name}
                   className={styles.listItem}
@@ -746,7 +751,7 @@ const StoreMenu = ({ menu, number }) => {
       )}
       <footer className={styles.footer}>
         <p>Kafe, Restoran ve Oteller için Dijital Menü çözümleri.</p>
-        <a href="mailto: support@digicafes.com">
+        <a href="https://www.digicafes.com" rel="noreferrer" target="_blank">
           <Image src={digicafes} width={160} height={160} />
         </a>
         <span>©{new Date().getFullYear()} Tüm hakları saklıdır.</span>
