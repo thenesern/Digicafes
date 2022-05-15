@@ -221,9 +221,16 @@ const StoreMenu = ({ menu, category }) => {
         </>
       ) : (
         <ul className={styles.textList}>
-          <h2 style={{ textAlign: "center", marginTop: "0", color: "#001219" }}>
-            {category}
-          </h2>
+          {category === "gallery" ? (
+            <h2 style={{ textAlign: "center" }}>{menu?.gallery?.name}</h2>
+          ) : (
+            <h2
+              style={{ textAlign: "center", marginTop: "0", color: "#001219" }}
+            >
+              {category}{" "}
+            </h2>
+          )}
+
           {menu &&
             filtered?.map((m) => (
               <li key={m?.name} className={styles.textListItem}>
@@ -287,6 +294,19 @@ const StoreMenu = ({ menu, category }) => {
               ))
             : ""}
         </ul>
+      )}
+      {category === "gallery" ? (
+        <div className={styles.gallery}>
+          {menu?.gallery?.images.map((i) => (
+            <img
+              key={i.image}
+              className={styles.galleryImages}
+              src={i.image}
+            ></img>
+          ))}
+        </div>
+      ) : (
+        ""
       )}
       <footer></footer>
     </div>

@@ -14,13 +14,26 @@
     rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
   left: 0;
 }
-
+.gallery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 1rem;
+  gap: 2rem;
+}
 .logo {
   object-fit: contain;
   width: 5rem;
   height: auto;
 }
-
+.galleryImages {
+  width: 100%;
+  height: auto;
+  border: 1px solid black;
+  object-fit: contain;
+}
 .nav {
   color: #14213d;
 }

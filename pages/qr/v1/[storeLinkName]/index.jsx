@@ -140,6 +140,42 @@ const StoreMenu = ({ menu }) => {
               </div>
             </div>
           )}
+          {menu?.gallery?.isActive ? (
+            <div
+              className={styles.listItem}
+              style={{ margin: "10px auto", width: "97%" }}
+              onClick={() => {
+                try {
+                  setIsFetching(true);
+                  Router.push(`/qr/v1/${menu?.storeLinkName}/products/gallery`);
+                } catch (err) {
+                  console.log(err);
+                  setIsFetching(false);
+                }
+              }}
+            >
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  position: "relative",
+                }}
+              >
+                <Image
+                  priority
+                  layout="fill"
+                  src={menu?.gallery?.galleryImage}
+                  className={styles.img}
+                  alt={menu?.gallery?.name}
+                ></Image>
+              </div>
+              <div className={styles.titleBack}>
+                <h3 className={styles.title}>{menu?.gallery?.name}</h3>
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
           <ul className={styles.list}>
             <Modal
               style={{

@@ -81,6 +81,16 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [categories, setCategories] = useState([...(menu?.categories || "")]);
   let arrayCategories = Array.from(categories);
   const [deleteId, setDeleteId] = useState("");
+  const [gallery, setGallery] = useState(menu?.gallery || null);
+  const [galleryName, setGalleryName] = useState(menu?.gallery?.name);
+  const [isGalleryActive, setIsGalleryActive] = useState(
+    menu?.gallery?.isActive || false
+  );
+  const [images, setImages] = useState(menu?.gallery?.images || []);
+  const [galleryImage, setGalleryImage] = useState(null);
+  const [galleryCover, setGalleryCover] = useState(
+    menu?.gallery?.galleryImage || null
+  );
   const [secondStep, setSecondStep] = useState(false);
   const [tableNum, setTableNum] = useState(menu?.tableNum || null);
   const [category, setCategory] = useState([]);
@@ -94,8 +104,6 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [updateCategoryOrder, setUpdateCategoryOrder] = useState(null);
   const [QRCodes, setQRCodes] = useState([]);
   const [deleteName, setDeleteName] = useState("");
-  console.log(categoryOrder);
-  console.log(updateCategoryOrder);
   const [deleteCategory, setDeleteCategory] = useState(false);
   const [storeLogo, setStoreLogo] = useState(
     menu?.storeLogo ||
@@ -152,16 +160,23 @@ const UserDashboard = ({ userOrder, userId }) => {
     setFile(null);
     setIsPreview(false);
   };
-  console.log(updateSubCategory);
   const handleOpenQRImages = () => setOpenQRImages(true);
   const handleCloseQRImages = () => setOpenQRImages(false);
   const handleOpenAddCategory = () => setOpenAddCategory(true);
+  const [openGallery, setOpenGallery] = useState(false);
   const handleCloseAddCategory = () => {
     setOpenAddCategory(false);
     setCategoryOrder(null);
     setUpdateCategoryOrder(null);
   };
   const handleOpenUploadLogo = () => setOpenUploadLogo(true);
+  const handleOpenGallery = () => setOpenGallery(true);
+  const handleCloseGallery = () => {
+    setOpenGallery(false);
+    setImages(menu?.gallery?.images || []);
+    setIsGalleryActive(menu?.gallery?.isActive || false);
+    setGalleryName(menu?.gallery?.name || "");
+  };
   const handleOpenListType = () => {
     setOpenListType(true);
     setListType(menu?.listType);
@@ -177,7 +192,6 @@ const UserDashboard = ({ userOrder, userId }) => {
       typeof value === "string" ? value.split(",") : value
     );
   };
-
   useEffect(() => {
     if (isFirst) {
       const getMenus = async () => {
@@ -235,6 +249,7 @@ const UserDashboard = ({ userOrder, userId }) => {
           tableNum,
           listType: "text",
           createdAt,
+          gallery,
           owner: order?.user?._id,
         },
         {
@@ -300,6 +315,68 @@ const UserDashboard = ({ userOrder, userId }) => {
       handleCloseUpdateProduct();
     } catch (err) {
       console.log(err);
+    }
+  };
+  const handleUpdateGallery = async (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    const data2 = new FormData();
+    data.append("file", file);
+    data2.append("file", galleryImage);
+    data.append("upload_preset", "uploads");
+    data2.append("upload_preset", "uploads");
+    try {
+      setIsFetching(true);
+      let uploadRes;
+      if (file) {
+        uploadRes = await axios.post(
+          "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
+          data
+        );
+      }
+      let uploadImage;
+      if (galleryImage) {
+        uploadImage = await axios.post(
+          "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
+          data2
+        );
+      }
+      if (uploadRes) {
+        images.push({
+          image: uploadRes?.data.url,
+        });
+      }
+      if (uploadImage) {
+        uploadImage = uploadImage?.data?.url;
+      }
+      const menu = await axios.patch(
+        `/api/qr/${version}/${menu?.storeName}/gallery`,
+        {
+          storeName,
+          gallery: {
+            name: galleryName,
+            images,
+            galleryImage: uploadImage,
+            isActive: isGalleryActive,
+          },
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
+      setMenu(menu?.data?.menu);
+      setGalleryCover(menu?.data?.menu?.gallery?.galleryImage);
+      setImages(menu?.data?.menu?.gallery?.images);
+      setGalleryName(menu?.data?.menu?.gallery?.name);
+      handleCloseGallery();
+      setIsFetching(false);
+      return enqueueSnackbar(`Galeri güncellendi.`, {
+        variant: "success",
+      });
+    } catch (err) {
+      console.log(err);
+      setIsFetching(false);
+      handleCloseListType();
     }
   };
   const handleUpdateListType = async (e) => {
@@ -405,7 +482,6 @@ const UserDashboard = ({ userOrder, userId }) => {
       enqueueSnackbar("Ürün Eklenemedi", { variant: "error" });
     }
   };
-
   const deleteProductHandler = async () => {
     setIsFetching(true);
 
@@ -478,7 +554,6 @@ const UserDashboard = ({ userOrder, userId }) => {
     }
     setIsFetching(false);
   };
-
   const handleUpdateCategory = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -567,6 +642,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       setIsFetching(false);
     }
   };
+
   const addCategoryHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -593,7 +669,6 @@ const UserDashboard = ({ userOrder, userId }) => {
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
         data
       );
-      console.log(categoryOrder);
       arrayCategories.push({
         name: betterCategoryName,
         image: uploadRes?.data?.url,
@@ -1107,7 +1182,6 @@ const UserDashboard = ({ userOrder, userId }) => {
                   color="primary"
                   disabled={categories.length > 0 ? false : true}
                   onClick={handleOpenAddProduct}
-                  style={{ margin: "1rem", width: "16rem" }}
                   className={styles.menuButtons}
                 >
                   Ürün Ekle
@@ -1802,6 +1876,163 @@ const UserDashboard = ({ userOrder, userId }) => {
                     </form>
                   </Box>
                 </ModalMui>
+                <ModalMui open={openGallery} onClose={handleCloseGallery}>
+                  <Box className={styles.modal}>
+                    <h2 style={{ textAlign: "center", padding: "1rem" }}>
+                      Galeriyi Düzenle
+                    </h2>
+                    <form
+                      style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: "2rem",
+                        padding: "1rem 2rem",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Input
+                        type="text"
+                        value={galleryName}
+                        fullWidth
+                        placeholder="Galeri Adı"
+                        onChange={(e) => setGalleryName(e.target.value)}
+                      />
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "3rem",
+                          width: "100%",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "10px",
+                          }}
+                        >
+                          <input
+                            style={{ cursor: "pointer" }}
+                            type="radio"
+                            name="isActive"
+                            checked={isGalleryActive === true ? true : false}
+                            onChange={() => setIsGalleryActive(true)}
+                          ></input>
+                          <h3 className={styles.listTypeHeader}>Aktif</h3>
+                        </div>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "10px",
+                          }}
+                        >
+                          <input
+                            style={{ cursor: "pointer" }}
+                            type="radio"
+                            name="isActive"
+                            checked={isGalleryActive === false ? true : false}
+                            onChange={() => setIsGalleryActive(false)}
+                          ></input>
+                          <h3 className={styles.listTypeHeader}>Pasif</h3>
+                        </div>
+                      </div>
+                      <h3 style={{ marginBottom: "0" }}>Kapak Fotoğrafı</h3>
+                      <div>
+                        {galleryCover ? (
+                          <img
+                            style={{
+                              width: "7rem",
+                              height: "5rem",
+                              objectFit: "contain",
+                            }}
+                            src={galleryCover}
+                          ></img>
+                        ) : (
+                          <p>Görsel bulunamadı.</p>
+                        )}
+                      </div>
+                      <Input
+                        accept="image/*"
+                        id="icon-button-file"
+                        onChange={(e) => {
+                          setGalleryImage(e.target.files[0]);
+                        }}
+                        type="file"
+                      />
+                      <h3 style={{ marginBottom: "0" }}>Galeri</h3>
+                      <div
+                        style={{
+                          display: "grid",
+                          gridTemplateColumns: "1fr 1fr 1fr",
+                        }}
+                      >
+                        {images.length > 0 ? (
+                          images.map((g) => (
+                            <img
+                              onMouseEnter={(e) => {
+                                e.target.style.border = "1px solid gray";
+                              }}
+                              onMouseLeave={(e) => {
+                                e.target.style.border = "none";
+                              }}
+                              onClick={() => {
+                                setImages(
+                                  images.filter((i) => i.image !== g?.image)
+                                );
+                              }}
+                              alt={g?.image}
+                              style={{
+                                width: "7rem",
+                                height: "5rem",
+                                objectFit: "contain",
+                                cursor: "pointer",
+                              }}
+                              key={g?.image}
+                              src={g?.image}
+                            ></img>
+                          ))
+                        ) : (
+                          <p>Görsel bulunamadı.</p>
+                        )}
+                      </div>
+                      <Input
+                        accept="image/*"
+                        id="icon-button-file"
+                        onChange={(e) => {
+                          setFile(e.target.files[0]);
+                        }}
+                        type="file"
+                      />
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "92%",
+                          justifyContent: "flex-end",
+                          gap: "1rem",
+                          margin: "1rem",
+                        }}
+                      >
+                        <Button variant="outlined" onClick={handleCloseGallery}>
+                          Vazgeç
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={handleUpdateGallery}
+                        >
+                          Onayla
+                        </Button>
+                      </div>
+                    </form>
+                  </Box>
+                </ModalMui>
                 <ModalMui
                   open={openUploadLogo}
                   onClose={handleCloseUploadLogo}
@@ -1895,7 +2126,6 @@ const UserDashboard = ({ userOrder, userId }) => {
                             setDeleteCategory(false);
                           }
                         }}
-                        style={{ margin: "1rem", width: "16rem" }}
                       >
                         Onayla
                       </Button>
@@ -1908,7 +2138,6 @@ const UserDashboard = ({ userOrder, userId }) => {
                   type="submit"
                   color="primary"
                   onClick={handleOpenAddCategory}
-                  style={{ margin: "1rem", width: "16rem" }}
                 >
                   Kategori Ekle
                 </Button>
@@ -1918,7 +2147,6 @@ const UserDashboard = ({ userOrder, userId }) => {
                   type="submit"
                   color="primary"
                   onClick={handleOpenUploadLogo}
-                  style={{ margin: "1rem", width: "16rem" }}
                 >
                   Logo Yükle
                 </Button>
@@ -1928,9 +2156,17 @@ const UserDashboard = ({ userOrder, userId }) => {
                   type="submit"
                   color="primary"
                   onClick={handleOpenListType}
-                  style={{ margin: "1rem", width: "16rem" }}
                 >
                   Listeleme Türü
+                </Button>
+                <Button
+                  className={styles.menuButtons}
+                  variant="contained"
+                  type="submit"
+                  color="primary"
+                  onClick={handleOpenGallery}
+                >
+                  Galeri
                 </Button>
               </div>
             </div>
