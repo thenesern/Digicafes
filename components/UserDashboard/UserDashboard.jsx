@@ -59,6 +59,7 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [updateProduct, setUpdateProduct] = useState("");
   const [updatePrice, setUpdatePrice] = useState("");
   const [updateDescription, setUpdateDescription] = useState("");
+  const [updateSubCategory, setUpdateSubCategory] = useState("");
   const [menu, setMenu] = useState(order?.menuv1 || order?.menuv2 || "");
   const [name, setName] = useState("");
   const [subCategory, setSubCategory] = useState("");
@@ -148,6 +149,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     setFile(null);
     setIsPreview(false);
   };
+  console.log(updateSubCategory);
   const handleOpenQRImages = () => setOpenQRImages(true);
   const handleCloseQRImages = () => setOpenQRImages(false);
   const handleOpenAddCategory = () => setOpenAddCategory(true);
@@ -283,6 +285,7 @@ const UserDashboard = ({ userOrder, userId }) => {
             description: updateDescription,
             category: updateProductCategory,
             image: uploadRes?.data.url,
+            subCategory: updateSubCategory,
           },
         ]);
       };
@@ -745,6 +748,8 @@ const UserDashboard = ({ userOrder, userId }) => {
                 setDescription(params.row.description);
                 setUpdateDescription(params.row.description);
                 setUpdateProductCategory(params.row.category);
+                setUpdateSubCategory(params.row.subCategory);
+                setSubCategory(params.row.subCategory);
                 setCategory(params.row.category);
                 setFile(params.row.image);
               }}
@@ -1432,6 +1437,31 @@ const UserDashboard = ({ userOrder, userId }) => {
                           onChange={(e) => setUpdateDescription(e.target.value)}
                         />
                       </div>
+                      <div style={{ width: "100%" }}>
+                        <InputLabel style={{ margin: "10px 0" }}>
+                          Ürün Alt Kategorisi
+                        </InputLabel>
+                        <Input
+                          fullWidth
+                          label="Ürün Alt Kategorisi"
+                          value={updateSubCategory}
+                          inputProps={{ maxLength: 100 }}
+                          onChange={(e) =>
+                            setUpdateSubCategory(
+                              e.target.value
+                                .trim()
+                                .toLowerCase()
+                                .split(" ")
+                                .map((a) =>
+                                  a
+                                    ?.toLowerCase()
+                                    .replace(a[0], a[0]?.toUpperCase())
+                                )
+                                .join(" ")
+                            )
+                          }
+                        />
+                      </div>
                       <div
                         style={{
                           display: "flex",
@@ -1538,6 +1568,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             setUpdateProduct("");
                             setUpdatePrice(null);
                             setUpdateDescription("");
+                            setUpdateSubCategory("");
                             setUpdateProductCategory(null);
                           }}
                         >
@@ -1551,8 +1582,10 @@ const UserDashboard = ({ userOrder, userId }) => {
                               name !== updateProduct ||
                               price !== updatePrice ||
                               description !== updateDescription ||
+                              subCategory !== updateSubCategory ||
                               category.length !==
                                 updateProductCategory.length ||
+                              category[0] !== updateProductCategory[0] ||
                               typeof file === "object"
                             ) {
                               handleUpdateProduct(e);
@@ -1563,6 +1596,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                               setUpdateProduct("");
                               setUpdatePrice(null);
                               setUpdateDescription("");
+                              setUpdateSubCategory("");
                               setUpdateProductCategory(null);
                               enqueueSnackbar("Değişiklik Yapılmadı", {
                                 variant: "info",
