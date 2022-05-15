@@ -512,6 +512,9 @@ const StoreMenu = ({ menu, category, order, number }) => {
                     justifyContent: "space-between",
                     width: "100%",
                     gap: "1rem",
+                    marginBottom: "10px",
+                    paddingBottom: "4px",
+                    borderBottom: "1px solid lightgray",
                   }}
                 >
                   <div>

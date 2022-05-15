@@ -227,7 +227,7 @@ const StoreMenu = ({ menu, category }) => {
             <h2
               style={{ textAlign: "center", marginTop: "0", color: "#001219" }}
             >
-              {category}{" "}
+              {category}
             </h2>
           )}
 
@@ -241,6 +241,9 @@ const StoreMenu = ({ menu, category }) => {
                     justifyContent: "space-between",
                     width: "100%",
                     gap: "1rem",
+                    marginBottom: "10px",
+                    paddingBottom: "4px",
+                    borderBottom: "1px solid lightgray",
                   }}
                 >
                   <div>
@@ -285,6 +288,9 @@ const StoreMenu = ({ menu, category }) => {
                           alignItems: "flex-start",
                           width: "100%",
                           justifyContent: "space-between",
+                          marginBottom: "10px",
+                          paddingBottom: "4px",
+                          borderBottom: "1px solid lightgray",
                         }}
                       >
                         <div>
