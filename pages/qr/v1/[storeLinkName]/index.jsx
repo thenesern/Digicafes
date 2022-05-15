@@ -127,7 +127,12 @@ const StoreMenu = ({ menu }) => {
                         }}
                         className={styles.favsItem}
                       >
-                        <h4 className={styles.favsName}>{fav?.name}</h4>
+                        <h4
+                          className={styles.favsName}
+                          style={{ marginTop: "0", padding: "0" }}
+                        >
+                          {fav?.name}
+                        </h4>
                       </div>
                     ))}
               </div>
