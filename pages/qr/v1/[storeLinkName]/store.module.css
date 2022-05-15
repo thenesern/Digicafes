@@ -148,9 +148,7 @@
   list-style: none;
   padding: 1rem;
   margin: 0;
-
   gap: 4px;
-  height: 100%;
   font-size: 14px;
 }
 .navList li {

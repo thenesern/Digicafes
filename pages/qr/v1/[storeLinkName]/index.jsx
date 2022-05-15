@@ -234,7 +234,7 @@ const StoreMenu = ({ menu }) => {
       )}
       <footer className={styles.footer}>
         <p>Kafe, Restoran ve Oteller için Dijital Menü çözümleri.</p>
-        <a href="mailto: support@digicafes.com">
+        <a href="https://www.digicafes.com" rel="noreferrer" target="_blank">
           <Image src={digicafes} width={160} height={160} />
         </a>
         <span>©{new Date().getFullYear()} Tüm hakları saklıdır.</span>

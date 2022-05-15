@@ -13,30 +13,12 @@ handler.get(async (req, res) => {
   res.json({ status: "success", menusv2 });
 });
 
-handler.post(async (req, res) => {
-  await db.connect();
-  const newMenu = new QRMenu({
-    storeName: req.body.storeName,
-    storeLinkName: req.body.storeLinkName,
-    tableNum: req.body.tableNum,
-    createdAt: req.body.createdAt,
-    categories: req.body.categories,
-    owner: req.body.owner,
-    listType: req.body.listType,
-    subCategory: req.body.subCategory,
-  });
-  const menu = await newMenu.save();
-  await db.disconnect();
-  res.json({ status: "succes", message: "Menu created successfully", menu });
-});
-
 handler.patch(async (req, res) => {
   await db.connect();
   await QRMenu.findOneAndUpdate(
     { storeName: req.body.storeName },
     {
-      products: req.body.products,
-      storeLogo: req.body.storeLogo,
+      gallery: req.body.gallery,
     }
   );
   const menu = await QRMenu.findOne({ storeName: req.body.storeName });

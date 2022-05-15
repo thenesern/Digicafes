@@ -15,6 +15,7 @@ import FAQ from "../components/FAQ/FAQ";
 import ContactForm from "../components/ContactForm/ContactForm";
 import favicon from "../public/favicon.ico";
 import whatsapp from "../assets/image/whatsapp.png";
+import marcopascha from "../assets/refers/marcologo.png";
 // Styles
 import styles from "./DigitalMenuPage.module.css";
 import Aos from "aos";
@@ -110,6 +111,17 @@ const DijitalMenu = () => {
               </div>
             </div>
           </div>
+          {/*  <div>
+            <h3>Referanslarımız</h3>
+            <div>
+              <Image
+                width={200}
+                height={200}
+                objectFit="contain"
+                src={marcopascha}
+              />
+            </div>
+          </div> */}
         </div>
         <section className={styles.section} data-aos="fade-up" id="features">
           <article className={styles.first}>

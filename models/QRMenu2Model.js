@@ -42,6 +42,10 @@ const QRMenuSchema = new mongoose.Schema(
           type: String,
           required: false,
         },
+        subCategory: {
+          type: String,
+          unique: true,
+        },
         category: [
           {
             type: String,
@@ -54,6 +58,24 @@ const QRMenuSchema = new mongoose.Schema(
         },
       },
     ],
+    gallery: {
+      name: {
+        type: String,
+      },
+      isActive: {
+        type: Boolean,
+      },
+      galleryImage: {
+        type: String,
+      },
+      images: [
+        {
+          image: {
+            type: String,
+          },
+        },
+      ],
+    },
     categories: [
       {
         name: {
@@ -63,6 +85,10 @@ const QRMenuSchema = new mongoose.Schema(
         image: {
           type: String,
           required: true,
+        },
+        order: {
+          type: Number,
+          unique: true,
         },
       },
     ],

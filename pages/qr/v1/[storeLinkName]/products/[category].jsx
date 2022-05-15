@@ -278,7 +278,15 @@ const StoreMenu = ({ menu, category }) => {
                   {hasSubCategories
                     .filter((c) => c.subCategory === s)
                     .map((c) => (
-                      <div key={c.name}>
+                      <div
+                        key={c.name}
+                        style={{
+                          display: "flex",
+                          alignItems: "flex-start",
+                          width: "100%",
+                          justifyContent: "space-between",
+                        }}
+                      >
                         <div>
                           <h3 className={styles.textListName}>{c?.name}</h3>
                           {c?.description && (
