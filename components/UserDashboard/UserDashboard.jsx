@@ -90,9 +90,12 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [version, setVersion] = useState(
     order?.product?.name === "Dijital Menü - V1" ? "v1" : "v2"
   );
-
+  const [categoryOrder, setCategoryOrder] = useState(null);
+  const [updateCategoryOrder, setUpdateCategoryOrder] = useState(null);
   const [QRCodes, setQRCodes] = useState([]);
   const [deleteName, setDeleteName] = useState("");
+  console.log(categoryOrder);
+  console.log(updateCategoryOrder);
   const [deleteCategory, setDeleteCategory] = useState(false);
   const [storeLogo, setStoreLogo] = useState(
     menu?.storeLogo ||
@@ -153,7 +156,11 @@ const UserDashboard = ({ userOrder, userId }) => {
   const handleOpenQRImages = () => setOpenQRImages(true);
   const handleCloseQRImages = () => setOpenQRImages(false);
   const handleOpenAddCategory = () => setOpenAddCategory(true);
-  const handleCloseAddCategory = () => setOpenAddCategory(false);
+  const handleCloseAddCategory = () => {
+    setOpenAddCategory(false);
+    setCategoryOrder(null);
+    setUpdateCategoryOrder(null);
+  };
   const handleOpenUploadLogo = () => setOpenUploadLogo(true);
   const handleOpenListType = () => {
     setOpenListType(true);
@@ -483,20 +490,6 @@ const UserDashboard = ({ userOrder, userId }) => {
       .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
       .join(" ");
 
-    if (
-      categories.filter((c) => c.name === betterCategoryName).length !== 0 &&
-      typeof file !== "object"
-    ) {
-      handleCloseAddCategory();
-      setAddCategory("");
-      setUpdateCategory("");
-      setFile(null);
-      setIsFetching(false);
-      return enqueueSnackbar("Bu isimde bir kategori zaten var.", {
-        variant: "error",
-      });
-    }
-
     try {
       setIsFetching(true);
       const uploadRes = await axios.post(
@@ -509,7 +502,11 @@ const UserDashboard = ({ userOrder, userId }) => {
       const addCategory = () => {
         setUpdatedCategories([
           ...newCategories,
-          { name: betterCategoryName, image: uploadRes?.data.url },
+          {
+            name: betterCategoryName,
+            image: uploadRes?.data.url,
+            order: updateCategoryOrder,
+          },
         ]);
       };
       addCategory();
@@ -596,10 +593,11 @@ const UserDashboard = ({ userOrder, userId }) => {
         "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
         data
       );
-
+      console.log(categoryOrder);
       arrayCategories.push({
         name: betterCategoryName,
         image: uploadRes?.data?.url,
+        order: categoryOrder,
       });
       const updatedMenu = await axios.patch(
         `/api/qr/${version}/${menu?.storeName}/categories`,
@@ -615,6 +613,8 @@ const UserDashboard = ({ userOrder, userId }) => {
       handleCloseAddCategory();
       setAddCategory("");
       setFile(null);
+      setCategoryOrder(null);
+      setUpdateCategoryOrder(null);
       setIsFetching(false);
       enqueueSnackbar("Kategori Eklendi", { variant: "success" });
     } catch (err) {
@@ -788,6 +788,11 @@ const UserDashboard = ({ userOrder, userId }) => {
       },
     },
     {
+      field: "order",
+      headerName: "Sıra",
+      flex: 2,
+    },
+    {
       field: "actions",
       headerName: "Yönetim",
       width: 200,
@@ -799,6 +804,8 @@ const UserDashboard = ({ userOrder, userId }) => {
                 handleOpenUpdateCategory();
                 setAddCategory(params.row.name);
                 setUpdateCategory(params.row.name);
+                setUpdateCategoryOrder(params.row.categoryOrder);
+                setCategoryOrder(params.row.categoryOrder);
                 setFile(params.row.image);
               }}
               style={{ fontSize: "12px", fontWeight: "500", width: "5rem" }}
@@ -1306,6 +1313,12 @@ const UserDashboard = ({ userOrder, userId }) => {
                       />
                       <Input
                         fullWidth
+                        placeholder="Kategori Sırası"
+                        value={updateCategoryOrder}
+                        onChange={(e) => setUpdateCategoryOrder(e.target.value)}
+                      />
+                      <Input
+                        fullWidth
                         accept="image/*"
                         label="Kategori Görseli"
                         id="icon-button-file"
@@ -1353,6 +1366,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                       onClick={(e) => {
                         if (
                           addCategory != updateCategory ||
+                          categoryOrder !== updateCategoryOrder ||
                           typeof file === "object"
                         ) {
                           handleUpdateCategory(e);
@@ -1648,6 +1662,24 @@ const UserDashboard = ({ userOrder, userId }) => {
                               <PhotoCamera />
                             </IconButton>
                           </label>
+                        </ListItem>
+                        <ListItem
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "flex-start",
+                            justifyContent: "flex-start",
+                          }}
+                        >
+                          <InputLabel style={{ margin: "10px 0" }}>
+                            Kategori Sırası
+                          </InputLabel>
+                          <Input
+                            label="Ürün Adı"
+                            value={categoryOrder}
+                            inputProps={{ type: "number", maxLength: 100 }}
+                            onChange={(e) => setCategoryOrder(e.target.value)}
+                          />
                         </ListItem>
                         <ListItem>
                           <Button

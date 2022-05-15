@@ -64,6 +64,10 @@ const QRMenuSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
+        order: {
+          type: Number,
+          unique: true,
+        },
       },
     ],
     createdAt: {

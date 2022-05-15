@@ -18,9 +18,11 @@ const StoreMenu = ({ menu }) => {
   const Router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
   const [listType, setListType] = useState(menu?.listType);
-  const max = menu?.products.length;
-  const min = 1;
-  const [favs, setFavs] = useState();
+
+  const sorted = menu.categories.sort((a, b) => {
+    if (a.order < b.order) return -1;
+    return a.order > b.order ? 1 : 0;
+  });
   const [array, setArray] = useState([]);
   useEffect(() => {
     setArray(menu?.products.sort(() => Math.random() - 0.5).splice(0, 3));
@@ -57,7 +59,7 @@ const StoreMenu = ({ menu }) => {
               </h3>
             )}
             {menu &&
-              menu?.categories?.map((m) => (
+              sorted?.map((m) => (
                 <li
                   onClick={() => {
                     try {
@@ -155,7 +157,7 @@ const StoreMenu = ({ menu }) => {
             </Modal>
 
             {menu &&
-              menu?.categories?.map((m) => (
+              sorted?.map((m) => (
                 <div
                   key={m?.name}
                   className={styles.listItem}
