@@ -821,7 +821,22 @@ const UserDashboard = ({ userOrder, userId }) => {
         return <span>₺{params?.row.price}</span>;
       },
     },
-    { field: "description", headerName: "Ürün Açıklaması", flex: 1 },
+    {
+      field: "subCategory",
+      headerName: "Ürün Alt Kategorisi",
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <div className={styles.product}>
+            {params?.row?.subCategory ? (
+              <p>{params?.row.subCategory}</p>
+            ) : (
+              <p>Yok</p>
+            )}
+          </div>
+        );
+      },
+    },
     { field: "category", headerName: "Ürün Kategorisi", flex: 0.8 },
     {
       field: "actions",
