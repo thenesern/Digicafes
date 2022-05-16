@@ -87,10 +87,10 @@ const UserDashboard = ({ userOrder, userId }) => {
     menu?.gallery?.isActive || false
   );
   const [images, setImages] = useState(menu?.gallery?.images || []);
-  const [galleryImage, setGalleryImage] = useState(null);
-  const [galleryCover, setGalleryCover] = useState(
+  const [galleryImage, setGalleryImage] = useState(
     menu?.gallery?.galleryImage || null
   );
+
   const [secondStep, setSecondStep] = useState(false);
   const [tableNum, setTableNum] = useState(menu?.tableNum || null);
   const [category, setCategory] = useState([]);
@@ -173,9 +173,6 @@ const UserDashboard = ({ userOrder, userId }) => {
   const handleOpenGallery = () => setOpenGallery(true);
   const handleCloseGallery = () => {
     setOpenGallery(false);
-    setImages(menu?.gallery?.images || []);
-    setIsGalleryActive(menu?.gallery?.isActive || false);
-    setGalleryName(menu?.gallery?.name || "");
   };
   const handleOpenListType = () => {
     setOpenListType(true);
@@ -317,7 +314,8 @@ const UserDashboard = ({ userOrder, userId }) => {
       console.log(err);
     }
   };
-  const x = async (e) => {
+  console.log(images);
+  const handleUpdateGallery = async (e) => {
     e.preventDefault();
     const data = new FormData();
     const data2 = new FormData();
@@ -335,7 +333,7 @@ const UserDashboard = ({ userOrder, userId }) => {
         );
       }
       let uploadImage;
-      if (galleryImage) {
+      if (typeof galleryImage === "object") {
         uploadImage = await axios.post(
           "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
           data2
@@ -349,25 +347,46 @@ const UserDashboard = ({ userOrder, userId }) => {
       if (uploadImage) {
         uploadImage = uploadImage?.data?.url;
       }
-      const menu = await axios.patch(
-        `/api/qr/${version}/${menu?.storeName}/gallery`,
-        {
-          storeName,
-          gallery: {
-            name: galleryName,
-            images,
-            galleryImage: uploadImage,
-            isActive: isGalleryActive,
+      if (uploadImage) {
+        const newGallery = await axios.patch(
+          `/api/qr/${version}/${menu?.storeName}/gallery`,
+          {
+            storeName,
+            gallery: {
+              name: galleryName,
+              images,
+              galleryImage: uploadImage,
+              isActive: isGalleryActive,
+            },
           },
-        },
-        {
-          headers: { authorization: `Bearer ${user.token}` },
-        }
-      );
-      setMenu(menu?.data?.menu);
-      setGalleryCover(menu?.data?.menu?.gallery?.galleryImage);
-      setImages(menu?.data?.menu?.gallery?.images);
-      setGalleryName(menu?.data?.menu?.gallery?.name);
+          {
+            headers: { authorization: `Bearer ${user.token}` },
+          }
+        );
+        setGalleryImage(newGallery?.data?.gallery?.galleryImage);
+        setImages(newGallery?.data?.gallery?.images);
+        setGalleryName(newGallery?.data?.gallery?.name);
+      } else {
+        console.log(images);
+        const newGallery = await axios.patch(
+          `/api/qr/${version}/${menu?.storeName}/gallery`,
+          {
+            storeName,
+            gallery: {
+              name: galleryName,
+              images,
+              galleryImage,
+              isActive: isGalleryActive,
+            },
+          },
+          {
+            headers: { authorization: `Bearer ${user.token}` },
+          }
+        );
+        setGalleryImage(newGallery?.data?.gallery?.galleryImage);
+        setImages(newGallery?.data?.gallery?.images);
+        setGalleryName(newGallery?.data?.gallery?.name);
+      }
       handleCloseGallery();
       setIsFetching(false);
       return enqueueSnackbar(`Galeri güncellendi.`, {
@@ -376,7 +395,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     } catch (err) {
       console.log(err);
       setIsFetching(false);
-      handleCloseListType();
+      handleCloseGallery();
     }
   };
   const handleUpdateListType = async (e) => {
@@ -1944,14 +1963,14 @@ const UserDashboard = ({ userOrder, userId }) => {
                       </div>
                       <h3 style={{ marginBottom: "0" }}>Kapak Fotoğrafı</h3>
                       <div>
-                        {galleryCover ? (
+                        {galleryImage ? (
                           <img
                             style={{
                               width: "7rem",
                               height: "5rem",
                               objectFit: "contain",
                             }}
-                            src={galleryCover}
+                            src={galleryImage}
                           ></img>
                         ) : (
                           <p>Görsel bulunamadı.</p>
@@ -2025,7 +2044,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         <Button
                           variant="contained"
                           color="secondary"
-                          onClick={x}
+                          onClick={handleUpdateGallery}
                         >
                           Onayla
                         </Button>

@@ -7,12 +7,6 @@ const handler = nc();
 
 handler.use(isAuth);
 
-handler.get(async (req, res) => {
-  await db.connect();
-  const menusv2 = await QRMenu.find();
-  res.json({ status: "success", menusv2 });
-});
-
 handler.patch(async (req, res) => {
   await db.connect();
   await QRMenu.findOneAndUpdate(
@@ -22,7 +16,8 @@ handler.patch(async (req, res) => {
     }
   );
   const menu = await QRMenu.findOne({ storeName: req.body.storeName });
-  res.json({ status: "success", menu });
+  const gallery = menu?.gallery;
+  res.json({ status: "success", gallery });
   await db.disconnect();
 });
 
