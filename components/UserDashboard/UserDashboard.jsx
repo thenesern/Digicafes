@@ -314,7 +314,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       console.log(err);
     }
   };
-  console.log(images);
+
   const handleUpdateGallery = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -367,7 +367,6 @@ const UserDashboard = ({ userOrder, userId }) => {
         setImages(newGallery?.data?.gallery?.images);
         setGalleryName(newGallery?.data?.gallery?.name);
       } else {
-        console.log(images);
         const newGallery = await axios.patch(
           `/api/qr/${version}/${menu?.storeName}/gallery`,
           {

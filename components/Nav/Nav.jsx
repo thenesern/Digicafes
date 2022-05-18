@@ -14,6 +14,8 @@ import { Loading, Modal, Spacer } from "@nextui-org/react";
 import ModalMui from "@mui/material/Modal";
 import Image from "next/image";
 import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ErrorIcon from "@mui/icons-material/Error";
 // Styles
 import styles from "./Nav.module.css";
 import { AccountCircleRounded } from "@material-ui/icons";
@@ -33,18 +35,25 @@ import { List, ListItem, TextField } from "@material-ui/core";
 import logoDark from "../../assets/digi_dark_logo.svg";
 import logo from "../../assets/digi_logo.svg";
 
-const Nav = ({ change }) => {
+const Nav = () => {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const [isFetching, setIsFetching] = useState(false);
   const [openMuiLogin, setOpenMuiLogin] = useState(false);
+  const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const [openMuiRegister, setOpenMuiRegister] = useState(false);
   const handleOpenMuiLogin = () => setOpenMuiLogin(true);
+  const handleOpenForgotPassword = () => setOpenForgotPassword(true);
   const handleOpenMuiRegister = () => setOpenMuiRegister(true);
   const handleCloseMuiLogin = () => setOpenMuiLogin(false);
   const handleCloseMuiRegister = () => setOpenMuiRegister(false);
+  const handleCloseForgotPassword = () => {
+    setOpenForgotPassword(false);
+    setSentPasswordMail(null);
+  };
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [openMenu, setOpenMenu] = useState(false);
+  const [sentPasswordMail, setSentPasswordMail] = useState(null);
   const {
     handleSubmit,
     control,
@@ -95,6 +104,20 @@ const Nav = ({ change }) => {
     router.push("/");
   };
 
+  const resetPasswordHandler = async ({ email }) => {
+    try {
+      const isUserThere = await axios.post("/api/auth/resetPassword", {
+        email,
+      });
+      if (isUserThere?.data?.status === "success") {
+        return setSentPasswordMail(true);
+      } else if (isUserThere?.data?.status === "fail") {
+        return setSentPasswordMail(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const loginHandler = async ({ email, password }) => {
     closeSnackbar();
     const signedIn = new Date().toLocaleString("tr-TR");
@@ -292,6 +315,15 @@ const Nav = ({ change }) => {
                     )}
                   ></Controller>
                 </ListItem>
+                <p
+                  className={styles.forgotPassword}
+                  onClick={() => {
+                    handleCloseMuiLogin();
+                    handleOpenForgotPassword();
+                  }}
+                >
+                  Şifreni mi unuttun?
+                </p>
                 <ListItem>
                   <Button
                     variant="outlined"
@@ -307,6 +339,117 @@ const Nav = ({ change }) => {
               </List>
             </form>
           </div>
+        </Box>
+      </ModalMui>
+      <ModalMui
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openForgotPassword}
+        onClose={handleCloseForgotPassword}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Box className={styles.loginBox}>
+          <span
+            onClick={handleCloseForgotPassword}
+            style={{
+              position: "absolute",
+              right: "5%",
+              top: "3%",
+              cursor: "pointer",
+            }}
+          >
+            X
+          </span>
+          {sentPasswordMail === null ? (
+            <div className={styles.wrapper}>
+              <h1 className={styles.title}>Şifreni mi unuttun?</h1>
+              <div className={styles.signup}>
+                <p style={{ textAlign: "center" }}>
+                  Sorun değil. Üye olduğun e-mail adresini girerek yeni şifreni
+                  oluşturabilirsin.
+                </p>
+              </div>
+              <form
+                className={styles.form}
+                onSubmit={handleSubmit(resetPasswordHandler)}
+              >
+                <List>
+                  <ListItem>
+                    <Controller
+                      name="email"
+                      control={control}
+                      defaultValue=""
+                      rules={{
+                        required: true,
+                        pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                      }}
+                      render={({ field }) => (
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          id="email"
+                          label="E-mail"
+                          inputProps={{ type: "email" }}
+                          error={Boolean(errors.email)}
+                          helperText={
+                            errors.email
+                              ? errors.email.type === "pattern"
+                                ? "Lütfen geçerli bir E-Mail adresi giriniz"
+                                : "Lütfen E-Mail adresinizi giriniz"
+                              : ""
+                          }
+                          {...field}
+                        ></TextField>
+                      )}
+                    ></Controller>
+                  </ListItem>
+
+                  <ListItem>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      type="submit"
+                      fullWidth
+                      style={{ outline: "none" }}
+                      onSubmit={handleSubmit(resetPasswordHandler)}
+                    >
+                      Gönder
+                    </Button>
+                  </ListItem>
+                </List>
+              </form>
+            </div>
+          ) : sentPasswordMail === true ? (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
+              <CheckCircleIcon style={{ fontSize: "6rem" }} color="success" />
+              <h4 style={{ textAlign: "center" }}>
+                Şifre Yenilemesi için mail gönderildi.
+              </h4>
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
+              <ErrorIcon style={{ fontSize: "6rem" }} color="error" />
+              <h4 style={{ textAlign: "center" }}>Kullanıcı bulunamadı.</h4>
+            </div>
+          )}
         </Box>
       </ModalMui>
       <ModalMui

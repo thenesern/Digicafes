@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import validator from "validator";
+import crypto from "crypto";
 import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
@@ -47,6 +48,8 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    passwordResetToken: String,
+    passwordResetExpires: Date,
   },
   { timestamps: true }
 );
