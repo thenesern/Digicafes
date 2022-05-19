@@ -572,6 +572,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     }
     setIsFetching(false);
   };
+
   const handleUpdateCategory = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -604,7 +605,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       };
       addCategory();
       handleCloseUpdateCategory();
-      setAddCategory("");
+      setUpdateCategoryOrder(null);
       setFile(null);
     } catch (err) {
       console.log(err);
@@ -636,13 +637,34 @@ const UserDashboard = ({ userOrder, userId }) => {
       setIsFetching(false);
     }
   };
+
   const handleSendUpdatedCategories = async () => {
+    const newProducts = [[...products]];
+
     try {
       const updatedMenu = await axios.patch(
         `/api/qr/${version}/${menu?.storeName}/categories`,
         {
           storeName,
           categories: updatedCategories,
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
+      if (updatedMenu?.data?.status === "success") {
+        for (let i = 0; i < newProducts[0].length; i++) {
+          if (newProducts[0][i]?.category?.includes(updateCategory)) {
+            newProducts[0][i]?.category = newProducts[0][i]?.category?.filter((c) => c !== updateCategory);
+            newProducts[0][i]?.category?.push(addCategory);
+          }
+        }
+      }
+     await axios.patch(
+        `/api/qr/${version}/${menu?.storeName}/menu`,
+        {
+          storeName,
+          products: newProducts[0],
         },
         {
           headers: { authorization: `Bearer ${user.token}` },
