@@ -117,7 +117,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       animationName: Radium.keyframes(fadeInRightBig, "fadeInRightBig"),
     },
   };
-
+  const [pageSize, setPageSize] = React.useState(10);
   const [openAddProduct, setOpenAddProduct] = useState(false);
   const [updateCategory, setUpdateCategory] = useState([]);
   const handleOpenAddProduct = () => setOpenAddProduct(true);
@@ -898,7 +898,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     {
       field: "order",
       headerName: "Sıra",
-      flex: 2,
+      flex: 1,
     },
     {
       field: "actions",
@@ -2221,14 +2221,44 @@ const UserDashboard = ({ userOrder, userId }) => {
                   <div className={styles.grid}>
                     <DataGrid
                       className={styles.data}
+                      sx={{
+                        "& .MuiDataGrid-renderingZone": {
+                          maxHeight: "none !important",
+                          minHeight: "none !important",
+                        },
+                        "& .MuiDataGrid-cell": {
+                          lineHeight: "unset !important",
+                          maxHeight: "none !important",
+                          minHeight: "none !important",
+                          whiteSpace: "normal",
+                          wordWrap: "break-word",
+                        },
+                        "& .MuiDataGrid-row": {
+                          minHeight: "none !important",
+                          maxHeight: "none !important",
+                        },
+                        virtualScrollerContent: {
+                          height: "100% !important",
+                          overflow: "scroll",
+                        },
+                        height: 1,
+                        width: 1,
+                        "& .dark": {
+                          backgroundColor: "#264653",
+                          color: "#fbeee0",
+                        },
+                      }}
                       localeText={
                         trTR.components.MuiDataGrid.defaultProps.localeText
                       }
                       rows={products}
                       getRowId={(row) => `${row.name}${row.price}`}
                       columns={columns}
-                      pageSize={5}
-                      rowsPerPageOptions={[5]}
+                      pageSize={pageSize}
+                      onPageSizeChange={(newPageSize) =>
+                        setPageSize(newPageSize)
+                      }
+                      rowsPerPageOptions={[10, 20, 30]}
                     />
                   </div>
                 ) : (
@@ -2253,6 +2283,33 @@ const UserDashboard = ({ userOrder, userId }) => {
                       getRowId={(row) => `${row.name}${row.price}`}
                       columns={categoryColumns}
                       pageSize={5}
+                      sx={{
+                        "& .MuiDataGrid-renderingZone": {
+                          maxHeight: "none !important",
+                          minHeight: "none !important",
+                        },
+                        "& .MuiDataGrid-cell": {
+                          lineHeight: "unset !important",
+                          maxHeight: "none !important",
+                          minHeight: "none !important",
+                          whiteSpace: "normal",
+                          wordWrap: "break-word",
+                        },
+                        "& .MuiDataGrid-row": {
+                          minHeight: "none !important",
+                          maxHeight: "none !important",
+                        },
+                        virtualScrollerContent: {
+                          height: "100% !important",
+                          overflow: "scroll",
+                        },
+                        height: 1,
+                        width: 1,
+                        "& .dark": {
+                          backgroundColor: "#264653",
+                          color: "#fbeee0",
+                        },
+                      }}
                       rowsPerPageOptions={[5]}
                     />
                   </div>
