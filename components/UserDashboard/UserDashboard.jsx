@@ -912,8 +912,8 @@ const UserDashboard = ({ userOrder, userId }) => {
                 handleOpenUpdateCategory();
                 setAddCategory(params.row.name);
                 setUpdateCategory(params.row.name);
-                setUpdateCategoryOrder(params.row.categoryOrder);
-                setCategoryOrder(params.row.categoryOrder);
+                setUpdateCategoryOrder(params.row.order);
+                setCategoryOrder(params.row.order);
                 setFile(params.row.image);
               }}
               style={{ fontSize: "12px", fontWeight: "500", width: "5rem" }}
