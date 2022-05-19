@@ -639,8 +639,7 @@ const UserDashboard = ({ userOrder, userId }) => {
   };
 
   const handleSendUpdatedCategories = async () => {
-    const newProducts = [[...products]];
-
+    const newProducts = [];
     try {
       const updatedMenu = await axios.patch(
         `/api/qr/${version}/${menu?.storeName}/categories`,
@@ -653,23 +652,27 @@ const UserDashboard = ({ userOrder, userId }) => {
         }
       );
       if (updatedMenu?.data?.status === "success") {
+        newProducts = [[...products]];
         for (let i = 0; i < newProducts[0].length; i++) {
           if (newProducts[0][i]?.category?.includes(updateCategory)) {
-            newProducts[0][i]?.category = newProducts[0][i]?.category?.filter((c) => c !== updateCategory);
+            const index = newProducts[0][i]?.category.indexOf(updateCategory);
+            newProducts[0][i]?.category.splice(index, 1);
             newProducts[0][i]?.category?.push(addCategory);
           }
         }
       }
-     await axios.patch(
-        `/api/qr/${version}/${menu?.storeName}/menu`,
-        {
-          storeName,
-          products: newProducts[0],
-        },
-        {
-          headers: { authorization: `Bearer ${user.token}` },
-        }
-      );
+      if (newProducts.length > 0) {
+        await axios.patch(
+          `/api/qr/${version}/${menu?.storeName}/menu`,
+          {
+            storeName,
+            products: newProducts[0],
+          },
+          {
+            headers: { authorization: `Bearer ${user.token}` },
+          }
+        );
+      }
       if (updatedMenu?.data.menu) {
         setCategories(updatedMenu?.data?.menu?.categories);
       } else {
