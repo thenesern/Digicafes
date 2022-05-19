@@ -30,9 +30,7 @@ handler.post(async (req, res) => {
       { passwordResetToken, passwordResetExpires }
     );
 
-    const sgMailApiKey =
-      "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";
-
+    const sgMailApiKey = process.env.SG_API_KEY;
     sgMail.setApiKey(sgMailApiKey);
 
     sgMail
