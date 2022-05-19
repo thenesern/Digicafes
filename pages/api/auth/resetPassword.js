@@ -45,7 +45,7 @@ handler.post(async (req, res) => {
         <br />
         Bu link 10 dakika sonra geçerliliğini kaybedecektir.
         <br/>
-        Eğer şifrenizi yenilemek istemiyorsanız bu linki görmezden geliniz.
+        Eğer şifrenizi yenilemek istemiyorsanız bu maili görmezden geliniz.
                 `,
       })
       .then(

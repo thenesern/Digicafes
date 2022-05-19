@@ -28,6 +28,7 @@
 .container.fixed .signIn {
   color: #001219;
   transition: all 0.2s ease-in-out;
+  outline: none;
   border-radius: 1rem;
 }
 .container.fixed .signIn:hover {
@@ -90,6 +91,7 @@
   font-weight: 600;
   margin-right: 1rem;
   color: #fbeee0;
+  outline: none;
 }
 
 .signUp {

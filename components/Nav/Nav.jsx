@@ -88,7 +88,13 @@ const Nav = () => {
       setOpen(false);
     }
   }
-
+  useEffect(() => {
+    if (sentPasswordMail === true || sentPasswordMail === false) {
+      setTimeout(() => {
+        handleCloseForgotPassword();
+      }, 3000);
+    }
+  }, [sentPasswordMail]);
   // return focus to the button when we transitioned from !open -> open
   const prevOpen = React.useRef(open);
   React.useEffect(() => {
@@ -105,17 +111,20 @@ const Nav = () => {
   };
 
   const resetPasswordHandler = async ({ email }) => {
+    setIsFetching(true);
     try {
       const isUserThere = await axios.post("/api/auth/resetPassword", {
         email,
       });
       if (isUserThere?.data?.status === "success") {
-        return setSentPasswordMail(true);
+        setSentPasswordMail(true);
       } else if (isUserThere?.data?.status === "fail") {
-        return setSentPasswordMail(false);
+        setSentPasswordMail(false);
       }
+      return setIsFetching(false);
     } catch (err) {
       console.log(err);
+      return setIsFetching(false);
     }
   };
   const loginHandler = async ({ email, password }) => {

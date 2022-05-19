@@ -174,14 +174,15 @@ export async function getServerSideProps(context) {
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
   });
-  /*   if (!user) {
-      return {
-        redirect: {
-          destination: `/${[passwordResetToken]}/expired`,
-          permanent: false,
-        },
-      };
-    } */
+  console.log(hashedToken);
+  if (!user) {
+    return {
+      redirect: {
+        destination: `/${[passwordResetToken]}/expired`,
+        permanent: false,
+      },
+    };
+  }
   await db.disconnect();
   return {
     props: {
