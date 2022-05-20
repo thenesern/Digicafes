@@ -26,7 +26,10 @@ const Features = () => {
     margin: 0,
     padding: 0,
   };
-  QRCode.toDataURL("https://www.digicafes.com/qr/v1/demo/", opts).then(setSrc);
+  QRCode.toDataURL(
+    "https://www.digicafes.com/qr/v1/marcho-pascha-3",
+    opts
+  ).then(setSrc);
   QRCode.toDataURL("https://www.digicafes.com/qr/v2/demo/1", opts).then(
     setSrc2
   );
@@ -47,13 +50,13 @@ const Features = () => {
         </p>
         {!isMobile && (
           <div className={styles.demo}>
-            <h3 className={styles.demoHeader}>Demo</h3>
+            <h3 className={styles.demoHeader}>Örnek Menü</h3>
             <img src={src} width="96px"></img>
           </div>
         )}
         {isMobile && (
           <a
-            href="https://www.digicafes.com/qr/v1/demo"
+            href="https://www.digicafes.com/qr/v1/marcho-pascha-3"
             target="_blank"
             rel="noreferrer"
           >
@@ -65,7 +68,7 @@ const Features = () => {
                 backgroundColor: "#c9184a",
               }}
             >
-              Demo
+              Örnek Menü
             </Button>
           </a>
         )}
@@ -88,7 +91,7 @@ const Features = () => {
         </p>
         {!isMobile && (
           <div className={styles.demo}>
-            <h3 className={styles.demoHeader}>Demo</h3>
+            <h3 className={styles.demoHeader}>Örnek Menü</h3>
             <img src={src2} width="96px"></img>
           </div>
         )}
@@ -106,7 +109,7 @@ const Features = () => {
                 backgroundColor: "#c9184a",
               }}
             >
-              Demo
+              Örnek Menü
             </Button>
           </a>
         )}
