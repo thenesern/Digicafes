@@ -94,7 +94,9 @@ const User = ({ orders, isFetching }) => {
       <div className={styles.right}>
         <h1 className={styles.title}>Siparişler</h1>
         {!isFetching ? (
-          <List orders={orders} style={{ height: "12rem" }} /> || (
+          orders?.filter((order) => order?.quantity.length > 1)?.length > 0 ? (
+            <List orders={orders} style={{ height: "12rem" }} />
+          ) : (
             <h6 className={styles.notFound}>Sipariş bulunamadı.</h6>
           )
         ) : (

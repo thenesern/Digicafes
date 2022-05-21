@@ -124,7 +124,7 @@
   color: #14213d;
   margin: 0;
   padding: 10px 10px 0 10px;
-  overflow: scroll;
+  overflow: auto;
   max-width: 10rem;
 }
 
