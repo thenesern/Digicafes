@@ -174,7 +174,6 @@ export async function getServerSideProps(context) {
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
   });
-  console.log(hashedToken);
   if (!user) {
     return {
       redirect: {

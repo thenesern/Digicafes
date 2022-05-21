@@ -93,7 +93,7 @@ const User = ({ orders, isFetching }) => {
 
       <div className={styles.right}>
         <h1 className={styles.title}>Siparişler</h1>
-        {!isFetching ? (
+        {!isFetching && orders?.length > 0 ? (
           orders?.filter((order) => order?.quantity.length > 1)?.length > 0 ? (
             <List orders={orders} style={{ height: "12rem" }} />
           ) : (
