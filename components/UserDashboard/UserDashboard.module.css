@@ -113,10 +113,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 36rem;
+  width: 32rem;
   overflow: auto;
   background-color: #fff;
-  max-height: 48rem;
+  max-height: 38rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .li {
@@ -176,7 +176,13 @@
   font-size: 14px;
   gap: 1px;
 }
-
+.modalButtons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1rem;
+  gap: 1rem;
+}
 @media only screen and (max-width: 1600px) {
   .box {
     padding: 1rem;

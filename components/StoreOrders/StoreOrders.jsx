@@ -20,7 +20,7 @@ const StoreOrders = (props) => {
       field: "tableNum",
       headerName: "Masa No.",
       headerClassName: "dark",
-      flex: 2,
+      flex: 1.5,
       editable: false,
     },
     {
@@ -137,7 +137,7 @@ const StoreOrders = (props) => {
                   .split(" ")[1]
                   .split(":")[1] ? (
                   <AccessTimeIcon color="error" />
-                ) : date1
+                ) : +date1
                     .toLocaleString("tr-TR")
                     .split(" ")[1]
                     .split(":")[1] ===
@@ -209,7 +209,6 @@ const StoreOrders = (props) => {
                 sortModel: [{ field: "createdAt", sort: "desc" }],
               },
             }}
-            rowHeight={50}
             sx={{
               "& .MuiDataGrid-renderingZone": {
                 maxHeight: "none !important",
@@ -225,7 +224,7 @@ const StoreOrders = (props) => {
               },
               virtualScrollerContent: {
                 height: "100% !important",
-                overflow: "scroll",
+                overflow: "auto",
               },
               height: 1,
               width: 1,

@@ -294,7 +294,12 @@ const UserDashboard = ({ userOrder, userId }) => {
       }
 
       let newProducts = products.filter((c) => c.name !== name);
-
+      let newSubCategory = updateSubCategory
+        .trim()
+        .toLowerCase()
+        .split(" ")
+        .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
+        .join(" ");
       const addCategory = () => {
         setUpdatedProducts([
           ...newProducts,
@@ -304,7 +309,7 @@ const UserDashboard = ({ userOrder, userId }) => {
             description: updateDescription,
             category: updateProductCategory,
             image: uploadRes?.data.url,
-            subCategory: updateSubCategory,
+            subCategory: newSubCategory,
           },
         ]);
       };
@@ -831,8 +836,14 @@ const UserDashboard = ({ userOrder, userId }) => {
       renderCell: (params) => {
         return (
           <div className={styles.product}>
-            <img src={params?.row.image} alt="" className={styles.image} />
-            <p>{params?.row.name}</p>
+            {params?.row.image ? (
+              <>
+                <img src={params?.row.image} alt="" className={styles.image} />
+                <p>{params?.row.name}</p>
+              </>
+            ) : (
+              <p>{params?.row.name}</p>
+            )}
           </div>
         );
       },
@@ -1592,20 +1603,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                           label="Ürün Alt Kategorisi"
                           value={updateSubCategory}
                           inputProps={{ maxLength: 100 }}
-                          onChange={(e) =>
-                            setUpdateSubCategory(
-                              e.target.value
-                                .trim()
-                                .toLowerCase()
-                                .split(" ")
-                                .map((a) =>
-                                  a
-                                    ?.toLowerCase()
-                                    .replace(a[0], a[0]?.toUpperCase())
-                                )
-                                .join(" ")
-                            )
-                          }
+                          onChange={(e) => setUpdateSubCategory(e.target.value)}
                         />
                       </div>
                       <div
@@ -2165,7 +2163,6 @@ const UserDashboard = ({ userOrder, userId }) => {
                           setDeleteId("");
                           setDeleteCategory(false);
                         }}
-                        style={{ margin: "1rem", width: "16rem" }}
                       >
                         Vazgeç
                       </Button>

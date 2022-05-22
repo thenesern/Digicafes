@@ -290,7 +290,7 @@ const StoreMenu = ({ menu, number }) => {
                           <h4
                             style={{
                               maxWidth: "8rem",
-                              overflow: "scroll",
+                              overflow: "auto",
                               fontSize: "14px",
                             }}
                           >
