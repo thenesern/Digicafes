@@ -56,6 +56,12 @@ const StoreMenu = ({ menu, number }) => {
   const [favItem, setFavItem] = useState();
   const [favItem2, setFavItem2] = useState();
   const [favItem3, setFavItem3] = useState();
+  const [isMobile, setIsMobile] = useState();
+  useLayoutEffect(() => {
+    if (window.innerWidth <= 1000) {
+      setIsMobile(true);
+    }
+  }, []);
   let m = 0;
   const [favItemCount, setFavItemCount] = useState(null);
   const sorted = menu.categories.sort((a, b) => {
@@ -197,566 +203,605 @@ const StoreMenu = ({ menu, number }) => {
   };
 
   return (
-    <div className={styles.container}>
-      <Modal
-        style={{ width: "90%", margin: "0 auto" }}
-        open={isSuccess}
-        onClose={() => setIsSuccess(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Modal.Body
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "3rem",
-          }}
-        >
-          <CheckCircleIcon style={{ fontSize: "8rem" }} color="success" />
-          <h1>Talebiniz iletildi.</h1>
-        </Modal.Body>
-      </Modal>
-      <Modal
-        style={{ width: "92%", margin: "0 auto", padding: "4px" }}
-        open={openIsSure}
-        onClose={handleCloseOpenIsSure}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Modal.Header style={{ display: "flex", flexDirection: "column" }}>
-          <h3 style={{ padding: "0", margin: "0" }}>Dikkat</h3>
-          <p>Siparişiniz iletilecek.</p>
-        </Modal.Header>
-        <Modal.Body>
-          <h5>Not Ekle</h5>
-          <Textarea
-            style={{ fontSize: "12px" }}
-            placeholder="Mesajınız. (Boş Bırakabilirsiniz)"
-            onChange={(e) => setOrderNotes(e.target.value)}
-          ></Textarea>
-        </Modal.Body>
-        <Modal.Footer
-          style={{ display: "flex", justifyContent: "space-between" }}
-        >
-          <Button variant="outlined" onClick={handleCloseOpenIsSure}>
-            Vazgeç
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => setIsSure(true)}
+    <>
+      {isMobile ? (
+        <div className={styles.container}>
+          <Modal
+            style={{ width: "90%", margin: "0 auto" }}
+            open={isSuccess}
+            onClose={() => setIsSuccess(false)}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
           >
-            Onayla
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      <Modal
-        open={openCart}
-        className={styles.cartModal}
-        onClose={handleCloseCart}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        style={{
-          padding: "4px",
-          width: "92%",
-          margin: "0 auto",
-          maxHeight: "24rem",
-          overFlow: "auto",
-        }}
-      >
-        <Modal.Header>
-          <h2>Sepet Özeti</h2>
-        </Modal.Header>
-        <Modal.Body style={{ padding: "1rem 0" }}>
-          {listType === "image"
-            ? cartItems?.map((item) => (
-                <>
-                  <div key={Math.random()} className={styles.cart}>
-                    <div className={styles.cartHeader}>
-                      <img src={item?.img} alt="" className={styles.cartImg} />
-                      <h4
-                        style={{
-                          maxWidth: "8rem",
-                          overflow: "scroll",
-                          fontSize: "14px",
-                        }}
-                      >
-                        {item?.name}
-                      </h4>
-                    </div>
-                    <div className={styles.productQuantity}>
-                      <Button
-                        className={styles.buttons}
-                        variant="outlined"
-                        style={{
-                          minWidth: "1rem",
-                          backgroundColor: "transparent",
-                          border: "none",
-                        }}
-                        onClick={() => {
-                          if (item.quantity > 1) {
-                            item.quantity -= 1;
-                            setCartItems([...cartItems]);
-                            setCartTotal(
-                              cartItems.reduce(function (a, b) {
-                                return a + b.price * b.quantity;
-                              }, 0)
-                            );
-                            dispatch({ type: "CART", payload: cartItems });
-                          } else if (
-                            item.quantity - 1 === 0 &&
-                            cartItems.length - 1 !== 0
-                          ) {
-                            setCartItems(
-                              cartItems.filter((product) => product !== item)
-                            );
-                            setCartTotal(
-                              cart.reduce(function (a, b) {
-                                return a + b.price * b.quantity;
-                              }, 0)
-                            );
-                            dispatch({ type: "CART", payload: cartItems });
-                          } else {
-                            {
-                              setCartItems([]);
-                              setCartTotal(0);
-                              dispatch({ type: "CART", payload: [] });
-                            }
-                          }
-                        }}
-                      >
-                        <ArrowCircleDownIcon style={{ fontSize: "2rem" }} />
-                      </Button>
-                      <h4>x{item?.quantity}</h4>
-                      <Button
-                        style={{
-                          minWidth: "1rem",
-                          backgroundColor: "transparent",
-                          border: "none",
-                        }}
-                        variant="outlined"
-                        className={styles.buttons}
-                        onClick={() => {
-                          item.quantity += 1;
-                          setCartItems([...cartItems]);
-                          setCartTotal(
-                            cartItems.reduce(function (a, b) {
-                              return a + b.price * b.quantity;
-                            }, 0)
-                          );
-                          dispatch({ type: "CART", payload: cartItems });
-                        }}
-                      >
-                        <ArrowCircleUpIcon style={{ fontSize: "2rem" }} />
-                      </Button>
-                    </div>
-                  </div>
-                </>
-              ))
-            : cartItems?.map((item) => (
-                <>
-                  <div key={Math.random()} className={styles.cart}>
-                    <div className={styles.cartHeader}>
-                      <h4
-                        style={{
-                          maxWidth: "8rem",
-                          overflow: "scroll",
-                          fontSize: "14px",
-                        }}
-                      >
-                        {item?.name}
-                      </h4>
-                    </div>
-                    <div className={styles.productQuantity}>
-                      <Button
-                        className={styles.buttons}
-                        variant="outlined"
-                        style={{
-                          minWidth: "1rem",
-                          backgroundColor: "transparent",
-                          border: "none",
-                        }}
-                        onClick={() => {
-                          if (item.quantity > 1) {
-                            item.quantity -= 1;
-                            setCartItems([...cartItems]);
-                            setCartTotal(
-                              cartItems.reduce(function (a, b) {
-                                return a + b.price * b.quantity;
-                              }, 0)
-                            );
-                            dispatch({ type: "CART", payload: cartItems });
-                          } else if (
-                            item.quantity - 1 === 0 &&
-                            cartItems.length - 1 !== 0
-                          ) {
-                            setCartItems(
-                              cartItems.filter((product) => product !== item)
-                            );
-                            setCartTotal(
-                              cart.reduce(function (a, b) {
-                                return a + b.price * b.quantity;
-                              }, 0)
-                            );
-                            dispatch({ type: "CART", payload: cartItems });
-                          } else {
-                            {
-                              setCartItems([]);
-                              setCartTotal(0);
-                              dispatch({ type: "CART", payload: [] });
-                            }
-                          }
-                        }}
-                      >
-                        <ArrowCircleDownIcon style={{ fontSize: "2rem" }} />
-                      </Button>
-                      <h4>x{item?.quantity}</h4>
-                      <Button
-                        style={{
-                          minWidth: "1rem",
-                          backgroundColor: "transparent",
-                          border: "none",
-                        }}
-                        variant="outlined"
-                        className={styles.buttons}
-                        onClick={() => {
-                          item.quantity += 1;
-                          setCartItems([...cartItems]);
-                          setCartTotal(
-                            cartItems.reduce(function (a, b) {
-                              return a + b.price * b.quantity;
-                            }, 0)
-                          );
-                          dispatch({ type: "CART", payload: cartItems });
-                        }}
-                      >
-                        <ArrowCircleUpIcon style={{ fontSize: "2rem" }} />
-                      </Button>
-                    </div>
-                  </div>
-                </>
-              ))}
-
-          {cart.length === 0 && (
-            <p style={{ padding: "1rem" }}>Sepetiniz boş.</p>
-          )}
-        </Modal.Body>
-        <Modal.Footer className={styles.cartFooter}>
-          {cart.length > 0 && <div>Toplam: ₺{cartTotal}</div>}
-          {cart.length > 0 && (
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleOpenIsSure}
+            <Modal.Body
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "3rem",
+              }}
             >
-              Siparişi Onayla
-            </Button>
-          )}
-        </Modal.Footer>
-      </Modal>
-      <navbar className={styles.navbar}>
-        <IconButton onClick={() => setOpen(true)}>
-          <MenuIcon style={{ color: "white", fontSize: "2rem" }} />
-        </IconButton>
-        {menu?.storeLogo?.includes("cloudinary") ? (
-          <img src={menu?.storeLogo} alt="Logo" className={styles.logo} />
-        ) : (
-          <h4 className={styles.storeName}>{menu?.storeName.toUpperCase()}</h4>
-        )}
-        <div className={styles.cart}>
-          <Badge
-            badgeContent={quantity}
-            color="primary"
-            onClick={handleOpenCart}
-            style={{ padding: "6px" }}
+              <CheckCircleIcon style={{ fontSize: "8rem" }} color="success" />
+              <h1>Talebiniz iletildi.</h1>
+            </Modal.Body>
+          </Modal>
+          <Modal
+            style={{ width: "92%", margin: "0 auto", padding: "4px" }}
+            open={openIsSure}
+            onClose={handleCloseOpenIsSure}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
           >
-            <ShoppingCartOutlined style={{ color: "#f7ede2" }} />
-          </Badge>
-        </div>
-        <SwipeableDrawer
-          anchor="right"
-          open={open}
-          onOpen={() => setOpen(true)}
-          onClose={() => setOpen(false)}
-        >
-          <ul className={styles.navList}>
-            <Button
-              variant="contained"
-              style={{
-                margin: "10px auto",
-                minWidth: "10rem",
-                backgroundColor: "#457b9d",
-              }}
-              color="primary"
-              onClick={handleOpenWaiterModal}
+            <Modal.Header style={{ display: "flex", flexDirection: "column" }}>
+              <h3 style={{ padding: "0", margin: "0" }}>Dikkat</h3>
+              <p>Siparişiniz iletilecek.</p>
+            </Modal.Header>
+            <Modal.Body>
+              <h5>Not Ekle</h5>
+              <Textarea
+                style={{ fontSize: "12px" }}
+                placeholder="Mesajınız. (Boş Bırakabilirsiniz)"
+                onChange={(e) => setOrderNotes(e.target.value)}
+              ></Textarea>
+            </Modal.Body>
+            <Modal.Footer
+              style={{ display: "flex", justifyContent: "space-between" }}
             >
-              Garson Çağır
-            </Button>
-            <Button
-              variant="contained"
-              style={{
-                margin: "10px auto",
-                minWidth: "10rem",
-                backgroundColor: "#457b9d",
-              }}
-              color="primary"
-              onClick={handleOpenTableModal}
-            >
-              Hesap İste
-            </Button>
-            {!menu?.categories.length == 0 && (
-              <h3
-                style={{
-                  borderBottom: "1px solid #f1faee",
-                  color: "#f1faee",
-                  width: "100%",
-                  paddingBottom: "10px",
-                  textAlign: "center",
-                }}
+              <Button variant="outlined" onClick={handleCloseOpenIsSure}>
+                Vazgeç
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => setIsSure(true)}
               >
-                Menü
-              </h3>
+                Onayla
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          <Modal
+            open={openCart}
+            className={styles.cartModal}
+            onClose={handleCloseCart}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            style={{
+              padding: "4px",
+              width: "92%",
+              margin: "0 auto",
+              maxHeight: "24rem",
+              overFlow: "auto",
+            }}
+          >
+            <Modal.Header>
+              <h2>Sepet Özeti</h2>
+            </Modal.Header>
+            <Modal.Body style={{ padding: "1rem 0" }}>
+              {listType === "image"
+                ? cartItems?.map((item) => (
+                    <>
+                      <div key={Math.random()} className={styles.cart}>
+                        <div className={styles.cartHeader}>
+                          <img
+                            src={item?.img}
+                            alt=""
+                            className={styles.cartImg}
+                          />
+                          <h4
+                            style={{
+                              maxWidth: "8rem",
+                              overflow: "scroll",
+                              fontSize: "14px",
+                            }}
+                          >
+                            {item?.name}
+                          </h4>
+                        </div>
+                        <div className={styles.productQuantity}>
+                          <Button
+                            className={styles.buttons}
+                            variant="outlined"
+                            style={{
+                              minWidth: "1rem",
+                              backgroundColor: "transparent",
+                              border: "none",
+                            }}
+                            onClick={() => {
+                              if (item.quantity > 1) {
+                                item.quantity -= 1;
+                                setCartItems([...cartItems]);
+                                setCartTotal(
+                                  cartItems.reduce(function (a, b) {
+                                    return a + b.price * b.quantity;
+                                  }, 0)
+                                );
+                                dispatch({ type: "CART", payload: cartItems });
+                              } else if (
+                                item.quantity - 1 === 0 &&
+                                cartItems.length - 1 !== 0
+                              ) {
+                                setCartItems(
+                                  cartItems.filter(
+                                    (product) => product !== item
+                                  )
+                                );
+                                setCartTotal(
+                                  cart.reduce(function (a, b) {
+                                    return a + b.price * b.quantity;
+                                  }, 0)
+                                );
+                                dispatch({ type: "CART", payload: cartItems });
+                              } else {
+                                {
+                                  setCartItems([]);
+                                  setCartTotal(0);
+                                  dispatch({ type: "CART", payload: [] });
+                                }
+                              }
+                            }}
+                          >
+                            <ArrowCircleDownIcon style={{ fontSize: "2rem" }} />
+                          </Button>
+                          <h4>x{item?.quantity}</h4>
+                          <Button
+                            style={{
+                              minWidth: "1rem",
+                              backgroundColor: "transparent",
+                              border: "none",
+                            }}
+                            variant="outlined"
+                            className={styles.buttons}
+                            onClick={() => {
+                              item.quantity += 1;
+                              setCartItems([...cartItems]);
+                              setCartTotal(
+                                cartItems.reduce(function (a, b) {
+                                  return a + b.price * b.quantity;
+                                }, 0)
+                              );
+                              dispatch({ type: "CART", payload: cartItems });
+                            }}
+                          >
+                            <ArrowCircleUpIcon style={{ fontSize: "2rem" }} />
+                          </Button>
+                        </div>
+                      </div>
+                    </>
+                  ))
+                : cartItems?.map((item) => (
+                    <>
+                      <div key={Math.random()} className={styles.cart}>
+                        <div className={styles.cartHeader}>
+                          <h4
+                            style={{
+                              maxWidth: "8rem",
+                              overflow: "scroll",
+                              fontSize: "14px",
+                            }}
+                          >
+                            {item?.name}
+                          </h4>
+                        </div>
+                        <div className={styles.productQuantity}>
+                          <Button
+                            className={styles.buttons}
+                            variant="outlined"
+                            style={{
+                              minWidth: "1rem",
+                              backgroundColor: "transparent",
+                              border: "none",
+                            }}
+                            onClick={() => {
+                              if (item.quantity > 1) {
+                                item.quantity -= 1;
+                                setCartItems([...cartItems]);
+                                setCartTotal(
+                                  cartItems.reduce(function (a, b) {
+                                    return a + b.price * b.quantity;
+                                  }, 0)
+                                );
+                                dispatch({ type: "CART", payload: cartItems });
+                              } else if (
+                                item.quantity - 1 === 0 &&
+                                cartItems.length - 1 !== 0
+                              ) {
+                                setCartItems(
+                                  cartItems.filter(
+                                    (product) => product !== item
+                                  )
+                                );
+                                setCartTotal(
+                                  cart.reduce(function (a, b) {
+                                    return a + b.price * b.quantity;
+                                  }, 0)
+                                );
+                                dispatch({ type: "CART", payload: cartItems });
+                              } else {
+                                {
+                                  setCartItems([]);
+                                  setCartTotal(0);
+                                  dispatch({ type: "CART", payload: [] });
+                                }
+                              }
+                            }}
+                          >
+                            <ArrowCircleDownIcon style={{ fontSize: "2rem" }} />
+                          </Button>
+                          <h4>x{item?.quantity}</h4>
+                          <Button
+                            style={{
+                              minWidth: "1rem",
+                              backgroundColor: "transparent",
+                              border: "none",
+                            }}
+                            variant="outlined"
+                            className={styles.buttons}
+                            onClick={() => {
+                              item.quantity += 1;
+                              setCartItems([...cartItems]);
+                              setCartTotal(
+                                cartItems.reduce(function (a, b) {
+                                  return a + b.price * b.quantity;
+                                }, 0)
+                              );
+                              dispatch({ type: "CART", payload: cartItems });
+                            }}
+                          >
+                            <ArrowCircleUpIcon style={{ fontSize: "2rem" }} />
+                          </Button>
+                        </div>
+                      </div>
+                    </>
+                  ))}
+
+              {cart.length === 0 && (
+                <p style={{ padding: "1rem" }}>Sepetiniz boş.</p>
+              )}
+            </Modal.Body>
+            <Modal.Footer className={styles.cartFooter}>
+              {cart.length > 0 && <div>Toplam: ₺{cartTotal}</div>}
+              {cart.length > 0 && (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleOpenIsSure}
+                >
+                  Siparişi Onayla
+                </Button>
+              )}
+            </Modal.Footer>
+          </Modal>
+          <navbar className={styles.navbar}>
+            <IconButton onClick={() => setOpen(true)}>
+              <MenuIcon style={{ color: "white", fontSize: "2rem" }} />
+            </IconButton>
+            {menu?.storeLogo?.includes("cloudinary") ? (
+              <img src={menu?.storeLogo} alt="Logo" className={styles.logo} />
+            ) : (
+              <h4 className={styles.storeName}>
+                {menu?.storeName.toUpperCase()}
+              </h4>
             )}
-
-            {menu &&
-              sorted?.map((m) => (
-                <li
-                  onClick={() => {
-                    try {
-                      setIsFetching(true);
-                      Router.push(
-                        `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${m?.name}`
-                      );
-                    } catch (err) {
-                      console.log(err);
-                      setIsFetching(false);
-                    }
-                  }}
-                  key={m?.name}
-                >
-                  <h3>{m?.name}</h3>
-                </li>
-              ))}
-          </ul>
-        </SwipeableDrawer>
-      </navbar>
-      {menu?.categories.length == 0 && (
-        <div className={styles.notFound}>
-          <FmdBadIcon style={{ fontSize: "3rem", color: "#001219" }} />
-          <h3>Bu iş yerinde Dijital Menü henüz düzenlenmedi.</h3>
-        </div>
-      )}
-      {menu?.categories.length > 0 && (
-        <>
-          {menu?.orders.length >= 3 && (
-            <div className={styles.favsBox}>
-              <h3 className={styles.favsHeader}>En Sevilenler</h3>
-              <div className={styles.favs}>
-                {menu?.products
-                  .filter(
-                    (p) => p?.name?.toLowerCase() === favItem2?.toLowerCase()
-                  )
-                  .map((a) => (
-                    <div
-                      key={a?._id}
-                      onClick={() => {
-                        try {
-                          setIsFetching(true);
-                          Router.push(
-                            `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${a?.category[0]}`
-                          );
-                        } catch (err) {
-                          console.log(err);
-                          setIsFetching(false);
-                        }
-                      }}
-                      className={styles.favsItem}
-                    >
-                      <img src={a?.image} className={styles.favsImage} />
-                      <h4 className={styles.favsName}>{a?.name}</h4>
-                    </div>
-                  ))}
-                {menu?.products
-                  .filter(
-                    (p) => p?.name?.toLowerCase() === favItem?.toLowerCase()
-                  )
-                  .map((a) => (
-                    <div
-                      key={a?._id}
-                      className={styles.favsItem}
-                      onClick={() => {
-                        try {
-                          setIsFetching(true);
-                          Router.push(
-                            `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${a?.category[0]}`
-                          );
-                        } catch (err) {
-                          console.log(err);
-                          setIsFetching(false);
-                        }
-                      }}
-                    >
-                      <img src={a?.image} className={styles.favsImage} />
-                      <h4 className={styles.favsName}>{a?.name}</h4>
-                    </div>
-                  ))}
-                {menu?.products
-                  .filter(
-                    (p) => p?.name?.toLowerCase() === favItem3?.toLowerCase()
-                  )
-                  .map((a) => (
-                    <div
-                      key={a?._id}
-                      className={styles.favsItem}
-                      onClick={() => {
-                        try {
-                          setIsFetching(true);
-                          Router.push(
-                            `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${a?.category[0]}`
-                          );
-                        } catch (err) {
-                          console.log(err);
-                          setIsFetching(false);
-                        }
-                      }}
-                    >
-                      {a?.image && (
-                        <img src={a?.image} className={styles.favsImage} />
-                      )}
-                      <h4 className={styles.favsName}>{a?.name}</h4>
-                    </div>
-                  ))}
-              </div>
+            <div className={styles.cart}>
+              <Badge
+                badgeContent={quantity}
+                color="primary"
+                onClick={handleOpenCart}
+                style={{ padding: "6px" }}
+              >
+                <ShoppingCartOutlined style={{ color: "#f7ede2" }} />
+              </Badge>
             </div>
-          )}
-          <ul className={styles.list}>
-            <Modal
-              style={{
-                background: "transparent",
-                boxShadow: "none",
-              }}
-              preventClose
-              aria-labelledby="modal-title"
-              open={isFetching}
+            <SwipeableDrawer
+              anchor="right"
+              open={open}
+              onOpen={() => setOpen(true)}
+              onClose={() => setOpen(false)}
             >
-              <Modal.Body>
-                <Loading color="white" size="xl" />
-                <Spacer />
-              </Modal.Body>
-            </Modal>
-            <Modal
-              style={{ width: "90%", margin: "0 auto" }}
-              onClose={handleCloseWaiterModal}
-              aria-labelledby="modal-title"
-              open={waiterModal}
-            >
-              <Modal.Header>
-                <h1>Emin misiniz?</h1>
-              </Modal.Header>
-              <Modal.Body style={{ margin: "1rem 10px", textAlign: "center" }}>
-                <p>Garson Çağrınız iletilecek.</p>
-              </Modal.Body>
-              <Modal.Footer
-                style={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <Button variant="contained" onClick={handleCloseWaiterModal}>
-                  Vazgeç
+              <ul className={styles.navList}>
+                <Button
+                  variant="contained"
+                  style={{
+                    margin: "10px auto",
+                    minWidth: "10rem",
+                    backgroundColor: "#457b9d",
+                  }}
+                  color="primary"
+                  onClick={handleOpenWaiterModal}
+                >
+                  Garson Çağır
                 </Button>
                 <Button
-                  style={{ marginLeft: "2rem " }}
                   variant="contained"
-                  color="secondary"
-                  onClick={() => {
-                    handleCalls({ callName: "Garson Çağrısı" });
-                    handleCloseWaiterModal();
+                  style={{
+                    margin: "10px auto",
+                    minWidth: "10rem",
+                    backgroundColor: "#457b9d",
                   }}
+                  color="primary"
+                  onClick={handleOpenTableModal}
                 >
-                  Onayla
+                  Hesap İste
                 </Button>
-              </Modal.Footer>
-            </Modal>
-            <Modal
-              style={{ width: "90%", margin: "0 auto" }}
-              onClose={handleCloseTableModal}
-              aria-labelledby="modal-title"
-              open={tableModal}
-            >
-              <Modal.Header>
-                <h1>Emin misiniz?</h1>
-              </Modal.Header>
-              <Modal.Body style={{ margin: "1rem 10px" }}>
-                <p style={{ textAlign: "center" }}>
-                  Hesap İsteğiniz iletilecek.
-                </p>
-              </Modal.Body>
-              <Modal.Footer
-                style={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <Button variant="contained" onClick={handleCloseTableModal}>
-                  Vazgeç
-                </Button>
-                <Button
-                  style={{ marginLeft: "2rem " }}
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => {
-                    handleCalls({ callName: "Hesap Çağrısı" });
-                    handleCloseTableModal();
-                  }}
-                >
-                  Onayla
-                </Button>
-              </Modal.Footer>
-            </Modal>
-            {menu &&
-              sorted?.map((m) => (
-                <div
-                  key={m?.name}
-                  className={styles.listItem}
-                  onClick={() => {
-                    try {
-                      setIsFetching(true);
-                      Router.push(
-                        `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${m?.name}`
-                      );
-                    } catch (err) {
-                      console.log(err);
-                      setIsFetching(false);
-                    }
-                  }}
-                >
-                  <div
+                {!menu?.categories.length == 0 && (
+                  <h3
                     style={{
+                      borderBottom: "1px solid #f1faee",
+                      color: "#f1faee",
                       width: "100%",
-                      height: "100%",
-                      position: "relative",
+                      paddingBottom: "10px",
+                      textAlign: "center",
                     }}
                   >
-                    <Image
-                      priority
-                      layout="fill"
-                      src={m?.image}
-                      className={styles.img}
-                      alt={m?.name}
-                    ></Image>
-                  </div>
-                  <div className={styles.titleBack}>
-                    <h3 className={styles.title}>{m?.name}</h3>
+                    Menü
+                  </h3>
+                )}
+
+                {menu &&
+                  sorted?.map((m) => (
+                    <li
+                      onClick={() => {
+                        try {
+                          setIsFetching(true);
+                          Router.push(
+                            `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${m?.name}`
+                          );
+                        } catch (err) {
+                          console.log(err);
+                          setIsFetching(false);
+                        }
+                      }}
+                      key={m?.name}
+                    >
+                      <h3>{m?.name}</h3>
+                    </li>
+                  ))}
+              </ul>
+            </SwipeableDrawer>
+          </navbar>
+          {menu?.categories.length == 0 && (
+            <div className={styles.notFound}>
+              <FmdBadIcon style={{ fontSize: "3rem", color: "#001219" }} />
+              <h3>Bu iş yerinde Dijital Menü henüz düzenlenmedi.</h3>
+            </div>
+          )}
+          {menu?.categories.length > 0 && (
+            <>
+              {menu?.orders.length >= 3 && (
+                <div className={styles.favsBox}>
+                  <h3 className={styles.favsHeader}>En Sevilenler</h3>
+                  <div className={styles.favs}>
+                    {menu?.products
+                      .filter(
+                        (p) =>
+                          p?.name?.toLowerCase() === favItem2?.toLowerCase()
+                      )
+                      .map((a) => (
+                        <div
+                          key={a?._id}
+                          onClick={() => {
+                            try {
+                              setIsFetching(true);
+                              Router.push(
+                                `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${a?.category[0]}`
+                              );
+                            } catch (err) {
+                              console.log(err);
+                              setIsFetching(false);
+                            }
+                          }}
+                          className={styles.favsItem}
+                        >
+                          <img src={a?.image} className={styles.favsImage} />
+                          <h4 className={styles.favsName}>{a?.name}</h4>
+                        </div>
+                      ))}
+                    {menu?.products
+                      .filter(
+                        (p) => p?.name?.toLowerCase() === favItem?.toLowerCase()
+                      )
+                      .map((a) => (
+                        <div
+                          key={a?._id}
+                          className={styles.favsItem}
+                          onClick={() => {
+                            try {
+                              setIsFetching(true);
+                              Router.push(
+                                `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${a?.category[0]}`
+                              );
+                            } catch (err) {
+                              console.log(err);
+                              setIsFetching(false);
+                            }
+                          }}
+                        >
+                          <img src={a?.image} className={styles.favsImage} />
+                          <h4 className={styles.favsName}>{a?.name}</h4>
+                        </div>
+                      ))}
+                    {menu?.products
+                      .filter(
+                        (p) =>
+                          p?.name?.toLowerCase() === favItem3?.toLowerCase()
+                      )
+                      .map((a) => (
+                        <div
+                          key={a?._id}
+                          className={styles.favsItem}
+                          onClick={() => {
+                            try {
+                              setIsFetching(true);
+                              Router.push(
+                                `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${a?.category[0]}`
+                              );
+                            } catch (err) {
+                              console.log(err);
+                              setIsFetching(false);
+                            }
+                          }}
+                        >
+                          {a?.image && (
+                            <img src={a?.image} className={styles.favsImage} />
+                          )}
+                          <h4 className={styles.favsName}>{a?.name}</h4>
+                        </div>
+                      ))}
                   </div>
                 </div>
-              ))}
-          </ul>
-        </>
+              )}
+              <ul className={styles.list}>
+                <Modal
+                  style={{
+                    background: "transparent",
+                    boxShadow: "none",
+                  }}
+                  preventClose
+                  aria-labelledby="modal-title"
+                  open={isFetching}
+                >
+                  <Modal.Body>
+                    <Loading color="white" size="xl" />
+                    <Spacer />
+                  </Modal.Body>
+                </Modal>
+                <Modal
+                  style={{ width: "90%", margin: "0 auto" }}
+                  onClose={handleCloseWaiterModal}
+                  aria-labelledby="modal-title"
+                  open={waiterModal}
+                >
+                  <Modal.Header>
+                    <h1>Emin misiniz?</h1>
+                  </Modal.Header>
+                  <Modal.Body
+                    style={{ margin: "1rem 10px", textAlign: "center" }}
+                  >
+                    <p>Garson Çağrınız iletilecek.</p>
+                  </Modal.Body>
+                  <Modal.Footer
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <Button
+                      variant="contained"
+                      onClick={handleCloseWaiterModal}
+                    >
+                      Vazgeç
+                    </Button>
+                    <Button
+                      style={{ marginLeft: "2rem " }}
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => {
+                        handleCalls({ callName: "Garson Çağrısı" });
+                        handleCloseWaiterModal();
+                      }}
+                    >
+                      Onayla
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+                <Modal
+                  style={{ width: "90%", margin: "0 auto" }}
+                  onClose={handleCloseTableModal}
+                  aria-labelledby="modal-title"
+                  open={tableModal}
+                >
+                  <Modal.Header>
+                    <h1>Emin misiniz?</h1>
+                  </Modal.Header>
+                  <Modal.Body style={{ margin: "1rem 10px" }}>
+                    <p style={{ textAlign: "center" }}>
+                      Hesap İsteğiniz iletilecek.
+                    </p>
+                  </Modal.Body>
+                  <Modal.Footer
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <Button variant="contained" onClick={handleCloseTableModal}>
+                      Vazgeç
+                    </Button>
+                    <Button
+                      style={{ marginLeft: "2rem " }}
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => {
+                        handleCalls({ callName: "Hesap Çağrısı" });
+                        handleCloseTableModal();
+                      }}
+                    >
+                      Onayla
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+                {menu &&
+                  sorted?.map((m) => (
+                    <div
+                      key={m?.name}
+                      className={styles.listItem}
+                      onClick={() => {
+                        try {
+                          setIsFetching(true);
+                          Router.push(
+                            `/qr/v2/${menu?.storeLinkName}/${tableNum}/products/${m?.name}`
+                          );
+                        } catch (err) {
+                          console.log(err);
+                          setIsFetching(false);
+                        }
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          position: "relative",
+                        }}
+                      >
+                        <Image
+                          priority
+                          layout="fill"
+                          src={m?.image}
+                          className={styles.img}
+                          alt={m?.name}
+                        ></Image>
+                      </div>
+                      <div className={styles.titleBack}>
+                        <h3 className={styles.title}>{m?.name}</h3>
+                      </div>
+                    </div>
+                  ))}
+              </ul>
+            </>
+          )}
+          <footer className={styles.footer}>
+            <p>Kafe, Restoran ve Oteller için Dijital Menü çözümleri.</p>
+            <a
+              href="https://www.digicafes.com"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <Image src={digicafes} width={160} height={160} />
+            </a>
+            <span>©{new Date().getFullYear()} Tüm hakları saklıdır.</span>
+          </footer>
+        </div>
+      ) : (
+        <div className={styles.desktopBox}>
+          <iframe
+            width="360"
+            height="700"
+            className={styles.iframe}
+            src={`https://www.digicafes.com/qr/v2/${menu?.storeLinkName}/${tableNum}`}
+            title="W3Schools Free Online Web Tutorials"
+          ></iframe>
+          <p>
+            En iyi deneyimi elde etmek için bir mobil cihaz üzerinden bağlantı
+            sağlayınız.
+          </p>
+        </div>
       )}
-      <footer className={styles.footer}>
-        <p>Kafe, Restoran ve Oteller için Dijital Menü çözümleri.</p>
-        <a href="https://www.digicafes.com" rel="noreferrer" target="_blank">
-          <Image src={digicafes} width={160} height={160} />
-        </a>
-        <span>©{new Date().getFullYear()} Tüm hakları saklıdır.</span>
-      </footer>
-    </div>
+    </>
   );
 };
 

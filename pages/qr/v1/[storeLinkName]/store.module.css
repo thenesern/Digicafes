@@ -163,8 +163,8 @@
   justify-content: flex-start;
   align-items: flex-start;
   list-style: none;
-  height: 100vh;
-  overflow: auto;
+  height: 100vh !important;
+  overflow: auto !important;
   padding: 1rem;
   margin: 0;
   gap: 4px;

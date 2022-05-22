@@ -11,17 +11,17 @@ import Order from "../../../../models/OrderModel.js";
 import Image from "next/image";
 import FmdBadIcon from "@mui/icons-material/FmdBad";
 import digicafes from "../../../../assets/digi_logo.svg";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 
 const StoreMenu = ({ menu }) => {
   const [open, setOpen] = useState(false);
   const Router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
   const [listType, setListType] = useState(menu?.listType);
-  const [isNotMobile, setIsNotMobile] = useState();
-  useEffect(() => {
+  const [isMobile, setIsMobile] = useState();
+  useLayoutEffect(() => {
     if (window.innerWidth <= 1000) {
-      setIsNotMobile(true);
+      setIsMobile(true);
     }
   }, []);
   const sorted = menu?.categories?.sort((a, b) => {
@@ -34,7 +34,7 @@ const StoreMenu = ({ menu }) => {
   }, []);
   return (
     <>
-      {isNotMobile ? (
+      {isMobile ? (
         <div className={styles.container}>
           <navbar className={styles.navbar}>
             {menu?.storeLogo?.includes("cloudinary") ? (
@@ -264,7 +264,7 @@ const StoreMenu = ({ menu }) => {
             width="360"
             height="700"
             className={styles.iframe}
-            src={`https://www.digicafes.com/qr/v1/${menu?.storeName}`}
+            src={`https://www.digicafes.com/qr/v1/${menu?.storeLinkName}`}
             title="W3Schools Free Online Web Tutorials"
           ></iframe>
           <p>
