@@ -83,6 +83,7 @@ const DijitalMenu = () => {
                   src={digitalMenuMockup}
                   layout="responsive"
                   objectFit="contain"
+                  className={styles.referenceImg}
                   alt=""
                 />
               </div>
@@ -94,6 +95,7 @@ const DijitalMenu = () => {
                   layout="responsive"
                   objectFit="contain"
                   data-aos="fade-left"
+                  className={styles.referenceImg}
                   src={TabletMockup}
                   alt=""
                 />
