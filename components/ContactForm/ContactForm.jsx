@@ -7,8 +7,11 @@ import { useState } from "react";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ErrorIcon from "@mui/icons-material/Error";
 import styles from "./ContactForm.module.css";
+import useTranslation from "next-translate/useTranslation";
 
 const ContactForm = () => {
+  const { t } = useTranslation();
+
   const form = useRef();
   const [sent, setSent] = useState(false);
   const [fail, setFail] = useState(false);
@@ -59,18 +62,18 @@ const ContactForm = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>Soru, Görüş ve Önerileriniz için,</h1>
+        <h1>{t("contact:desc")}</h1>
       </div>
       <div className={styles.contact}>
         <h1 className={styles.header} id="contact">
-          İletişim
+          {t("contact:header")}
         </h1>
         <form ref={form} className={styles.form} onSubmit={sendEmail}>
           <div className={styles.inputs}>
             <div className={styles.name}>
               <Input
                 underlined
-                placeholder="Adınız"
+                placeholder={t("contact:name")}
                 color="success"
                 name="firstName"
                 style={{ color: "white" }}
@@ -78,7 +81,7 @@ const ContactForm = () => {
               <Input
                 underlined
                 name="lastName"
-                placeholder="Soyadınız"
+                placeholder={t("contact:surName")}
                 color="success"
                 style={{ color: "white" }}
               />
@@ -92,7 +95,11 @@ const ContactForm = () => {
               name="user_email"
             />
           </div>
-          <Textarea placeholder="Mesajınız." name="message" fullWidth />
+          <Textarea
+            placeholder={t("contact:message")}
+            name="message"
+            fullWidth
+          />
           <Button
             onClick={(e) => {
               sendEmail(e);
@@ -104,7 +111,7 @@ const ContactForm = () => {
             }}
             className={styles.submit}
           >
-            Gönder
+            {t("contact:submit")}
           </Button>
         </form>
         {sent && (

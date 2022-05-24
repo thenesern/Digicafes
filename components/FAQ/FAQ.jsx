@@ -3,34 +3,25 @@ import React from "react";
 import { Collapse, Text } from "@nextui-org/react";
 // Styles
 import styles from "./FAQ.module.css";
+import useTranslation from "next-translate/useTranslation";
 
 const FAQ = () => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.container}>
       <h1 className={styles.articleHeader} id="faq">
-        Sıkça Sorulan Sorular
+        {t("faq:header")}
       </h1>
       <Collapse.Group bordered>
-        <Collapse title="Dijital Menü Nedir?">
-          <Text>
-            Dijital Menü, geleneksel baskı menü yerine menünün internet
-            üzerinden QR Kod kullanılarak müşteriye sunulmasıdır.
-          </Text>
+        <Collapse title={t("faq:q1")}>
+          <Text>{t("faq:a1")}</Text>
         </Collapse>
-        <Collapse title="Dijital Menü Nasıl Çalışır?">
-          <Text>
-            Menünüz Yönetim Paneli üzerinden oluşturulur. Ardından menünüz
-            sistemimiz tarafından kayıt altına alınır ve QR Kod oluşturur. QR
-            kod&apos;u okutarak menüye ulaşılır.
-          </Text>
+        <Collapse title={t("faq:q2")}>
+          <Text>{t("faq:a2")}</Text>
         </Collapse>
-        <Collapse title="Dijital Menü V1 ile V2 farkı nedir?">
-          <Text>
-            Dijital Menü V1 ile menünüzü oluşturabilir, QR Kod kullanarak menüye
-            ulaşabilirsiniz. Bu versiyonda amaç müşterinin menüyü sadece
-            görüntülemesi üzerinedir. Dijital Menü V2 ise aynı menü üzerinden
-            sipariş verme, garson çağırma vb. özellikleri size sunar.
-          </Text>
+        <Collapse title={t("faq:q3")}>
+          <Text>{t("faq:a3")}</Text>
         </Collapse>
       </Collapse.Group>
     </div>

@@ -2,11 +2,14 @@
 import React from "react";
 import Image from "next/image";
 import logo from "../../assets/digi_dark_logo.svg";
+import useTranslation from "next-translate/useTranslation";
 // Styles
 import { Facebook, Instagram } from "@material-ui/icons";
 import styles from "./Footer.module.css";
 
 const Footer = () => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.container}>
       <div className={styles.footer}>
@@ -36,7 +39,7 @@ const Footer = () => {
         </div>
       </div>
       <span className={styles.description}>
-        ©{new Date().getFullYear()} Tüm hakları saklıdır.
+        ©{new Date().getFullYear()} {t("footer:alert")}
       </span>
     </div>
   );

@@ -34,6 +34,7 @@ import { Box } from "@mui/system";
 import { List, ListItem, TextField } from "@material-ui/core";
 import logoDark from "../../assets/digi_dark_logo.svg";
 import logo from "../../assets/digi_logo.svg";
+import useTranslation from "next-translate/useTranslation";
 
 const Nav = () => {
   const router = useRouter();
@@ -42,6 +43,7 @@ const Nav = () => {
   const [openMuiLogin, setOpenMuiLogin] = useState(false);
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const [openMuiRegister, setOpenMuiRegister] = useState(false);
+  const { t } = useTranslation();
   const handleOpenMuiLogin = () => setOpenMuiLogin(true);
   const handleOpenForgotPassword = () => setOpenForgotPassword(true);
   const handleOpenMuiRegister = () => setOpenMuiRegister(true);
@@ -251,9 +253,9 @@ const Nav = () => {
             X
           </span>
           <div className={styles.wrapper}>
-            <h1 className={styles.title}>Giriş Yap</h1>
+            <h1 className={styles.title}>{t("nav:signIn")}</h1>
             <div className={styles.signup}>
-              <p>Hesabınız yok mu?</p>
+              <p>{t("nav:noAccount")}</p>
               <span
                 style={{ fontWeight: "600", cursor: "pointer" }}
                 onClick={() => {
@@ -261,7 +263,7 @@ const Nav = () => {
                   handleOpenMuiRegister();
                 }}
               >
-                Üye Olun
+                {t("nav:createAccount")}
               </span>
             </div>
             <form className={styles.form} onSubmit={handleSubmit(loginHandler)}>
@@ -309,7 +311,7 @@ const Nav = () => {
                         variant="outlined"
                         fullWidth
                         id="password"
-                        label="Şifre"
+                        label={t("nav:password")}
                         inputProps={{ type: "password" }}
                         error={Boolean(errors.password)}
                         helperText={
@@ -331,7 +333,7 @@ const Nav = () => {
                     handleOpenForgotPassword();
                   }}
                 >
-                  Şifreni mi unuttun?
+                  {t("nav:forgotYourPassword")}
                 </p>
                 <ListItem>
                   <Button
@@ -342,7 +344,7 @@ const Nav = () => {
                     style={{ outline: "none" }}
                     onSubmit={handleSubmit(loginHandler)}
                   >
-                    Giriş Yap
+                    {t("nav:signIn")}
                   </Button>
                 </ListItem>
               </List>
@@ -375,11 +377,11 @@ const Nav = () => {
           </span>
           {sentPasswordMail === null ? (
             <div className={styles.wrapper}>
-              <h1 className={styles.title}>Şifreni mi unuttun?</h1>
+              <h1 className={styles.title}>{t("nav:forgotYourPassword")}</h1>
               <div className={styles.signup}>
                 <p style={{ textAlign: "center" }}>
-                  Sorun değil. Üye olduğun e-mail adresini girerek yeni şifreni
-                  oluşturabilirsin.
+                  {" "}
+                  {t("nav:forgotPasswordDescription")}
                 </p>
               </div>
               <form
@@ -416,7 +418,6 @@ const Nav = () => {
                       )}
                     ></Controller>
                   </ListItem>
-
                   <ListItem>
                     <Button
                       variant="outlined"
@@ -426,7 +427,7 @@ const Nav = () => {
                       style={{ outline: "none" }}
                       onSubmit={handleSubmit(resetPasswordHandler)}
                     >
-                      Gönder
+                      {t("nav:send")}
                     </Button>
                   </ListItem>
                 </List>
@@ -484,9 +485,9 @@ const Nav = () => {
           >
             X
           </span>
-          <h1 className={styles.title}>Üye Ol</h1>
+          <h1 className={styles.title}>{t("nav:signUp")}</h1>
           <div className={styles.signin}>
-            <p>Hesabınız var mı?</p>
+            <p>{t("nav:haveAccount")}</p>
             <span
               style={{ fontWeight: "600", cursor: "pointer" }}
               onClick={() => {
@@ -494,7 +495,7 @@ const Nav = () => {
                 handleOpenMuiLogin();
               }}
             >
-              Giriş Yapın
+              {t("nav:signIn")}
             </span>
           </div>
           <form
@@ -517,13 +518,13 @@ const Nav = () => {
                         variant="outlined"
                         fullWidth
                         id="fName"
-                        label="Ad"
+                        label={t("nav:name")}
                         error={Boolean(errors.fName)}
                         helperText={
                           errors.fName
                             ? errors.fName.type === "minLength"
-                              ? "Lütfen geçerli bir Ad giriniz"
-                              : "Lütfen Adınızı giriniz"
+                              ? t("nav:validName")
+                              : t("nav:proveName")
                             : ""
                         }
                         {...field}
@@ -545,13 +546,13 @@ const Nav = () => {
                         variant="outlined"
                         fullWidth
                         id="lName"
-                        label="Soyad"
+                        label={t("nav:surName")}
                         error={Boolean(errors.lName)}
                         helperText={
                           errors.lName
                             ? errors.lName.type === "minLength"
-                              ? "Lütfen geçerli bir Soyad giriniz"
-                              : "Lütfen Soyadınızı giriniz"
+                              ? t("nav:validSurName")
+                              : t("nav:proveSurName")
                             : ""
                         }
                         {...field}
@@ -581,8 +582,8 @@ const Nav = () => {
                       helperText={
                         errors.email
                           ? errors.email.type === "pattern"
-                            ? "Lütfen geçerli bir E-Mail adresi giriniz"
-                            : "Lütfen E-Mail adresinizi giriniz"
+                            ? t("nav:validEmail")
+                            : t("nav:proveEmail")
                           : ""
                       }
                       {...field}
@@ -604,14 +605,14 @@ const Nav = () => {
                       <TextField
                         variant="outlined"
                         id="password"
-                        label="Şifre"
+                        label={t("nav:password")}
                         inputProps={{ type: "password" }}
                         error={Boolean(errors.password)}
                         helperText={
                           errors.password
                             ? errors.password.type === "minLength"
-                              ? "Şifreniz minimum 5 karakter olmalıdır"
-                              : "Lütfen bir şifre giriniz"
+                              ? t("nav:passwordMin")
+                              : t("nav:enterAPassword")
                             : ""
                         }
                         {...field}
@@ -632,14 +633,14 @@ const Nav = () => {
                       <TextField
                         variant="outlined"
                         id="passwordConfirm"
-                        label="Şifre Onay"
+                        label={t("nav:passwordConfirm")}
                         inputProps={{ type: "password" }}
                         error={Boolean(errors.passwordConfirm)}
                         helperText={
                           errors.passwordConfirm
                             ? errors.passwordConfirm.type === "minLength"
-                              ? "Şifreniz minimum 5 karakterden oluşmalıdır"
-                              : "Lütfen bir şifre giriniz"
+                              ? t("nav:passwordMin")
+                              : t("nav:enterAPassword")
                             : ""
                         }
                         {...field}
@@ -649,21 +650,51 @@ const Nav = () => {
                 </ListItem>
               </div>
               <div className={styles.aggreement}>
-                <div className={styles.privacy}>
-                  <p>
-                    Kişisel verileriniz,
-                    <a
-                      href="/gizlilik-politikasi"
-                      style={{
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        margin: "0 4px",
-                      }}
-                      target="_blank"
-                    >
-                      Gizlilik Politikası
-                    </a>
-                    kapsamında işlenmektedir. “Üye ol” butonuna basarak
+                {router.locale === "tr" ? (
+                  <div className={styles.privacy}>
+                    <p>
+                      Kişisel verileriniz,
+                      <a
+                        href="/gizlilik-politikasi"
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                        target="_blank"
+                      >
+                        Gizlilik Politikası
+                      </a>
+                      kapsamında işlenmektedir. “Üye ol” butonuna basarak
+                      <a
+                        href="/uyelik-sozlesmesi"
+                        target="_blank"
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Üyelik Sözleşmesi
+                      </a>
+                      ’ni, ve
+                      <a
+                        href="/cerez-politikasi"
+                        target="_blank"
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Çerez Politikası
+                      </a>
+                      ’nı okuduğunuzu ve kabul ettiğinizi onaylıyorsunuz.
+                    </p>
+                  </div>
+                ) : (
+                  <p style={{ textAlign: "center" }}>
+                    Click “Sign Up” to agree to Digicafes&apos;{" "}
                     <a
                       href="/uyelik-sozlesmesi"
                       target="_blank"
@@ -673,23 +704,23 @@ const Nav = () => {
                         margin: "0 4px",
                       }}
                     >
-                      Üyelik Sözleşmesi
+                      Terms of Service
                     </a>
-                    ’ni, ve
+                    and acknowledge that Digicafes&apos;
                     <a
-                      href="/cerez-politikasi"
-                      target="_blank"
+                      href="/gizlilik-politikasi"
                       style={{
                         fontWeight: "600",
                         cursor: "pointer",
                         margin: "0 4px",
                       }}
+                      target="_blank"
                     >
-                      Çerez Politikası
+                      Privacy Policy
                     </a>
-                    ’nı okuduğunuzu ve kabul ettiğinizi onaylıyorsunuz.
+                    applies to you.
                   </p>
-                </div>
+                )}
               </div>
               <ListItem>
                 <Button
@@ -699,7 +730,7 @@ const Nav = () => {
                   fullWidth
                   onSubmit={handleSubmit(registerHandler)}
                 >
-                  Üye Ol
+                  {t("nav:signUp")}
                 </Button>
               </ListItem>
             </List>
@@ -736,7 +767,7 @@ const Nav = () => {
                 offset={-80}
                 duration={200}
               >
-                <h5 className={styles.link}>Özellikler</h5>
+                <h5 className={styles.link}>{t("nav:features")}</h5>
               </Link>
               <Link
                 to="process"
@@ -745,7 +776,7 @@ const Nav = () => {
                 offset={-80}
                 duration={200}
               >
-                <h5 className={styles.link}>İşleyiş</h5>
+                <h5 className={styles.link}>{t("nav:process")}</h5>
               </Link>
               <Link
                 to="paketler"
@@ -754,7 +785,7 @@ const Nav = () => {
                 offset={-80}
                 duration={200}
               >
-                <h5 className={styles.link}>Paketler</h5>
+                <h5 className={styles.link}>{t("nav:services")}</h5>
               </Link>
               <Link
                 to="faq"
@@ -763,7 +794,7 @@ const Nav = () => {
                 offset={-200}
                 duration={200}
               >
-                <h5 className={styles.link}>Sıkça Sorulan Sorular</h5>
+                <h5 className={styles.link}>{t("nav:faq")}</h5>
               </Link>
               <Link
                 to="contact"
@@ -772,7 +803,7 @@ const Nav = () => {
                 offset={-80}
                 duration={200}
               >
-                <h5 className={styles.link}>İletişim</h5>
+                <h5 className={styles.link}>{t("nav:contact")}</h5>
               </Link>
             </div>
           )}
@@ -909,13 +940,13 @@ const Nav = () => {
               className={styles.signIn}
               onClick={() => handleOpenMuiLogin(true)}
             >
-              Giriş Yap
+              {t("nav:signIn")}
             </button>
             <button
               className={styles.signUp}
               onClick={() => handleOpenMuiRegister(true)}
             >
-              Ücretsiz Dene
+              {t("nav:tryForFree")}
             </button>
           </li>
         )}
@@ -1066,10 +1097,10 @@ const Nav = () => {
           ) : (
             <div className={styles.buttons}>
               <button className={styles.signIn} onClick={handleOpenMuiLogin}>
-                Giriş Yap
+                {t("nav:signIn")}
               </button>
               <button className={styles.signUp} onClick={handleOpenMuiRegister}>
-                Ücretsiz Dene
+                {t("nav:tryForFree")}
               </button>
             </div>
           )}
@@ -1082,7 +1113,7 @@ const Nav = () => {
                 offset={-80}
                 duration={200}
               >
-                <h5 className={styles.link}>Özellikler</h5>
+                <h5 className={styles.link}>{t("nav:features")}</h5>
               </Link>
               <Link
                 to="process"
@@ -1091,7 +1122,7 @@ const Nav = () => {
                 offset={-80}
                 duration={200}
               >
-                <h5 className={styles.link}>İşleyiş</h5>
+                <h5 className={styles.link}>{t("nav:process")}</h5>
               </Link>
               <Link
                 to="paketler"
@@ -1100,7 +1131,7 @@ const Nav = () => {
                 offset={-80}
                 duration={200}
               >
-                <h5 className={styles.link}>Paketler</h5>
+                <h5 className={styles.link}>{t("nav:services")}</h5>
               </Link>
               <Link
                 to="faq"
@@ -1109,7 +1140,7 @@ const Nav = () => {
                 offset={-80}
                 duration={200}
               >
-                <h5 className={styles.link}>Sıkça Sorulan Sorular</h5>
+                <h5 className={styles.link}>{t("nav:faq")}</h5>
               </Link>
               <Link
                 to="contact"
@@ -1118,7 +1149,7 @@ const Nav = () => {
                 offset={-80}
                 duration={200}
               >
-                <h5 className={styles.link}>İletişim</h5>
+                <h5 className={styles.link}>{t("nav:contact")}</h5>
               </Link>
             </div>
           )}

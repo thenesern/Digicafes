@@ -14,6 +14,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import VideoLabelIcon from "@mui/icons-material/VideoLabel";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import { styled } from "@mui/material/styles";
+import useTranslation from "next-translate/useTranslation";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -99,13 +100,9 @@ ColorlibStepIcon.propTypes = {
   icon: PropTypes.node,
 };
 
-const steps = [
-  "Sizin İçin En Uygun Dijital Menü Paketini Seçin",
-  "Yönetim Paneliniz Üzerinden Menünüzü Düzenleyin",
-  "Dijital Menünüz Kullanıma Hazır",
-];
-
 export default function CustomizedSteppers() {
+  const { t } = useTranslation();
+  const steps = [t("stepper:s1"), t("stepper:s2"), t("stepper:s3")];
   return (
     <Stack style={{ padding: "8rem 0" }}>
       <Stepper

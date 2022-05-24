@@ -1,0 +1,9 @@
+{
+  "header": "Sıkça Sorulan Sorular",
+  "q1": "Dijital Menü Nedir?",
+  "q2": "Dijital Menü Nasıl Çalışır?",
+  "q3": "Dijital Menü V1 ile V2 farkı nedir?",
+  "a1": "  Dijital Menü, geleneksel baskı menü yerine menünün internet üzerinden QR Kod kullanılarak müşteriye sunulmasıdır.",
+  "a2": "Menünüz Yönetim Paneli üzerinden oluşturulur. Ardından menünüz sistemimiz tarafından kayıt altına alınır ve QR Kod oluşturur. QR kod&apos;u okutarak menüye ulaşılır.",
+  "a3": "   Dijital Menü V1 ile menünüzü oluşturabilir, QR Kod kullanarak menüye ulaşabilirsiniz. Bu versiyonda amaç müşterinin menüyü sadece görüntülemesi üzerinedir. Dijital Menü V2 ise aynı menü üzerinden sipariş verme, garson çağırma vb. özellikleri size sunar."
+}
