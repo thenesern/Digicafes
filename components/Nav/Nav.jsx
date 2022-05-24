@@ -1108,6 +1108,18 @@ const Nav = () => {
             </div>
           ) : (
             <div className={styles.buttons}>
+              {locales.map((lng) => {
+                if (lng === lang) return null;
+                return (
+                  <div className={styles.int} key={lng}>
+                    <LinkRouter href="/" locale={lng}>
+                      <span className={styles.lang}>
+                        {t(`nav:language-name-${lng}`)}
+                      </span>
+                    </LinkRouter>
+                  </div>
+                );
+              })}
               <button className={styles.signIn} onClick={handleOpenMuiLogin}>
                 {t("nav:signIn")}
               </button>

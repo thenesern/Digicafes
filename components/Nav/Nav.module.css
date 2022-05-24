@@ -330,12 +330,13 @@
     justify-content: flex-start;
     width: 22rem;
     font-size: 20px;
-    background-color: #001219;
+    background-color: #fff;
     height: 100%;
     gap: 10px;
     align-items: center;
     text-align: center;
   }
+
   .menuButton {
     color: #ffe8d6;
     font-size: 2rem !important;
@@ -344,13 +345,14 @@
     margin: 0;
   }
   .link {
-    color: #fbeee0;
+    color: #212529;
   }
   .buttons {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    flex-direction: column;
   }
   .modal {
     width: 90%;
@@ -370,6 +372,23 @@
   }
   .registerBox {
     width: 96%;
+  }
+  .signUp {
+    margin: 0;
+    background-color: #c9184a;
+    color: #ffe8d6;
+    padding: 10px 24px;
+  }
+  .signIn {
+    color: #212529;
+    padding: 10px 16px;
+  }
+  .int {
+    margin: 1rem 0;
+  }
+  .lang {
+    border: 1px solid #212529;
+    color: #212529;
   }
 }
 @media only screen and (max-width: 500px) {
