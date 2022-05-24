@@ -16,6 +16,8 @@ import Image from "next/image";
 import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
+import i18nConfig from "../../i18n.json";
+const { locales } = i18nConfig;
 // Styles
 import styles from "./Nav.module.css";
 import { AccountCircleRounded } from "@material-ui/icons";
@@ -43,7 +45,7 @@ const Nav = () => {
   const [openMuiLogin, setOpenMuiLogin] = useState(false);
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const [openMuiRegister, setOpenMuiRegister] = useState(false);
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   const handleOpenMuiLogin = () => setOpenMuiLogin(true);
   const handleOpenForgotPassword = () => setOpenForgotPassword(true);
   const handleOpenMuiRegister = () => setOpenMuiRegister(true);
@@ -145,7 +147,7 @@ const Nav = () => {
       handleCloseMuiLogin();
     } catch (err) {
       setIsFetching(false);
-      enqueueSnackbar("Geçersiz E-mail veya Şifre", { variant: "error" });
+      enqueueSnackbar(t("nav:loginError"), { variant: "error" });
     }
   };
 
@@ -170,7 +172,7 @@ const Nav = () => {
   }) => {
     closeSnackbar();
     if (password !== passwordConfirm) {
-      return enqueueSnackbar("Şifreler eşleşmiyor", { variant: "error" });
+      return enqueueSnackbar(t("nav:passwordError"), { variant: "error" });
     }
     const signedIn = new Date().toLocaleString("tr-TR");
     const lowerFirst = fName?.toLowerCase();
@@ -206,7 +208,7 @@ const Nav = () => {
       handleCloseMuiRegister();
     } catch (err) {
       setIsFetching(false);
-      enqueueSnackbar("E-mail adresi zaten kayıtlı.", { variant: "error" });
+      enqueueSnackbar(t("nav:emailError"), { variant: "error" });
     }
   };
   return (
@@ -288,8 +290,8 @@ const Nav = () => {
                         helperText={
                           errors.email
                             ? errors.email.type === "pattern"
-                              ? "Lütfen geçerli bir E-Mail adresi giriniz"
-                              : "Lütfen E-Mail adresinizi giriniz"
+                              ? t("nav:validEmail")
+                              : t("nav:proveEmail")
                             : ""
                         }
                         {...field}
@@ -317,8 +319,8 @@ const Nav = () => {
                         helperText={
                           errors.password
                             ? errors.password.type === "minLength"
-                              ? "Şifreniz minimum 5 karakterden oluşmalıdır"
-                              : "Lütfen bir şifre giriniz"
+                              ? t("nav:passwordMin")
+                              : t("nav:enterAPassword")
                             : ""
                         }
                         {...field}
@@ -380,7 +382,6 @@ const Nav = () => {
               <h1 className={styles.title}>{t("nav:forgotYourPassword")}</h1>
               <div className={styles.signup}>
                 <p style={{ textAlign: "center" }}>
-                  {" "}
                   {t("nav:forgotPasswordDescription")}
                 </p>
               </div>
@@ -409,8 +410,8 @@ const Nav = () => {
                           helperText={
                             errors.email
                               ? errors.email.type === "pattern"
-                                ? "Lütfen geçerli bir E-Mail adresi giriniz"
-                                : "Lütfen E-Mail adresinizi giriniz"
+                                ? t("nav:validEmail")
+                                : t("nav:proveEmail")
                               : ""
                           }
                           {...field}
@@ -443,9 +444,7 @@ const Nav = () => {
               }}
             >
               <CheckCircleIcon style={{ fontSize: "6rem" }} color="success" />
-              <h4 style={{ textAlign: "center" }}>
-                Şifre Yenilemesi için mail gönderildi.
-              </h4>
+              <h4 style={{ textAlign: "center" }}>{t("nav:eMailSent")}</h4>
             </div>
           ) : (
             <div
@@ -457,7 +456,7 @@ const Nav = () => {
               }}
             >
               <ErrorIcon style={{ fontSize: "6rem" }} color="error" />
-              <h4 style={{ textAlign: "center" }}>Kullanıcı bulunamadı.</h4>
+              <h4 style={{ textAlign: "center" }}>{t("nav:noUserFound")}</h4>
             </div>
           )}
         </Box>
@@ -865,7 +864,7 @@ const Nav = () => {
                                 passHref
                               >
                                 <button className={styles["link-item"]}>
-                                  Hesabım
+                                  {t("nav:myAccount")}
                                 </button>
                               </LinkRouter>
                             </button>
@@ -885,7 +884,7 @@ const Nav = () => {
                                 className={styles["menu-link"]}
                               >
                                 <button className={styles["link-item"]}>
-                                  <span>Yönetim Paneli</span>
+                                  <span>{t("nav:dashboard")}</span>
                                 </button>
                               </LinkRouter>
                             </button>
@@ -906,7 +905,7 @@ const Nav = () => {
                                 passHref
                               >
                                 <button className={styles["link-item"]}>
-                                  Panel
+                                  Admin Panel
                                 </button>
                               </LinkRouter>
                             </button>
@@ -922,7 +921,7 @@ const Nav = () => {
                             className={styles["menu-link"]}
                           >
                             <button className={styles["link-item"]}>
-                              <span>Çıkış Yap</span>
+                              <span>{t("nav:logout")}</span>
                               <LogoutIcon className={styles.icon} />
                             </button>
                           </LinkRouter>
@@ -948,6 +947,19 @@ const Nav = () => {
             >
               {t("nav:tryForFree")}
             </button>
+
+            {locales.map((lng) => {
+              if (lng === lang) return null;
+              return (
+                <div className={styles.int} key={lng}>
+                  <LinkRouter href="/" locale={lng}>
+                    <span className={styles.lang}>
+                      {t(`nav:language-name-${lng}`)}
+                    </span>
+                  </LinkRouter>
+                </div>
+              );
+            })}
           </li>
         )}
         <Hidden mdUp>
@@ -1025,7 +1037,7 @@ const Nav = () => {
                                   passHref
                                 >
                                   <button className={styles["link-item"]}>
-                                    Hesabım
+                                    {t("nav:myAccount")}
                                   </button>
                                 </LinkRouter>
                               </button>
@@ -1045,7 +1057,7 @@ const Nav = () => {
                                   className={styles["menu-link"]}
                                 >
                                   <button className={styles["link-item"]}>
-                                    <span>Yönetim Paneli</span>
+                                    <span>{t("nav:dashboard")}</span>
                                   </button>
                                 </LinkRouter>
                               </button>
@@ -1066,7 +1078,7 @@ const Nav = () => {
                                   passHref
                                 >
                                   <button className={styles["link-item"]}>
-                                    Panel
+                                    Admin Panel
                                   </button>
                                 </LinkRouter>
                               </button>
@@ -1082,7 +1094,7 @@ const Nav = () => {
                               className={styles["menu-link"]}
                             >
                               <button className={styles["link-item"]}>
-                                <span>Çıkış Yap</span>
+                                <span>{t("nav:logout")}</span>
                                 <LogoutIcon className={styles.icon} />
                               </button>
                             </LinkRouter>

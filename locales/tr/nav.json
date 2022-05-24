@@ -25,5 +25,15 @@
   "proveSurName": "Lütfen Soyadınızı giriniz",
   "validEmail": "Lütfen geçerli bir E-Mail adresi giriniz",
   "proveEmail": "Lütfen E-Mail adresinizi giriniz",
-  "privacyPolicy": "Gizlilik Politikası"
+  "privacyPolicy": "Gizlilik Politikası",
+  "language-name-tr": "TR",
+  "language-name-en": "EN",
+  "logout": "Çıkış Yap",
+  "loginError": "Geçersiz E-mail veya Şifre",
+  "passwordError": "Şifreler eşleşmiyor",
+  "emailError": "E-mail adresi zaten kayıtlı.",
+  "eMailSent": "Şifre Yenilemesi için mail gönderildi.",
+  "noUserFound": "Kullanıcı bulunamadı.",
+  "myAccount": "Hesabım",
+  "dashboard": "Yönetim Paneli"
 }

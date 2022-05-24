@@ -25,5 +25,15 @@
   "proveSurName": "Please enter a surname",
   "validEmail": "Please enter a valid email address",
   "proveEmail": "Please enter an email address",
-  "privacyPolicy": "Privacy Policy"
+  "privacyPolicy": "Privacy Policy",
+  "language-name-tr": "TR",
+  "language-name-en": "EN",
+  "logout": "Log out",
+  "loginError": "Invalid E-Mail or Password",
+  "passwordError": "Passwords do not match",
+  "emailError": "This email address is already in use",
+  "eMailSent": "An email has been sent to reset your password",
+  "noUserFound": "No user has been found",
+  "myAccount": "My Account",
+  "dashboard": "Management Dashboard"
 }
