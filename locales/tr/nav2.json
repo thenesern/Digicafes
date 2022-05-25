@@ -1,0 +1,17 @@
+{
+  "loginError": "Geçersiz E-mail veya Şifre",
+  "matchError": "Şifreler eşleşmiyor",
+  "alreadyExists": "E-mail adresi zaten kayıtlı",
+  "login": "Giriş Yap",
+  "noAccount": "Hesabınız yok mu?",
+  "makeSignUp": "Üye Olun",
+  "validEmail": "Lütfen geçerli bir E-Mail adresi giriniz",
+  "proveEmail": "Lütfen E-Mail adresinizi giriniz",
+  "minPassword": "Şifreniz minimum 5 karakterden oluşmalıdır",
+  "provePassword": "Lütfen bir şifre giriniz",
+  "password": "Şifre",
+  "myAccount": "Hesabım",
+  "dashboard": "Yönetim Paneli",
+  "logout": "Çıkış Yap",
+  "try": "Ücretsiz Deneyin"
+}

@@ -31,12 +31,14 @@ import Button from "@mui/material/Button";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Box } from "@mui/system";
 import { List, ListItem, TextField } from "@material-ui/core";
+import useTranslation from "next-translate/useTranslation";
 
 const Nav = ({ change }) => {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const [isFetching, setIsFetching] = useState(false);
   const [openMuiLogin, setOpenMuiLogin] = useState(false);
+  const { t } = useTranslation();
   const [openMuiRegister, setOpenMuiRegister] = useState(false);
   const handleOpenMuiLogin = () => setOpenMuiLogin(true);
   const handleOpenMuiRegister = () => setOpenMuiRegister(true);
@@ -110,7 +112,7 @@ const Nav = ({ change }) => {
       handleCloseMuiLogin();
     } catch (err) {
       setIsFetching(false);
-      enqueueSnackbar("Geçersiz E-mail veya Şifre", { variant: "error" });
+      enqueueSnackbar(t("nav2:loginError"), { variant: "error" });
     }
   };
 
@@ -135,7 +137,7 @@ const Nav = ({ change }) => {
   }) => {
     closeSnackbar();
     if (password !== passwordConfirm) {
-      return enqueueSnackbar("Şifreler eşleşmiyor", { variant: "error" });
+      return enqueueSnackbar(t("nav2:matchError"), { variant: "error" });
     }
     const signedIn = new Date().toLocaleString("tr-TR");
     const lowerFirst = fName?.toLowerCase();
@@ -171,7 +173,7 @@ const Nav = ({ change }) => {
       handleCloseMuiRegister();
     } catch (err) {
       setIsFetching(false);
-      enqueueSnackbar("E-mail adresi zaten kayıtlı.", { variant: "error" });
+      enqueueSnackbar(t("nav2:alreadyExists"), { variant: "error" });
     }
   };
   return (
@@ -218,9 +220,9 @@ const Nav = ({ change }) => {
             X
           </span>
           <div className={styles.wrapper}>
-            <h1 className={styles.title}>Giriş Yap</h1>
+            <h1 className={styles.title}>{t("nav2:login")}</h1>
             <div className={styles.signup}>
-              <p>Hesabınız yok mu?</p>
+              <p>{t("nav2:noAccount")}</p>
               <span
                 style={{ fontWeight: "600", cursor: "pointer" }}
                 onClick={() => {
@@ -228,7 +230,7 @@ const Nav = ({ change }) => {
                   handleOpenMuiRegister();
                 }}
               >
-                Üye Olun
+                {t("nav2:makeSignUp")}
               </span>
             </div>
             <form className={styles.form} onSubmit={handleSubmit(loginHandler)}>
@@ -253,8 +255,8 @@ const Nav = ({ change }) => {
                         helperText={
                           errors.email
                             ? errors.email.type === "pattern"
-                              ? "Lütfen geçerli bir E-Mail adresi giriniz"
-                              : "Lütfen E-Mail adresinizi giriniz"
+                              ? t("nav2:validEmail")
+                              : t("nav2:proveEmail")
                             : ""
                         }
                         {...field}
@@ -276,14 +278,14 @@ const Nav = ({ change }) => {
                         variant="outlined"
                         fullWidth
                         id="password"
-                        label="Şifre"
+                        label={t("nav2:password")}
                         inputProps={{ type: "password" }}
                         error={Boolean(errors.password)}
                         helperText={
                           errors.password
                             ? errors.password.type === "minLength"
-                              ? "Şifreniz minimum 5 karakterden oluşmalıdır"
-                              : "Lütfen bir şifre giriniz"
+                              ? t("nav2:minPassword")
+                              : t("nav2:provePassword")
                             : ""
                         }
                         {...field}
@@ -300,7 +302,7 @@ const Nav = ({ change }) => {
                     style={{ outline: "none" }}
                     onSubmit={handleSubmit(loginHandler)}
                   >
-                    Giriş Yap
+                    {t("nav2:login")}
                   </Button>
                 </ListItem>
               </List>
@@ -333,7 +335,7 @@ const Nav = ({ change }) => {
           </span>
           <h1 className={styles.title}>Üye Ol</h1>
           <div className={styles.signin}>
-            <p>Hesabınız var mı?</p>
+            <p>{t("nav2:alreadyExists")}</p>
             <span
               style={{ fontWeight: "600", cursor: "pointer" }}
               onClick={() => {
@@ -341,7 +343,7 @@ const Nav = ({ change }) => {
                 handleOpenMuiLogin();
               }}
             >
-              Giriş Yapın
+              {t("nav2:login")}
             </span>
           </div>
           <form
@@ -662,7 +664,7 @@ const Nav = ({ change }) => {
                                 passHref
                               >
                                 <button className={styles["link-item"]}>
-                                  Hesabım
+                                  {t("nav2:myAccount")}
                                 </button>
                               </LinkRouter>
                             </button>
@@ -682,7 +684,7 @@ const Nav = ({ change }) => {
                                 className={styles["menu-link"]}
                               >
                                 <button className={styles["link-item"]}>
-                                  <span>Yönetim Paneli</span>
+                                  <span>{t("nav2:dashboard")}</span>
                                 </button>
                               </LinkRouter>
                             </button>
@@ -703,7 +705,7 @@ const Nav = ({ change }) => {
                                 passHref
                               >
                                 <button className={styles["link-item"]}>
-                                  Panel
+                                  Admin Panel
                                 </button>
                               </LinkRouter>
                             </button>
@@ -719,7 +721,7 @@ const Nav = ({ change }) => {
                             className={styles["menu-link"]}
                           >
                             <button className={styles["link-item"]}>
-                              <span>Çıkış Yap</span>
+                              <span>{t("nav2:logout")}</span>
                               <LogoutIcon className={styles.icon} />
                             </button>
                           </LinkRouter>
@@ -737,13 +739,13 @@ const Nav = ({ change }) => {
               className={styles.signIn}
               onClick={() => handleOpenMuiLogin(true)}
             >
-              Giriş Yap
+              {t("nav2:login")}
             </button>
             <button
               className={styles.signUp}
               onClick={() => handleOpenMuiRegister(true)}
             >
-              Ücretsiz Dene
+              {t("nav2:try")}
             </button>
           </li>
         )}
@@ -894,10 +896,10 @@ const Nav = ({ change }) => {
           ) : (
             <div className={styles.buttons}>
               <button className={styles.signIn} onClick={handleOpenMuiLogin}>
-                Giriş Yap
+                {t("nav2:login")}
               </button>
               <button className={styles.signUp} onClick={handleOpenMuiRegister}>
-                Ücretsiz Dene
+                {t("nav2:try")}
               </button>
             </div>
           )}

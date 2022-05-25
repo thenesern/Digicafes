@@ -1,0 +1,17 @@
+{
+  "loginError": "Invalid email or password",
+  "matchError": "Passwords do not match",
+  "alreadyExists": "This email is already in use",
+  "login": "Sign In",
+  "noAccount": "Don't have an account?",
+  "makeSignUp": "Sign Up",
+  "validEmail": "Please enter a valid email address",
+  "proveEmail": "Please enter an email address",
+  "minPassword": "Your password should be minimum 5 characters",
+  "provePassword": "Please enter a password",
+  "password": "Password",
+  "myAccount": "My Account",
+  "dashboard": "Management Dashboard",
+  "logout": "Log out",
+  "try": "Try for free"
+}
