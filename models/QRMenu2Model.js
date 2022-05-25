@@ -16,6 +16,9 @@ const QRMenuSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    currency: {
+      type: String,
+    },
     tableNum: {
       type: Number,
       required: true,

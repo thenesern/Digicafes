@@ -86,12 +86,12 @@ const OrderNav = (props) => {
   const d = new Date();
   let day = days[d.getDay()];
   for (let i = 0; i < newDates.length; i++) {
-    if (newDates.some((ele) => week.includes(ele))) {
+    if (newDates.some((ele) => week?.includes(ele))) {
       weekOrders.push("true");
     }
   }
   for (let i = 0; i < newDates.length; i++) {
-    if (newDates.some((ele) => month.includes(ele))) {
+    if (newDates.some((ele) => month?.includes(ele))) {
       monthOrders.push("true");
     }
   }

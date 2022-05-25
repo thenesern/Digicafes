@@ -46,7 +46,7 @@ const StoreMenu = ({ menu, category }) => {
   };
   const [isFetching, setIsFetching] = useState(false);
   const filtered = menu?.products.filter(
-    (a) => a.category.includes(category) && !a.subCategory
+    (a) => a?.category?.includes(category) && !a.subCategory
   );
   return (
     <div className={styles.container}>
@@ -132,7 +132,16 @@ const StoreMenu = ({ menu, category }) => {
         <Box>
           <div className={styles.modalHeader}>
             <h3>{productName}</h3>
-            <span>₺{productPrice}</span>
+            <span>
+              {menu?.currency === "dolar"
+                ? "$"
+                : menu?.currency === "euro"
+                ? "€"
+                : menu?.currency === "lira"
+                ? "₺"
+                : ""}
+              {productPrice}
+            </span>
           </div>
           <img src={productImage} alt="Menu" className={styles.modalImage} />
           <p className={styles.modalDesc}>{productDescription}</p>
@@ -154,9 +163,39 @@ const StoreMenu = ({ menu, category }) => {
       </Modal>
       {listType === "image" ? (
         <>
-          {hasSubCategories.filter((c) => c.category.includes(category))
+          <h2 style={{ textAlign: "center", width: "100%" }}>{category}</h2>
+          <ul className={styles.list}>
+            {menu &&
+              filtered?.map((m) => (
+                <li
+                  className={styles.listItem}
+                  key={m?.name}
+                  onClick={() => {
+                    setProductName(m?.name);
+                    setProductImage(m?.image);
+                    setProductPrice(m?.price);
+                    setProductDescription(m?.description);
+                    handleOpenModal();
+                  }}
+                >
+                  <img className={styles.img} src={m?.image} alt="" />
+                  <h3 className={styles.name}>{m?.name}</h3>
+                  <p className={styles.price}>
+                    {menu?.currency === "dolar"
+                      ? "$"
+                      : menu?.currency === "euro"
+                      ? "€"
+                      : menu?.currency === "lira"
+                      ? "₺"
+                      : ""}
+                    {m?.price}
+                  </p>
+                </li>
+              ))}
+          </ul>
+          {hasSubCategories.filter((c) => c?.category?.includes(category))
             .length > 0
-            ? uniqueSubCategories.map((s) => (
+            ? uniqueSubCategories?.map((s) => (
                 <div
                   key={s.name}
                   style={{
@@ -194,32 +233,21 @@ const StoreMenu = ({ menu, category }) => {
                       >
                         <img className={styles.img} src={c?.image} alt="" />
                         <h3 className={styles.name}>{c?.name}</h3>
-                        <p className={styles.price}>₺{c?.price}</p>
+                        <p className={styles.price}>
+                          {menu?.currency === "dolar"
+                            ? "$"
+                            : menu?.currency === "euro"
+                            ? "€"
+                            : menu?.currency === "lira"
+                            ? "₺"
+                            : ""}
+                          {c?.price}
+                        </p>
                       </li>
                     ))}
                 </div>
               ))
             : ""}
-          <ul className={styles.list}>
-            {menu &&
-              filtered?.map((m) => (
-                <li
-                  className={styles.listItem}
-                  key={m?.name}
-                  onClick={() => {
-                    setProductName(m?.name);
-                    setProductImage(m?.image);
-                    setProductPrice(m?.price);
-                    setProductDescription(m?.description);
-                    handleOpenModal();
-                  }}
-                >
-                  <img className={styles.img} src={m?.image} alt="" />
-                  <h3 className={styles.name}>{m?.name}</h3>
-                  <p className={styles.price}>₺{m?.price}</p>
-                </li>
-              ))}
-          </ul>
         </>
       ) : (
         <ul className={styles.textList}>
@@ -254,13 +282,22 @@ const StoreMenu = ({ menu, category }) => {
                       <p className={styles.textListDesc}>{m?.description}</p>
                     )}
                   </div>
-                  <p className={styles.textListPrice}>₺{m?.price}</p>
+                  <p className={styles.textListPrice}>
+                    {menu?.currency === "dolar"
+                      ? "$"
+                      : menu?.currency === "euro"
+                      ? "€"
+                      : menu?.currency === "lira"
+                      ? "₺"
+                      : ""}
+                    {m?.price}
+                  </p>
                 </div>
               </li>
             ))}
-          {hasSubCategories.filter((c) => c.category.includes(category))
+          {hasSubCategories.filter((c) => c?.category?.includes(category))
             .length > 0
-            ? uniqueSubCategories.map((s) => (
+            ? uniqueSubCategories?.map((s) => (
                 <div
                   key={s.name}
                   style={{
@@ -303,7 +340,16 @@ const StoreMenu = ({ menu, category }) => {
                             </p>
                           )}
                         </div>
-                        <p className={styles.textListPrice}>₺{c?.price}</p>
+                        <p className={styles.textListPrice}>
+                          {menu?.currency === "dolar"
+                            ? "$"
+                            : menu?.currency === "euro"
+                            ? "€"
+                            : menu?.currency === "lira"
+                            ? "₺"
+                            : ""}
+                          {c?.price}
+                        </p>
                       </div>
                     ))}
                 </div>

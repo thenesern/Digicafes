@@ -65,6 +65,8 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [subCategory, setSubCategory] = useState("");
   const [price, setPrice] = useState();
   const [description, setDescription] = useState("");
+  const [currency, setCurrency] = useState(menu?.currency);
+  const [updateCurrency, setUpdateCurrency] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [updatedCategories, setUpdatedCategories] = useState([]);
   const [updatedProducts, setUpdatedProducts] = useState([]);
@@ -119,6 +121,14 @@ const UserDashboard = ({ userOrder, userId }) => {
   };
   const [pageSize, setPageSize] = React.useState(10);
   const [openAddProduct, setOpenAddProduct] = useState(false);
+  const [openCurrency, setOpenCurrency] = useState(false);
+  const handleOpenCurrency = () => {
+    setOpenCurrency(true);
+  };
+  const handleCloseCurrency = () => {
+    setOpenCurrency(false);
+    setUpdateCurrency("");
+  };
   const [updateCategory, setUpdateCategory] = useState([]);
   const handleOpenAddProduct = () => setOpenAddProduct(true);
   const handleCloseAddProduct = () => setOpenAddProduct(false);
@@ -435,6 +445,36 @@ const UserDashboard = ({ userOrder, userId }) => {
       handleCloseListType();
     }
   };
+  const handleSendCurrency = async (e) => {
+    e.preventDefault();
+    setIsFetching(true);
+    try {
+      const updatedMenu = await axios.post(
+        `/api/qr/${version}/${menu?.storeName}/currency`,
+        {
+          storeName,
+          currency: updateCurrency,
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
+      setCurrency(updatedMenu?.data?.currency);
+      setUpdateCurrency("");
+      handleCloseCurrency();
+      setIsFetching(false);
+      return enqueueSnackbar("Para birimi güncellendi", {
+        variant: "success",
+      });
+    } catch (err) {
+      console.log(err);
+      handleCloseCurrency();
+      setIsFetching(false);
+      return enqueueSnackbar("Para birimi güncellenemedi", {
+        variant: "error",
+      });
+    }
+  };
   const addProductHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -537,7 +577,8 @@ const UserDashboard = ({ userOrder, userId }) => {
   const deleteCategoryHandler = async () => {
     setIsFetching(true);
     if (
-      products.map((a) => a.category.toString()).includes(deleteName) === true
+      products.map((a) => a?.category?.toString())?.includes(deleteName) ===
+      true
     ) {
       setIsFetching(false);
       setDeleteId("");
@@ -853,7 +894,18 @@ const UserDashboard = ({ userOrder, userId }) => {
       headerName: "Ürün Fiyatı",
       flex: 0.7,
       renderCell: (params) => {
-        return <span>₺{params?.row.price}</span>;
+        return (
+          <span>
+            {currency === "dolar"
+              ? "$"
+              : currency === "euro"
+              ? "€"
+              : currency === "lira"
+              ? "₺"
+              : ""}
+            {params?.row.price}
+          </span>
+        );
       },
     },
     {
@@ -1423,6 +1475,92 @@ const UserDashboard = ({ userOrder, userId }) => {
                           </a>
                         </div>
                       ))}
+                    </div>
+                  </Box>
+                </ModalMui>
+                <ModalMui
+                  open={openCurrency}
+                  onClose={handleCloseCurrency}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box className={styles.modal}>
+                    <h1 style={{ textAlign: "center", padding: "1rem" }}>
+                      Para Birimi
+                    </h1>
+                    <p style={{ textAlign: "center", padding: "0 1rem" }}>
+                      Seçeceğiniz para birimi sembolü, ürünlerin fiyat kısmına
+                      otomatik olarak eklenir.
+                    </p>
+                    <div className={styles.currencies}>
+                      <Button
+                        variant={
+                          updateCurrency
+                            ? updateCurrency === "dolar"
+                              ? "contained"
+                              : "outlined"
+                            : currency === "dolar"
+                            ? "contained"
+                            : "outlined"
+                        }
+                        type="submit"
+                        color="primary"
+                        onClick={() => setUpdateCurrency("dolar")}
+                      >
+                        Dolar ($)
+                      </Button>
+                      <Button
+                        variant={
+                          updateCurrency
+                            ? updateCurrency === "euro"
+                              ? "contained"
+                              : "outlined"
+                            : currency === "euro"
+                            ? "contained"
+                            : "outlined"
+                        }
+                        type="submit"
+                        color="primary"
+                        onClick={() => setUpdateCurrency("euro")}
+                      >
+                        Euro (€)
+                      </Button>
+                      <Button
+                        variant={
+                          updateCurrency
+                            ? updateCurrency === "lira"
+                              ? "contained"
+                              : "outlined"
+                            : currency === "lira"
+                            ? "contained"
+                            : "outlined"
+                        }
+                        type="submit"
+                        color="primary"
+                        onClick={() => setUpdateCurrency("lira")}
+                      >
+                        Türk Lirası (₺)
+                      </Button>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-end",
+                        gap: "2rem",
+                        padding: "1rem 2rem",
+                      }}
+                    >
+                      <Button variant="outlined" onClick={handleCloseCurrency}>
+                        Vazgeç
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={handleSendCurrency}
+                      >
+                        Onayla
+                      </Button>
                     </div>
                   </Box>
                 </ModalMui>
@@ -2222,6 +2360,15 @@ const UserDashboard = ({ userOrder, userId }) => {
                   onClick={handleOpenGallery}
                 >
                   Galeri
+                </Button>
+                <Button
+                  className={styles.menuButtons}
+                  variant="contained"
+                  type="submit"
+                  color="primary"
+                  onClick={handleOpenCurrency}
+                >
+                  Para Birimi
                 </Button>
               </div>
             </div>

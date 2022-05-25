@@ -17,10 +17,10 @@ const ContactForm = () => {
     e.preventDefault();
 
     if (
-      form.current[0].value &&
-      form.current[1].value &&
-      form.current[2].value.includes("@") &&
-      form.current[3].value.length > 10
+      form.current[0]?.value &&
+      form.current[1]?.value &&
+      form.current[2]?.value?.includes("@") &&
+      form.current[3]?.value?.length > 10
     ) {
       emailjs
         .sendForm(

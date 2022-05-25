@@ -74,7 +74,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
 
   const [isFetching, setIsFetching] = useState(false);
   const filtered = menu?.products.filter(
-    (a) => a.category.includes(category) && !a.subCategory
+    (a) => a?.category?.includes(category) && !a.subCategory
   );
   const [isSuccess, setIsSuccess] = useState(false);
   useEffect(() => {
@@ -213,7 +213,17 @@ const StoreMenu = ({ menu, category, order, number }) => {
         <Box>
           <div className={styles.modalHeader}>
             <h3 className={styles.descHeader}>{productName}</h3>
-            <span>₺{productPrice}</span>
+            <span>
+              {" "}
+              {menu?.currency === "dolar"
+                ? "$"
+                : menu?.currency === "euro"
+                ? "€"
+                : menu?.currency === "lira"
+                ? "₺"
+                : ""}
+              {productPrice}
+            </span>
           </div>
           <img src={productImage} alt="Menu" className={styles.modalImage} />
           <p className={styles.modalDesc}>{productDescription}</p>
@@ -410,7 +420,19 @@ const StoreMenu = ({ menu, category, order, number }) => {
           )}
         </Modal.Body>
         <Modal.Footer className={styles.cartFooter}>
-          {cart.length > 0 && <div>Toplam: ₺{cartTotal}</div>}
+          {cart.length > 0 && (
+            <div>
+              Toplam:{" "}
+              {menu?.currency === "dolar"
+                ? "$"
+                : menu?.currency === "euro"
+                ? "€"
+                : menu?.currency === "lira"
+                ? "₺"
+                : ""}
+              {cartTotal}
+            </div>
+          )}
           {cart.length > 0 && (
             <Button
               variant="contained"
@@ -469,7 +491,59 @@ const StoreMenu = ({ menu, category, order, number }) => {
       </Modal>
       {listType === "image" ? (
         <>
-          {hasSubCategories.filter((c) => c.category.includes(category))
+          <h2 style={{ textAlign: "center", width: "100%" }}>{category}</h2>
+          <ul className={styles.list}>
+            {menu &&
+              filtered?.map((m) => (
+                <li key={m?.name} className={styles.listItem}>
+                  <img
+                    className={styles.img}
+                    src={m?.image}
+                    alt=""
+                    onClick={() => {
+                      setProductName(m?.name);
+                      setProductImage(m?.image);
+                      setProductPrice(m?.price);
+                      setProductDescription(m?.description);
+                      handleOpenModal();
+                    }}
+                  />
+                  <h3 className={styles.name}>{m?.name}</h3>
+                  <p className={styles.price}>
+                    {" "}
+                    {menu?.currency === "dolar"
+                      ? "$"
+                      : menu?.currency === "euro"
+                      ? "€"
+                      : menu?.currency === "lira"
+                      ? "₺"
+                      : ""}
+                    {m?.price}
+                  </p>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    style={{
+                      borderRadius: " 0",
+                      backgroundColor: "#073b4c",
+                      color: "#f7ede2",
+                    }}
+                    fullWidth
+                    onClick={() =>
+                      addToCartHandler({
+                        name: m?.name,
+                        price: m?.price,
+                        img: m?.image,
+                        quantity: 1,
+                      })
+                    }
+                  >
+                    Sepete Ekle
+                  </Button>
+                </li>
+              ))}
+          </ul>
+          {hasSubCategories.filter((c) => c?.category?.includes(category))
             .length > 0
             ? uniqueSubCategories.map((s) => (
                 <div
@@ -509,53 +583,22 @@ const StoreMenu = ({ menu, category, order, number }) => {
                       >
                         <img className={styles.img} src={c?.image} alt="" />
                         <h3 className={styles.name}>{c?.name}</h3>
-                        <p className={styles.price}>₺{c?.price}</p>
+                        <p className={styles.price}>
+                          {" "}
+                          {menu?.currency === "dolar"
+                            ? "$"
+                            : menu?.currency === "euro"
+                            ? "€"
+                            : menu?.currency === "lira"
+                            ? "₺"
+                            : ""}
+                          {c?.price}
+                        </p>
                       </li>
                     ))}
                 </div>
               ))
             : ""}
-          <ul className={styles.list}>
-            {menu &&
-              filtered?.map((m) => (
-                <li key={m?.name} className={styles.listItem}>
-                  <img
-                    className={styles.img}
-                    src={m?.image}
-                    alt=""
-                    onClick={() => {
-                      setProductName(m?.name);
-                      setProductImage(m?.image);
-                      setProductPrice(m?.price);
-                      setProductDescription(m?.description);
-                      handleOpenModal();
-                    }}
-                  />
-                  <h3 className={styles.name}>{m?.name}</h3>
-                  <p className={styles.price}>₺{m?.price}</p>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    style={{
-                      borderRadius: " 0",
-                      backgroundColor: "#073b4c",
-                      color: "#f7ede2",
-                    }}
-                    fullWidth
-                    onClick={() =>
-                      addToCartHandler({
-                        name: m?.name,
-                        price: m?.price,
-                        img: m?.image,
-                        quantity: 1,
-                      })
-                    }
-                  >
-                    Sepete Ekle
-                  </Button>
-                </li>
-              ))}
-          </ul>
         </>
       ) : (
         <ul className={styles.textList}>
@@ -590,7 +633,17 @@ const StoreMenu = ({ menu, category, order, number }) => {
                       <p className={styles.textListDesc}>{m?.description}</p>
                     )}
                   </div>
-                  <p className={styles.textListPrice}>₺{m?.price}</p>
+                  <p className={styles.textListPrice}>
+                    {" "}
+                    {menu?.currency === "dolar"
+                      ? "$"
+                      : menu?.currency === "euro"
+                      ? "€"
+                      : menu?.currency === "lira"
+                      ? "₺"
+                      : ""}
+                    {m?.price}
+                  </p>
                 </div>
                 <button
                   style={{
@@ -617,7 +670,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
                 </button>
               </li>
             ))}
-          {hasSubCategories.filter((c) => c.category.includes(category))
+          {hasSubCategories.filter((c) => c?.category?.includes(category))
             .length > 0
             ? uniqueSubCategories.map((s) => (
                 <div
@@ -662,7 +715,17 @@ const StoreMenu = ({ menu, category, order, number }) => {
                             </p>
                           )}
                         </div>
-                        <p className={styles.textListPrice}>₺{c?.price}</p>
+                        <p className={styles.textListPrice}>
+                          {" "}
+                          {menu?.currency === "dolar"
+                            ? "$"
+                            : menu?.currency === "euro"
+                            ? "€"
+                            : menu?.currency === "lira"
+                            ? "₺"
+                            : ""}
+                          {c?.price}
+                        </p>
                       </div>
                     ))}
                 </div>
