@@ -42,24 +42,6 @@ const DijitalMenu = () => {
   }, []);
   return (
     <div>
-      <Head>
-        <link rel="shortcut icon" type="image/x-icon" href={favicon.src} />
-        <title>
-          Digicafes | Kafe, Restoran ve Oteller için Dijital Menü çözümleri.
-        </title>
-        <meta
-          name="viewport"
-          content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1"
-        />
-        <meta
-          name="keywords"
-          content="Dijital Menü, QR Menü, Menü, Cafe, Restoran, Restoran Menü, Cafe Menü, Dijital QR Menü, digicafes.com, DigiCafes"
-        />
-        <meta
-          name="description"
-          content="Digicafes | Kafe, Restoran ve Oteller için Dijital Menü çözümleri."
-        />
-      </Head>
       <Nav />
       <div className={styles.container}>
         {router?.locale === "tr" && (
