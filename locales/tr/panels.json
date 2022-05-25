@@ -1,0 +1,11 @@
+{
+  "header": "Yönetim Paneli",
+  "store": "İş Yeri Adı",
+  "not": "Henüz Oluşturulmadı",
+  "created": "Oluşturulma Tarihi",
+  "updated": "Son Güncellenme Tarihi",
+  "status": "Durum",
+  "v1": "Dijital Menü V1",
+  "v2": "Dijital Menü V2",
+  "active": "Aktif"
+}

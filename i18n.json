@@ -3,8 +3,9 @@
   "defaultLocale": "tr",
   "localeDetection": false,
   "pages": {
-    "/": ["home", "nav", "stepper", "features", "faq", "contact", "footer"],
     "*": ["nav"],
-    "/account/[userId]": ["account"]
+    "/": ["home", "nav", "stepper", "features", "faq", "contact", "footer"],
+    "/account/[userId]": ["account"],
+    "/dashboard/[userId]": ["panels"]
   }
 }
