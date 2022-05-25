@@ -1,0 +1,22 @@
+{
+  "qrMenuHeader": "QR Menü Kodu",
+  "seeWebsite": "Menü",
+  "downloadCode": "QR Kodu İndir",
+  "downloadCodes": "QR Kodları İndir",
+  "orderPanel": "Sipariş Paneli",
+  "management": "Menü Yönetimi",
+  "addProduct": "Ürün Ekle",
+  "addCategory": "Kategori Ekle",
+  "uploadLogo": "Logo Yükle",
+  "listType": "Listeleme Türü",
+  "gallery": "Galeri",
+  "productList": "Ürün Listesi",
+  "categoryList": "Kategori Listesi",
+  "product": "Ürün",
+  "productPrice": "Ürün Fiyatı",
+  "subCategory": "Ürün Alt Kategorisi",
+  "productCategory": "Ürün Kategorisi",
+  "actions": "Yönetim",
+  "category": "Kategori",
+  "order": "Sıra"
+}

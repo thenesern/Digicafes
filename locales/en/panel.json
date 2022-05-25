@@ -1,0 +1,22 @@
+{
+  "qrMenuHeader": "QR Menu Code",
+  "seeWebsite": "Menu",
+  "downloadCode": "Download QR Code",
+  "downloadCodes": "All QR Codes",
+  "orderPanel": "Orders",
+  "management": "Management",
+  "addProduct": "Add Product",
+  "addCategory": "Add Category",
+  "uploadLogo": "Upload Logo",
+  "listType": "List Type",
+  "gallery": "Gallery",
+  "productList": "Product List",
+  "categoryList": "Category List",
+  "product": "Product",
+  "productPrice": "Product Price",
+  "subCategory": "Sub Category",
+  "productCategory": "Product Category",
+  "actions": "Actions",
+  "category": "Category",
+  "order": "Category Order"
+}

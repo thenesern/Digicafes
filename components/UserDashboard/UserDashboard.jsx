@@ -38,6 +38,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import QrCodeIcon from "@mui/icons-material/QrCode";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import ViewListIcon from "@mui/icons-material/ViewList";
+import useTranslation from "next-translate/useTranslation";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -51,6 +52,7 @@ const MenuProps = {
 };
 
 const UserDashboard = ({ userOrder, userId }) => {
+  const { t } = useTranslation();
   const [order, setOrder] = useState(userOrder[0] || null);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [file, setFile] = useState(null);
@@ -831,7 +833,7 @@ const UserDashboard = ({ userOrder, userId }) => {
   const columns = [
     {
       field: "name",
-      headerName: "Ürün",
+      headerName: t("panel:product"),
       flex: 1,
       renderCell: (params) => {
         return (
@@ -850,7 +852,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     },
     {
       field: "price",
-      headerName: "Ürün Fiyatı",
+      headerName: t("panel:productPrice"),
       flex: 0.7,
       renderCell: (params) => {
         return <span>₺{params?.row.price}</span>;
@@ -858,7 +860,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     },
     {
       field: "subCategory",
-      headerName: "Ürün Alt Kategorisi",
+      headerName: t("panel:subCategory"),
       flex: 1,
       renderCell: (params) => {
         return (
@@ -866,16 +868,16 @@ const UserDashboard = ({ userOrder, userId }) => {
             {params?.row?.subCategory ? (
               <p>{params?.row.subCategory}</p>
             ) : (
-              <p>Yok</p>
+              <p>-</p>
             )}
           </div>
         );
       },
     },
-    { field: "category", headerName: "Ürün Kategorisi", flex: 0.8 },
+    { field: "category", headerName: t("panel:productCategory"), flex: 0.8 },
     {
       field: "actions",
-      headerName: "Yönetim",
+      headerName: t("panel:actions"),
       width: 200,
       renderCell: (params) => {
         return (
@@ -920,7 +922,7 @@ const UserDashboard = ({ userOrder, userId }) => {
   const categoryColumns = [
     {
       field: "name",
-      headerName: "Kategori",
+      headerName: t("panel:category"),
       flex: 2,
       renderCell: (params) => {
         return (
@@ -933,12 +935,12 @@ const UserDashboard = ({ userOrder, userId }) => {
     },
     {
       field: "order",
-      headerName: "Sıra",
+      headerName: t("panel:order"),
       flex: 1,
     },
     {
       field: "actions",
-      headerName: "Yönetim",
+      headerName: t("panel:actions"),
       width: 200,
       renderCell: (params) => {
         return (
@@ -1153,7 +1155,7 @@ const UserDashboard = ({ userOrder, userId }) => {
               <div className={styles.leftBox}>
                 <div className={styles.headers}>
                   <QrCodeIcon color="primary" />
-                  <h3 className={styles.titles}>QR Menü Kodu</h3>
+                  <h3 className={styles.titles}>{t("panel:qrMenuHeader")}</h3>
                 </div>
                 <div className={styles.qr}>
                   <div className={styles.images}>
@@ -1176,13 +1178,13 @@ const UserDashboard = ({ userOrder, userId }) => {
                             className={styles.qrButtons}
                             style={{
                               height: "2rem",
-                              width: "12rem",
+                              minWidth: "12rem",
                             }}
                             endIcon={
                               <ArrowRightIcon style={{ fontSize: "2rem" }} />
                             }
                           >
-                            Siteye Git
+                            {t("panel:seeWebsite")}
                           </Button>
                         </Stack>
                       </a>
@@ -1193,10 +1195,10 @@ const UserDashboard = ({ userOrder, userId }) => {
                           className={styles.qrButtons}
                           variant="outlined"
                           onClick={handleOpenQRImages}
-                          style={{ height: "2rem", width: "12rem" }}
+                          style={{ height: "2rem", minWidth: "12rem" }}
                           endIcon={<DownloadIcon />}
                         >
-                          QR Kodları İndir
+                          {t("panel:downloadCodes")}
                         </Button>
                       </Stack>
                     )}
@@ -1205,10 +1207,13 @@ const UserDashboard = ({ userOrder, userId }) => {
                         <Button
                           variant="outlined"
                           className={styles.qrButtons}
-                          style={{ height: "2rem", width: "12rem" }}
+                          style={{
+                            height: "2rem",
+                            minWidth: "16rem",
+                          }}
                           endIcon={<DownloadIcon />}
                         >
-                          QR Kodu İndir
+                          {t("panel:downloadCode")}
                         </Button>
                       </a>
                     )}
@@ -1231,7 +1236,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                                 <ArrowRightIcon style={{ fontSize: "2rem" }} />
                               }
                             >
-                              Sipariş Paneli
+                              {t("panel:orderPanel")}
                             </Button>
                           </Stack>
                         </a>
@@ -1243,7 +1248,7 @@ const UserDashboard = ({ userOrder, userId }) => {
               <div className={styles.actions}>
                 <div className={styles.headers}>
                   <DashboardCustomizeIcon color="primary" />
-                  <h3>Menü Yönetimi</h3>
+                  <h3>{t("panel:management")}</h3>
                 </div>
                 <Button
                   variant="contained"
@@ -1253,7 +1258,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   onClick={handleOpenAddProduct}
                   className={styles.menuButtons}
                 >
-                  Ürün Ekle
+                  {t("panel:addProduct")}
                 </Button>
                 <ModalMui
                   open={openAddProduct}
@@ -1264,7 +1269,9 @@ const UserDashboard = ({ userOrder, userId }) => {
                   <Box className={styles.modal}>
                     <form>
                       <List className={styles.list}>
-                        <h3 className={styles.header}>Ürün Ekle</h3>
+                        <h3 className={styles.header}>
+                          {t("panel:addProduct")}
+                        </h3>
                         <FormControl
                           style={{ margin: "1rem" }}
                           sx={{ m: 1, width: "50%" }}
@@ -1764,7 +1771,9 @@ const UserDashboard = ({ userOrder, userId }) => {
                   <Box className={styles.modal}>
                     <form>
                       <List className={styles.list}>
-                        <h3 className={styles.header}>Kategori Ekle</h3>
+                        <h3 className={styles.header}>
+                          {t("panel:addCategory")}
+                        </h3>
                         <ListItem>
                           <TextField
                             variant="outlined"
@@ -2194,7 +2203,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   color="primary"
                   onClick={handleOpenAddCategory}
                 >
-                  Kategori Ekle
+                  {t("panel:addCategory")}
                 </Button>
                 <Button
                   className={styles.menuButtons}
@@ -2203,7 +2212,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   color="primary"
                   onClick={handleOpenUploadLogo}
                 >
-                  Logo Yükle
+                  {t("panel:uploadLogo")}
                 </Button>
                 <Button
                   className={styles.menuButtons}
@@ -2212,7 +2221,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   color="primary"
                   onClick={handleOpenListType}
                 >
-                  Listeleme Türü
+                  {t("panel:listType")}
                 </Button>
                 <Button
                   className={styles.menuButtons}
@@ -2221,7 +2230,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   color="primary"
                   onClick={handleOpenGallery}
                 >
-                  Galeri
+                  {t("panel:gallery")}
                 </Button>
               </div>
             </div>
@@ -2235,7 +2244,7 @@ const UserDashboard = ({ userOrder, userId }) => {
               >
                 <div className={styles.headers}>
                   <ViewListIcon color="primary" />
-                  <h3 className={styles.titles}>Ürün Listesi</h3>
+                  <h3 className={styles.titles}>{t("panel:productList")}</h3>
                 </div>
                 {isLoading ? (
                   <p>Yükleniyor...</p>
@@ -2290,7 +2299,7 @@ const UserDashboard = ({ userOrder, userId }) => {
               <div style={{ height: "100%", width: "100%" }}>
                 <div className={styles.headers}>
                   <ViewListIcon color="primary" />
-                  <h3 className={styles.titles}>Kategori Listesi</h3>
+                  <h3 className={styles.titles}>{t("panel:categoryList")}</h3>
                 </div>
                 {isLoading ? (
                   <p>Yükleniyor...</p>
