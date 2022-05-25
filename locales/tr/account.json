@@ -1,0 +1,14 @@
+{
+  "user": "Hesabım",
+  "name": "Adınız",
+  "surName": "Soyadınız",
+  "save": "Kaydet",
+  "orders": "Siparişler",
+  "notFound": "Sipariş bulunamadı.",
+  "orderNumber": "Sipariş Numarası",
+  "service": "Hizmet",
+  "start": "Başlangıç",
+  "end": "Bitiş",
+  "v1": "Dijital Menü V1",
+  "v2": "Dijital Menü V2"
+}

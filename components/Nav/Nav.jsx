@@ -853,13 +853,13 @@ const Nav = () => {
                             <button
                               className={styles.button}
                               onClick={() => {
-                                if (router?.pathname !== "/hesap/[userId]") {
+                                if (router?.pathname !== "/account/[userId]") {
                                   setIsFetching(true);
                                 }
                               }}
                             >
                               <LinkRouter
-                                href={"/hesap/" + user?.id}
+                                href={"/account/" + user?.id}
                                 className={styles["menu-link"]}
                                 passHref
                               >
@@ -1026,13 +1026,15 @@ const Nav = () => {
                               <button
                                 className={styles.button}
                                 onClick={() => {
-                                  if (router?.pathname !== "/hesap/[userId]") {
+                                  if (
+                                    router?.pathname !== "/account/[userId]"
+                                  ) {
                                     setIsFetching(true);
                                   }
                                 }}
                               >
                                 <LinkRouter
-                                  href={"/hesap/" + user?.id}
+                                  href={"/account/" + user?.id}
                                   className={styles["menu-link"]}
                                   passHref
                                 >
