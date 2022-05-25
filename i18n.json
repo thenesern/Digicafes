@@ -3,17 +3,8 @@
   "defaultLocale": "tr",
   "localeDetection": false,
   "pages": {
-    "/": [
-      "home",
-      "nav",
-      "stepper",
-      "features",
-      "faq",
-      "contact",
-      "footer",
-      "nav2"
-    ],
-    "*": ["nav2"],
+    "/": ["home", "nav", "stepper", "features", "faq", "contact", "footer"],
+    "*": ["nav"],
     "/account/[userId]": ["account"]
   }
 }
