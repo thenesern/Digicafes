@@ -1442,7 +1442,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   aria-describedby="modal-modal-description"
                 >
                   <Modal.Header>
-                    <h2>Kategori Düzenle</h2>
+                    <h2>{t("panel:editCategory")}</h2>
                   </Modal.Header>
                   <Modal.Body>
                     <form
@@ -1458,13 +1458,13 @@ const UserDashboard = ({ userOrder, userId }) => {
                     >
                       <Input
                         fullWidth
-                        label="Kategori Adı"
+                        placeholder={t("panel:categoryName")}
                         value={addCategory}
                         onChange={(e) => setAddCategory(e.target.value)}
                       />
                       <Input
                         fullWidth
-                        placeholder="Kategori Sırası"
+                        placeholder={t("panel:categoryOrder")}
                         value={updateCategoryOrder}
                         onChange={(e) => setUpdateCategoryOrder(e.target.value)}
                       />
@@ -1509,7 +1509,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         setIsPreview(false);
                       }}
                     >
-                      Vazgeç
+                      {t("panel:discard")}
                     </Button>
                     <Button
                       color="secondary"
@@ -1527,14 +1527,14 @@ const UserDashboard = ({ userOrder, userId }) => {
                           setAddCategory("");
                           setFile("");
                           setIsPreview(false);
-                          enqueueSnackbar("Değişiklik Yapılmadı", {
+                          enqueueSnackbar(t("panel:notChanged"), {
                             variant: "info",
                           });
                         }
                       }}
                       style={{ marginLeft: "1rem" }}
                     >
-                      Onayla
+                      {t("panel:confirm")}
                     </Button>
                   </Modal.Footer>
                 </Modal>
@@ -1557,7 +1557,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         padding: "2rem",
                       }}
                     >
-                      <h2>Ürün Düzenle</h2>
+                      <h2>{t("panel:editProduct")}</h2>
                       <div
                         style={{
                           display: "flex",
@@ -1569,7 +1569,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                       >
                         <div>
                           <InputLabel style={{ margin: "10px 0" }}>
-                            Ürün Adı
+                            {t("panel:productName")}
                           </InputLabel>
                           <Input
                             label="Ürün Adı"
@@ -1580,7 +1580,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         </div>
                         <div>
                           <InputLabel style={{ margin: "10px 0" }}>
-                            Ürün Fiyatı
+                            {t("panel:productPrice")}
                           </InputLabel>
                           <Input
                             label="Ürün Fiyatı"
@@ -1592,7 +1592,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                       </div>
                       <div style={{ width: "100%" }}>
                         <InputLabel style={{ margin: "10px 0" }}>
-                          Ürün Açıklaması
+                          {t("panel:productDesc")}
                         </InputLabel>
                         <Input
                           fullWidth
@@ -1604,7 +1604,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                       </div>
                       <div style={{ width: "100%" }}>
                         <InputLabel style={{ margin: "10px 0" }}>
-                          Ürün Alt Kategorisi
+                          {t("panel:productSubCategory")}
                         </InputLabel>
                         <Input
                           fullWidth
@@ -1624,7 +1624,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                       >
                         <div>
                           <InputLabel style={{ margin: "10px 0" }}>
-                            Ürün Kategorisi
+                            {t("panel:productCategory")}
                           </InputLabel>
                           <Select
                             style={{ minWidth: "7rem" }}
@@ -1670,7 +1670,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         </div>
                         <div>
                           <InputLabel style={{ margin: "10px 0" }}>
-                            Ürün Görseli
+                            {t("panel:productImage")}
                           </InputLabel>
                           <Input
                             accept="image/*"
@@ -1724,7 +1724,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             setUpdateProductCategory(null);
                           }}
                         >
-                          Vazgeç
+                          {t("panel:discard")}
                         </Button>
                         <Button
                           color="secondary"
@@ -1750,14 +1750,14 @@ const UserDashboard = ({ userOrder, userId }) => {
                               setUpdateDescription("");
                               setUpdateSubCategory("");
                               setUpdateProductCategory(null);
-                              enqueueSnackbar("Değişiklik Yapılmadı", {
+                              enqueueSnackbar(t("panel:notChanged"), {
                                 variant: "info",
                               });
                             }
                           }}
                           style={{ marginLeft: "1rem" }}
                         >
-                          Onayla
+                          {t("panel:confirm")}
                         </Button>
                       </div>
                     </form>
@@ -2157,15 +2157,17 @@ const UserDashboard = ({ userOrder, userId }) => {
                   <Box className={styles.modal}>
                     <form>
                       <List className={styles.list}>
-                        <h3 className={styles.header}>Emin misiniz?</h3>
+                        <h3 className={styles.header}>{t("panel:isSure")}</h3>
 
                         <ListItem>
                           <p>
-                            {deleteCategory ? "Kategori" : "Ürün"}
+                            {deleteCategory
+                              ? t("panel:category")
+                              : t("panel:product")}
                             <span className={styles.deleteDescription}>
                               {deleteName}
                             </span>
-                            silinecek.
+                            {t("panel:willDelete")}
                           </p>
                         </ListItem>
                       </List>
@@ -2180,7 +2182,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                           setDeleteCategory(false);
                         }}
                       >
-                        Vazgeç
+                        {t("panel:discard")}
                       </Button>
                       <Button
                         variant="contained"
@@ -2198,7 +2200,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                           }
                         }}
                       >
-                        Onayla
+                        {t("panel:confirm")}
                       </Button>
                     </div>
                   </Box>

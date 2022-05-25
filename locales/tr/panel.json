@@ -55,5 +55,13 @@
   "addedCategory": "Kategori Eklendi",
   "notAddedCategory": "Kategori Eklenemedi",
   "uploadedLogo": "Logo Yüklendi",
-  "notUploadedLogo": "Logo Yüklenemedi"
+  "notUploadedLogo": "Logo Yüklenemedi",
+  "notChanged": "Değişiklik Yapılmadı",
+  "productImage": "Ürün Görseli",
+  "editProduct": "Ürün Düzenle",
+  "isSure": "Emin misiniz?",
+  "willDelete": "silinecek.",
+  "editCategory": "Kategori Düzenle",
+  "categoryName": "Kategori Adı",
+  "categoryOrder": "Kategori Sırası"
 }

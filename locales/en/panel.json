@@ -55,5 +55,13 @@
   "addedCategory": "Category is added",
   "notAddedCategory": "Category is not added",
   "uploadedLogo": "Logo is uploaded",
-  "notUploadedLogo": "Logo is not uploaded"
+  "notUploadedLogo": "Logo is not uploaded",
+  "notChanged": "Not changed",
+  "productImage": "Product Image",
+  "editProduct": "Edit Product",
+  "isSure": "Are you sure?",
+  "willDelete": "will be deleted",
+  "editCategory": "Edit Category",
+  "categoryName": "Category Name",
+  "categoryOrder": "Category Order"
 }
