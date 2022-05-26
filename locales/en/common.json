@@ -1,3 +1,23 @@
 {
-  "head": "Digicafes | Digital Menu solutions for cafes, restaurants and hotels"
+  "head": "Digicafes | Digital Menu solutions for cafes, restaurants and hotels",
+  "menu": "Menu",
+  "warning": "Digital Menu is not prepared for now.",
+  "favs": "The Favorites",
+  "footer": "Digital Menu solutions for cafes, restaurants and hotels.",
+  "rights": "All rights reserved.",
+  "warning2": "Please try to connect by a mobile devices for the best experience.",
+  "request": "Your request is now sent",
+  "attention": "Attention",
+  "order": "Your order will be forwarded.",
+  "note": "Add a note",
+  "discard": "Discard",
+  "confirm": "Confirm",
+  "summary": "Cart Summary",
+  "empty": "Your cart is empty.",
+  "sendOrder": "Confirm my order",
+  "waiter": "Waiter request",
+  "bill": "Bill request",
+  "requestWaiter": "Your waiter request will be sent",
+  "isSure": "Are you sure?",
+  "requestBill": "Your bill request will be sent."
 }

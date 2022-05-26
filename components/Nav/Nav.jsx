@@ -595,6 +595,7 @@ const Nav = () => {
                   <Controller
                     name="password"
                     control={control}
+                    fullWidth
                     defaultValue=""
                     rules={{
                       required: true,
@@ -604,6 +605,7 @@ const Nav = () => {
                       <TextField
                         variant="outlined"
                         id="password"
+                        fullWidth
                         label={t("nav:password")}
                         inputProps={{ type: "password" }}
                         error={Boolean(errors.password)}
@@ -693,30 +695,30 @@ const Nav = () => {
                   </div>
                 ) : (
                   <p style={{ textAlign: "center" }}>
-                    Click “Sign Up” to agree to Digicafes&apos;{" "}
-                    <a
-                      href="/uyelik-sozlesmesi"
-                      target="_blank"
-                      style={{
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        margin: "0 4px",
-                      }}
-                    >
-                      Terms of Service
-                    </a>
+                    Click “Sign Up” to agree to Digicafes&apos;
+                    <LinkRouter href="/terms-of-service" passHref>
+                      <span
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Terms of Service
+                      </span>
+                    </LinkRouter>
                     and acknowledge that Digicafes&apos;
-                    <a
-                      href="/gizlilik-politikasi"
-                      style={{
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        margin: "0 4px",
-                      }}
-                      target="_blank"
-                    >
-                      Privacy Policy
-                    </a>
+                    <LinkRouter href="/privacy-policy" passHref>
+                      <span
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Privacy Policy
+                      </span>
+                    </LinkRouter>
                     applies to you.
                   </p>
                 )}

@@ -654,7 +654,7 @@ const Nav2 = () => {
                     <p>
                       Kişisel verileriniz,
                       <a
-                        href="/gizlilik-politikasi"
+                        href="/privacy-policy"
                         style={{
                           fontWeight: "600",
                           cursor: "pointer",
@@ -693,30 +693,30 @@ const Nav2 = () => {
                   </div>
                 ) : (
                   <p style={{ textAlign: "center" }}>
-                    Click “Sign Up” to agree to Digicafes&apos;{" "}
-                    <a
-                      href="/uyelik-sozlesmesi"
-                      target="_blank"
-                      style={{
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        margin: "0 4px",
-                      }}
-                    >
-                      Terms of Service
-                    </a>
+                    Click “Sign Up” to agree to Digicafes&apos;
+                    <LinkRouter href="/terms-of-service" passHref>
+                      <span
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Terms of Service
+                      </span>
+                    </LinkRouter>
                     and acknowledge that Digicafes&apos;
-                    <a
-                      href="/gizlilik-politikasi"
-                      style={{
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        margin: "0 4px",
-                      }}
-                      target="_blank"
-                    >
-                      Privacy Policy
-                    </a>
+                    <LinkRouter href="/privacy-policy" passHref>
+                      <span
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Privacy Policy
+                      </span>
+                    </LinkRouter>
                     applies to you.
                   </p>
                 )}
