@@ -1,24 +1,27 @@
 // Packages and Dependencies
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { trTR } from "@mui/x-data-grid";
+import { trTR, enUS } from "@mui/x-data-grid";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 // Styles
 import classes from "./StoreOrders.module.css";
 import { useState } from "react";
+import { useRouter } from "next/router";
 import moment from "moment";
+import useTranslation from "next-translate/useTranslation";
 
 const StoreOrders = (props) => {
   const now = new Date();
+  const router = useRouter();
   const date3 = moment(now).subtract(3, "minutes").toDate();
   const date2 = moment(now).subtract(2, "minutes").toDate();
   const date1 = moment(now).subtract(1, "minutes").toDate();
   const date = moment(now).subtract(0, "minutes").toDate();
-
+  const { t } = useTranslation();
   const callColumns = [
     {
       field: "tableNum",
-      headerName: "Masa No.",
+      headerName: t("panel:number"),
       headerClassName: "dark",
       flex: 1.5,
       editable: false,
@@ -36,7 +39,7 @@ const StoreOrders = (props) => {
     },
     {
       field: "date",
-      headerName: "Çağrı Zamanı",
+      headerName: t("panel:callTime"),
       flex: 3,
       headerClassName: "dark",
       editable: false,
@@ -55,7 +58,7 @@ const StoreOrders = (props) => {
     },
     {
       field: "callName",
-      headerName: "Çağrı Türü",
+      headerName: t("panel:requestType"),
       headerClassName: "dark",
       flex: 3,
       editable: false,
@@ -65,7 +68,7 @@ const StoreOrders = (props) => {
   const columns = [
     {
       field: "name",
-      headerName: "Sipariş",
+      headerName: t("panel:order1"),
       flex: 2,
       headerClassName: "dark",
       renderCell: (params) => {
@@ -86,13 +89,13 @@ const StoreOrders = (props) => {
     },
     {
       field: "orderNotes",
-      headerName: "Not",
+      headerName: t("panel:note"),
       flex: 3,
       headerClassName: "dark",
     },
     {
       field: "tableNum",
-      headerName: "Masa No.",
+      headerName: t("panel:number"),
       flex: 1,
       headerClassName: "dark",
       editable: false,
@@ -105,7 +108,7 @@ const StoreOrders = (props) => {
     },
     {
       field: "date",
-      headerName: "Sipariş Zamanı",
+      headerName: t("panel:orderTime"),
       flex: 2,
       headerClassName: "dark",
       editable: false,
@@ -179,7 +182,7 @@ const StoreOrders = (props) => {
     },
     {
       field: "price",
-      headerName: "Toplam Tutar",
+      headerName: t("panel:total"),
       flex: 1,
       headerClassName: "dark",
       editable: false,
@@ -237,7 +240,11 @@ const StoreOrders = (props) => {
             rowsPerPageOptions={[10, 15, 20]}
             getRowId={(row) => row?._id}
             disableSelectionOnClick
-            localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
+            localeText={
+              router.locale === "tr"
+                ? trTR.components.MuiDataGrid.defaultProps.localeText
+                : enUS.components.MuiDataGrid.defaultProps.localeText
+            }
           />
           <DataGrid
             rows={props.calls}
@@ -261,7 +268,11 @@ const StoreOrders = (props) => {
             rowsPerPageOptions={[3]}
             getRowId={(row) => row?._id}
             disableSelectionOnClick
-            localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
+            localeText={
+              router.locale === "tr"
+                ? trTR.components.MuiDataGrid.defaultProps.localeText
+                : enUS.components.MuiDataGrid.defaultProps.localeText
+            }
           />
         </div>
       </div>

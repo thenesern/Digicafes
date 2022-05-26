@@ -1,5 +1,6 @@
 // Packages and Dependencies
 import React, { useState, useEffect } from "react";
+import useTranslation from "next-translate/useTranslation";
 // Styles
 import styles from "./OrderNav.module.css";
 
@@ -14,6 +15,7 @@ const OrderNav = (props) => {
   const [favs, setFavs] = useState(
     props.orders?.map((o) => o.cartItems.map((a) => a.name).toString())
   );
+  const { t } = useTranslation();
   const [favItemCount, setFavItemCount] = useState(null);
   let m = 0;
   const [favItem, setFavItem] = useState("");
@@ -106,7 +108,7 @@ const OrderNav = (props) => {
         )}
       </div>
       <div className={styles.favs}>
-        <h3 className={styles.header}>En Sevilenler</h3>
+        <h3 className={styles.header}>{t("panel:favs")}</h3>
         <div className={styles.periods}>
           <span>
             {(favItem && favItem + " " + `(${favItemCount})`) || "Yok"}
@@ -114,21 +116,21 @@ const OrderNav = (props) => {
         </div>
       </div>
       <div className={styles.right}>
-        <h5 className={styles.header}>Siparişler</h5>
+        <h5 className={styles.header}>{t("panel:orders")}</h5>
         <div className={styles.orders}>
           <div className={styles.periods}>
-            <h6 className={styles.title}>Bugün</h6>
+            <h6 className={styles.title}>{t("panel:today")}</h6>
             <span>
               {newDates.map((a) => a === date).filter((d) => d === true)
                 .length || 0}
             </span>
           </div>
           <div className={styles.periods}>
-            <h6 className={styles.title}>Bu Hafta</h6>
+            <h6 className={styles.title}>{t("panel:week")}</h6>
             <span>{weekOrders.length || 0}</span>
           </div>
           <div className={styles.periods}>
-            <h6 className={styles.title}>Bu Ay</h6>
+            <h6 className={styles.title}>{t("panel:month")}</h6>
             <span>{monthOrders.length || 0}</span>
           </div>
         </div>

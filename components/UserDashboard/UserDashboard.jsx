@@ -1325,64 +1325,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         <h3 className={styles.header}>
                           {t("panel:addProduct")}
                         </h3>
-                        <FormControl
-                          style={{ margin: "1rem" }}
-                          sx={{ m: 1, width: "50%" }}
-                        >
-                          <InputLabel id="demo-multiple-chip-label">
-                            {t("panel:category")}
-                          </InputLabel>
-                          <Select
-                            labelId="demo-multiple-chip-label"
-                            id="demo-multiple-chip"
-                            multiple
-                            value={category}
-                            onChange={handleChange}
-                            input={
-                              <OutlinedInput
-                                id="select-multiple-chip"
-                                label={t("panel:category")}
-                              />
-                            }
-                            renderValue={(selected) => (
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  flexWrap: "wrap",
-                                  gap: 0.5,
-                                }}
-                              >
-                                {selected.map((value) => (
-                                  <Chip key={value} label={value} />
-                                ))}
-                              </Box>
-                            )}
-                            MenuProps={MenuProps}
-                          >
-                            {categories.map((category) => (
-                              <MenuItem
-                                key={category.name}
-                                value={category.name}
-                                style={{
-                                  padding: "10px",
-                                  width: "100%",
-                                }}
-                              >
-                                {category.name}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                        <ListItem>
-                          <TextField
-                            variant="outlined"
-                            fullWidth
-                            id="subCategory"
-                            onChange={(e) => setSubCategory(e.target.value)}
-                            label={t("panel:productSubCategory")}
-                            inputProps={{ type: "text", maxLength: 38 }}
-                          ></TextField>
-                        </ListItem>
+
                         <ListItem>
                           <TextField
                             variant="outlined"
@@ -1411,7 +1354,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             fullWidth
                             id="subCategory"
                             onChange={(e) => setSubCategory(e.target.value)}
-                            label="Alt Kategori Adı (Boş Bırakabilirsiniz.)"
+                            label={t("panel:productSubCategory")}
                             inputProps={{ type: "text", maxLength: 38 }}
                           ></TextField>
                         </ListItem>
@@ -1425,7 +1368,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         >
                           <FormControl>
                             <InputLabel id="demo-multiple-chip-label">
-                              Kategori
+                              {t("panel:category")}
                             </InputLabel>
                             <Select
                               labelId="demo-multiple-chip-label"
@@ -1486,7 +1429,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             flexDirection: "column",
                           }}
                         >
-                          <InputLabel>Ürün Görseli</InputLabel>
+                          <InputLabel>{t("panel:productImage")}</InputLabel>
                           <Input
                             accept="image/*"
                             id="icon-button-file"
@@ -1508,7 +1451,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             onClick={handleCloseAddProduct}
                             color="primary"
                           >
-                            Vazgeç
+                            {t("panel:discard")}
                           </Button>
                           <Button
                             variant="contained"
@@ -1531,7 +1474,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                 >
                   <Box className={styles.qrsModal}>
                     <h1 style={{ textAlign: "center", padding: "1rem" }}>
-                      QR Kodları
+                      {t("panel:qrCodes")}
                     </h1>
                     <div className={styles.qrs}>
                       {QRCodes.map((qr, i) => (
@@ -1545,7 +1488,10 @@ const UserDashboard = ({ userOrder, userId }) => {
                             gap: "10px",
                           }}
                         >
-                          <p>Masa No.{i + 1}</p>
+                          <p>
+                            {t("panel:tableNum")}
+                            {i + 1}
+                          </p>
                           <img style={{ width: "7rem" }} src={qr} />
                           <a href={qr} download={`Masa ${i + 1}`}>
                             <Button
@@ -1553,7 +1499,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                               style={{ width: "7rem" }}
                               variant="contained"
                             >
-                              indir
+                              {t("panel:download")}
                             </Button>
                           </a>
                         </div>
@@ -1569,11 +1515,10 @@ const UserDashboard = ({ userOrder, userId }) => {
                 >
                   <Box className={styles.modal}>
                     <h1 style={{ textAlign: "center", padding: "1rem" }}>
-                      Para Birimi
+                      {t("panel:currency")}
                     </h1>
                     <p style={{ textAlign: "center", padding: "0 1rem" }}>
-                      Seçeceğiniz para birimi sembolü, ürünlerin fiyat kısmına
-                      otomatik olarak eklenir.
+                      {t("panel:currencyDesc")}
                     </p>
                     <div className={styles.currencies}>
                       <Button
@@ -1590,7 +1535,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         color="primary"
                         onClick={() => setUpdateCurrency("dolar")}
                       >
-                        Dolar ($)
+                        {t("panel:dollar")} ($)
                       </Button>
                       <Button
                         variant={
@@ -1622,7 +1567,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         color="primary"
                         onClick={() => setUpdateCurrency("lira")}
                       >
-                        Türk Lirası (₺)
+                        {t("panel:lira")} (₺)
                       </Button>
                     </div>
                     <div
@@ -1639,14 +1584,14 @@ const UserDashboard = ({ userOrder, userId }) => {
                         color="primary"
                         onClick={handleCloseCurrency}
                       >
-                        Vazgeç
+                        {t("panel:discard")}
                       </Button>
                       <Button
                         variant="contained"
                         color="secondary"
                         onClick={handleSendCurrency}
                       >
-                        Onayla
+                        {t("panel:confirm")}
                       </Button>
                     </div>
                   </Box>
@@ -2008,7 +1953,16 @@ const UserDashboard = ({ userOrder, userId }) => {
                             helperText={t("panel:forExample3")}
                           ></TextField>
                         </ListItem>
-                        <ListItem>
+                        <ListItem
+                          style={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            justifyContent: "flex-start",
+                            flexDirection: "column",
+                            margin: "1rem 0",
+                          }}
+                        >
+                          <InputLabel>{t("panel:productImage")}</InputLabel>
                           <label htmlFor="icon-button-file">
                             <Input
                               accept="image/*"
@@ -2057,7 +2011,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             onClick={(e) => handleCloseAddCategory(e)}
                             color="primary"
                           >
-                            Vazgeç
+                            {t("panel:discard")}
                           </Button>
                           <Button
                             variant="contained"
@@ -2225,7 +2179,9 @@ const UserDashboard = ({ userOrder, userId }) => {
                             checked={isGalleryActive === true ? true : false}
                             onChange={() => setIsGalleryActive(true)}
                           ></input>
-                          <h3 className={styles.listTypeHeader}>Aktif</h3>
+                          <h3 className={styles.listTypeHeader}>
+                            {t("panel:active")}
+                          </h3>
                         </div>
                         <div
                           style={{
@@ -2242,7 +2198,9 @@ const UserDashboard = ({ userOrder, userId }) => {
                             checked={isGalleryActive === false ? true : false}
                             onChange={() => setIsGalleryActive(false)}
                           ></input>
-                          <h3 className={styles.listTypeHeader}>Pasif</h3>
+                          <h3 className={styles.listTypeHeader}>
+                            {t("panel:passive")}
+                          </h3>
                         </div>
                       </div>
                       <h3 style={{ marginBottom: "0" }}>
@@ -2385,7 +2343,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             onClick={handleCloseUploadLogo}
                             color="primary"
                           >
-                            Vazgeç
+                            {t("panel:discard")}
                           </Button>
                           <Button
                             variant="contained"
@@ -2501,7 +2459,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   color="primary"
                   onClick={handleOpenCurrency}
                 >
-                  Para Birimi
+                  {t("panel:currency")}
                 </Button>
               </div>
             </div>
@@ -2518,7 +2476,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   <h3 className={styles.titles}>{t("panel:productList")}</h3>
                 </div>
                 {isLoading ? (
-                  <p>Yükleniyor...</p>
+                  <p>{t("loading:loading")}</p>
                 ) : products?.length > 0 ? (
                   <div className={styles.grid}>
                     <DataGrid
@@ -2620,7 +2578,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                     />
                   </div>
                 ) : (
-                  "Kategori bulunamadı."
+                  t("panel:categoryNotFound")
                 )}
               </div>
             </div>

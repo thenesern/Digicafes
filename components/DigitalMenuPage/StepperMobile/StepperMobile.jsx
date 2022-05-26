@@ -7,24 +7,11 @@ import StepLabel from "@mui/material/StepLabel";
 import StepContent from "@mui/material/StepContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-
-const steps = [
-  {
-    label: "Sizin İçin En Uygun Dijital Menü Paketini Seçin",
-    description: `İhtiyacınıza özgü Dijital Menü paketleri sunuyoruz. Paketler, farklı sorunlar üzerine farklı çözümler sunuyor. İhtiyacınıza en uygun olanı seçin.  `,
-  },
-  {
-    label: "Yönetim Paneliniz Üzerinden Menünüzü Düzenleyin",
-    description:
-      "Seçtiğiniz Pakete özel bir Yönetim Paneli Hemen Profil kısmınızda aktif edilecek. Yönetim Paneli üzerinden, ürün ekleyip çıkarabilir, Dijital Menünüzü kolayca düzenleyebilirsiniz.",
-  },
-  {
-    label: "Dijital Menünüz Kullanıma Hazır",
-    description: `Dijital Menü Yönetim Paneli üzerinden girmiş olduğunuz İş Yeri adınıza özel bir alt alan adı ve o alan adına bağlı QR Kodu otomatik olarak oluşturulur. Tebrikler, artık Dijital Menünüz Hazır!`,
-  },
-];
+import useTranslation from "next-translate/useTranslation";
 
 export default function VerticalLinearStepper() {
+  const { t } = useTranslation();
+
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
@@ -38,7 +25,20 @@ export default function VerticalLinearStepper() {
   const handleReset = () => {
     setActiveStep(0);
   };
-
+  const steps = [
+    {
+      label: t("stepper:s1"),
+      description: t("stepper:d1"),
+    },
+    {
+      label: t("stepper:s2"),
+      description: t("stepper:d2"),
+    },
+    {
+      label: t("stepper:s3"),
+      description: t("stepper:d3"),
+    },
+  ];
   return (
     <Box sx={{ maxWidth: 400 }}>
       <Stepper

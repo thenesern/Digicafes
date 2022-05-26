@@ -12,6 +12,7 @@ import db from "../../../../../../utils/db";
 import styles from "./orders.module.css";
 import ReactAudioPlayer from "react-audio-player";
 import { useRef } from "react";
+import useTranslation from "next-translate/useTranslation";
 
 const StoreOrderPanel = ({ data, order }) => {
   const [storeLogo, setStoreLogo] = useState(data?.storeLogo);
@@ -25,6 +26,7 @@ const StoreOrderPanel = ({ data, order }) => {
   const [isNotification, setIsNotification] = useState(false);
   const audioRef = useRef();
   const alertRef = useRef();
+  const { t } = useTranslation();
 
   const audio = audioRef?.current?.audioEl?.current;
   const alert = alertRef?.current?.audioEl?.current;
@@ -52,11 +54,11 @@ const StoreOrderPanel = ({ data, order }) => {
   }
   useEffect(() => {
     if (isNew) {
-      enqueueSnackbar("Yeni Sipariş", { variant: "success" });
+      enqueueSnackbar(t("panel:newOrder"), { variant: "success" });
       audio.play();
       setIsNew(false);
     } else if (isNotification) {
-      enqueueSnackbar("Yeni Çağrı", { variant: "success" });
+      enqueueSnackbar(t("panel:newRequest"), { variant: "success" });
       alert.play();
       setIsNotification(false);
     } else {

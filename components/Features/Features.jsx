@@ -68,7 +68,7 @@ const Features = () => {
                 backgroundColor: "#c9184a",
               }}
             >
-              Örnek Menü
+              {t("features:v1s1")}
             </Button>
           </a>
         )}
@@ -107,7 +107,7 @@ const Features = () => {
                 backgroundColor: "#c9184a",
               }}
             >
-              Örnek Menü
+              {t("features:v1s1")}
             </Button>
           </a>
         )}

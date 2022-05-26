@@ -578,6 +578,7 @@
   }
   .description {
     font-size: 12px;
+    text-align: center !important;
   }
   .image {
     width: 16rem !important;
