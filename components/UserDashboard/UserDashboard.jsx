@@ -1448,7 +1448,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             variant="contained"
                             type="submit"
                             onClick={addProductHandler}
-                            color="primary"
+                            color="secondary"
                           >
                             Onayla
                           </Button>
@@ -1568,7 +1568,11 @@ const UserDashboard = ({ userOrder, userId }) => {
                         padding: "1rem 2rem",
                       }}
                     >
-                      <Button variant="outlined" onClick={handleCloseCurrency}>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={handleCloseCurrency}
+                      >
                         Vazgeç
                       </Button>
                       <Button
@@ -2011,7 +2015,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                                 addCategoryHandler(e);
                               }
                             }}
-                            color="primary"
+                            color="secondary"
                           >
                             Ekle
                           </Button>
@@ -2103,7 +2107,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         </Button>
                         <Button
                           variant="contained"
-                          color="primary"
+                          color="secondary"
                           onClick={handleUpdateListType}
                         >
                           Onayla
@@ -2262,7 +2266,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         </Button>
                         <Button
                           variant="contained"
-                          color="primary"
+                          color="secondary"
                           onClick={handleUpdateGallery}
                         >
                           Onayla
@@ -2320,7 +2324,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             variant="contained"
                             type="submit"
                             onClick={uploadLogoHandler}
-                            color="primary"
+                            color="secondary"
                           >
                             Yükle
                           </Button>
