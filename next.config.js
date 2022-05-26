@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextTranslate = require("next-translate");
 
-const nextConfig = {
+module.exports = nextTranslate({
   reactStrictMode: true,
   images: {
     formats: ["image/avif", "image/webp"],
@@ -10,6 +10,4 @@ const nextConfig = {
   sounds: {
     formats: ["audio/mpeg", "audio/mp3"],
   },
-};
-
-module.exports = nextTranslate({ nextConfig });
+});
