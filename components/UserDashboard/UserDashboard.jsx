@@ -1726,33 +1726,39 @@ const UserDashboard = ({ userOrder, userId }) => {
                         gap: "1rem",
                       }}
                     >
-                      {t("panel:discard")}
-                    </Button>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      onClick={(e) => {
-                        if (
-                          addCategory != updateCategory ||
-                          categoryOrder !== updateCategoryOrder ||
-                          typeof file === "object"
-                        ) {
-                          handleUpdateCategory(e);
-                        } else {
-                          handleCloseUpdateCategory();
-                          setUpdateCategory("");
-                          setAddCategory("");
-                          setFile("");
-                          setIsPreview(false);
-                          enqueueSnackbar(t("panel:notChanged"), {
-                            variant: "info",
-                          });
-                        }
-                      }}
-                      style={{ marginLeft: "1rem" }}
-                    >
-                      {t("panel:confirm")}
-                    </Button>
+                      <Button
+                        onClick={handleCloseUpdateCategory}
+                        color="primary"
+                        variant="outlined"
+                      >
+                        {t("panel:discard")}
+                      </Button>
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        onClick={(e) => {
+                          if (
+                            addCategory != updateCategory ||
+                            categoryOrder !== updateCategoryOrder ||
+                            typeof file === "object"
+                          ) {
+                            handleUpdateCategory(e);
+                          } else {
+                            handleCloseUpdateCategory();
+                            setUpdateCategory("");
+                            setAddCategory("");
+                            setFile("");
+                            setIsPreview(false);
+                            enqueueSnackbar(t("panel:notChanged"), {
+                              variant: "info",
+                            });
+                          }
+                        }}
+                        style={{ marginLeft: "1rem" }}
+                      >
+                        {t("panel:confirm")}
+                      </Button>
+                    </div>
                   </Modal.Footer>
                 </Modal>
                 <ModalMui
@@ -2394,7 +2400,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                     </form>
                   </Box>
                 </ModalMui>
-                <Modal
+                <ModalMui
                   width="24rem"
                   open={openDeleteProduct}
                   onClose={handleCloseDelete}
