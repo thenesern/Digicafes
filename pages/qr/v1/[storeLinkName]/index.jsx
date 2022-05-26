@@ -12,8 +12,10 @@ import Image from "next/image";
 import FmdBadIcon from "@mui/icons-material/FmdBad";
 import digicafes from "../../../../assets/digi_logo.svg";
 import { useEffect, useLayoutEffect } from "react";
+import useTranslation from "next-translate/useTranslation";
 
 const StoreMenu = ({ menu }) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const Router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
@@ -64,7 +66,7 @@ const StoreMenu = ({ menu }) => {
                       textAlign: "center",
                     }}
                   >
-                    Menü
+                    {t("common:menu")}
                   </h3>
                 )}
                 {menu &&
@@ -92,14 +94,14 @@ const StoreMenu = ({ menu }) => {
           {menu?.categories.length == 0 && (
             <div className={styles.notFound}>
               <FmdBadIcon style={{ fontSize: "3rem", color: "#001219" }} />
-              <h3>Bu iş yerinde Dijital Menü henüz düzenlenmedi.</h3>
+              <h3>{t("common:warning")}</h3>
             </div>
           )}
           {menu?.categories.length > 0 && (
             <>
               {menu?.products.length > 3 && (
                 <div className={styles.favsBox}>
-                  <h3 className={styles.favsHeader}>En Sevilenler</h3>
+                  <h3 className={styles.favsHeader}>{t("common:favs")}</h3>
                   <div className={styles.favs}>
                     {listType === "image"
                       ? array?.map((fav) => (
@@ -247,7 +249,7 @@ const StoreMenu = ({ menu }) => {
             </>
           )}
           <footer className={styles.footer}>
-            <p>Kafe, Restoran ve Oteller için Dijital Menü çözümleri.</p>
+            <p>{t("common:footer")}</p>
             <a
               href="https://www.digicafes.com"
               rel="noreferrer"
@@ -255,7 +257,9 @@ const StoreMenu = ({ menu }) => {
             >
               <Image src={digicafes} width={160} height={160} />
             </a>
-            <span>©{new Date().getFullYear()} Tüm hakları saklıdır.</span>
+            <span>
+              ©{new Date().getFullYear()} {t("common:rights")}
+            </span>
           </footer>
         </div>
       ) : (
@@ -267,10 +271,7 @@ const StoreMenu = ({ menu }) => {
             src={`https://www.digicafes.com/qr/v1/${menu?.storeLinkName}`}
             title="W3Schools Free Online Web Tutorials"
           ></iframe>
-          <p>
-            En iyi deneyimi elde etmek için bir mobil cihaz üzerinden bağlantı
-            sağlayınız.
-          </p>
+          <p>{t("common:warning2")}</p>
         </div>
       )}
     </>

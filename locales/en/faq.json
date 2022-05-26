@@ -1,0 +1,9 @@
+{
+  "header": "FAQ",
+  "q1": "What is Digital Menu?",
+  "q2": "How works Digital Menu?",
+  "q3": "What is the difference between V1 and V2?",
+  "a1": "Digital Menu is the presentation of the menu to the customer over the internet using a QR Code instead of the traditional print menu.",
+  "a2": "Your menu is created on the Administration Panel. Then your menu is recorded by our system and creates a QR Code. The menu is accessed by scanning the QR code.",
+  "a3": "You can create your menu with Digital Menu V1 and access the menu using QR Code. In this version, the aim is for the customer to view the menu only. Digital Menu V2, on the other hand, allows ordering through the same menu, calling a waiter, etc. offers you the features."
+}

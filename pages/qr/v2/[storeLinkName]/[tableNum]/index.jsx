@@ -26,11 +26,13 @@ import FmdBadIcon from "@mui/icons-material/FmdBad";
 import { useContext } from "react";
 import { Store } from "../../../../../redux/store";
 import { ShoppingCartOutlined } from "@material-ui/icons";
+import useTranslation from "next-translate/useTranslation";
 
 const StoreMenu = ({ menu, number }) => {
   const [open, setOpen] = useState(false);
   const [storeName, setStoreName] = useState(menu?.storeName);
   const Router = useRouter();
+  const { t } = useTranslation();
   const [isFetching, setIsFetching] = useState(false);
   const [waiterModal, setWaiterModal] = useState(false);
   const [tableModal, setTableModal] = useState(false);
@@ -222,7 +224,7 @@ const StoreMenu = ({ menu, number }) => {
               }}
             >
               <CheckCircleIcon style={{ fontSize: "8rem" }} color="success" />
-              <h1>Talebiniz iletildi.</h1>
+              <h1>{t("common:request")}</h1>
             </Modal.Body>
           </Modal>
           <Modal
@@ -233,11 +235,13 @@ const StoreMenu = ({ menu, number }) => {
             aria-describedby="modal-modal-description"
           >
             <Modal.Header style={{ display: "flex", flexDirection: "column" }}>
-              <h3 style={{ padding: "0", margin: "0" }}>Dikkat</h3>
-              <p>Siparişiniz iletilecek.</p>
+              <h3 style={{ padding: "0", margin: "0" }}>
+                {t("common:attention")}
+              </h3>
+              <p>{t("common:order")}</p>
             </Modal.Header>
             <Modal.Body>
-              <h5>Not Ekle</h5>
+              <h5>{t("common:note")}</h5>
               <Textarea
                 style={{ fontSize: "12px" }}
                 placeholder="Mesajınız. (Boş Bırakabilirsiniz)"
@@ -248,14 +252,14 @@ const StoreMenu = ({ menu, number }) => {
               style={{ display: "flex", justifyContent: "space-between" }}
             >
               <Button variant="outlined" onClick={handleCloseOpenIsSure}>
-                Vazgeç
+                {t("common:discard")}
               </Button>
               <Button
                 variant="contained"
                 color="secondary"
                 onClick={() => setIsSure(true)}
               >
-                Onayla
+                {t("common:confirm")}
               </Button>
             </Modal.Footer>
           </Modal>
@@ -274,7 +278,7 @@ const StoreMenu = ({ menu, number }) => {
             }}
           >
             <Modal.Header>
-              <h2>Sepet Özeti</h2>
+              <h2>{t("common:summary")}</h2>
             </Modal.Header>
             <Modal.Body style={{ padding: "1rem 0" }}>
               {listType === "image"
@@ -455,7 +459,7 @@ const StoreMenu = ({ menu, number }) => {
                   ))}
 
               {cart.length === 0 && (
-                <p style={{ padding: "1rem" }}>Sepetiniz boş.</p>
+                <p style={{ padding: "1rem" }}>{t("common:empty")}</p>
               )}
             </Modal.Body>
             <Modal.Footer className={styles.cartFooter}>
@@ -466,7 +470,7 @@ const StoreMenu = ({ menu, number }) => {
                   color="secondary"
                   onClick={handleOpenIsSure}
                 >
-                  Siparişi Onayla
+                  {t("common:sendOrder")}
                 </Button>
               )}
             </Modal.Footer>
@@ -509,7 +513,7 @@ const StoreMenu = ({ menu, number }) => {
                   color="primary"
                   onClick={handleOpenWaiterModal}
                 >
-                  Garson Çağır
+                  {t("common:waiter")}
                 </Button>
                 <Button
                   variant="contained"
@@ -521,7 +525,7 @@ const StoreMenu = ({ menu, number }) => {
                   color="primary"
                   onClick={handleOpenTableModal}
                 >
-                  Hesap İste
+                  {t("common:bill")}
                 </Button>
                 {!menu?.categories.length == 0 && (
                   <h3
@@ -533,7 +537,7 @@ const StoreMenu = ({ menu, number }) => {
                       textAlign: "center",
                     }}
                   >
-                    Menü
+                    {t("common:menu")}
                   </h3>
                 )}
 
@@ -562,14 +566,14 @@ const StoreMenu = ({ menu, number }) => {
           {menu?.categories.length == 0 && (
             <div className={styles.notFound}>
               <FmdBadIcon style={{ fontSize: "3rem", color: "#001219" }} />
-              <h3>Bu iş yerinde Dijital Menü henüz düzenlenmedi.</h3>
+              <h3>{t("common:warning")}</h3>
             </div>
           )}
           {menu?.categories.length > 0 && (
             <>
               {menu?.orders.length >= 3 && (
                 <div className={styles.favsBox}>
-                  <h3 className={styles.favsHeader}>En Sevilenler</h3>
+                  <h3 className={styles.favsHeader}>{t("common:favs")}</h3>
                   <div className={styles.favs}>
                     {menu?.products
                       .filter(
@@ -672,12 +676,12 @@ const StoreMenu = ({ menu, number }) => {
                   open={waiterModal}
                 >
                   <Modal.Header>
-                    <h1>Emin misiniz?</h1>
+                    <h1>{t("common:isSure")}</h1>
                   </Modal.Header>
                   <Modal.Body
                     style={{ margin: "1rem 10px", textAlign: "center" }}
                   >
-                    <p>Garson Çağrınız iletilecek.</p>
+                    <p>{t("common:requestWaiter")}</p>
                   </Modal.Body>
                   <Modal.Footer
                     style={{ display: "flex", justifyContent: "space-between" }}
@@ -697,7 +701,7 @@ const StoreMenu = ({ menu, number }) => {
                         handleCloseWaiterModal();
                       }}
                     >
-                      Onayla
+                      {t("common:confirm")}
                     </Button>
                   </Modal.Footer>
                 </Modal>
@@ -708,18 +712,18 @@ const StoreMenu = ({ menu, number }) => {
                   open={tableModal}
                 >
                   <Modal.Header>
-                    <h1>Emin misiniz?</h1>
+                    <h1>{t("common:isSure")}</h1>
                   </Modal.Header>
                   <Modal.Body style={{ margin: "1rem 10px" }}>
                     <p style={{ textAlign: "center" }}>
-                      Hesap İsteğiniz iletilecek.
+                      {t("common:requestBill")}
                     </p>
                   </Modal.Body>
                   <Modal.Footer
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <Button variant="contained" onClick={handleCloseTableModal}>
-                      Vazgeç
+                      {t("common:discard")}
                     </Button>
                     <Button
                       style={{ marginLeft: "2rem " }}
@@ -730,7 +734,7 @@ const StoreMenu = ({ menu, number }) => {
                         handleCloseTableModal();
                       }}
                     >
-                      Onayla
+                      {t("common:confirm")}
                     </Button>
                   </Modal.Footer>
                 </Modal>
@@ -775,7 +779,7 @@ const StoreMenu = ({ menu, number }) => {
             </>
           )}
           <footer className={styles.footer}>
-            <p>Kafe, Restoran ve Oteller için Dijital Menü çözümleri.</p>
+            <p>{t("common:footer")}</p>
             <a
               href="https://www.digicafes.com"
               rel="noreferrer"
@@ -783,7 +787,9 @@ const StoreMenu = ({ menu, number }) => {
             >
               <Image src={digicafes} width={160} height={160} />
             </a>
-            <span>©{new Date().getFullYear()} Tüm hakları saklıdır.</span>
+            <span>
+              ©{new Date().getFullYear()} {t("common:rights")}
+            </span>
           </footer>
         </div>
       ) : (
@@ -795,10 +801,7 @@ const StoreMenu = ({ menu, number }) => {
             src={`https://www.digicafes.com/qr/v2/${menu?.storeLinkName}/${tableNum}`}
             title="W3Schools Free Online Web Tutorials"
           ></iframe>
-          <p>
-            En iyi deneyimi elde etmek için bir mobil cihaz üzerinden bağlantı
-            sağlayınız.
-          </p>
+          <p>{t("common:warning2")}</p>
         </div>
       )}
     </>

@@ -1,0 +1,23 @@
+{
+  "head": "Digicafes | Kafe, Restoran ve Oteller için Dijital Menü çözümleri.",
+  "menu": "Menü",
+  "warning": "Bu iş yerinde Dijital Menü henüz düzenlenmedi.",
+  "favs": "En Sevilenler",
+  "footer": "Kafe, Restoran ve Oteller için Dijital Menü çözümleri.",
+  "rights": "Tüm hakları saklıdır.",
+  "warning2": "En iyi deneyimi elde etmek için bir mobil cihaz üzerinden bağlantı sağlayınız.",
+  "request": "Talebiniz iletildi.",
+  "attention": "Dikkat",
+  "order": "Siparişiniz iletilecek.",
+  "note": "Add a note",
+  "discard": "Vazgeç",
+  "confirm": "Onayla",
+  "summary": "Sepet Özeti",
+  "empty": "Sepetiniz boş.",
+  "sendOrder": "Siparişimi Onayla",
+  "waiter": "Garson Çağır",
+  "bill": "Hesap İste",
+  "requestWaiter": "Garson Çağrınız iletilecek.",
+  "isSure": "Emin misiniz?",
+  "requestBill": "Hesap İsteğiniz iletilecek."
+}

@@ -17,6 +17,7 @@ import favicon from "../public/favicon.ico";
 import whatsapp from "../assets/image/whatsapp.png";
 import marcopascha from "../assets/refers/marcologo.png";
 import route from "../assets/refers/route.png";
+import { useRouter } from "next/router";
 // Styles
 import styles from "./DigitalMenuPage.module.css";
 import Aos from "aos";
@@ -24,7 +25,11 @@ import { useEffect } from "react";
 import { useState } from "react";
 import "aos/dist/aos.css";
 import Features from "../components/Features/Features";
+import useTranslation from "next-translate/useTranslation";
+
 const DijitalMenu = () => {
+  const router = useRouter();
+  const { t } = useTranslation();
   useEffect(() => {
     Aos.init({ duration: 2000 });
     Aos.refresh();
@@ -37,42 +42,24 @@ const DijitalMenu = () => {
   }, []);
   return (
     <div>
-      <Head>
-        <link rel="shortcut icon" type="image/x-icon" href={favicon.src} />
-        <title>
-          Digicafes | Kafe, Restoran ve Oteller için Dijital Menü çözümleri.
-        </title>
-        <meta
-          name="viewport"
-          content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1"
-        />
-        <meta
-          name="keywords"
-          content="Dijital Menü, QR Menü, Menü, Cafe, Restoran, Restoran Menü, Cafe Menü, Dijital QR Menü, digicafes.com, DigiCafes"
-        />
-        <meta
-          name="description"
-          content="Digicafes | Kafe, Restoran ve Oteller için Dijital Menü çözümleri."
-        />
-      </Head>
       <Nav />
       <div className={styles.container}>
-        <div className={styles.wpBtn}>
-          <a
-            href="https://api.whatsapp.com/send?phone=905012345324"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <Image layout="responsive" objectFit="contain" src={whatsapp} />
-          </a>
-        </div>
+        {router?.locale === "tr" && (
+          <div className={styles.wpBtn}>
+            <a
+              href="https://api.whatsapp.com/send?phone=905012345324"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Image layout="responsive" objectFit="contain" src={whatsapp} />
+            </a>
+          </div>
+        )}
         <div className={styles.topBox}>
           <div className={styles.top}>
             <div className={styles.topLeft}>
-              <h1 className={styles.header}>Dijital Menü</h1>
-              <p className={styles.description}>
-                İş Yükü ve Menü Maliyetlerinden Kurtulun
-              </p>
+              <h1 className={styles.header}>{t("home:productName")}</h1>
+              <p className={styles.description}>{t("home:slogan")}</p>
             </div>
             <div className={styles.images}>
               <div
@@ -115,7 +102,7 @@ const DijitalMenu = () => {
             </div>
           </div>
           <div className={styles.referenceBox}>
-            <h3 className={styles.referencesTitle}>Bazı Referanslarımız</h3>
+            <h3 className={styles.referencesTitle}>{t("home:references")}</h3>
             <div className={styles.references}>
               <Image
                 width={200}
@@ -148,36 +135,26 @@ const DijitalMenu = () => {
               />
             </div>
             <div data-aos="fade-up" className={styles.firstDes}>
-              <h2 className={styles.firstHeader}>
-                Dijital Menü Yönetim Paneli
-              </h2>
+              <h2 className={styles.firstHeader}>{t("home:feature1Header")}</h2>
               <ul className={styles.firstList}>
-                <li>Sınırsız Ürün ve Kategori Modülü</li>
-                <li>Sınırsız Güncelleme Modülü</li>
-                <li>Otomatik QR Kod Oluşturma Modülü</li>
+                <li>{t("home:f1")}</li>
+                <li>{t("home:f2")}</li>
+                <li>{t("home:f3")}</li>
               </ul>
-              <p>
-                Dijital Menü Yönetim Paneli üzerinden Menünüzü dilediğiniz
-                zaman, dilediğiniz şekilde düzenleyebilirsiniz.
-              </p>
+              <p>{t("home:d1")}</p>
             </div>
           </article>
 
           <article className={styles.second}>
             <div className={styles.secondDes}>
               <h2 className={styles.secondHeader}>
-                Dijital Menü Sipariş Paneli
+                {t("home:feature2Header")}
               </h2>
               <ul className={styles.secondList}>
-                <li>Günlük, Haftalık ve Aylık Sipariş Performansı Modülü</li>
-                <li>Sipariş ve Çağrı Görüntüleme Modülleri</li>
+                <li>{t("home:f4")}</li>
+                <li>{t("home:f5")}</li>
               </ul>
-              <p>
-                Dijital Menü Sipariş Paneli ile birlikte müşteri tarafından
-                gelen siparişleri ve çağrıları anlık olarak görebilir. İş
-                yerinizin sipariş performansını ve en sevilen ürünlerinizi
-                görüntüleyebilirsiniz.
-              </p>
+              <p>{t("home:d2")}</p>
             </div>
             <div
               style={{ width: "18rem", height: "auto" }}
@@ -206,15 +183,12 @@ const DijitalMenu = () => {
               />
             </div>
             <div className={styles.thirdDes}>
-              <h2 className={styles.thirdHeader}>Dijital Menü</h2>
+              <h2 className={styles.thirdHeader}>{t("home:feature3Header")}</h2>
               <ul className={styles.thirdList}>
-                <li>Sepete Ürün Ekleme Modülü</li>
-                <li>Garson Çağır ve Adisyon İste Modülleri</li>
+                <li>{t("home:f6")}</li>
+                <li>{t("home:f7")}</li>
               </ul>
-              <p>
-                Dijital Menü, Kullanıcı Deneyimine odaklı tasarımı sayesinde
-                müşteri memnuniyetini artırır.
-              </p>
+              <p>{t("home:d3")}</p>
             </div>
           </article>
           <article className={styles.steps} data-aos="fade-up" id="process">

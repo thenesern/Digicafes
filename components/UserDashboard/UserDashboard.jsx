@@ -12,7 +12,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { DataGrid, trTR } from "@mui/x-data-grid";
+import { DataGrid, trTR, enUS } from "@mui/x-data-grid";
 import QRCode from "qrcode";
 import { fadeInRightBig } from "react-animations";
 import Radium, { StyleRoot } from "radium";
@@ -38,6 +38,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import QrCodeIcon from "@mui/icons-material/QrCode";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import ViewListIcon from "@mui/icons-material/ViewList";
+import useTranslation from "next-translate/useTranslation";
+import { useRouter } from "next/router";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -51,6 +53,8 @@ const MenuProps = {
 };
 
 const UserDashboard = ({ userOrder, userId }) => {
+  const { t } = useTranslation();
+  const router = useRouter();
   const [order, setOrder] = useState(userOrder[0] || null);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [file, setFile] = useState(null);
@@ -403,7 +407,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       }
       handleCloseGallery();
       setIsFetching(false);
-      return enqueueSnackbar(`Galeri güncellendi.`, {
+      return enqueueSnackbar(t("panel:galleryUpdated"), {
         variant: "success",
       });
     } catch (err) {
@@ -418,7 +422,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     if (listType === menu?.listType) {
       handleCloseListType();
       setIsFetching(false);
-      return enqueueSnackbar("Listeleme türü zaten aynı", {
+      return enqueueSnackbar(t("panel:same"), {
         variant: "error",
       });
     }
@@ -436,7 +440,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       setMenu(menu?.data?.menu);
       handleCloseListType();
       setIsFetching(false);
-      return enqueueSnackbar(`Listeleme türü değiştirildi`, {
+      return enqueueSnackbar(t("panel:changed"), {
         variant: "success",
       });
     } catch (err) {
@@ -493,7 +497,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       setName("");
       setDescription("");
       setPrice("");
-      return enqueueSnackbar("Bu isimde bir ürün zaten var", {
+      return enqueueSnackbar(t("panel:productExist"), {
         variant: "error",
       });
     }
@@ -534,7 +538,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       setPrice("");
       setSubCategory("");
       setFile(null);
-      enqueueSnackbar("Ürün Eklendi", { variant: "success" });
+      enqueueSnackbar(t("panel:addedProduct"), { variant: "success" });
     } catch (err) {
       console.log(err);
       setIsFetching(false);
@@ -542,7 +546,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       setDescription("");
       setPrice("");
       setFile(null);
-      enqueueSnackbar("Ürün Eklenemedi", { variant: "error" });
+      enqueueSnackbar(t("panel:notAddedProduct"), { variant: "error" });
     }
   };
   const deleteProductHandler = async () => {
@@ -565,12 +569,12 @@ const UserDashboard = ({ userOrder, userId }) => {
       );
       setIsFetching(false);
       setDeleteId("");
-      enqueueSnackbar("Ürün Silindi", { variant: "success" });
+      enqueueSnackbar(t("panel:deletedProduct"), { variant: "success" });
     } catch (err) {
       console.log(err);
       setIsFetching(false);
       setDeleteId("");
-      enqueueSnackbar("Ürün Silinemedi", { variant: "error" });
+      enqueueSnackbar(t("panel:notDeletedProduct"), { variant: "error" });
     }
     setIsFetching(false);
   };
@@ -583,10 +587,9 @@ const UserDashboard = ({ userOrder, userId }) => {
       setIsFetching(false);
       setDeleteId("");
       setDeleteName("");
-      return enqueueSnackbar(
-        "Kategori Silinemedi (Bu kategoriyi kullanan bir ürün var.)",
-        { variant: "error" }
-      );
+      return enqueueSnackbar(t("panel:notDeletedCategory"), {
+        variant: "error",
+      });
     }
     try {
       setCategories(
@@ -608,13 +611,13 @@ const UserDashboard = ({ userOrder, userId }) => {
       setIsFetching(false);
       setDeleteId("");
       setDeleteName("");
-      enqueueSnackbar("Kategori Silindi", { variant: "success" });
+      enqueueSnackbar(t("panel:deletedCategory"), { variant: "success" });
     } catch (err) {
       console.log(err);
       setIsFetching(false);
       setDeleteId("");
       setDeleteName("");
-      enqueueSnackbar("Kategori Silinemedi", { variant: "error" });
+      enqueueSnackbar(t("panel:notDeletedCategory2"), { variant: "error" });
     }
     setIsFetching(false);
   };
@@ -677,7 +680,7 @@ const UserDashboard = ({ userOrder, userId }) => {
         setProducts(updatedMenu?.data?.menu?.products);
       }
       setIsFetching(false);
-      enqueueSnackbar("Ürün Güncellendi", { variant: "success" });
+      enqueueSnackbar(t("panel:productUpdated"), { variant: "success" });
     } catch (err) {
       console.log(err);
       setIsFetching(false);
@@ -725,7 +728,7 @@ const UserDashboard = ({ userOrder, userId }) => {
         setCategories(updatedMenu?.data?.menu?.categories);
       }
       setIsFetching(false);
-      enqueueSnackbar("Kategori Güncellendi", { variant: "success" });
+      enqueueSnackbar(t("panel:categoryUpdated"), { variant: "success" });
     } catch (err) {
       console.log(err);
       setIsFetching(false);
@@ -748,7 +751,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       setAddCategory("");
       setFile(null);
       setIsFetching(false);
-      return enqueueSnackbar("Bu isimde bir kategori zaten var.", {
+      return enqueueSnackbar(t("panel:thereIsCategory"), {
         variant: "error",
       });
     }
@@ -780,14 +783,14 @@ const UserDashboard = ({ userOrder, userId }) => {
       setCategoryOrder(null);
       setUpdateCategoryOrder(null);
       setIsFetching(false);
-      enqueueSnackbar("Kategori Eklendi", { variant: "success" });
+      enqueueSnackbar(t("panel:addedCategory"), { variant: "success" });
     } catch (err) {
       console.log(err);
       handleCloseAddCategory();
       setIsFetching(false);
       setAddCategory("");
       setFile(null);
-      enqueueSnackbar("Kategori Eklenemedi", { variant: "error" });
+      enqueueSnackbar(t("panel:notAddedCategory"), { variant: "error" });
     }
   };
   function containsSpecialChars(str) {
@@ -821,12 +824,12 @@ const UserDashboard = ({ userOrder, userId }) => {
       handleCloseUploadLogo();
       setFile(null);
       setIsFetching(false);
-      enqueueSnackbar("Logo Yüklendi", { variant: "success" });
+      enqueueSnackbar(t("panel:uploadedLogo"), { variant: "success" });
     } catch (err) {
       console.log(err);
       setIsFetching(false);
       setFile(null);
-      enqueueSnackbar("Logo Yüklenemedi", { variant: "error" });
+      enqueueSnackbar(t("panel:notUploadedLogo"), { variant: "error" });
     }
   };
   useEffect(() => {
@@ -872,7 +875,7 @@ const UserDashboard = ({ userOrder, userId }) => {
   const columns = [
     {
       field: "name",
-      headerName: "Ürün",
+      headerName: t("panel:product"),
       flex: 1,
       renderCell: (params) => {
         return (
@@ -891,7 +894,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     },
     {
       field: "price",
-      headerName: "Ürün Fiyatı",
+      headerName: t("panel:productPrice"),
       flex: 0.7,
       renderCell: (params) => {
         return (
@@ -910,7 +913,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     },
     {
       field: "subCategory",
-      headerName: "Ürün Alt Kategorisi",
+      headerName: t("panel:subCategory"),
       flex: 1,
       renderCell: (params) => {
         return (
@@ -918,16 +921,16 @@ const UserDashboard = ({ userOrder, userId }) => {
             {params?.row?.subCategory ? (
               <p>{params?.row.subCategory}</p>
             ) : (
-              <p>Yok</p>
+              <p>-</p>
             )}
           </div>
         );
       },
     },
-    { field: "category", headerName: "Ürün Kategorisi", flex: 0.8 },
+    { field: "category", headerName: t("panel:productCategory"), flex: 0.8 },
     {
       field: "actions",
-      headerName: "Yönetim",
+      headerName: t("panel:actions"),
       width: 200,
       renderCell: (params) => {
         return (
@@ -951,7 +954,7 @@ const UserDashboard = ({ userOrder, userId }) => {
               }}
               style={{ fontSize: "12px", fontWeight: "500", width: "5rem" }}
             >
-              Düzenle
+              {t("panel:edit")}
             </Button>
             <Button
               style={{ fontSize: "12px", fontWeight: "500", width: "5rem" }}
@@ -962,7 +965,7 @@ const UserDashboard = ({ userOrder, userId }) => {
               }}
               variant="outlined"
             >
-              Sil
+              {t("panel:delete")}
             </Button>
           </Stack>
         );
@@ -972,7 +975,7 @@ const UserDashboard = ({ userOrder, userId }) => {
   const categoryColumns = [
     {
       field: "name",
-      headerName: "Kategori",
+      headerName: t("panel:category"),
       flex: 2,
       renderCell: (params) => {
         return (
@@ -985,12 +988,12 @@ const UserDashboard = ({ userOrder, userId }) => {
     },
     {
       field: "order",
-      headerName: "Sıra",
+      headerName: t("panel:order"),
       flex: 1,
     },
     {
       field: "actions",
-      headerName: "Yönetim",
+      headerName: t("panel:actions"),
       width: 200,
       renderCell: (params) => {
         return (
@@ -1008,7 +1011,7 @@ const UserDashboard = ({ userOrder, userId }) => {
               variant="outlined"
               color="warning"
             >
-              Düzenle
+              {t("panel:edit")}
             </Button>
             <Button
               variant="outlined"
@@ -1021,7 +1024,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                 setDeleteCategory(true);
               }}
             >
-              Sil
+              {t("panel:delete")}
             </Button>
           </Stack>
         );
@@ -1205,7 +1208,7 @@ const UserDashboard = ({ userOrder, userId }) => {
               <div className={styles.leftBox}>
                 <div className={styles.headers}>
                   <QrCodeIcon color="primary" />
-                  <h3 className={styles.titles}>QR Menü Kodu</h3>
+                  <h3 className={styles.titles}>{t("panel:qrMenuHeader")}</h3>
                 </div>
                 <div className={styles.qr}>
                   <div className={styles.images}>
@@ -1228,13 +1231,13 @@ const UserDashboard = ({ userOrder, userId }) => {
                             className={styles.qrButtons}
                             style={{
                               height: "2rem",
-                              width: "12rem",
+                              minWidth: "12rem",
                             }}
                             endIcon={
                               <ArrowRightIcon style={{ fontSize: "2rem" }} />
                             }
                           >
-                            Siteye Git
+                            {t("panel:seeWebsite")}
                           </Button>
                         </Stack>
                       </a>
@@ -1245,10 +1248,10 @@ const UserDashboard = ({ userOrder, userId }) => {
                           className={styles.qrButtons}
                           variant="outlined"
                           onClick={handleOpenQRImages}
-                          style={{ height: "2rem", width: "12rem" }}
+                          style={{ height: "2rem", minWidth: "12rem" }}
                           endIcon={<DownloadIcon />}
                         >
-                          QR Kodları İndir
+                          {t("panel:downloadCodes")}
                         </Button>
                       </Stack>
                     )}
@@ -1257,10 +1260,13 @@ const UserDashboard = ({ userOrder, userId }) => {
                         <Button
                           variant="outlined"
                           className={styles.qrButtons}
-                          style={{ height: "2rem", width: "12rem" }}
+                          style={{
+                            height: "2rem",
+                            minWidth: "16rem",
+                          }}
                           endIcon={<DownloadIcon />}
                         >
-                          QR Kodu İndir
+                          {t("panel:downloadCode")}
                         </Button>
                       </a>
                     )}
@@ -1283,7 +1289,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                                 <ArrowRightIcon style={{ fontSize: "2rem" }} />
                               }
                             >
-                              Sipariş Paneli
+                              {t("panel:orderPanel")}
                             </Button>
                           </Stack>
                         </a>
@@ -1295,7 +1301,7 @@ const UserDashboard = ({ userOrder, userId }) => {
               <div className={styles.actions}>
                 <div className={styles.headers}>
                   <DashboardCustomizeIcon color="primary" />
-                  <h3>Menü Yönetimi</h3>
+                  <h3>{t("panel:management")}</h3>
                 </div>
                 <Button
                   variant="contained"
@@ -1305,7 +1311,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   onClick={handleOpenAddProduct}
                   className={styles.menuButtons}
                 >
-                  Ürün Ekle
+                  {t("panel:addProduct")}
                 </Button>
                 <ModalMui
                   open={openAddProduct}
@@ -1316,16 +1322,76 @@ const UserDashboard = ({ userOrder, userId }) => {
                   <Box className={styles.modal}>
                     <form>
                       <List className={styles.list}>
-                        <h2 style={{ textAlign: "center" }}>Ürün Ekle</h2>
+                        <h3 className={styles.header}>
+                          {t("panel:addProduct")}
+                        </h3>
+                        <FormControl
+                          style={{ margin: "1rem" }}
+                          sx={{ m: 1, width: "50%" }}
+                        >
+                          <InputLabel id="demo-multiple-chip-label">
+                            {t("panel:category")}
+                          </InputLabel>
+                          <Select
+                            labelId="demo-multiple-chip-label"
+                            id="demo-multiple-chip"
+                            multiple
+                            value={category}
+                            onChange={handleChange}
+                            input={
+                              <OutlinedInput
+                                id="select-multiple-chip"
+                                label={t("panel:category")}
+                              />
+                            }
+                            renderValue={(selected) => (
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexWrap: "wrap",
+                                  gap: 0.5,
+                                }}
+                              >
+                                {selected.map((value) => (
+                                  <Chip key={value} label={value} />
+                                ))}
+                              </Box>
+                            )}
+                            MenuProps={MenuProps}
+                          >
+                            {categories.map((category) => (
+                              <MenuItem
+                                key={category.name}
+                                value={category.name}
+                                style={{
+                                  padding: "10px",
+                                  width: "100%",
+                                }}
+                              >
+                                {category.name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                        <ListItem>
+                          <TextField
+                            variant="outlined"
+                            fullWidth
+                            id="subCategory"
+                            onChange={(e) => setSubCategory(e.target.value)}
+                            label={t("panel:productSubCategory")}
+                            inputProps={{ type: "text", maxLength: 38 }}
+                          ></TextField>
+                        </ListItem>
                         <ListItem>
                           <TextField
                             variant="outlined"
                             fullWidth
                             id="name"
                             onChange={(e) => setName(e.target.value)}
-                            label="Ürün Adı"
+                            label={t("panel:productName")}
                             inputProps={{ type: "text", maxLength: 38 }}
-                            helperText="Örnek: Izgara Köfte, Kaşarlı Tost, Sufle"
+                            helperText={t("panel:forExample1")}
                           ></TextField>
                         </ListItem>
                         <ListItem>
@@ -1333,10 +1399,10 @@ const UserDashboard = ({ userOrder, userId }) => {
                             variant="outlined"
                             fullWidth
                             id="description"
-                            label="Ürün Açıklaması"
+                            label={t("panel:productDesc")}
                             onChange={(e) => setDescription(e.target.value)}
                             inputProps={{ type: "text" }}
-                            helperText="Örnek: 200GR Köfte; Patates kızartması, közlenmiş biber, soğan, domates, baharatlar, turşu ile"
+                            helperText={t("panel:forExample2")}
                           ></TextField>
                         </ListItem>
                         <ListItem>
@@ -1407,9 +1473,9 @@ const UserDashboard = ({ userOrder, userId }) => {
                             variant="outlined"
                             id="price"
                             onChange={(e) => setPrice(e.target.value)}
-                            label="Fiyat"
+                            label={t("panel:price")}
                             inputProps={{ type: "number" }}
-                            helperText="Örnek: 50"
+                            helperText={t("panel:forExample") + 50}
                           ></TextField>
                         </ListItem>
                         <ListItem
@@ -1450,7 +1516,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             onClick={addProductHandler}
                             color="secondary"
                           >
-                            Onayla
+                            {t("panel:add")}
                           </Button>
                         </ListItem>
                       </List>
@@ -1594,7 +1660,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   aria-describedby="modal-modal-description"
                 >
                   <Modal.Header>
-                    <h2>Kategori Düzenle</h2>
+                    <h2>{t("panel:editCategory")}</h2>
                   </Modal.Header>
                   <Modal.Body>
                     <form
@@ -1609,13 +1675,13 @@ const UserDashboard = ({ userOrder, userId }) => {
                     >
                       <TextField
                         fullWidth
-                        label="Kategori Adı"
+                        placeholder={t("panel:categoryName")}
                         value={addCategory}
                         onChange={(e) => setAddCategory(e.target.value)}
                       />
                       <TextField
                         fullWidth
-                        label="Kategori Sırası"
+                        placeholder={t("panel:categoryOrder")}
                         value={updateCategoryOrder}
                         onChange={(e) => setUpdateCategoryOrder(e.target.value)}
                       />
@@ -1660,44 +1726,33 @@ const UserDashboard = ({ userOrder, userId }) => {
                         gap: "1rem",
                       }}
                     >
-                      <Button
-                        color="primary"
-                        variant="outlined"
-                        onClick={() => {
+                      {t("panel:discard")}
+                    </Button>
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      onClick={(e) => {
+                        if (
+                          addCategory != updateCategory ||
+                          categoryOrder !== updateCategoryOrder ||
+                          typeof file === "object"
+                        ) {
+                          handleUpdateCategory(e);
+                        } else {
                           handleCloseUpdateCategory();
                           setUpdateCategory("");
                           setAddCategory("");
                           setFile("");
                           setIsPreview(false);
-                        }}
-                      >
-                        Vazgeç
-                      </Button>
-                      <Button
-                        color="secondary"
-                        variant="contained"
-                        onClick={(e) => {
-                          if (
-                            addCategory != updateCategory ||
-                            categoryOrder !== updateCategoryOrder ||
-                            typeof file === "object"
-                          ) {
-                            handleUpdateCategory(e);
-                          } else {
-                            handleCloseUpdateCategory();
-                            setUpdateCategory("");
-                            setAddCategory("");
-                            setFile("");
-                            setIsPreview(false);
-                            enqueueSnackbar("Değişiklik Yapılmadı", {
-                              variant: "info",
-                            });
-                          }
-                        }}
-                      >
-                        Onayla
-                      </Button>
-                    </div>
+                          enqueueSnackbar(t("panel:notChanged"), {
+                            variant: "info",
+                          });
+                        }
+                      }}
+                      style={{ marginLeft: "1rem" }}
+                    >
+                      {t("panel:confirm")}
+                    </Button>
                   </Modal.Footer>
                 </Modal>
                 <ModalMui
@@ -1718,7 +1773,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         gap: "2rem",
                       }}
                     >
-                      <h2>Ürün Düzenle</h2>
+                      <h2>{t("panel:editProduct")}</h2>
                       <div
                         style={{
                           display: "flex",
@@ -1730,7 +1785,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                       >
                         <div>
                           <InputLabel style={{ margin: "10px 0" }}>
-                            Ürün Adı
+                            {t("panel:productName")}
                           </InputLabel>
                           <Input
                             label="Ürün Adı"
@@ -1741,7 +1796,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         </div>
                         <div>
                           <InputLabel style={{ margin: "10px 0" }}>
-                            Ürün Fiyatı
+                            {t("panel:productPrice")}
                           </InputLabel>
                           <Input
                             label="Ürün Fiyatı"
@@ -1753,7 +1808,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                       </div>
                       <div style={{ width: "100%" }}>
                         <InputLabel style={{ margin: "10px 0" }}>
-                          Ürün Açıklaması
+                          {t("panel:productDesc")}
                         </InputLabel>
                         <Input
                           fullWidth
@@ -1765,7 +1820,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                       </div>
                       <div style={{ width: "100%" }}>
                         <InputLabel style={{ margin: "10px 0" }}>
-                          Ürün Alt Kategorisi
+                          {t("panel:productSubCategory")}
                         </InputLabel>
                         <Input
                           fullWidth
@@ -1785,7 +1840,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                       >
                         <div>
                           <InputLabel style={{ margin: "10px 0" }}>
-                            Ürün Kategorisi
+                            {t("panel:productCategory")}
                           </InputLabel>
                           <Select
                             style={{ minWidth: "7rem" }}
@@ -1831,7 +1886,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         </div>
                         <div>
                           <InputLabel style={{ margin: "10px 0" }}>
-                            Ürün Görseli
+                            {t("panel:productImage")}
                           </InputLabel>
                           <Input
                             accept="image/*"
@@ -1885,7 +1940,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             setUpdateProductCategory(null);
                           }}
                         >
-                          Vazgeç
+                          {t("panel:discard")}
                         </Button>
                         <Button
                           color="secondary"
@@ -1911,14 +1966,14 @@ const UserDashboard = ({ userOrder, userId }) => {
                               setUpdateDescription("");
                               setUpdateSubCategory("");
                               setUpdateProductCategory(null);
-                              enqueueSnackbar("Değişiklik Yapılmadı", {
+                              enqueueSnackbar(t("panel:notChanged"), {
                                 variant: "info",
                               });
                             }
                           }}
                           style={{ marginLeft: "1rem" }}
                         >
-                          Onayla
+                          {t("panel:confirm")}
                         </Button>
                       </div>
                     </form>
@@ -1933,16 +1988,18 @@ const UserDashboard = ({ userOrder, userId }) => {
                   <Box className={styles.modal}>
                     <form>
                       <List className={styles.list}>
-                        <h2 style={{ textAlign: "center" }}>Kategori Ekle</h2>
+                        <h3 className={styles.header}>
+                          {t("panel:addCategory")}
+                        </h3>
                         <ListItem>
                           <TextField
                             variant="outlined"
                             fullWidth
                             id="category"
-                            label="Kategori"
+                            label={t("panel:category")}
                             inputProps={{ type: "text", maxLength: 38 }}
                             onChange={(e) => setAddCategory(e.target.value)}
-                            helperText="Örnek: Ana Yemek, Kahvaltılar, Tatlılar"
+                            helperText={t("panel:forExample3")}
                           ></TextField>
                         </ListItem>
                         <ListItem>
@@ -1971,7 +2028,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                           }}
                         >
                           <InputLabel style={{ margin: "10px 0" }}>
-                            Kategori Sırası
+                            {t("panel:order")}
                           </InputLabel>
                           <Input
                             label="Ürün Adı"
@@ -2017,7 +2074,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             }}
                             color="secondary"
                           >
-                            Ekle
+                            {t("panel:add")}
                           </Button>
                         </ListItem>
                       </List>
@@ -2027,7 +2084,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                 <ModalMui open={openListType} onClose={handleCloseListType}>
                   <Box className={styles.modal}>
                     <h2 style={{ textAlign: "center", padding: "1rem" }}>
-                      Listeleme Türünü Değiştir
+                      {t("panel:listType")}
                     </h2>
                     <form>
                       <div
@@ -2056,7 +2113,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             onChange={() => setListType("text")}
                           ></input>
                           <h3 className={styles.listTypeHeader}>
-                            Sadece Metin
+                            {t("panel:text")}
                           </h3>
                           <img
                             className={styles.listTypeImage}
@@ -2080,7 +2137,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             onChange={() => setListType("image")}
                           ></input>
                           <h3 className={styles.listTypeHeader}>
-                            Görsel ile birlikte
+                            {t("panel:image")}
                           </h3>
                           <img
                             className={styles.listTypeImage}
@@ -2103,14 +2160,14 @@ const UserDashboard = ({ userOrder, userId }) => {
                           variant="outlined"
                           onClick={handleCloseListType}
                         >
-                          Vazgeç
+                          {t("panel:discard")}
                         </Button>
                         <Button
                           variant="contained"
                           color="secondary"
                           onClick={handleUpdateListType}
                         >
-                          Onayla
+                          {t("panel:confirm")}
                         </Button>
                       </div>
                     </form>
@@ -2118,7 +2175,9 @@ const UserDashboard = ({ userOrder, userId }) => {
                 </ModalMui>
                 <ModalMui open={openGallery} onClose={handleCloseGallery}>
                   <Box className={styles.modal}>
-                    <h2 style={{ textAlign: "center" }}>Galeriyi Düzenle</h2>
+                    <h2 style={{ textAlign: "center", padding: "1rem" }}>
+                      {t("panel:gallery")}
+                    </h2>
                     <form
                       style={{
                         display: "flex",
@@ -2133,7 +2192,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         type="text"
                         value={galleryName}
                         fullWidth
-                        label="Galeri Adı"
+                        placeholder={t("panel:galleryName")}
                         onChange={(e) => setGalleryName(e.target.value)}
                       />
                       <div
@@ -2180,7 +2239,9 @@ const UserDashboard = ({ userOrder, userId }) => {
                           <h3 className={styles.listTypeHeader}>Pasif</h3>
                         </div>
                       </div>
-                      <h3 style={{ marginBottom: "0" }}>Kapak Fotoğrafı</h3>
+                      <h3 style={{ marginBottom: "0" }}>
+                        {t("panel:galleryCover")}
+                      </h3>
                       <div>
                         {galleryImage ? (
                           <img
@@ -2203,7 +2264,9 @@ const UserDashboard = ({ userOrder, userId }) => {
                         }}
                         type="file"
                       />
-                      <h3 style={{ marginBottom: "0" }}>Galeri</h3>
+                      <h3 style={{ marginBottom: "0" }}>
+                        {t("panel:gallery")}
+                      </h3>
                       <div
                         style={{
                           display: "grid",
@@ -2236,7 +2299,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             ></img>
                           ))
                         ) : (
-                          <p>Görsel bulunamadı.</p>
+                          <p>{t("panel:imageNotFound")}</p>
                         )}
                       </div>
                       <Input
@@ -2257,19 +2320,15 @@ const UserDashboard = ({ userOrder, userId }) => {
                           margin: "1rem",
                         }}
                       >
-                        <Button
-                          variant="outlined"
-                          color="primary"
-                          onClick={handleCloseGallery}
-                        >
-                          Vazgeç
+                        <Button variant="outlined" onClick={handleCloseGallery}>
+                          {t("panel:discard")}
                         </Button>
                         <Button
                           variant="contained"
                           color="secondary"
                           onClick={handleUpdateGallery}
                         >
-                          Onayla
+                          {t("panel:confirm")}
                         </Button>
                       </div>
                     </form>
@@ -2284,7 +2343,9 @@ const UserDashboard = ({ userOrder, userId }) => {
                   <Box className={styles.modal}>
                     <form>
                       <List className={styles.list}>
-                        <h2 style={{ textAlign: "center" }}>Logo Yükle</h2>
+                        <h3 className={styles.header}>
+                          {t("panel:uploadLogo")}
+                        </h3>
 
                         <ListItem>
                           <label htmlFor="icon-button-file">
@@ -2326,7 +2387,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             onClick={uploadLogoHandler}
                             color="secondary"
                           >
-                            Yükle
+                            {t("panel:upload")}
                           </Button>
                         </ListItem>
                       </List>
@@ -2341,65 +2402,56 @@ const UserDashboard = ({ userOrder, userId }) => {
                   aria-describedby="modal-modal-description"
                   style={{ padding: "1rem", margin: "10px" }}
                 >
-                  <Modal.Header>
-                    <h2>Emin misiniz?</h2>
-                  </Modal.Header>
-                  <Modal.Body
-                    style={{
-                      padding: "2rem 0",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <p>
-                      {deleteCategory ? "Kategori" : "Ürün"},
-                      <span className={styles.deleteDescription}>
-                        {deleteName}
-                      </span>
-                      silinecek.
-                    </p>
-                  </Modal.Body>
-                  <Modal.Footer
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "flex-end",
-                      gap: "1rem",
-                    }}
-                  >
-                    <Button
-                      color="primary"
-                      variant="outlined"
-                      type="submit"
-                      onClick={() => {
-                        handleCloseDelete();
-                        setDeleteId("");
-                        setDeleteCategory(false);
-                      }}
-                    >
-                      Vazgeç
-                    </Button>
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      color="secondary"
-                      onClick={() => {
-                        if (deleteCategory === true) {
-                          deleteCategoryHandler();
+                  <Box className={styles.modal}>
+                    <form>
+                      <List className={styles.list}>
+                        <h3 className={styles.header}>{t("panel:isSure")}</h3>
+
+                        <ListItem>
+                          <p>
+                            {deleteCategory
+                              ? t("panel:category")
+                              : t("panel:product")}
+                            <span className={styles.deleteDescription}>
+                              {deleteName}
+                            </span>
+                            {t("panel:willDelete")}
+                          </p>
+                        </ListItem>
+                      </List>
+                    </form>
+                    <div className={styles.modalButtons}>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        onClick={() => {
                           handleCloseDelete();
                           setDeleteCategory(false);
-                        } else {
-                          deleteProductHandler();
-                          handleCloseDelete();
-                          setDeleteCategory(false);
-                        }
-                      }}
-                    >
-                      Onayla
-                    </Button>
-                  </Modal.Footer>
-                </Modal>
+                        }}
+                      >
+                        {t("panel:discard")}
+                      </Button>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        color="primary"
+                        onClick={() => {
+                          if (deleteCategory === true) {
+                            deleteCategoryHandler();
+                            handleCloseDelete();
+                            setDeleteCategory(false);
+                          } else {
+                            deleteProductHandler();
+                            handleCloseDelete();
+                            setDeleteCategory(false);
+                          }
+                        }}
+                      >
+                        {t("panel:confirm")}
+                      </Button>
+                    </div>
+                  </Box>
+                </ModalMui>
                 <Button
                   className={styles.menuButtons}
                   variant="contained"
@@ -2407,7 +2459,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   color="primary"
                   onClick={handleOpenAddCategory}
                 >
-                  Kategori Ekle
+                  {t("panel:addCategory")}
                 </Button>
                 <Button
                   className={styles.menuButtons}
@@ -2416,7 +2468,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   color="primary"
                   onClick={handleOpenUploadLogo}
                 >
-                  Logo Yükle
+                  {t("panel:uploadLogo")}
                 </Button>
                 <Button
                   className={styles.menuButtons}
@@ -2425,7 +2477,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   color="primary"
                   onClick={handleOpenListType}
                 >
-                  Listeleme Türü
+                  {t("panel:listType")}
                 </Button>
                 <Button
                   className={styles.menuButtons}
@@ -2434,7 +2486,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   color="primary"
                   onClick={handleOpenGallery}
                 >
-                  Galeri
+                  {t("panel:gallery")}
                 </Button>
                 <Button
                   className={styles.menuButtons}
@@ -2457,7 +2509,7 @@ const UserDashboard = ({ userOrder, userId }) => {
               >
                 <div className={styles.headers}>
                   <ViewListIcon color="primary" />
-                  <h3 className={styles.titles}>Ürün Listesi</h3>
+                  <h3 className={styles.titles}>{t("panel:productList")}</h3>
                 </div>
                 {isLoading ? (
                   <p>Yükleniyor...</p>
@@ -2493,7 +2545,9 @@ const UserDashboard = ({ userOrder, userId }) => {
                         },
                       }}
                       localeText={
-                        trTR.components.MuiDataGrid.defaultProps.localeText
+                        router.locale === "tr"
+                          ? trTR.components.MuiDataGrid.defaultProps.localeText
+                          : enUS.components.MuiDataGrid.defaultProps.localeText
                       }
                       rows={products}
                       getRowId={(row) => `${row.name}${row.price}`}
@@ -2512,7 +2566,7 @@ const UserDashboard = ({ userOrder, userId }) => {
               <div style={{ height: "100%", width: "100%" }}>
                 <div className={styles.headers}>
                   <ViewListIcon color="primary" />
-                  <h3 className={styles.titles}>Kategori Listesi</h3>
+                  <h3 className={styles.titles}>{t("panel:categoryList")}</h3>
                 </div>
                 {isLoading ? (
                   <p>Yükleniyor...</p>
@@ -2521,7 +2575,9 @@ const UserDashboard = ({ userOrder, userId }) => {
                     <DataGrid
                       className={styles.data}
                       localeText={
-                        trTR.components.MuiDataGrid.defaultProps.localeText
+                        router.locale === "tr"
+                          ? trTR.components.MuiDataGrid.defaultProps.localeText
+                          : enUS.components.MuiDataGrid.defaultProps.localeText
                       }
                       rows={categories}
                       getRowId={(row) => `${row.name}${row.price}`}

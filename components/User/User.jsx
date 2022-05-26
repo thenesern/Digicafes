@@ -7,6 +7,8 @@ import axios from "axios";
 import { Loading } from "@nextui-org/react";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
+import useTranslation from "next-translate/useTranslation";
+
 // Styles
 import styles from "./User.module.css";
 
@@ -18,6 +20,8 @@ const User = ({ orders, isFetching }) => {
   const [firstName, setFirstName] = useState(profile?.firstName);
   const [lastName, setLastName] = useState(profile?.lastName);
   const [isChanged, setIsChanged] = useState(false);
+  const { t } = useTranslation();
+
   const firstNameChangeHandler = (e) => {
     setFirstName(e.target.value);
   };
@@ -52,7 +56,7 @@ const User = ({ orders, isFetching }) => {
   return (
     <div className={styles.container}>
       <div className={styles.left}>
-        <h1 className={styles.title}>Kullanıcı Bilgileri</h1>
+        <h1 className={styles.title}>{t("account:user")}</h1>
         <form className={styles.details} onChange={formHandler}>
           <img
             src="https://img.icons8.com/external-flaticons-flat-flat-icons/452/external-user-web-flaticons-flat-flat-icons-2.png"
@@ -62,13 +66,13 @@ const User = ({ orders, isFetching }) => {
             <div className={styles.names}>
               <TextField
                 className={styles.itemTitle}
-                helperText="Adınız"
+                helperText={t("account:name")}
                 value={firstName}
                 onChange={firstNameChangeHandler}
               />
               <TextField
                 className={styles.itemTitle}
-                helperText="Soyadınız"
+                helperText={t("account:surName")}
                 value={lastName}
                 onChange={lastNameChangeHandler}
               />
@@ -86,18 +90,18 @@ const User = ({ orders, isFetching }) => {
             onClick={updateHandler}
             type="submit"
           >
-            Kaydet
+            {t("account:save")}
           </button>
         </form>
       </div>
 
       <div className={styles.right}>
-        <h1 className={styles.title}>Siparişler</h1>
+        <h1 className={styles.title}>{t("account:orders")}</h1>
         {!isFetching && orders?.length > 0 ? (
           orders?.filter((order) => order?.quantity.length > 1)?.length > 0 ? (
             <List orders={orders} style={{ height: "12rem" }} />
           ) : (
-            <h6 className={styles.notFound}>Sipariş bulunamadı.</h6>
+            <h6 className={styles.notFound}>{t("account:notFound")}</h6>
           )
         ) : (
           <Stack spacing={1} width={"100%"}>

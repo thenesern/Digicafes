@@ -4,9 +4,11 @@ import styles from "./Features.module.css";
 import QRCode from "qrcode";
 import { useState } from "react";
 import Aos from "aos";
+import useTranslation from "next-translate/useTranslation";
 
 const Features = () => {
   const [isMobile, setIsMobile] = useState();
+  const { t } = useTranslation();
   useEffect(() => {
     if (window.innerWidth <= 760) {
       setIsMobile(true);
@@ -37,20 +39,18 @@ const Features = () => {
   return (
     <section className={styles.section} id="paketler">
       <article className={styles.article} data-aos="fade-right">
-        <h2 className={styles.header}>Dijital Menü V1</h2>
+        <h2 className={styles.header}>{t("features:v1")}</h2>
         <ul className={styles.list}>
-          <li>Dijital Menü Yönetim Paneli</li>
-          <li>Sınırsız Ürün ve Kategori Ekleme</li>
-          <li>Sınırsız Güncelleme</li>
-          <li>Otomatik QR Kod Oluşturucu</li>
-          <li>Dijital Menü</li>
+          <li>{t("features:v1f1")}</li>
+          <li>{t("features:v1f2")}</li>
+          <li>{t("features:v1f3")}</li>
+          <li>{t("features:v1f4")}</li>
+          <li>{t("features:v1f5")}</li>
         </ul>
-        <p className={styles.articleDesc}>
-          Dijital Menü V1 ile müşterilerinize Dijital Menü deneyimi sunun.
-        </p>
+        <p className={styles.articleDesc}>{t("features:v1d1")}</p>
         {!isMobile && (
           <div className={styles.demo}>
-            <h3 className={styles.demoHeader}>Örnek Menü</h3>
+            <h3 className={styles.demoHeader}>{t("features:v1s1")}</h3>
             <img src={src} width="96px"></img>
           </div>
         )}
@@ -74,24 +74,22 @@ const Features = () => {
         )}
       </article>
       <article className={styles.article} data-aos="fade-left">
-        <h2 className={styles.header}>Dijital Menü V2</h2>
+        <h2 className={styles.header}>{t("features:v2")}</h2>
         <ul className={styles.list}>
-          <li>Dijital Menü Yönetim Paneli</li>
-          <li>Sınırsız Ürün ve Kategori Ekleme</li>
-          <li>Sınırsız Güncelleme</li>
-          <li>Otomatik QR Kod Oluşturucu</li>
-          <li>Dijital Menü</li>
-          <li>Dijital Menü Sipariş Paneli</li>
-          <li>Dijital Menü Sipariş Modülü</li>
-          <li>Dijital Menü Garson Çağır ve Adisyon İste Modülü</li>
+          <li>{t("features:v2f1")}</li>
+          <li>{t("features:v2f2")}</li>
+          <li>{t("features:v2f3")}</li>
+          <li>{t("features:v2f4")}</li>
+          <li>{t("features:v2f5")}</li>
+          <li>+</li>
+          <li>{t("features:v2f6")}</li>
+          <li>{t("features:v2f7")}</li>
+          <li>{t("features:v2f8")}</li>
         </ul>
-        <p className={styles.articleDesc}>
-          Dijital Menü V2 ile müşterilerinize Dijital Menü deneyimi sunarken
-          aynı zamanda iş yükünüzü azaltın.
-        </p>
+        <p className={styles.articleDesc}>{t("features:v2d1")}</p>
         {!isMobile && (
           <div className={styles.demo}>
-            <h3 className={styles.demoHeader}>Örnek Menü</h3>
+            <h3 className={styles.demoHeader}>{t("features:v1s1")}</h3>
             <img src={src2} width="96px"></img>
           </div>
         )}

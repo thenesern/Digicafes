@@ -9,7 +9,6 @@ import Product from "../../../../../models/ProductModel";
 import QRMenu from "../../../../../models/QRMenu1Model";
 import User from "../../../../../models/UserModel";
 import db from "../../../../../utils/db";
-
 const DashboardMenuv1 = ({ userOrder }) => {
   return (
     <div>

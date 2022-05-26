@@ -7,19 +7,21 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import useTranslation from "next-translate/useTranslation";
 // Styles
 import styles from "./List.module.css";
 
 const List = ({ orders }) => {
+  const { t } = useTranslation();
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Sipariş Numarası</TableCell>
-            <TableCell>Hizmet</TableCell>
-            <TableCell>Başlangıç</TableCell>
-            <TableCell>Bitiş</TableCell>
+            <TableCell>{t("account:orderNumber")}</TableCell>
+            <TableCell>{t("account:service")}</TableCell>
+            <TableCell>{t("account:start")}</TableCell>
+            <TableCell>{t("account:end")}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -29,7 +31,11 @@ const List = ({ orders }) => {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell>{row._id}</TableCell>
-              <TableCell>{row.product.name}</TableCell>
+              <TableCell>
+                {row.product.name.includes("V1")
+                  ? t("account:v1")
+                  : t("account:v2")}
+              </TableCell>
               <TableCell>{row.createdAt}</TableCell>
               <TableCell>
                 {new Date(

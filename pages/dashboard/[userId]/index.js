@@ -11,8 +11,10 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
+import useTranslation from "next-translate/useTranslation";
 
 const Dashboard = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const userId = router.query.userId;
   const [isFetching, setIsFetching] = useState(false);
@@ -66,7 +68,7 @@ const Dashboard = () => {
             <Spacer />
           </Modal.Body>
         </Modal>
-        <h3 className={styles.title}>Yönetim Paneli</h3>
+        <h3 className={styles.title}>{t("panels:header")}</h3>
         {orders ? (
           orders.map((order) => (
             <div key={order._id} className={styles.panel}>
@@ -91,7 +93,11 @@ const Dashboard = () => {
                       }
                     }}
                   >
-                    <h6 className={styles.subtitle}>{order?.product?.name}</h6>
+                    <h6 className={styles.subtitle}>
+                      {order?.product?.name.includes("V1")
+                        ? t("panels:v1")
+                        : t("panels:v2")}
+                    </h6>
                   </button>
                 </Link>
               </div>
@@ -100,11 +106,11 @@ const Dashboard = () => {
                   {order?.product?.name === "Dijital Menü - V1" && (
                     <div>
                       <div>
-                        <h4>İş Yeri Adı</h4>
+                        <h4>{t("panels:store")}</h4>
                         <p>
                           {order?.menuv1
                             ? order?.menuv1?.storeName
-                            : "Henüz Oluşturulmadı"}
+                            : t("panels:not")}
                         </p>
                       </div>
                     </div>
@@ -112,27 +118,27 @@ const Dashboard = () => {
                   {order?.product?.name === "Dijital Menü - V2" && (
                     <div>
                       <div>
-                        <h4>İş Yeri Adı</h4>
+                        <h4>{t("panels:store")}</h4>
                         <p>
                           {order?.menuv2
                             ? order?.menuv2?.storeName
-                            : "Henüz Oluşturulmadı"}
+                            : t("panels:not")}
                         </p>
                       </div>
                     </div>
                   )}
                 </div>
                 <div className={styles.infoCell}>
-                  <h4>Oluşturulma Tarihi</h4>
+                  <h4>{t("panels:created")}</h4>
                   {order?.product?.name === "Dijital Menü - V1" && (
-                    <p>{order?.menuv1?.createdAt || "Henüz Oluşturulmadı"}</p>
+                    <p>{order?.menuv1?.createdAt || t("panels:not")}</p>
                   )}
                   {order?.product?.name === "Dijital Menü - V2" && (
-                    <p>{order?.menuv2?.createdAt || "Henüz Oluşturulmadı"}</p>
+                    <p>{order?.menuv2?.createdAt || t("panels:not")}</p>
                   )}
                 </div>
                 <div className={styles.infoCell}>
-                  <h4>Son Güncellenme Tarihi</h4>
+                  <h4>{t("panels:updated")}</h4>
                   {order?.product?.name === "Dijital Menü - V1" && (
                     <p>
                       {order?.menuv1?.updatedAt
@@ -158,9 +164,9 @@ const Dashboard = () => {
                   {new Date(order?.expiry?.toString()).getTime() >
                   newDate.getTime() ? (
                     <div>
-                      <h4>Durum</h4>
+                      <h4>{t("panels:status")}</h4>
                       <p>
-                        Aktif (
+                        {t("panels:active")} (
                         {
                           new Date(
                             new Date(order?.expiry?.toString()).getTime()

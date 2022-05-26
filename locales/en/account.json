@@ -1,0 +1,14 @@
+{
+  "user": "My Account",
+  "name": "First Name",
+  "surName": "Last Name",
+  "save": "Save",
+  "orders": "Orders",
+  "notFound": "Not found any orders.",
+  "orderNumber": "Order Number",
+  "service": "Service",
+  "start": "Start Date",
+  "end": "End Date",
+  "v1": "Digital Menu V1",
+  "v2": "Digital Menu V2"
+}

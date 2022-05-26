@@ -12,9 +12,12 @@ import { Link } from "react-scroll";
 import { useRouter } from "next/router";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
 import ModalMui from "@mui/material/Modal";
-import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
-import logoDark from "../../assets/digi_dark_logo.svg";
 import Image from "next/image";
+import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ErrorIcon from "@mui/icons-material/Error";
+import i18nConfig from "../../i18n.json";
+const { locales } = i18nConfig;
 // Styles
 import styles from "./Nav.module.css";
 import { AccountCircleRounded } from "@material-ui/icons";
@@ -31,19 +34,30 @@ import Button from "@mui/material/Button";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Box } from "@mui/system";
 import { List, ListItem, TextField } from "@material-ui/core";
+import logoDark from "../../assets/digi_dark_logo.svg";
+import logo from "../../assets/digi_logo.svg";
+import useTranslation from "next-translate/useTranslation";
 
-const Nav = ({ change }) => {
+const Nav2 = () => {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const [isFetching, setIsFetching] = useState(false);
   const [openMuiLogin, setOpenMuiLogin] = useState(false);
+  const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const [openMuiRegister, setOpenMuiRegister] = useState(false);
+  const { t, lang } = useTranslation();
   const handleOpenMuiLogin = () => setOpenMuiLogin(true);
+  const handleOpenForgotPassword = () => setOpenForgotPassword(true);
   const handleOpenMuiRegister = () => setOpenMuiRegister(true);
   const handleCloseMuiLogin = () => setOpenMuiLogin(false);
   const handleCloseMuiRegister = () => setOpenMuiRegister(false);
+  const handleCloseForgotPassword = () => {
+    setOpenForgotPassword(false);
+    setSentPasswordMail(null);
+  };
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [openMenu, setOpenMenu] = useState(false);
+  const [sentPasswordMail, setSentPasswordMail] = useState(null);
   const {
     handleSubmit,
     control,
@@ -78,7 +92,13 @@ const Nav = ({ change }) => {
       setOpen(false);
     }
   }
-
+  useEffect(() => {
+    if (sentPasswordMail === true || sentPasswordMail === false) {
+      setTimeout(() => {
+        handleCloseForgotPassword();
+      }, 3000);
+    }
+  }, [sentPasswordMail]);
   // return focus to the button when we transitioned from !open -> open
   const prevOpen = React.useRef(open);
   React.useEffect(() => {
@@ -94,6 +114,23 @@ const Nav = ({ change }) => {
     router.push("/");
   };
 
+  const resetPasswordHandler = async ({ email }) => {
+    setIsFetching(true);
+    try {
+      const isUserThere = await axios.post("/api/auth/resetPassword", {
+        email,
+      });
+      if (isUserThere?.data?.status === "success") {
+        setSentPasswordMail(true);
+      } else if (isUserThere?.data?.status === "fail") {
+        setSentPasswordMail(false);
+      }
+      return setIsFetching(false);
+    } catch (err) {
+      console.log(err);
+      return setIsFetching(false);
+    }
+  };
   const loginHandler = async ({ email, password }) => {
     closeSnackbar();
     const signedIn = new Date().toLocaleString("tr-TR");
@@ -110,7 +147,7 @@ const Nav = ({ change }) => {
       handleCloseMuiLogin();
     } catch (err) {
       setIsFetching(false);
-      enqueueSnackbar("Geçersiz E-mail veya Şifre", { variant: "error" });
+      enqueueSnackbar(t("nav:loginError"), { variant: "error" });
     }
   };
 
@@ -135,7 +172,7 @@ const Nav = ({ change }) => {
   }) => {
     closeSnackbar();
     if (password !== passwordConfirm) {
-      return enqueueSnackbar("Şifreler eşleşmiyor", { variant: "error" });
+      return enqueueSnackbar(t("nav:passwordError"), { variant: "error" });
     }
     const signedIn = new Date().toLocaleString("tr-TR");
     const lowerFirst = fName?.toLowerCase();
@@ -171,7 +208,7 @@ const Nav = ({ change }) => {
       handleCloseMuiRegister();
     } catch (err) {
       setIsFetching(false);
-      enqueueSnackbar("E-mail adresi zaten kayıtlı.", { variant: "error" });
+      enqueueSnackbar(t("nav:emailError"), { variant: "error" });
     }
   };
   return (
@@ -218,9 +255,9 @@ const Nav = ({ change }) => {
             X
           </span>
           <div className={styles.wrapper}>
-            <h1 className={styles.title}>Giriş Yap</h1>
+            <h1 className={styles.title}>{t("nav:signIn")}</h1>
             <div className={styles.signup}>
-              <p>Hesabınız yok mu?</p>
+              <p>{t("nav:noAccount")}</p>
               <span
                 style={{ fontWeight: "600", cursor: "pointer" }}
                 onClick={() => {
@@ -228,7 +265,7 @@ const Nav = ({ change }) => {
                   handleOpenMuiRegister();
                 }}
               >
-                Üye Olun
+                {t("nav:createAccount")}
               </span>
             </div>
             <form className={styles.form} onSubmit={handleSubmit(loginHandler)}>
@@ -253,8 +290,8 @@ const Nav = ({ change }) => {
                         helperText={
                           errors.email
                             ? errors.email.type === "pattern"
-                              ? "Lütfen geçerli bir E-Mail adresi giriniz"
-                              : "Lütfen E-Mail adresinizi giriniz"
+                              ? t("nav:validEmail")
+                              : t("nav:proveEmail")
                             : ""
                         }
                         {...field}
@@ -276,14 +313,14 @@ const Nav = ({ change }) => {
                         variant="outlined"
                         fullWidth
                         id="password"
-                        label="Şifre"
+                        label={t("nav:password")}
                         inputProps={{ type: "password" }}
                         error={Boolean(errors.password)}
                         helperText={
                           errors.password
                             ? errors.password.type === "minLength"
-                              ? "Şifreniz minimum 5 karakterden oluşmalıdır"
-                              : "Lütfen bir şifre giriniz"
+                              ? t("nav:passwordMin")
+                              : t("nav:enterAPassword")
                             : ""
                         }
                         {...field}
@@ -291,6 +328,15 @@ const Nav = ({ change }) => {
                     )}
                   ></Controller>
                 </ListItem>
+                <p
+                  className={styles.forgotPassword}
+                  onClick={() => {
+                    handleCloseMuiLogin();
+                    handleOpenForgotPassword();
+                  }}
+                >
+                  {t("nav:forgotYourPassword")}
+                </p>
                 <ListItem>
                   <Button
                     variant="outlined"
@@ -300,12 +346,119 @@ const Nav = ({ change }) => {
                     style={{ outline: "none" }}
                     onSubmit={handleSubmit(loginHandler)}
                   >
-                    Giriş Yap
+                    {t("nav:signIn")}
                   </Button>
                 </ListItem>
               </List>
             </form>
           </div>
+        </Box>
+      </ModalMui>
+      <ModalMui
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openForgotPassword}
+        onClose={handleCloseForgotPassword}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Box className={styles.loginBox}>
+          <span
+            onClick={handleCloseForgotPassword}
+            style={{
+              position: "absolute",
+              right: "5%",
+              top: "3%",
+              cursor: "pointer",
+            }}
+          >
+            X
+          </span>
+          {sentPasswordMail === null ? (
+            <div className={styles.wrapper}>
+              <h1 className={styles.title}>{t("nav:forgotYourPassword")}</h1>
+              <div className={styles.signup}>
+                <p style={{ textAlign: "center" }}>
+                  {t("nav:forgotPasswordDescription")}
+                </p>
+              </div>
+              <form
+                className={styles.form}
+                onSubmit={handleSubmit(resetPasswordHandler)}
+              >
+                <List>
+                  <ListItem>
+                    <Controller
+                      name="email"
+                      control={control}
+                      defaultValue=""
+                      rules={{
+                        required: true,
+                        pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                      }}
+                      render={({ field }) => (
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          id="email"
+                          label="E-mail"
+                          inputProps={{ type: "email" }}
+                          error={Boolean(errors.email)}
+                          helperText={
+                            errors.email
+                              ? errors.email.type === "pattern"
+                                ? t("nav:validEmail")
+                                : t("nav:proveEmail")
+                              : ""
+                          }
+                          {...field}
+                        ></TextField>
+                      )}
+                    ></Controller>
+                  </ListItem>
+                  <ListItem>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      type="submit"
+                      fullWidth
+                      style={{ outline: "none" }}
+                      onSubmit={handleSubmit(resetPasswordHandler)}
+                    >
+                      {t("nav:send")}
+                    </Button>
+                  </ListItem>
+                </List>
+              </form>
+            </div>
+          ) : sentPasswordMail === true ? (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
+              <CheckCircleIcon style={{ fontSize: "6rem" }} color="success" />
+              <h4 style={{ textAlign: "center" }}>{t("nav:eMailSent")}</h4>
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
+              <ErrorIcon style={{ fontSize: "6rem" }} color="error" />
+              <h4 style={{ textAlign: "center" }}>{t("nav:noUserFound")}</h4>
+            </div>
+          )}
         </Box>
       </ModalMui>
       <ModalMui
@@ -331,9 +484,9 @@ const Nav = ({ change }) => {
           >
             X
           </span>
-          <h1 className={styles.title}>Üye Ol</h1>
+          <h1 className={styles.title}>{t("nav:signUp")}</h1>
           <div className={styles.signin}>
-            <p>Hesabınız var mı?</p>
+            <p>{t("nav:haveAccount")}</p>
             <span
               style={{ fontWeight: "600", cursor: "pointer" }}
               onClick={() => {
@@ -341,7 +494,7 @@ const Nav = ({ change }) => {
                 handleOpenMuiLogin();
               }}
             >
-              Giriş Yapın
+              {t("nav:signIn")}
             </span>
           </div>
           <form
@@ -364,13 +517,13 @@ const Nav = ({ change }) => {
                         variant="outlined"
                         fullWidth
                         id="fName"
-                        label="Ad"
+                        label={t("nav:name")}
                         error={Boolean(errors.fName)}
                         helperText={
                           errors.fName
                             ? errors.fName.type === "minLength"
-                              ? "Lütfen geçerli bir Ad giriniz"
-                              : "Lütfen Adınızı giriniz"
+                              ? t("nav:validName")
+                              : t("nav:proveName")
                             : ""
                         }
                         {...field}
@@ -392,13 +545,13 @@ const Nav = ({ change }) => {
                         variant="outlined"
                         fullWidth
                         id="lName"
-                        label="Soyad"
+                        label={t("nav:surName")}
                         error={Boolean(errors.lName)}
                         helperText={
                           errors.lName
                             ? errors.lName.type === "minLength"
-                              ? "Lütfen geçerli bir Soyad giriniz"
-                              : "Lütfen Soyadınızı giriniz"
+                              ? t("nav:validSurName")
+                              : t("nav:proveSurName")
                             : ""
                         }
                         {...field}
@@ -428,8 +581,8 @@ const Nav = ({ change }) => {
                       helperText={
                         errors.email
                           ? errors.email.type === "pattern"
-                            ? "Lütfen geçerli bir E-Mail adresi giriniz"
-                            : "Lütfen E-Mail adresinizi giriniz"
+                            ? t("nav:validEmail")
+                            : t("nav:proveEmail")
                           : ""
                       }
                       {...field}
@@ -451,14 +604,14 @@ const Nav = ({ change }) => {
                       <TextField
                         variant="outlined"
                         id="password"
-                        label="Şifre"
+                        label={t("nav:password")}
                         inputProps={{ type: "password" }}
                         error={Boolean(errors.password)}
                         helperText={
                           errors.password
                             ? errors.password.type === "minLength"
-                              ? "Şifreniz minimum 5 karakter olmalıdır"
-                              : "Lütfen bir şifre giriniz"
+                              ? t("nav:passwordMin")
+                              : t("nav:enterAPassword")
                             : ""
                         }
                         {...field}
@@ -479,14 +632,14 @@ const Nav = ({ change }) => {
                       <TextField
                         variant="outlined"
                         id="passwordConfirm"
-                        label="Şifre Onay"
+                        label={t("nav:passwordConfirm")}
                         inputProps={{ type: "password" }}
                         error={Boolean(errors.passwordConfirm)}
                         helperText={
                           errors.passwordConfirm
                             ? errors.passwordConfirm.type === "minLength"
-                              ? "Şifreniz minimum 5 karakterden oluşmalıdır"
-                              : "Lütfen bir şifre giriniz"
+                              ? t("nav:passwordMin")
+                              : t("nav:enterAPassword")
                             : ""
                         }
                         {...field}
@@ -496,47 +649,77 @@ const Nav = ({ change }) => {
                 </ListItem>
               </div>
               <div className={styles.aggreement}>
-                <div className={styles.privacy}>
-                  <p>
-                    Kişisel verileriniz,
-                    <a
-                      href="/gizlilik-politikasi"
-                      style={{
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        margin: "0 4px",
-                      }}
-                      target="_blank"
-                    >
-                      Gizlilik Politikası
-                    </a>
-                    kapsamında işlenmektedir. “Üye ol” butonuna basarak
-                    <a
-                      href="/uyelik-sozlesmesi"
-                      target="_blank"
-                      style={{
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        margin: "0 4px",
-                      }}
-                    >
-                      Üyelik Sözleşmesi
-                    </a>
-                    ’ni, ve
-                    <a
-                      href="/cerez-politikasi"
-                      target="_blank"
-                      style={{
-                        fontWeight: "600",
-                        cursor: "pointer",
-                        margin: "0 4px",
-                      }}
-                    >
-                      Çerez Politikası
-                    </a>
-                    ’nı okuduğunuzu ve kabul ettiğinizi onaylıyorsunuz.
+                {router.locale === "tr" ? (
+                  <div className={styles.privacy}>
+                    <p>
+                      Kişisel verileriniz,
+                      <a
+                        href="/privacy-policy"
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                        target="_blank"
+                      >
+                        Gizlilik Politikası
+                      </a>
+                      kapsamında işlenmektedir. “Üye ol” butonuna basarak
+                      <a
+                        href="/uyelik-sozlesmesi"
+                        target="_blank"
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Üyelik Sözleşmesi
+                      </a>
+                      ’ni, ve
+                      <a
+                        href="/cerez-politikasi"
+                        target="_blank"
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Çerez Politikası
+                      </a>
+                      ’nı okuduğunuzu ve kabul ettiğinizi onaylıyorsunuz.
+                    </p>
+                  </div>
+                ) : (
+                  <p style={{ textAlign: "center" }}>
+                    Click “Sign Up” to agree to Digicafes&apos;
+                    <LinkRouter href="/terms-of-service" passHref>
+                      <span
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Terms of Service
+                      </span>
+                    </LinkRouter>
+                    and acknowledge that Digicafes&apos;
+                    <LinkRouter href="/privacy-policy" passHref>
+                      <span
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Privacy Policy
+                      </span>
+                    </LinkRouter>
+                    applies to you.
                   </p>
-                </div>
+                )}
               </div>
               <ListItem>
                 <Button
@@ -546,7 +729,7 @@ const Nav = ({ change }) => {
                   fullWidth
                   onSubmit={handleSubmit(registerHandler)}
                 >
-                  Üye Ol
+                  {t("nav:signUp")}
                 </Button>
               </ListItem>
             </List>
@@ -556,54 +739,24 @@ const Nav = ({ change }) => {
       <ul className={styles.list}>
         <li className={styles.left}>
           <LinkRouter href="/" passHref>
-            <Image
-              style={{ cursor: "pointer" }}
-              src={logoDark}
-              objectFit="contain"
-              width="160px"
-              height="100px"
-            ></Image>
+            {!fix ? (
+              <Image
+                style={{ cursor: "pointer" }}
+                src={logoDark}
+                objectFit="contain"
+                width="160px"
+                height="100px"
+              ></Image>
+            ) : (
+              <Image
+                style={{ cursor: "pointer" }}
+                src={logo}
+                width="160px"
+                objectFit="contain"
+                height="100px"
+              ></Image>
+            )}
           </LinkRouter>
-          {router.pathname === "/" && (
-            <div className={styles.headers}>
-              <Link
-                to="features"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={200}
-              >
-                <h5 className={styles.link}>Özellikler</h5>
-              </Link>
-              <Link
-                to="process"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={200}
-              >
-                <h5 className={styles.link}>İşleyiş</h5>
-              </Link>
-              <Link
-                to="faq"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={200}
-              >
-                <h5 className={styles.link}>Sıkça Sorulan Sorular</h5>
-              </Link>
-              <Link
-                to="contact"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={200}
-              >
-                <h5 className={styles.link}>İletişim</h5>
-              </Link>
-            </div>
-          )}
         </li>
         {user ? (
           <div className={styles.profileMenu}>
@@ -651,18 +804,18 @@ const Nav = ({ change }) => {
                             <button
                               className={styles.button}
                               onClick={() => {
-                                if (router?.pathname !== "/hesap/[userId]") {
+                                if (router?.pathname !== "/account/[userId]") {
                                   setIsFetching(true);
                                 }
                               }}
                             >
                               <LinkRouter
-                                href={"/hesap/" + user?.id}
+                                href={"/account/" + user?.id}
                                 className={styles["menu-link"]}
                                 passHref
                               >
                                 <button className={styles["link-item"]}>
-                                  Hesabım
+                                  {t("nav:myAccount")}
                                 </button>
                               </LinkRouter>
                             </button>
@@ -682,7 +835,7 @@ const Nav = ({ change }) => {
                                 className={styles["menu-link"]}
                               >
                                 <button className={styles["link-item"]}>
-                                  <span>Yönetim Paneli</span>
+                                  <span>{t("nav:dashboard")}</span>
                                 </button>
                               </LinkRouter>
                             </button>
@@ -703,7 +856,7 @@ const Nav = ({ change }) => {
                                 passHref
                               >
                                 <button className={styles["link-item"]}>
-                                  Panel
+                                  Admin Panel
                                 </button>
                               </LinkRouter>
                             </button>
@@ -719,7 +872,7 @@ const Nav = ({ change }) => {
                             className={styles["menu-link"]}
                           >
                             <button className={styles["link-item"]}>
-                              <span>Çıkış Yap</span>
+                              <span>{t("nav:logout")}</span>
                               <LogoutIcon className={styles.icon} />
                             </button>
                           </LinkRouter>
@@ -737,14 +890,27 @@ const Nav = ({ change }) => {
               className={styles.signIn}
               onClick={() => handleOpenMuiLogin(true)}
             >
-              Giriş Yap
+              {t("nav:signIn")}
             </button>
             <button
               className={styles.signUp}
               onClick={() => handleOpenMuiRegister(true)}
             >
-              Ücretsiz Dene
+              {t("nav:tryForFree")}
             </button>
+
+            {locales.map((lng) => {
+              if (lng === lang) return null;
+              return (
+                <div className={styles.int} key={lng}>
+                  <LinkRouter href="/" locale={lng}>
+                    <span className={styles.lang}>
+                      {t(`nav:language-name-${lng}`)}
+                    </span>
+                  </LinkRouter>
+                </div>
+              );
+            })}
           </li>
         )}
         <Hidden mdUp>
@@ -811,18 +977,20 @@ const Nav = ({ change }) => {
                               <button
                                 className={styles.button}
                                 onClick={() => {
-                                  if (router?.pathname !== "/hesap/[userId]") {
+                                  if (
+                                    router?.pathname !== "/account/[userId]"
+                                  ) {
                                     setIsFetching(true);
                                   }
                                 }}
                               >
                                 <LinkRouter
-                                  href={"/hesap/" + user?.id}
+                                  href={"/account/" + user?.id}
                                   className={styles["menu-link"]}
                                   passHref
                                 >
                                   <button className={styles["link-item"]}>
-                                    Hesabım
+                                    {t("nav:myAccount")}
                                   </button>
                                 </LinkRouter>
                               </button>
@@ -842,7 +1010,7 @@ const Nav = ({ change }) => {
                                   className={styles["menu-link"]}
                                 >
                                   <button className={styles["link-item"]}>
-                                    <span>Yönetim Paneli</span>
+                                    <span>{t("nav:dashboard")}</span>
                                   </button>
                                 </LinkRouter>
                               </button>
@@ -863,7 +1031,7 @@ const Nav = ({ change }) => {
                                   passHref
                                 >
                                   <button className={styles["link-item"]}>
-                                    Panel
+                                    Admin Panel
                                   </button>
                                 </LinkRouter>
                               </button>
@@ -879,7 +1047,7 @@ const Nav = ({ change }) => {
                               className={styles["menu-link"]}
                             >
                               <button className={styles["link-item"]}>
-                                <span>Çıkış Yap</span>
+                                <span>{t("nav:logout")}</span>
                                 <LogoutIcon className={styles.icon} />
                               </button>
                             </LinkRouter>
@@ -893,53 +1061,24 @@ const Nav = ({ change }) => {
             </div>
           ) : (
             <div className={styles.buttons}>
+              {locales.map((lng) => {
+                if (lng === lang) return null;
+                return (
+                  <div className={styles.int} key={lng}>
+                    <LinkRouter href="/" locale={lng}>
+                      <span className={styles.lang}>
+                        {t(`nav:language-name-${lng}`)}
+                      </span>
+                    </LinkRouter>
+                  </div>
+                );
+              })}
               <button className={styles.signIn} onClick={handleOpenMuiLogin}>
-                Giriş Yap
+                {t("nav:signIn")}
               </button>
               <button className={styles.signUp} onClick={handleOpenMuiRegister}>
-                Ücretsiz Dene
+                {t("nav:tryForFree")}
               </button>
-            </div>
-          )}
-          {router.pathname === "/" && (
-            <div>
-              <Link
-                to="features"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={200}
-              >
-                <h5 className={styles.link}>Özellikler</h5>
-              </Link>
-              <Link
-                to="process"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={200}
-              >
-                <h5 className={styles.link}>İşleyiş</h5>
-              </Link>
-
-              <Link
-                to="faq"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={200}
-              >
-                <h5 className={styles.link}>Sıkça Sorulan Sorular</h5>
-              </Link>
-              <Link
-                to="contact"
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={200}
-              >
-                <h5 className={styles.link}>İletişim</h5>
-              </Link>
             </div>
           )}
         </div>
@@ -948,4 +1087,4 @@ const Nav = ({ change }) => {
   );
 };
 
-export default Nav;
+export default Nav2;
