@@ -123,8 +123,8 @@
   width: 32rem;
   overflow: auto;
   background-color: #fff;
-  max-height: 38rem;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 1rem;
 }
 .li {
   list-style: none;
@@ -351,5 +351,11 @@
   .qrsModal {
     width: 90%;
     height: 36rem;
+  }
+  .modal {
+    max-height: 36rem;
+    overflow: auto;
+    width: 94%;
+    margin: auto;
   }
 }

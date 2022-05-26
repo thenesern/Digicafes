@@ -18,7 +18,7 @@ import { fadeInRightBig } from "react-animations";
 import Radium, { StyleRoot } from "radium";
 import Cookies from "js-cookie";
 import Box from "@mui/material/Box";
-import { Loading, Modal, Spacer } from "@nextui-org/react";
+import { Loading, Modal, Spacer, Button as ButtonMui } from "@nextui-org/react";
 import ModalMui from "@mui/material/Modal";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -1316,65 +1316,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   <Box className={styles.modal}>
                     <form>
                       <List className={styles.list}>
-                        <h3 className={styles.header}>Ürün Ekle</h3>
-                        <FormControl
-                          style={{ margin: "1rem" }}
-                          sx={{ m: 1, width: "50%" }}
-                        >
-                          <InputLabel id="demo-multiple-chip-label">
-                            Kategori
-                          </InputLabel>
-                          <Select
-                            labelId="demo-multiple-chip-label"
-                            id="demo-multiple-chip"
-                            multiple
-                            value={category}
-                            onChange={handleChange}
-                            input={
-                              <OutlinedInput
-                                id="select-multiple-chip"
-                                label="Kategori"
-                              />
-                            }
-                            renderValue={(selected) => (
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  flexWrap: "wrap",
-                                  gap: 0.5,
-                                }}
-                              >
-                                {selected.map((value) => (
-                                  <Chip key={value} label={value} />
-                                ))}
-                              </Box>
-                            )}
-                            MenuProps={MenuProps}
-                          >
-                            {categories.map((category) => (
-                              <MenuItem
-                                key={category.name}
-                                value={category.name}
-                                style={{
-                                  padding: "10px",
-                                  width: "100%",
-                                }}
-                              >
-                                {category.name}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                        <ListItem>
-                          <TextField
-                            variant="outlined"
-                            fullWidth
-                            id="subCategory"
-                            onChange={(e) => setSubCategory(e.target.value)}
-                            label="Alt Kategori Adı (Boş Bırakabilirsiniz.)"
-                            inputProps={{ type: "text", maxLength: 38 }}
-                          ></TextField>
-                        </ListItem>
+                        <h2 style={{ textAlign: "center" }}>Ürün Ekle</h2>
                         <ListItem>
                           <TextField
                             variant="outlined"
@@ -1401,6 +1343,68 @@ const UserDashboard = ({ userOrder, userId }) => {
                           <TextField
                             variant="outlined"
                             fullWidth
+                            id="subCategory"
+                            onChange={(e) => setSubCategory(e.target.value)}
+                            label="Alt Kategori Adı (Boş Bırakabilirsiniz.)"
+                            inputProps={{ type: "text", maxLength: 38 }}
+                          ></TextField>
+                        </ListItem>
+                        <ListItem
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            gap: "2rem",
+                          }}
+                        >
+                          <FormControl>
+                            <InputLabel id="demo-multiple-chip-label">
+                              Kategori
+                            </InputLabel>
+                            <Select
+                              labelId="demo-multiple-chip-label"
+                              id="demo-multiple-chip"
+                              multiple
+                              value={category}
+                              style={{ minWidth: "8rem" }}
+                              onChange={handleChange}
+                              input={
+                                <OutlinedInput
+                                  id="select-multiple-chip"
+                                  label="Kategori"
+                                />
+                              }
+                              renderValue={(selected) => (
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    flexWrap: "wrap",
+                                    gap: 0.5,
+                                  }}
+                                >
+                                  {selected.map((value) => (
+                                    <Chip key={value} label={value} />
+                                  ))}
+                                </Box>
+                              )}
+                              MenuProps={MenuProps}
+                            >
+                              {categories.map((category) => (
+                                <MenuItem
+                                  key={category.name}
+                                  value={category.name}
+                                  style={{
+                                    padding: "10px",
+                                    width: "100%",
+                                  }}
+                                >
+                                  {category.name}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                          <TextField
+                            variant="outlined"
                             id="price"
                             onChange={(e) => setPrice(e.target.value)}
                             label="Fiyat"
@@ -1408,32 +1412,45 @@ const UserDashboard = ({ userOrder, userId }) => {
                             helperText="Örnek: 50"
                           ></TextField>
                         </ListItem>
-                        <ListItem>
-                          <label htmlFor="icon-button-file">
-                            <Input
-                              accept="image/*"
-                              id="icon-button-file"
-                              type="file"
-                              onChange={(e) => setFile(e.target.files[0])}
-                            />
-                            <IconButton
-                              color="primary"
-                              aria-label="upload picture"
-                              component="span"
-                            >
-                              <PhotoCamera />
-                            </IconButton>
-                          </label>
+                        <ListItem
+                          style={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            justifyContent: "flex-start",
+                            flexDirection: "column",
+                          }}
+                        >
+                          <InputLabel>Ürün Görseli</InputLabel>
+                          <Input
+                            accept="image/*"
+                            id="icon-button-file"
+                            type="file"
+                            onChange={(e) => setFile(e.target.files[0])}
+                          />
                         </ListItem>
-                        <ListItem>
+                        <ListItem
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "flex-end",
+                            gap: "1rem",
+                            paddingTop: "1rem",
+                          }}
+                        >
+                          <Button
+                            variant="outlined"
+                            onClick={handleCloseAddProduct}
+                            color="primary"
+                          >
+                            Vazgeç
+                          </Button>
                           <Button
                             variant="contained"
                             type="submit"
-                            fullWidth
                             onClick={addProductHandler}
                             color="primary"
                           >
-                            Ekle
+                            Onayla
                           </Button>
                         </ListItem>
                       </List>
@@ -1565,7 +1582,8 @@ const UserDashboard = ({ userOrder, userId }) => {
                   </Box>
                 </ModalMui>
                 <Modal
-                  style={{ padding: "6px", width: "100%" }}
+                  width="24rem"
+                  style={{ padding: "1rem", margin: "10px" }}
                   open={openUpdateCategory}
                   onClose={handleCloseUpdateCategory}
                   aria-labelledby="modal-modal-title"
@@ -1583,21 +1601,23 @@ const UserDashboard = ({ userOrder, userId }) => {
                         justifyContent: "center",
                         flexDirection: "column",
                         gap: "2rem",
-                        padding: "1rem",
                       }}
                     >
-                      <Input
+                      <TextField
                         fullWidth
                         label="Kategori Adı"
                         value={addCategory}
                         onChange={(e) => setAddCategory(e.target.value)}
                       />
-                      <Input
+                      <TextField
                         fullWidth
-                        placeholder="Kategori Sırası"
+                        label="Kategori Sırası"
                         value={updateCategoryOrder}
                         onChange={(e) => setUpdateCategoryOrder(e.target.value)}
                       />
+                      <InputLabel style={{ textAlign: "start", width: "100%" }}>
+                        Kategori Görseli
+                      </InputLabel>
                       <Input
                         fullWidth
                         accept="image/*"
@@ -1620,52 +1640,60 @@ const UserDashboard = ({ userOrder, userId }) => {
                       ) : (
                         <img
                           src={file}
-                          width="300px"
-                          height="300px"
+                          width="160px"
+                          height="160px"
                           style={{ objectFit: "contain" }}
                         ></img>
                       )}
                     </form>
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button
-                      color="primary"
-                      variant="outlined"
-                      onClick={() => {
-                        handleCloseUpdateCategory();
-                        setUpdateCategory("");
-                        setAddCategory("");
-                        setFile("");
-                        setIsPreview(false);
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex",
+                        gap: "1rem",
                       }}
                     >
-                      Vazgeç
-                    </Button>
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      onClick={(e) => {
-                        if (
-                          addCategory != updateCategory ||
-                          categoryOrder !== updateCategoryOrder ||
-                          typeof file === "object"
-                        ) {
-                          handleUpdateCategory(e);
-                        } else {
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        onClick={() => {
                           handleCloseUpdateCategory();
                           setUpdateCategory("");
                           setAddCategory("");
                           setFile("");
                           setIsPreview(false);
-                          enqueueSnackbar("Değişiklik Yapılmadı", {
-                            variant: "info",
-                          });
-                        }
-                      }}
-                      style={{ marginLeft: "1rem" }}
-                    >
-                      Onayla
-                    </Button>
+                        }}
+                      >
+                        Vazgeç
+                      </Button>
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        onClick={(e) => {
+                          if (
+                            addCategory != updateCategory ||
+                            categoryOrder !== updateCategoryOrder ||
+                            typeof file === "object"
+                          ) {
+                            handleUpdateCategory(e);
+                          } else {
+                            handleCloseUpdateCategory();
+                            setUpdateCategory("");
+                            setAddCategory("");
+                            setFile("");
+                            setIsPreview(false);
+                            enqueueSnackbar("Değişiklik Yapılmadı", {
+                              variant: "info",
+                            });
+                          }
+                        }}
+                      >
+                        Onayla
+                      </Button>
+                    </div>
                   </Modal.Footer>
                 </Modal>
                 <ModalMui
@@ -1684,7 +1712,6 @@ const UserDashboard = ({ userOrder, userId }) => {
                         justifyContent: "center",
                         flexDirection: "column",
                         gap: "2rem",
-                        padding: "2rem",
                       }}
                     >
                       <h2>Ürün Düzenle</h2>
@@ -1902,7 +1929,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   <Box className={styles.modal}>
                     <form>
                       <List className={styles.list}>
-                        <h3 className={styles.header}>Kategori Ekle</h3>
+                        <h2 style={{ textAlign: "center" }}>Kategori Ekle</h2>
                         <ListItem>
                           <TextField
                             variant="outlined"
@@ -1949,11 +1976,25 @@ const UserDashboard = ({ userOrder, userId }) => {
                             onChange={(e) => setCategoryOrder(e.target.value)}
                           />
                         </ListItem>
-                        <ListItem>
+                        <ListItem
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "flex-end",
+                            gap: "1rem",
+                          }}
+                        >
+                          <Button
+                            variant="outlined"
+                            type="submit"
+                            onClick={(e) => handleCloseAddCategory(e)}
+                            color="primary"
+                          >
+                            Vazgeç
+                          </Button>
                           <Button
                             variant="contained"
                             type="submit"
-                            fullWidth
                             onClick={(e) => {
                               if (
                                 categories.filter((c) => c.name === addCategory)
@@ -2054,6 +2095,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         }}
                       >
                         <Button
+                          color="primary"
                           variant="outlined"
                           onClick={handleCloseListType}
                         >
@@ -2061,7 +2103,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         </Button>
                         <Button
                           variant="contained"
-                          color="secondary"
+                          color="primary"
                           onClick={handleUpdateListType}
                         >
                           Onayla
@@ -2072,9 +2114,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                 </ModalMui>
                 <ModalMui open={openGallery} onClose={handleCloseGallery}>
                   <Box className={styles.modal}>
-                    <h2 style={{ textAlign: "center", padding: "1rem" }}>
-                      Galeriyi Düzenle
-                    </h2>
+                    <h2 style={{ textAlign: "center" }}>Galeriyi Düzenle</h2>
                     <form
                       style={{
                         display: "flex",
@@ -2085,11 +2125,11 @@ const UserDashboard = ({ userOrder, userId }) => {
                         flexDirection: "column",
                       }}
                     >
-                      <Input
+                      <TextField
                         type="text"
                         value={galleryName}
                         fullWidth
-                        placeholder="Galeri Adı"
+                        label="Galeri Adı"
                         onChange={(e) => setGalleryName(e.target.value)}
                       />
                       <div
@@ -2213,12 +2253,16 @@ const UserDashboard = ({ userOrder, userId }) => {
                           margin: "1rem",
                         }}
                       >
-                        <Button variant="outlined" onClick={handleCloseGallery}>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          onClick={handleCloseGallery}
+                        >
                           Vazgeç
                         </Button>
                         <Button
                           variant="contained"
-                          color="secondary"
+                          color="primary"
                           onClick={handleUpdateGallery}
                         >
                           Onayla
@@ -2236,7 +2280,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   <Box className={styles.modal}>
                     <form>
                       <List className={styles.list}>
-                        <h3 className={styles.header}>Logo Yükle</h3>
+                        <h2 style={{ textAlign: "center" }}>Logo Yükle</h2>
 
                         <ListItem>
                           <label htmlFor="icon-button-file">
@@ -2255,11 +2299,26 @@ const UserDashboard = ({ userOrder, userId }) => {
                             </IconButton>
                           </label>
                         </ListItem>
-                        <ListItem>
+                        <ListItem
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "flex-end",
+                            gap: "1rem",
+                            paddingTop: "1rem",
+                          }}
+                        >
+                          <Button
+                            variant="outlined"
+                            type="submit"
+                            onClick={handleCloseUploadLogo}
+                            color="primary"
+                          >
+                            Vazgeç
+                          </Button>
                           <Button
                             variant="contained"
                             type="submit"
-                            fullWidth
                             onClick={uploadLogoHandler}
                             color="primary"
                           >
@@ -2270,61 +2329,73 @@ const UserDashboard = ({ userOrder, userId }) => {
                     </form>
                   </Box>
                 </ModalMui>
-                <ModalMui
+                <Modal
+                  width="24rem"
                   open={openDeleteProduct}
                   onClose={handleCloseDelete}
                   aria-labelledby="modal-modal-title"
                   aria-describedby="modal-modal-description"
+                  style={{ padding: "1rem", margin: "10px" }}
                 >
-                  <Box className={styles.modal}>
-                    <form>
-                      <List className={styles.list}>
-                        <h3 className={styles.header}>Emin misiniz?</h3>
-
-                        <ListItem>
-                          <p>
-                            {deleteCategory ? "Kategori" : "Ürün"}
-                            <span className={styles.deleteDescription}>
-                              {deleteName}
-                            </span>
-                            silinecek.
-                          </p>
-                        </ListItem>
-                      </List>
-                    </form>
-                    <div className={styles.modalButtons}>
-                      <Button
-                        variant="contained"
-                        type="submit"
-                        onClick={() => {
+                  <Modal.Header>
+                    <h2>Emin misiniz?</h2>
+                  </Modal.Header>
+                  <Modal.Body
+                    style={{
+                      padding: "2rem 0",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <p>
+                      {deleteCategory ? "Kategori" : "Ürün"},
+                      <span className={styles.deleteDescription}>
+                        {deleteName}
+                      </span>
+                      silinecek.
+                    </p>
+                  </Modal.Body>
+                  <Modal.Footer
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex-end",
+                      gap: "1rem",
+                    }}
+                  >
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      type="submit"
+                      onClick={() => {
+                        handleCloseDelete();
+                        setDeleteId("");
+                        setDeleteCategory(false);
+                      }}
+                    >
+                      Vazgeç
+                    </Button>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      color="secondary"
+                      onClick={() => {
+                        if (deleteCategory === true) {
+                          deleteCategoryHandler();
                           handleCloseDelete();
-                          setDeleteId("");
                           setDeleteCategory(false);
-                        }}
-                      >
-                        Vazgeç
-                      </Button>
-                      <Button
-                        variant="contained"
-                        type="submit"
-                        color="primary"
-                        onClick={() => {
-                          if (deleteCategory === true) {
-                            deleteCategoryHandler();
-                            handleCloseDelete();
-                            setDeleteCategory(false);
-                          } else {
-                            deleteProductHandler();
-                            handleCloseDelete();
-                            setDeleteCategory(false);
-                          }
-                        }}
-                      >
-                        Onayla
-                      </Button>
-                    </div>
-                  </Box>
-                </ModalMui>
+                        } else {
+                          deleteProductHandler();
+                          handleCloseDelete();
+                          setDeleteCategory(false);
+                        }
+                      }}
+                    >
+                      Onayla
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
                 <Button
                   className={styles.menuButtons}
                   variant="contained"
