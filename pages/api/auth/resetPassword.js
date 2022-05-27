@@ -8,7 +8,6 @@ const handler = nc();
 
 handler.post(async (req, res) => {
   await db.connect();
-
   try {
     const isUserThere = await User.findOne({ email: req.body.email });
     if (!isUserThere) {
@@ -27,11 +26,13 @@ handler.post(async (req, res) => {
     const passwordResetExpires = Date.now() + 10 * 60 * 1000;
     await User.findOneAndUpdate(
       { email: req.body.email },
-      { passwordResetToken, passwordResetExpires }
+      {
+        passwordResetToken,
+        passwordResetExpires,
+      }
     );
 
-    const sgMailApiKey = process.env.SG_API_KEY;
-    sgMail.setApiKey(sgMailApiKey);
+    sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
 
     sgMail
       .send({

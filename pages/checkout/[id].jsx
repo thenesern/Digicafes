@@ -26,6 +26,7 @@ import useCard from "../../components/Card/card";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { Store } from "../../redux/store";
+
 const Checkout = ({ product }) => {
   const { state } = useContext(Store);
   const { userInfo } = state;

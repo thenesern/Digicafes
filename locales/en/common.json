@@ -24,5 +24,13 @@
   "addToCart": "Add to cart",
   "total": "Total",
   "message": "Your message (Not required)",
-  "notFound": "Not found"
+  "notFound": "Not found",
+  "newPass": "Enter a new password",
+  "password": "Password",
+  "passwordMin": "Your password length should be at least 5 characters",
+  "enterPassword": "Please enter a password",
+  "save": "Save",
+  "passwordUpdated": "Your password was updated successfully",
+  "passwordNotUpdated": "Something went wrong. Please try again later",
+  "expired": "The password reset token has expired, please try again later"
 }

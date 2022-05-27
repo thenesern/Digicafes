@@ -17,17 +17,18 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import useTranslation from "next-translate/useTranslation";
 
 const PasswordResetToken = ({ user }) => {
   const [isFetching, setIsFetching] = useState(false);
   const Router = useRouter();
+  const { t } = useTranslation();
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm();
   const [sentPasswordMail, setSentPasswordMail] = useState(null);
-
   useEffect(() => {
     if (sentPasswordMail === true) {
       setTimeout(() => {
@@ -78,7 +79,7 @@ const PasswordResetToken = ({ user }) => {
             className={styles.form}
             onSubmit={handleSubmit(handleUpdatePassword)}
           >
-            <h2>Yeni Şifrenizi Girin</h2>
+            <h2>{t("common:newPass")}</h2>
             <ListItem
               style={{
                 display: "flex",
@@ -87,7 +88,7 @@ const PasswordResetToken = ({ user }) => {
                 gap: "10px",
               }}
             >
-              <label>Şifre</label>
+              <label>{t("common:password")}</label>
               <Controller
                 name="password"
                 control={control}
@@ -107,8 +108,8 @@ const PasswordResetToken = ({ user }) => {
                     helperText={
                       errors.password
                         ? errors.password.type === "minLength"
-                          ? "Şifreniz minimum 5 karakterden oluşmalıdır"
-                          : "Lütfen bir şifre giriniz"
+                          ? t("common:passwordMin")
+                          : t("common:enterPassword")
                         : ""
                     }
                     {...field}
@@ -125,7 +126,7 @@ const PasswordResetToken = ({ user }) => {
                 style={{ outline: "none", backgroundColor: "#c9184a" }}
                 onSubmit={handleSubmit(handleUpdatePassword)}
               >
-                Kaydet
+                {t("common:save")}
               </Button>
             </ListItem>
           </form>
@@ -140,7 +141,7 @@ const PasswordResetToken = ({ user }) => {
           >
             <CheckCircleIcon style={{ fontSize: "6rem" }} color="success" />
             <h4 style={{ textAlign: "center" }}>
-              Şifreniz Başarıyla Değiştirildi.
+              {t("common:passwordUpdated")}
             </h4>
           </div>
         ) : (
@@ -153,7 +154,9 @@ const PasswordResetToken = ({ user }) => {
             }}
           >
             <ErrorIcon style={{ fontSize: "6rem" }} color="error" />
-            <h4 style={{ textAlign: "center" }}>Şifre Değiştirilemedi.</h4>
+            <h4 style={{ textAlign: "center" }}>
+              {t("common:passwordNotUpdated")}
+            </h4>
           </div>
         )}
       </div>
@@ -174,6 +177,7 @@ export async function getServerSideProps(context) {
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
   });
+
   if (!user) {
     return {
       redirect: {

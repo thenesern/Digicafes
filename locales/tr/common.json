@@ -24,5 +24,13 @@
   "addToCart": "Sepete Ekle",
   "total": "Toplam",
   "message": "Mesajınız (Boş bırakabilirsiniz)",
-  "notFound": "Bulunamadı."
+  "notFound": "Bulunamadı.",
+  "newPass": "Yeni Şifrenizi Girin",
+  "password": "Şifre",
+  "passwordMin": "Şifreniz minimum 5 karakterden oluşmalıdır",
+  "enterPassword": "Lütfen bir şifre giriniz",
+  "save": "Kaydet",
+  "passwordUpdated": "Şifreniz Başarıyla Değiştirildi.",
+  "passwordNotUpdated": "Şifre Değiştirilemedi.",
+  "expired": " Şifrenizi yenilemeniz için mail adresinize gönderilen link geçerlilik süresini doldurdu."
 }
