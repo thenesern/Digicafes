@@ -1262,7 +1262,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                           className={styles.qrButtons}
                           style={{
                             height: "2rem",
-                            minWidth: "16rem",
+                            minWidth: "12rem",
                           }}
                           endIcon={<DownloadIcon />}
                         >
