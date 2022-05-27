@@ -206,16 +206,7 @@ const Checkout = ({ product }) => {
               </div>
               <div className={styles.cells}>
                 <h5 className={styles.title}>Fiyat</h5>
-                <p>
-                  {product.price}
-                  {menu?.currency === "dolar"
-                    ? "$"
-                    : menu?.currency === "euro"
-                    ? "€"
-                    : menu?.currency === "lira"
-                    ? "₺"
-                    : ""}
-                </p>
+                <p>{product.price}</p>
               </div>
             </div>
           </div>
@@ -225,13 +216,6 @@ const Checkout = ({ product }) => {
               <div>
                 <p className={styles.SummaryDescription}>
                   Toplam Tutar: {product.price}
-                  {menu?.currency === "dolar"
-                    ? "$"
-                    : menu?.currency === "euro"
-                    ? "€"
-                    : menu?.currency === "lira"
-                    ? "₺"
-                    : ""}
                 </p>
               </div>
             </div>
