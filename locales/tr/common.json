@@ -14,10 +14,14 @@
   "confirm": "Onayla",
   "summary": "Sepet Özeti",
   "empty": "Sepetiniz boş.",
-  "sendOrder": "Siparişimi Onayla",
+  "sendOrder": "Siparişi Onayla",
   "waiter": "Garson Çağır",
   "bill": "Hesap İste",
   "requestWaiter": "Garson Çağrınız iletilecek.",
   "isSure": "Emin misiniz?",
-  "requestBill": "Hesap İsteğiniz iletilecek."
+  "requestBill": "Hesap İsteğiniz iletilecek.",
+  "back": "Geri",
+  "addToCart": "Sepete Ekle",
+  "total": "Toplam",
+  "message": "Mesajınız (Boş bırakabilirsiniz)"
 }

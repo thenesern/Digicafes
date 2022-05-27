@@ -1,7 +1,6 @@
 {
   "locales": ["tr", "en"],
   "defaultLocale": "tr",
-  "localeDetection": false,
   "pages": {
     "*": ["nav", "common", "panel", "footer"],
     "/": ["home", "stepper", "features", "faq", "contact"],

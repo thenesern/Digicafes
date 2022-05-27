@@ -21,11 +21,13 @@ import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 import { GridCheckCircleIcon } from "@mui/x-data-grid";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import useTranslation from "next-translate/useTranslation";
 
 const StoreMenu = ({ menu, category, order, number }) => {
   const [storeName, setStoreName] = useState(menu?.storeName);
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
+  const { t } = useTranslation();
   const quantity = cart?.length;
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -163,7 +165,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
             <ArrowBackIosNewIcon
               style={{ color: "f7ede2", fontSize: "14px" }}
             />
-            <p className={styles.back}>Geri</p>
+            <p className={styles.back}>{t("common:back")}</p>
           </Button>
         </Link>
         {menu?.storeLogo?.includes("cloudinary") ? (
@@ -199,7 +201,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
           }}
         >
           <CheckCircleIcon style={{ fontSize: "8rem" }} color="success" />
-          <h1>Talebiniz iletildi.</h1>
+          <h1>{t("common:request")}</h1>
         </Modal.Body>
       </Modal>
       <Modal
@@ -214,7 +216,6 @@ const StoreMenu = ({ menu, category, order, number }) => {
           <div className={styles.modalHeader}>
             <h3 className={styles.descHeader}>{productName}</h3>
             <span>
-              {" "}
               {menu?.currency === "dolar"
                 ? "$"
                 : menu?.currency === "euro"
@@ -243,7 +244,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
         }}
       >
         <Modal.Header>
-          <h2>Sepet Özeti</h2>
+          <h2>{t("common:summary")}</h2>
         </Modal.Header>
         <Modal.Body style={{ padding: "1rem 0" }}>
           {listType === "image"
@@ -416,19 +417,19 @@ const StoreMenu = ({ menu, category, order, number }) => {
               ))}
 
           {cart.length === 0 && (
-            <p style={{ padding: "1rem" }}>Sepetiniz boş.</p>
+            <p style={{ padding: "1rem" }}>{t("common:empty")}</p>
           )}
         </Modal.Body>
         <Modal.Footer className={styles.cartFooter}>
           {cart.length > 0 && (
             <div>
-              Toplam:{" "}
+              {t("common:total")}:
               {menu?.currency === "dolar"
-                ? "$"
+                ? " $"
                 : menu?.currency === "euro"
-                ? "€"
+                ? " €"
                 : menu?.currency === "lira"
-                ? "₺"
+                ? " ₺"
                 : ""}
               {cartTotal}
             </div>
@@ -439,7 +440,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
               color="secondary"
               onClick={handleOpenIsSure}
             >
-              Siparişi Onayla
+              {t("common:sendOrder")}
             </Button>
           )}
         </Modal.Footer>
@@ -466,26 +467,26 @@ const StoreMenu = ({ menu, category, order, number }) => {
         aria-describedby="modal-modal-description"
       >
         <Modal.Header style={{ display: "flex", flexDirection: "column" }}>
-          <h3 style={{ padding: "0", margin: "0" }}>Dikkat</h3>
-          <p>Siparişiniz iletilecek.</p>
+          <h3 style={{ padding: "0", margin: "0" }}>{t("common:attention")}</h3>
+          <p>{t("common:order")}</p>
         </Modal.Header>
         <Modal.Body>
-          <h5>Not Ekle</h5>
+          <h5>{t("common:note")}</h5>
           <Textarea
-            placeholder="Mesajınız. (Boş Bırakabilirsiniz)"
+            placeholder={t("common:message")}
             onChange={(e) => setOrderNotes(e.target.value)}
           ></Textarea>
         </Modal.Body>
         <Modal.Footer style={{ display: "flex", gap: "2rem" }}>
           <Button variant="outlined" onClick={handleCloseOpenIsSure}>
-            Vazgeç
+            {t("common:discard")}
           </Button>
           <Button
             variant="contained"
             color="secondary"
             onClick={() => setIsSure(true)}
           >
-            Onayla
+            {t("common:confirm")}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -510,7 +511,6 @@ const StoreMenu = ({ menu, category, order, number }) => {
                   />
                   <h3 className={styles.name}>{m?.name}</h3>
                   <p className={styles.price}>
-                    {" "}
                     {menu?.currency === "dolar"
                       ? "$"
                       : menu?.currency === "euro"
@@ -538,7 +538,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
                       })
                     }
                   >
-                    Sepete Ekle
+                    {t("common:addToCart")}
                   </Button>
                 </li>
               ))}
@@ -584,7 +584,6 @@ const StoreMenu = ({ menu, category, order, number }) => {
                         <img className={styles.img} src={c?.image} alt="" />
                         <h3 className={styles.name}>{c?.name}</h3>
                         <p className={styles.price}>
-                          {" "}
                           {menu?.currency === "dolar"
                             ? "$"
                             : menu?.currency === "euro"
@@ -634,7 +633,6 @@ const StoreMenu = ({ menu, category, order, number }) => {
                     )}
                   </div>
                   <p className={styles.textListPrice}>
-                    {" "}
                     {menu?.currency === "dolar"
                       ? "$"
                       : menu?.currency === "euro"
@@ -716,7 +714,6 @@ const StoreMenu = ({ menu, category, order, number }) => {
                           )}
                         </div>
                         <p className={styles.textListPrice}>
-                          {" "}
                           {menu?.currency === "dolar"
                             ? "$"
                             : menu?.currency === "euro"

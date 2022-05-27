@@ -14,10 +14,14 @@
   "confirm": "Confirm",
   "summary": "Cart Summary",
   "empty": "Your cart is empty.",
-  "sendOrder": "Confirm my order",
+  "sendOrder": "Confirm the order",
   "waiter": "Waiter request",
   "bill": "Bill request",
   "requestWaiter": "Your waiter request will be sent",
   "isSure": "Are you sure?",
-  "requestBill": "Your bill request will be sent."
+  "requestBill": "Your bill request will be sent.",
+  "back": "Back",
+  "addToCart": "Add to cart",
+  "total": "Total",
+  "message": "Your message (Not required)"
 }

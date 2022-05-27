@@ -12,6 +12,18 @@
   justify-content: center;
   border: 1px solid lightgray;
 }
+.int {
+  background: transparent;
+  cursor: pointer;
+  margin: 10px 0;
+}
+.lang {
+  border-radius: 4px;
+  border: 1px solid #eee;
+  color: #eee;
+  padding: 6px 10px;
+  cursor: pointer;
+}
 .storeName {
   color: #fff;
   padding: 0 10px;
@@ -204,7 +216,7 @@
   color: #f1faee;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   list-style: none;
   padding: 1rem;
   margin: 0;

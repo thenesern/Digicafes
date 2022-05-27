@@ -14,9 +14,11 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { ShoppingCartOutlined } from "@material-ui/icons";
 import Order from "../../../../../models/OrderModel";
 import { useEffect } from "react";
+import useTranslation from "next-translate/useTranslation";
 
 const StoreMenu = ({ menu, category }) => {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
   const [openModal, setOpenModal] = useState(false);
   const [productName, setProductName] = useState("");
   const [productImage, setProductImage] = useState("");
@@ -65,7 +67,7 @@ const StoreMenu = ({ menu, category }) => {
             <ArrowBackIosNewIcon
               style={{ color: "f7ede2", fontSize: "14px" }}
             />
-            <p className={styles.back}>Geri</p>
+            <p className={styles.back}>{t("common:back")}</p>
           </Button>
         </Link>
         {menu?.storeLogo?.includes("cloudinary") ? (
@@ -94,7 +96,7 @@ const StoreMenu = ({ menu, category }) => {
                   textAlign: "center",
                 }}
               >
-                Menü
+                {t("common:menu")}
               </h3>
               {menu &&
                 menu?.categories?.map((m) => (

@@ -12,10 +12,12 @@ import Image from "next/image";
 import FmdBadIcon from "@mui/icons-material/FmdBad";
 import digicafes from "../../../../assets/digi_logo.svg";
 import { useEffect, useLayoutEffect } from "react";
+import i18nConfig from "../../../../i18n.json";
 import useTranslation from "next-translate/useTranslation";
 
 const StoreMenu = ({ menu }) => {
-  const { t } = useTranslation();
+  const { locales } = i18nConfig;
+  const { t, lang } = useTranslation();
   const [open, setOpen] = useState(false);
   const Router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
@@ -56,6 +58,18 @@ const StoreMenu = ({ menu }) => {
               onClose={() => setOpen(false)}
             >
               <ul className={styles.navList}>
+                {locales.map((lng) => {
+                  if (lng === lang) return null;
+                  return (
+                    <div className={styles.int} key={lng}>
+                      <Link href={`/${lng}/${Router.asPath}`} locale={lng}>
+                        <span className={styles.lang}>
+                          {t(`nav:language-name-${lng}`)}
+                        </span>
+                      </Link>
+                    </div>
+                  );
+                })}
                 {!menu?.categories.length == 0 && (
                   <h3
                     style={{

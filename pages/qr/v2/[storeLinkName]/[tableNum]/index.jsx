@@ -27,12 +27,14 @@ import { useContext } from "react";
 import { Store } from "../../../../../redux/store";
 import { ShoppingCartOutlined } from "@material-ui/icons";
 import useTranslation from "next-translate/useTranslation";
+import i18nConfig from "../../../../../i18n.json";
 
 const StoreMenu = ({ menu, number }) => {
   const [open, setOpen] = useState(false);
   const [storeName, setStoreName] = useState(menu?.storeName);
+  const { locales } = i18nConfig;
   const Router = useRouter();
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   const [isFetching, setIsFetching] = useState(false);
   const [waiterModal, setWaiterModal] = useState(false);
   const [tableModal, setTableModal] = useState(false);
@@ -503,6 +505,18 @@ const StoreMenu = ({ menu, number }) => {
               onClose={() => setOpen(false)}
             >
               <ul className={styles.navList}>
+                {locales.map((lng) => {
+                  if (lng === lang) return null;
+                  return (
+                    <div className={styles.int} key={lng}>
+                      <Link href={`/${lng}/${Router.asPath}`} locale={lng}>
+                        <span className={styles.lang}>
+                          {t(`nav:language-name-${lng}`)}
+                        </span>
+                      </Link>
+                    </div>
+                  );
+                })}
                 <Button
                   variant="contained"
                   style={{
