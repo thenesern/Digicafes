@@ -2043,7 +2043,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                 </ModalMui>
                 <ModalMui open={openListType} onClose={handleCloseListType}>
                   <Box className={styles.modal}>
-                    <h2 style={{ textAlign: "center", padding: "1rem" }}>
+                    <h2 style={{ textAlign: "center" }}>
                       {t("panel:listType")}
                     </h2>
                     <form>
@@ -2052,8 +2052,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          gap: "4rem",
-                          padding: "2rem",
+                          gap: "3rem",
                         }}
                       >
                         <div
@@ -2142,8 +2141,8 @@ const UserDashboard = ({ userOrder, userId }) => {
                       style={{
                         display: "flex",
                         alignItems: "flex-start",
-                        gap: "2rem",
-                        padding: "1rem 2rem",
+                        gap: "1rem",
+                        padding: "0 1rem",
                         justifyContent: "center",
                         flexDirection: "column",
                       }}
@@ -2546,7 +2545,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                       rows={categories}
                       getRowId={(row) => `${row.name}${row.price}`}
                       columns={categoryColumns}
-                      pageSize={5}
+                      pageSize={6}
                       sx={{
                         "& .MuiDataGrid-renderingZone": {
                           maxHeight: "none !important",

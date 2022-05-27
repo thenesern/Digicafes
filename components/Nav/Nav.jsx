@@ -934,6 +934,18 @@ const Nav = () => {
                 </Grow>
               )}
             </Popper>
+            {locales.map((lng) => {
+              if (lng === lang) return null;
+              return (
+                <div className={styles.int} key={lng}>
+                  <LinkRouter href="/" locale={lng}>
+                    <span className={styles.lang}>
+                      {t(`nav:language-name-${lng}`)}
+                    </span>
+                  </LinkRouter>
+                </div>
+              );
+            })}
           </div>
         ) : (
           <li className={styles.rightXL}>
@@ -997,6 +1009,7 @@ const Nav = () => {
                   <h6>{user?.lastName}</h6>
                 </div>
               </Button>
+
               <Popper
                 open={open}
                 anchorEl={anchorRef.current}
@@ -1109,6 +1122,18 @@ const Nav = () => {
                   </Grow>
                 )}
               </Popper>
+              {locales.map((lng) => {
+                if (lng === lang) return null;
+                return (
+                  <div className={styles.int} key={lng}>
+                    <LinkRouter href="/" locale={lng}>
+                      <span className={styles.lang}>
+                        {t(`nav:language-name-${lng}`)}
+                      </span>
+                    </LinkRouter>
+                  </div>
+                );
+              })}
             </div>
           ) : (
             <div className={styles.buttons}>

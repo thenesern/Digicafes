@@ -281,7 +281,12 @@
   margin: 10px 0;
   padding: 0 1rem;
 }
-
+.profileMenu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
 .profileMenuMobile {
   display: none;
 }

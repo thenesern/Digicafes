@@ -744,14 +744,14 @@ const Nav2 = () => {
                 style={{ cursor: "pointer" }}
                 src={logoDark}
                 objectFit="contain"
-                width="160px"
+                width="120px"
                 height="100px"
               ></Image>
             ) : (
               <Image
                 style={{ cursor: "pointer" }}
                 src={logo}
-                width="160px"
+                width="120px"
                 objectFit="contain"
                 height="100px"
               ></Image>
@@ -883,6 +883,18 @@ const Nav2 = () => {
                 </Grow>
               )}
             </Popper>
+            {locales.map((lng) => {
+              if (lng === lang) return null;
+              return (
+                <div className={styles.int} key={lng}>
+                  <LinkRouter href="/" locale={lng}>
+                    <span className={styles.lang}>
+                      {t(`nav:language-name-${lng}`)}
+                    </span>
+                  </LinkRouter>
+                </div>
+              );
+            })}
           </div>
         ) : (
           <li className={styles.rightXL}>
@@ -1058,6 +1070,18 @@ const Nav2 = () => {
                   </Grow>
                 )}
               </Popper>
+              {locales.map((lng) => {
+                if (lng === lang) return null;
+                return (
+                  <div className={styles.int} key={lng}>
+                    <LinkRouter href="/" locale={lng}>
+                      <span className={styles.lang}>
+                        {t(`nav:language-name-${lng}`)}
+                      </span>
+                    </LinkRouter>
+                  </div>
+                );
+              })}
             </div>
           ) : (
             <div className={styles.buttons}>
