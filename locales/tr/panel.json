@@ -34,7 +34,7 @@
   "text": "Sadece Metin",
   "image": "Görsel ile birlikte",
   "discard": "Vazgeç",
-  "accept": "Onayla",
+  "confirm": "Onayla",
   "galleryName": "Galeri Adı",
   "galleryCover": "Kapak Fotoğrafı",
   "imageNotFound": "Görsel bulunamadı.",

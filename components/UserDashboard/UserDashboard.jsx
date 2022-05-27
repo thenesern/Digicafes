@@ -309,7 +309,7 @@ const UserDashboard = ({ userOrder, userId }) => {
 
       let newProducts = products.filter((c) => c.name !== name);
       let newSubCategory = updateSubCategory
-        .trim()
+        ?.trim()
         .toLowerCase()
         .split(" ")
         .map((a) => a?.toLowerCase().replace(a[0], a[0]?.toUpperCase()))
