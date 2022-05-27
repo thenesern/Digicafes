@@ -167,17 +167,16 @@ const PasswordResetToken = ({ user }) => {
 
 export async function getServerSideProps(context) {
   const { passwordResetToken } = context.query;
-  await db.connect();
   const hashedToken = crypto
     .createHash("sha256")
     .update(passwordResetToken)
     .digest("hex");
 
+  await db.connect();
+
   const user = await User.findOne({
     passwordResetToken: hashedToken,
   });
-  console.log(user);
-  console.log(Date.now());
   if (!user || Date.now() > user?.passwordResetExpires.getTime()) {
     return {
       redirect: {

@@ -34,7 +34,7 @@ handler.post(async (req, res) => {
 
     sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
 
-    sgMail
+    await sgMail
       .send({
         to: req.body.email,
         from: "info@digicafes.com",
