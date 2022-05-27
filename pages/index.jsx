@@ -7,8 +7,11 @@ import Head from "next/head";
 import { Link } from "react-scroll";
 import Image from "next/image";
 import digitalMenuMockup from "../assets/image/DigitalMenuPanelMockup.png";
+import digitalMenuMockupEn from "../assets/image/DigitalMenuPanelMockup_en.png";
 import TabletMockup from "../assets/image/tabletMockup.png";
+import TabletMockupEn from "../assets/image/tabletMockup_en.png";
 import QRMenuMockup from "../assets/image/QRMenuMockup.png";
+import QRMenuMockupEn from "../assets/image/QRMenuMockup_en.png";
 import DigitalMenuStepper from "../components/DigitalMenuPage/DigitalMenuStepper/DigitalMenuStepper";
 import StepperMobile from "../components/DigitalMenuPage/StepperMobile/StepperMobile";
 import FAQ from "../components/FAQ/FAQ";
@@ -66,38 +69,69 @@ const DijitalMenu = () => {
                 className={styles.image}
                 style={{ width: "36rem", height: "auto" }}
               >
-                <Image
-                  src={digitalMenuMockup}
-                  layout="responsive"
-                  objectFit="contain"
-                  className={styles.referenceImg}
-                  alt=""
-                />
+                {router.locale === "tr" ? (
+                  <Image
+                    src={digitalMenuMockup}
+                    layout="responsive"
+                    objectFit="contain"
+                    className={styles.referenceImg}
+                    alt=""
+                  />
+                ) : (
+                  <Image
+                    src={digitalMenuMockupEn}
+                    layout="responsive"
+                    objectFit="contain"
+                    className={styles.referenceImg}
+                    alt=""
+                  />
+                )}
               </div>
               <div
                 className={styles.image2}
                 style={{ width: "12rem", height: "auto" }}
               >
-                <Image
-                  layout="responsive"
-                  objectFit="contain"
-                  data-aos="fade-left"
-                  className={styles.referenceImg}
-                  src={TabletMockup}
-                  alt=""
-                />
+                {router.locale === "tr" ? (
+                  <Image
+                    layout="responsive"
+                    objectFit="contain"
+                    data-aos="fade-left"
+                    className={styles.referenceImg}
+                    src={TabletMockup}
+                    alt=""
+                  />
+                ) : (
+                  <Image
+                    layout="responsive"
+                    objectFit="contain"
+                    data-aos="fade-left"
+                    className={styles.referenceImg}
+                    src={TabletMockupEn}
+                    alt=""
+                  />
+                )}
               </div>
               <div
                 className={styles.image3}
                 style={{ width: "7rem", height: "auto" }}
               >
-                <Image
-                  data-aos="fade-right"
-                  src={QRMenuMockup}
-                  alt=""
-                  layout="responsive"
-                  objectFit="contain"
-                />
+                {router.locale === "tr" ? (
+                  <Image
+                    data-aos="fade-right"
+                    src={QRMenuMockup}
+                    alt=""
+                    layout="responsive"
+                    objectFit="contain"
+                  />
+                ) : (
+                  <Image
+                    data-aos="fade-right"
+                    src={QRMenuMockupEn}
+                    alt=""
+                    layout="responsive"
+                    objectFit="contain"
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -127,12 +161,21 @@ const DijitalMenu = () => {
               style={{ width: "40rem", height: "auto" }}
               className={styles.featuresImage1}
             >
-              <Image
-                layout="responsive"
-                objectFit="contain"
-                src={digitalMenuMockup}
-                alt=""
-              />
+              {router.locale === "tr" ? (
+                <Image
+                  layout="responsive"
+                  objectFit="contain"
+                  src={digitalMenuMockup}
+                  alt=""
+                />
+              ) : (
+                <Image
+                  layout="responsive"
+                  objectFit="contain"
+                  src={digitalMenuMockupEn}
+                  alt=""
+                />
+              )}
             </div>
             <div data-aos="fade-up" className={styles.firstDes}>
               <h2 className={styles.firstHeader}>{t("home:feature1Header")}</h2>
@@ -160,13 +203,23 @@ const DijitalMenu = () => {
               style={{ width: "18rem", height: "auto" }}
               className={styles.featuresImage2}
             >
-              <Image
-                layout="responsive"
-                objectFit="contain"
-                src={TabletMockup}
-                data-aos="fade-left"
-                alt=""
-              />
+              {router.locale === "tr" ? (
+                <Image
+                  layout="responsive"
+                  objectFit="contain"
+                  src={TabletMockup}
+                  data-aos="fade-left"
+                  alt=""
+                />
+              ) : (
+                <Image
+                  layout="responsive"
+                  objectFit="contain"
+                  src={TabletMockupEn}
+                  data-aos="fade-left"
+                  alt=""
+                />
+              )}
             </div>
           </article>
           <article className={styles.third}>
@@ -174,13 +227,23 @@ const DijitalMenu = () => {
               className={styles.featuresImage3}
               style={{ width: "12rem", height: "auto" }}
             >
-              <Image
-                src={QRMenuMockup}
-                alt=""
-                layout="responsive"
-                data-aos="fade-right"
-                objectFit="contain"
-              />
+              {router.locale === "tr" ? (
+                <Image
+                  src={QRMenuMockup}
+                  alt=""
+                  layout="responsive"
+                  data-aos="fade-right"
+                  objectFit="contain"
+                />
+              ) : (
+                <Image
+                  src={QRMenuMockupEn}
+                  alt=""
+                  layout="responsive"
+                  data-aos="fade-right"
+                  objectFit="contain"
+                />
+              )}
             </div>
             <div className={styles.thirdDes}>
               <h2 className={styles.thirdHeader}>{t("home:feature3Header")}</h2>

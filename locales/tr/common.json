@@ -23,5 +23,6 @@
   "back": "Geri",
   "addToCart": "Sepete Ekle",
   "total": "Toplam",
-  "message": "Mesajınız (Boş bırakabilirsiniz)"
+  "message": "Mesajınız (Boş bırakabilirsiniz)",
+  "notFound": "Bulunamadı."
 }

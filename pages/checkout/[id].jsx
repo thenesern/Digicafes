@@ -206,7 +206,16 @@ const Checkout = ({ product }) => {
               </div>
               <div className={styles.cells}>
                 <h5 className={styles.title}>Fiyat</h5>
-                <p>{product.price}₺</p>
+                <p>
+                  {product.price}
+                  {menu?.currency === "dolar"
+                    ? "$"
+                    : menu?.currency === "euro"
+                    ? "€"
+                    : menu?.currency === "lira"
+                    ? "₺"
+                    : ""}
+                </p>
               </div>
             </div>
           </div>
@@ -215,7 +224,14 @@ const Checkout = ({ product }) => {
               <h1 className={styles.header}>Özet</h1>
               <div>
                 <p className={styles.SummaryDescription}>
-                  Toplam Tutar: {product.price}₺
+                  Toplam Tutar: {product.price}
+                  {menu?.currency === "dolar"
+                    ? "$"
+                    : menu?.currency === "euro"
+                    ? "€"
+                    : menu?.currency === "lira"
+                    ? "₺"
+                    : ""}
                 </p>
               </div>
             </div>

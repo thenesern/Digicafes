@@ -111,7 +111,8 @@ const OrderNav = (props) => {
         <h3 className={styles.header}>{t("panel:favs")}</h3>
         <div className={styles.periods}>
           <span>
-            {(favItem && favItem + " " + `(${favItemCount})`) || "Yok"}
+            {(favItem && favItem + " " + `(${favItemCount})`) ||
+              t("common:notFound")}
           </span>
         </div>
       </div>

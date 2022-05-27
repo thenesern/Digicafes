@@ -62,6 +62,21 @@ const StoreOrders = (props) => {
       headerClassName: "dark",
       flex: 3,
       editable: false,
+      renderCell: (params) => {
+        return (
+          <div className={classes.gridDates}>
+            <span>
+              {params.row.callName === "Garson Çağrısı"
+                ? router.locale === "en"
+                  ? "Request for waiter"
+                  : "Garson Çağrısı"
+                : router.locale === "en"
+                ? "Request for bill"
+                : "Hesap İsteği"}
+            </span>
+          </div>
+        );
+      },
     },
   ];
 
@@ -189,7 +204,15 @@ const StoreOrders = (props) => {
       renderCell: (params) => {
         return (
           <span>
-            <span>₺</span>
+            <span>
+              {props?.currency === "dolar"
+                ? "$"
+                : props?.currency === "euro"
+                ? "€"
+                : props?.currency === "lira"
+                ? "₺"
+                : ""}
+            </span>
             {params?.row?.cartItems.reduce(function (a, b) {
               return a + b.price * b.quantity;
             }, 0)}

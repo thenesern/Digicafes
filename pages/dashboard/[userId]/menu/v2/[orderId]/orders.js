@@ -69,7 +69,7 @@ const StoreOrderPanel = ({ data, order }) => {
   return (
     <div className={styles.container}>
       <OrderNav orders={orders} storeLogo={storeLogo} storeName={storeName} />
-      <StoreOrders orders={orders} calls={calls} />
+      <StoreOrders orders={orders} calls={calls} currency={data?.currency} />
       <div>
         <ReactAudioPlayer
           src="https://res.cloudinary.com/dlyjd3mnb/video/upload/v1650899563/orderAlert_ltwbxs.mp3"

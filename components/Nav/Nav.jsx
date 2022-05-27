@@ -938,7 +938,7 @@ const Nav = () => {
               if (lng === lang) return null;
               return (
                 <div className={styles.int} key={lng}>
-                  <LinkRouter href="/" locale={lng}>
+                  <LinkRouter href={`/${lng}/${router.asPath}`} locale={lng}>
                     <span className={styles.lang}>
                       {t(`nav:language-name-${lng}`)}
                     </span>
@@ -966,7 +966,7 @@ const Nav = () => {
               if (lng === lang) return null;
               return (
                 <div className={styles.int} key={lng}>
-                  <LinkRouter href="/" locale={lng}>
+                  <LinkRouter href={`/${lng}/${router.asPath}`} locale={lng}>
                     <span className={styles.lang}>
                       {t(`nav:language-name-${lng}`)}
                     </span>
@@ -1126,7 +1126,7 @@ const Nav = () => {
                 if (lng === lang) return null;
                 return (
                   <div className={styles.int} key={lng}>
-                    <LinkRouter href="/" locale={lng}>
+                    <LinkRouter href={`/${lng}/${router.asPath}`} locale={lng}>
                       <span className={styles.lang}>
                         {t(`nav:language-name-${lng}`)}
                       </span>
@@ -1141,7 +1141,7 @@ const Nav = () => {
                 if (lng === lang) return null;
                 return (
                   <div className={styles.int} key={lng}>
-                    <LinkRouter href="/" locale={lng}>
+                    <LinkRouter href={`/${lng}/${router.asPath}`} locale={lng}>
                       <span className={styles.lang}>
                         {t(`nav:language-name-${lng}`)}
                       </span>

@@ -86,7 +86,7 @@ const ProductTable = (props) => {
       headerName: "Fiyat",
       flex: 1,
       renderCell: (params) => {
-        return <div className={styles.userListItem}>₺{params.row.price}</div>;
+        return <div className={styles.userListItem}>{params.row.price}</div>;
       },
     },
     {

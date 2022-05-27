@@ -23,5 +23,6 @@
   "back": "Back",
   "addToCart": "Add to cart",
   "total": "Total",
-  "message": "Your message (Not required)"
+  "message": "Your message (Not required)",
+  "notFound": "Not found"
 }

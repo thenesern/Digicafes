@@ -187,7 +187,7 @@ const StoreMenu = ({ menu, number }) => {
   };
   const handleCalls = async ({ callName }) => {
     setIsFetching(true);
-    const createdAt = new Date().toLocaleString("tr-TR");
+    const createdAt = new Date();
     try {
       const response = await axios.patch(`/api/qr/v2/${storeName}/calls`, {
         calls: [{ tableNum, createdAt, callName }],
@@ -465,7 +465,19 @@ const StoreMenu = ({ menu, number }) => {
               )}
             </Modal.Body>
             <Modal.Footer className={styles.cartFooter}>
-              {cart.length > 0 && <div>Toplam: ₺{cartTotal}</div>}
+              {cart.length > 0 && (
+                <div>
+                  Toplam:
+                  {menu?.currency === "dolar"
+                    ? "$"
+                    : menu?.currency === "euro"
+                    ? "€"
+                    : menu?.currency === "lira"
+                    ? "₺"
+                    : ""}
+                  {cartTotal}
+                </div>
+              )}
               {cart.length > 0 && (
                 <Button
                   variant="contained"
@@ -704,7 +716,7 @@ const StoreMenu = ({ menu, number }) => {
                       variant="contained"
                       onClick={handleCloseWaiterModal}
                     >
-                      Vazgeç
+                      {t("panel:discard")}
                     </Button>
                     <Button
                       style={{ marginLeft: "2rem " }}
