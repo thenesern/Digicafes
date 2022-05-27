@@ -23,7 +23,7 @@ handler.post(async (req, res) => {
       .update(resetToken)
       .digest("hex");
 
-    const passwordResetExpires = Date.now() + 10 * 60 * 1000;
+    const passwordResetExpires = Date.now() + 24 * 60 * 60 * 1000;
     await User.findOneAndUpdate(
       { email: req.body.email },
       {
@@ -44,7 +44,7 @@ handler.post(async (req, res) => {
         <a href="https://www.digicafes.com/${resetToken}" target="_blank">Şifremi Sıfırla</a>
         <br />
         <br />
-        Bu link 10 dakika sonra geçerliliğini kaybedecektir.
+        Bu link 24 saat sonra geçerliliğini kaybedecektir.
         <br/>
         Eğer şifrenizi yenilemek istemiyorsanız bu maili görmezden geliniz.
                 `,
