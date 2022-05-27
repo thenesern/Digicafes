@@ -175,10 +175,10 @@ export async function getServerSideProps(context) {
 
   const user = await User.findOne({
     passwordResetToken: hashedToken,
-    passwordResetExpires: { $gt: Date.now() },
   });
-
-  if (!user) {
+  console.log(user);
+  console.log(Date.now());
+  if (!user || Date.now() > user?.passwordResetExpires.getTime()) {
     return {
       redirect: {
         destination: `/${[passwordResetToken]}/expired`,
