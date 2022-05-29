@@ -876,7 +876,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     {
       field: "name",
       headerName: t("panel:product"),
-      flex: 1,
+      flex: 3,
       renderCell: (params) => {
         return (
           <div className={styles.product}>
@@ -895,7 +895,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     {
       field: "price",
       headerName: t("panel:productPrice"),
-      flex: 0.7,
+      flex: 1,
       renderCell: (params) => {
         return (
           <span>
@@ -927,7 +927,7 @@ const UserDashboard = ({ userOrder, userId }) => {
         );
       },
     },
-    { field: "category", headerName: t("panel:productCategory"), flex: 0.8 },
+    { field: "category", headerName: t("panel:productCategory"), flex: 1 },
     {
       field: "actions",
       headerName: t("panel:actions"),
@@ -2375,6 +2375,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             {deleteCategory
                               ? t("panel:category")
                               : t("panel:product")}
+                            ,
                             <span className={styles.deleteDescription}>
                               {deleteName}
                             </span>
@@ -2385,7 +2386,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                     </form>
                     <div className={styles.modalButtons}>
                       <Button
-                        variant="contained"
+                        variant="outlined"
                         type="submit"
                         onClick={() => {
                           handleCloseDelete();
@@ -2397,7 +2398,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                       <Button
                         variant="contained"
                         type="submit"
-                        color="primary"
+                        color="secondary"
                         onClick={() => {
                           if (deleteCategory === true) {
                             deleteCategoryHandler();

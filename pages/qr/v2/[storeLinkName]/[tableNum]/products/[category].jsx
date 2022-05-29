@@ -543,6 +543,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
                 </li>
               ))}
           </ul>
+
           {hasSubCategories.filter((c) => c?.category?.includes(category))
             .length > 0
             ? uniqueSubCategories.map((s) => (
@@ -623,6 +624,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
                     gap: "1rem",
                     marginBottom: "10px",
                     paddingBottom: "4px",
+
                     borderBottom: "1px solid lightgray",
                   }}
                 >
@@ -697,7 +699,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
                         key={c.name}
                         style={{
                           display: "flex",
-                          alignItems: "flex-start",
+                          alignItems: "center",
                           width: "100%",
                           justifyContent: "space-between",
                           marginBottom: "10px",
@@ -723,6 +725,29 @@ const StoreMenu = ({ menu, category, order, number }) => {
                             : ""}
                           {c?.price}
                         </p>
+                        <button
+                          style={{
+                            borderRadius: " 0",
+                            backgroundColor: "#073b4c",
+                            color: "#f7ede2",
+                            width: "2rem",
+                            height: "2rem",
+                            margin: "0",
+                            borderRadius: "1rem",
+                            padding: "0",
+                            border: "none",
+                          }}
+                          onClick={() =>
+                            addToCartHandler({
+                              name: c?.name,
+                              price: c?.price,
+                              img: c?.image,
+                              quantity: 1,
+                            })
+                          }
+                        >
+                          <span>+</span>
+                        </button>
                       </div>
                     ))}
                 </div>

@@ -744,14 +744,14 @@ const Nav2 = () => {
                 style={{ cursor: "pointer" }}
                 src={logoDark}
                 objectFit="contain"
-                width="120px"
+                width="160px"
                 height="100px"
               ></Image>
             ) : (
               <Image
                 style={{ cursor: "pointer" }}
                 src={logo}
-                width="120px"
+                width="160px"
                 objectFit="contain"
                 height="100px"
               ></Image>
