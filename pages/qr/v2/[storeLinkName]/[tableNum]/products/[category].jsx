@@ -550,11 +550,8 @@ const StoreMenu = ({ menu, category, order, number }) => {
                 <div
                   key={s.name}
                   style={{
-                    backgroundColor: "#F9F3EE",
-                    padding: "1rem",
                     width: "90%",
                     margin: "0 auto",
-                    borderRadius: "1rem",
                   }}
                 >
                   <h3
@@ -571,18 +568,19 @@ const StoreMenu = ({ menu, category, order, number }) => {
                   {hasSubCategories
                     .filter((c) => c.subCategory === s)
                     .map((c) => (
-                      <li
-                        className={styles.listItem}
-                        key={c?.name}
-                        onClick={() => {
-                          setProductName(c?.name);
-                          setProductImage(c?.image);
-                          setProductPrice(c?.price);
-                          setProductDescription(c?.description);
-                          handleOpenModal();
-                        }}
-                      >
-                        <img className={styles.img} src={c?.image} alt="" />
+                      <li className={styles.listItem} key={c?.name}>
+                        <img
+                          className={styles.img}
+                          src={c?.image}
+                          alt=""
+                          onClick={() => {
+                            setProductName(c?.name);
+                            setProductImage(c?.image);
+                            setProductPrice(c?.price);
+                            setProductDescription(c?.description);
+                            handleOpenModal();
+                          }}
+                        />
                         <h3 className={styles.name}>{c?.name}</h3>
                         <p className={styles.price}>
                           {menu?.currency === "dolar"
@@ -594,6 +592,26 @@ const StoreMenu = ({ menu, category, order, number }) => {
                             : ""}
                           {c?.price}
                         </p>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          style={{
+                            borderRadius: " 0",
+                            backgroundColor: "#073b4c",
+                            color: "#f7ede2",
+                          }}
+                          fullWidth
+                          onClick={() =>
+                            addToCartHandler({
+                              name: c?.name,
+                              price: c?.price,
+                              img: c?.image,
+                              quantity: 1,
+                            })
+                          }
+                        >
+                          {t("common:addToCart")}
+                        </Button>
                       </li>
                     ))}
                 </div>
@@ -622,9 +640,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
                     justifyContent: "space-between",
                     width: "100%",
                     gap: "1rem",
-                    marginBottom: "10px",
                     paddingBottom: "4px",
-
                     borderBottom: "1px solid lightgray",
                   }}
                 >
@@ -650,7 +666,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
                     borderRadius: " 0",
                     backgroundColor: "#073b4c",
                     color: "#f7ede2",
-                    width: "2rem",
+                    minWidth: "2rem",
                     height: "2rem",
                     margin: "0",
                     borderRadius: "1rem",
@@ -673,14 +689,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
           {hasSubCategories.filter((c) => c?.category?.includes(category))
             .length > 0
             ? uniqueSubCategories.map((s) => (
-                <div
-                  key={s.name}
-                  style={{
-                    backgroundColor: "#F9F3EE",
-                    padding: "1rem",
-                    borderRadius: "1rem",
-                  }}
-                >
+                <div key={s.name}>
                   <h3
                     key={s}
                     style={{
@@ -704,6 +713,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
                           justifyContent: "space-between",
                           marginBottom: "10px",
                           paddingBottom: "4px",
+                          gap: "10px",
                           borderBottom: "1px solid lightgray",
                         }}
                       >
@@ -730,7 +740,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
                             borderRadius: " 0",
                             backgroundColor: "#073b4c",
                             color: "#f7ede2",
-                            width: "2rem",
+                            minWidth: "2rem",
                             height: "2rem",
                             margin: "0",
                             borderRadius: "1rem",

@@ -1249,7 +1249,9 @@ const UserDashboard = ({ userOrder, userId }) => {
                           variant="outlined"
                           onClick={handleOpenQRImages}
                           style={{ height: "2rem", minWidth: "12rem" }}
-                          endIcon={<DownloadIcon />}
+                          endIcon={
+                            <ArrowRightIcon style={{ fontSize: "2rem" }} />
+                          }
                         >
                           {t("panel:downloadCodes")}
                         </Button>

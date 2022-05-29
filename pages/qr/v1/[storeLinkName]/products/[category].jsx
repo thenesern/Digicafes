@@ -272,7 +272,7 @@ const StoreMenu = ({ menu, category }) => {
                     alignItems: "center",
                     justifyContent: "space-between",
                     width: "100%",
-                    gap: "1rem",
+                    gap: "10px",
                     marginBottom: "10px",
                     paddingBottom: "4px",
                     borderBottom: "1px solid lightgray",
@@ -329,7 +329,7 @@ const StoreMenu = ({ menu, category }) => {
                           alignItems: "flex-start",
                           width: "100%",
                           justifyContent: "space-between",
-                          marginBottom: "10px",
+                          marginBottom: "20px",
                           paddingBottom: "4px",
                           borderBottom: "1px solid lightgray",
                         }}

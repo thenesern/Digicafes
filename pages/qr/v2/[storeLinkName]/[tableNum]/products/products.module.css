@@ -80,14 +80,13 @@
 }
 .textList {
   list-style: none;
-  width: 90%;
   padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 1rem;
   border: 1px solid lightgray;
-  margin: 10px auto;
+  margin: 1rem;
   border-radius: 1rem;
 }
 .textListName,

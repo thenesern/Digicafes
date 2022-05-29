@@ -57,22 +57,25 @@ const StoreMenu = ({ menu, number }) => {
   const [favs, setFavs] = useState(
     menu?.orders?.map((o) => o.cartItems.map((a) => a.name).toString())
   );
-  const [favItem, setFavItem] = useState();
-  const [favItem2, setFavItem2] = useState();
-  const [favItem3, setFavItem3] = useState();
+  const duplicates = favs.filter((item, index) => index !== favs.indexOf(item));
+  const trinity = Array.from(new Set(duplicates));
+  const [favItem, setFavItem] = useState(trinity[trinity.length - 1]);
+  const [favItem2, setFavItem2] = useState(trinity[trinity.length - 2]);
+  const [favItem3, setFavItem3] = useState(trinity[trinity.length - 3]);
   const [isMobile, setIsMobile] = useState();
   useLayoutEffect(() => {
     if (window.innerWidth <= 1000) {
       setIsMobile(true);
     }
   }, []);
-  let m = 0;
-  const [favItemCount, setFavItemCount] = useState(null);
+  /*  let m = 0;
+  const [favItemCount, setFavItemCount] = useState(null); */
   const sorted = menu.categories.sort((a, b) => {
     if (a.order < b.order) return -1;
     return a.order > b.order ? 1 : 0;
   });
-
+  console.log(trinity);
+  /* 
   function setFavItems() {
     for (let i = 0; i < favs?.length; i++) {
       for (let j = i; j < favs?.length; j++) {
@@ -124,7 +127,7 @@ const StoreMenu = ({ menu, number }) => {
   }
   useLayoutEffect(() => {
     setFavItems();
-  }, []);
+  }, []); */
 
   const quantity = cart?.length;
   useEffect(() => {
