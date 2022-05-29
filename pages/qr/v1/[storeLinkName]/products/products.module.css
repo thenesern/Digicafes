@@ -76,8 +76,9 @@
   justify-content: flex-start;
   gap: 1rem;
   border: 1px solid lightgray;
-  margin: 10px;
   border-radius: 1rem;
+  margin: 0 auto;
+  width: 96%;
 }
 .textListName,
 .textListPrice {

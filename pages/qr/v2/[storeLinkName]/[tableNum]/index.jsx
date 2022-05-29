@@ -54,7 +54,13 @@ const StoreMenu = ({ menu, number }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [openCart, setOpenCart] = useState(false);
   const [listType, setListType] = useState(menu?.listType);
+  const [filteredOrders, setFilteredOrders] = useState(
+    menu?.orders.filter((o) => o.cartItems.length === 1)
+  );
   const [favs, setFavs] = useState(
+    filteredOrders.map((o) => o.cartItems.map((a) => a.name).toString())
+  );
+  console.log(
     menu?.orders?.map((o) => o.cartItems.map((a) => a.name).toString())
   );
   const duplicates = favs.filter((item, index) => index !== favs.indexOf(item));

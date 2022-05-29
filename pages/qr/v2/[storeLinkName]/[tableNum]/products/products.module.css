@@ -86,7 +86,8 @@
   justify-content: flex-start;
   gap: 1rem;
   border: 1px solid lightgray;
-  margin: 1rem;
+  margin: 10px auto;
+  width: 96%;
   border-radius: 1rem;
 }
 .textListName,

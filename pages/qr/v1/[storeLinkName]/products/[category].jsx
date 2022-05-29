@@ -198,16 +198,7 @@ const StoreMenu = ({ menu, category }) => {
           {hasSubCategories.filter((c) => c?.category?.includes(category))
             .length > 0
             ? uniqueSubCategories?.map((s) => (
-                <div
-                  key={s.name}
-                  style={{
-                    backgroundColor: "#F9F3EE",
-                    padding: "1rem",
-                    width: "90%",
-                    margin: "0 auto",
-                    borderRadius: "1rem",
-                  }}
-                >
+                <div key={s.name}>
                   <h3
                     key={s}
                     style={{
@@ -300,14 +291,7 @@ const StoreMenu = ({ menu, category }) => {
           {hasSubCategories.filter((c) => c?.category?.includes(category))
             .length > 0
             ? uniqueSubCategories?.map((s) => (
-                <div
-                  key={s.name}
-                  style={{
-                    backgroundColor: "#F9F3EE",
-                    padding: "1rem",
-                    borderRadius: "1rem",
-                  }}
-                >
+                <div key={s.name}>
                   <h3
                     key={s}
                     style={{
