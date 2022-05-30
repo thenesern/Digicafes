@@ -178,19 +178,62 @@ const Dashboard = () => {
                       </p>
                     </div>
                   ) : (
-                    <div>
-                      <h4>Durum</h4>
-                      <p>
-                        Paketinizin ücretli sürümü sonlandı. (
-                        {
-                          new Date(
-                            new Date(order?.expiry?.toString()).getTime()
+                    <div className={styles.expired}>
+                      <div
+                        style={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "flex-start",
+                          flexDirection: "column",
+                          justifyContent: "flex-start",
+                        }}
+                      >
+                        <h4>{t("panels:status")}</h4>
+                        <p style={{ margin: "0" }}>
+                          {t("panels:expired")} (
+                          {
+                            new Date(
+                              new Date(order?.expiry?.toString()).getTime()
+                            )
+                              ?.toLocaleString()
+                              .split(" ")[0]
+                          }
                           )
-                            ?.toLocaleString()
-                            .split(" ")[0]
-                        }
-                        )
-                      </p>
+                        </p>
+                      </div>
+                      <div
+                        style={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "flex-start",
+                          flexDirection: "column",
+                          justifyContent: "flex-start",
+                          minWidth: "15rem",
+                        }}
+                      >
+                        <h4 style={{ width: "100%" }}>
+                          {t("panels:continue")}
+                        </h4>
+                        {order?.product?.name.includes("V1") ? (
+                          <a
+                            className={styles.buy}
+                            href="https://iyzi.link/AIUgpA"
+                            rel="noreferrer"
+                            target="_blank"
+                          >
+                            {t("panels:buy")}
+                          </a>
+                        ) : (
+                          <a
+                            className={styles.buy}
+                            href="https://iyzi.link/AIUgyw"
+                            rel="noreferrer"
+                            target="_blank"
+                          >
+                            {t("panels:buy")}
+                          </a>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>

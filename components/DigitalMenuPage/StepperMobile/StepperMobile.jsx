@@ -43,7 +43,7 @@ export default function VerticalLinearStepper() {
     <Box sx={{ maxWidth: 400 }}>
       <Stepper
         activeStep={activeStep}
-        style={{ padding: "4rem 0" }}
+        style={{ paddingBottom: "8rem" }}
         orientation="vertical"
       >
         {steps.map((step, index) => (

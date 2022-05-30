@@ -7,5 +7,9 @@
   "status": "Durum",
   "v1": "Dijital Menü V1",
   "v2": "Dijital Menü V2",
-  "active": "Aktif"
+  "active": "Aktif",
+  "v1continue": "Dijital Menü V1 ile devam et",
+  "v2continue": "Dijital Menü V2 ile devam et",
+  "expired": "Paketinizin ücretli sürümü sonlandı.",
+  "buy": "Satın Al"
 }

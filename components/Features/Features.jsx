@@ -5,8 +5,12 @@ import QRCode from "qrcode";
 import { useState } from "react";
 import Aos from "aos";
 import useTranslation from "next-translate/useTranslation";
+import { Store } from "../../redux/store";
+import { useContext } from "react";
 
 const Features = () => {
+  const { state } = useContext(Store);
+  const { userInfo } = state;
   const [isMobile, setIsMobile] = useState();
   const { t } = useTranslation();
   useEffect(() => {
@@ -40,6 +44,11 @@ const Features = () => {
     <section className={styles.section} id="paketler">
       <article className={styles.article} data-aos="fade-right">
         <h2 className={styles.header}>{t("features:v1")}</h2>
+        <span className={styles.priceDes}>
+          <span className={styles.price}>{t("features:pricev1")}</span>
+          <span> / </span>
+          {t("features:annually")}
+        </span>
         <ul className={styles.list}>
           <li>{t("features:v1f1")}</li>
           <li>{t("features:v1f2")}</li>
@@ -65,22 +74,36 @@ const Features = () => {
               style={{
                 width: "12rem",
                 margin: "1rem",
-                backgroundColor: "#c9184a",
+                backgroundColor: "#edf2f4",
+                color: "#001219",
               }}
             >
               {t("features:v1s1")}
             </Button>
           </a>
         )}
+        {userInfo ? (
+          <a
+            className={styles.buy}
+            href="https://iyzi.link/AIUgpA"
+            rel="noreferrer"
+            target="_blank"
+          >
+            {t("features:buy")}
+          </a>
+        ) : (
+          <h4>Satın almak için üye olunuz.</h4>
+        )}
       </article>
       <article className={styles.article} data-aos="fade-left">
         <h2 className={styles.header}>{t("features:v2")}</h2>
+        <span className={styles.priceDes}>
+          <span className={styles.price}>{t("features:pricev2")}</span>
+          <span> / </span>
+          {t("features:annually")}
+        </span>
         <ul className={styles.list}>
-          <li>{t("features:v2f1")}</li>
-          <li>{t("features:v2f2")}</li>
-          <li>{t("features:v2f3")}</li>
-          <li>{t("features:v2f4")}</li>
-          <li>{t("features:v2f5")}</li>
+          <li>{t("features:includesv1")}</li>
           <li>+</li>
           <li>{t("features:v2f6")}</li>
           <li>{t("features:v2f7")}</li>
@@ -104,12 +127,25 @@ const Features = () => {
               style={{
                 width: "12rem",
                 margin: "1rem",
-                backgroundColor: "#c9184a",
+                backgroundColor: "#edf2f4",
+                color: "#001219",
               }}
             >
               {t("features:v1s1")}
             </Button>
           </a>
+        )}
+        {userInfo ? (
+          <a
+            className={styles.buy}
+            href="https://iyzi.link/AIUgyw"
+            rel="noreferrer"
+            target="_blank"
+          >
+            {t("features:buy")}
+          </a>
+        ) : (
+          <h4>Satın almak için üye olunuz.</h4>
         )}
       </article>
     </section>

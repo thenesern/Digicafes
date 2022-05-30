@@ -2,7 +2,7 @@
   "v1": "Dijital Menü V1",
   "v1f1": "Dijital Menü Yönetim Paneli",
   "v1f2": "Sınırsız Ürün ve Kategori Ekleme",
-  "v1f3": "Sınırsız Güncelleme",
+  "v1f3": "Sınırsız Güncelleme Hakkı",
   "v1f4": "Otomatik QR Kod Oluşturucu",
   "v1f5": "Dijital Menü",
   "v1d1": "Dijital Menü V1 ile müşterilerinize Dijital Menü deneyimi sunun",
@@ -14,7 +14,12 @@
   "v2f4": "Otomatik QR Kod Oluşturucu",
   "v2f5": "Dijital Menü",
   "v2f6": "Dijital Menü Sipariş Paneli",
-  "v2f7": "Dijital Menü Sipariş Modülü",
-  "v2f8": "Dijital Menü Garson Çağır ve Adisyon İste Modülü",
-  "v2d1": "Dijital Menü V2 ile müşterilerinize Dijital Menü deneyimi sunarken aynı zamanda iş yükünüzü azaltın"
+  "v2f7": "Sipariş Modülü",
+  "v2f8": "Garson Çağır ve Adisyon İste Modülü",
+  "v2d1": "Dijital Menü V2 ile müşterilerinize Dijital Menü deneyimi sunarken aynı zamanda iş yükünüzü azaltın",
+  "annualy": "Yıllık",
+  "pricev1": "1000₺",
+  "pricev2": "1500₺",
+  "includesv1": "V1'deki bütün özellikleri içerir",
+  "buy": "Satın Al"
 }

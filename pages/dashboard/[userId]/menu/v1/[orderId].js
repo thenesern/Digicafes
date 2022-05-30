@@ -17,7 +17,6 @@ const DashboardMenuv1 = ({ userOrder }) => {
     </div>
   );
 };
-
 export async function getServerSideProps(context) {
   const { orderId } = context.query;
   const { userId } = context.query;
@@ -38,10 +37,25 @@ export async function getServerSideProps(context) {
     })
     .populate({ path: "user", model: User })
     .populate({ path: "menuv1", model: QRMenu });
+
+  const newDate = new Date();
+  if (
+    new Date(order[0]?.expiry?.toString()).getTime() > newDate.getTime() ===
+    false
+  ) {
+    return {
+      redirect: {
+        destination: "/404",
+        permanent: false,
+      },
+    };
+  }
+
   await db.disconnect();
   return {
     props: {
       userOrder: JSON.parse(JSON.stringify(order)),
+      userId,
     },
   };
 }
