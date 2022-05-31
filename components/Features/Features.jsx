@@ -7,9 +7,11 @@ import Aos from "aos";
 import useTranslation from "next-translate/useTranslation";
 import { Store } from "../../redux/store";
 import { useContext } from "react";
+import { useRouter } from "next/router";
 
 const Features = () => {
   const { state } = useContext(Store);
+  const router = useRouter();
   const { userInfo } = state;
   const [isMobile, setIsMobile] = useState();
   const { t } = useTranslation();
@@ -25,6 +27,8 @@ const Features = () => {
   }, []);
   const [src, setSrc] = useState("");
   const [src2, setSrc2] = useState("");
+  const [srcEn, setSrcEn] = useState("");
+  const [src2En, setSrc2En] = useState("");
   var opts = {
     errorCorrectionLevel: "H",
     type: "image/png",
@@ -38,6 +42,12 @@ const Features = () => {
   ).then(setSrc);
   QRCode.toDataURL("https://www.digicafes.com/qr/v2/demo/1", opts).then(
     setSrc2
+  );
+  QRCode.toDataURL("https://www.digicafes.com/qr/v1/demo-en2", opts).then(
+    setSrcEn
+  );
+  QRCode.toDataURL("https://www.digicafes.com/qr/v2/demo-en/1", opts).then(
+    setSrc2En
   );
 
   return (
@@ -60,12 +70,20 @@ const Features = () => {
         {!isMobile && (
           <div className={styles.demo}>
             <h3 className={styles.demoHeader}>{t("features:v1s1")}</h3>
-            <img src={src} width="96px"></img>
+            {router.locale === "tr" ? (
+              <img src={src} width="96px"></img>
+            ) : (
+              <img src={srcEn} width="96px"></img>
+            )}
           </div>
         )}
         {isMobile && (
           <a
-            href="https://www.digicafes.com/qr/v1/marcho-pascha-3"
+            href={
+              router.locale === "tr"
+                ? "https://www.digicafes.com/qr/v1/marcho-pascha-3"
+                : "https://www.digicafes.com/qr/v1/demo-en2"
+            }
             target="_blank"
             rel="noreferrer"
           >
@@ -85,7 +103,11 @@ const Features = () => {
         {userInfo ? (
           <a
             className={styles.buy}
-            href="https://iyzi.link/AIUgpA"
+            href={
+              router.locale === "tr"
+                ? "https://iyzi.link/AIUgpA"
+                : "https://iyzi.link/AIUo8w"
+            }
             rel="noreferrer"
             target="_blank"
           >
@@ -113,12 +135,20 @@ const Features = () => {
         {!isMobile && (
           <div className={styles.demo}>
             <h3 className={styles.demoHeader}>{t("features:v1s1")}</h3>
-            <img src={src2} width="96px"></img>
+            {router.locale === "tr" ? (
+              <img src={src2} width="96px"></img>
+            ) : (
+              <img src={src2En} width="96px"></img>
+            )}
           </div>
         )}
         {isMobile && (
           <a
-            href="https://www.digicafes.com/qr/v2/demo/1"
+            href={
+              router.locale === "tr"
+                ? "https://www.digicafes.com/qr/v2/demo/1"
+                : "https://www.digicafes.com/qr/v2/demo-en/1"
+            }
             target="_blank"
             rel="noreferrer"
           >
@@ -138,7 +168,11 @@ const Features = () => {
         {userInfo ? (
           <a
             className={styles.buy}
-            href="https://iyzi.link/AIUgyw"
+            href={
+              router.locale === "tr"
+                ? "https://iyzi.link/AIUgyw"
+                : "https://iyzi.link/AIUpCw"
+            }
             rel="noreferrer"
             target="_blank"
           >
