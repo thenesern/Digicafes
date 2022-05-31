@@ -49,6 +49,9 @@ const Nav2 = () => {
   const { state, dispatch } = useContext(Store);
   const [isFetching, setIsFetching] = useState(false);
   const [openMuiLogin, setOpenMuiLogin] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
+  const prevOpen = React.useRef(open);
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const [openMuiRegister, setOpenMuiRegister] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -62,25 +65,6 @@ const Nav2 = () => {
   } = useForm();
   let user;
 
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
-  const prevOpen = React.useRef(open);
-  const signedIn = new Date().toLocaleString("tr-TR");
-  const lowerFirst = fName?.toLowerCase();
-  const betterFirst = lowerFirst?.replace(
-    lowerFirst[0],
-    lowerFirst[0]?.toUpperCase()
-  );
-
-  const lowerLast = lName?.toLowerCase();
-  const betterLast = lowerLast?.replace(
-    lowerLast[0],
-    lowerLast[0]?.toUpperCase()
-  );
-
-  const firstName = betterFirst;
-  const lastName = betterLast;
-  const createdAt = new Date().toLocaleString("tr-TR");
   // Translation
   const { t, lang } = useTranslation();
 
@@ -201,6 +185,22 @@ const Nav2 = () => {
       return enqueueSnackbar(t("nav:passwordError"), { variant: "error" });
     }
 
+    const signedIn = new Date().toLocaleString("tr-TR");
+    const lowerFirst = fName?.toLowerCase();
+    const betterFirst = lowerFirst?.replace(
+      lowerFirst[0],
+      lowerFirst[0]?.toUpperCase()
+    );
+
+    const lowerLast = lName?.toLowerCase();
+    const betterLast = lowerLast?.replace(
+      lowerLast[0],
+      lowerLast[0]?.toUpperCase()
+    );
+
+    const firstName = betterFirst;
+    const lastName = betterLast;
+    const createdAt = new Date().toLocaleString("tr-TR");
     try {
       setIsFetching(true);
       const { data } = await axios.post("/api/auth/register", {
