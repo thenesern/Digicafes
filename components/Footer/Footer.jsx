@@ -1,26 +1,59 @@
 // Packages and Dependencies
 import React from "react";
 import Image from "next/image";
-import logo from "../../assets/digi_dark_logo.svg";
 import useTranslation from "next-translate/useTranslation";
+import { useRouter } from "next/router";
 // Styles
 import { Facebook, Instagram } from "@material-ui/icons";
+import logo from "../../assets/digi_dark_logo.svg";
 import styles from "./Footer.module.css";
+import Providers from "../../assets/paymentProvider/providers.svg";
+import whatsapp from "../../assets/image/whatsapp.png";
 
 const Footer = () => {
   const { t } = useTranslation();
+  const router = useRouter();
 
   return (
     <div className={styles.container}>
       <div className={styles.footer}>
-        <div>
+        <div className={styles.brand}>
           <Image
             style={{ cursor: "pointer" }}
             src={logo}
             width="200px"
             objectFit="contain"
-            height="100px"
+            height="60px"
           ></Image>
+          <span>{t("common:footer")}</span>
+          {router.locale === "tr" ? (
+            <div>
+              <a href="/uyelik-sozlesmesi" target="_blank">
+                <span style={{ fontWeight: "600" }}>Üyelik Sözleşmesi</span>
+              </a>
+              <a href="/gizlilik-politikasi" target="_blank">
+                <span style={{ fontWeight: "600", marginLeft: "1rem" }}>
+                  Gizlilik Politikası
+                </span>
+              </a>
+              <a href="/cerez-politikasi" target="_blank">
+                <span style={{ fontWeight: "600", marginLeft: "1rem" }}>
+                  Çerez Politikası
+                </span>
+              </a>
+            </div>
+          ) : (
+            <div>
+              <a href="/terms-of-service" target="_blank">
+                <span style={{ fontWeight: "600" }}>Terms of Service</span>
+              </a>
+              <a href="/privacy-policy" target="_blank">
+                <span style={{ fontWeight: "600", marginLeft: "1rem" }}>
+                  Privacy Policy
+                </span>
+              </a>
+            </div>
+          )}
         </div>
         <div className={styles.right}>
           <div className={styles["social-container"]}>
@@ -35,11 +68,31 @@ const Footer = () => {
             >
               <Instagram />
             </a>
+            {router?.locale === "tr" && (
+              <div>
+                <a
+                  href="https://api.whatsapp.com/send?phone=905012345324"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Image
+                    objectFit="contain"
+                    src={whatsapp}
+                    width="40"
+                    height="40"
+                  />
+                </a>
+              </div>
+            )}
+          </div>
+          <div>
+            <Image src={Providers} width="400" height="60" />
           </div>
         </div>
       </div>
+
       <span className={styles.description}>
-        ©{new Date().getFullYear()} {t("footer:alert")}
+        ©{new Date().getFullYear()} Digicafes | {t("footer:alert")}
       </span>
     </div>
   );

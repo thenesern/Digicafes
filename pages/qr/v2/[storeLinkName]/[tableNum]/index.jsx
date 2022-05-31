@@ -1,140 +1,90 @@
+// Packages and Dependencies
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { useRouter } from "next/router";
-import React, { useState, useLayoutEffect } from "react";
-import styles from "./store.module.css";
-import db from "../../../../../utils/db.js";
 import { Loading, Modal, Spacer, Textarea, Link } from "@nextui-org/react";
-import { Badge } from "@material-ui/core";
-import digicafes from "../../../../../assets/digi_logo.svg";
-import QRMenu from "../../../../../models/QRMenu2Model.js";
+import axios from "axios";
+import Image from "next/image";
 import {
-  Box,
   Button,
   Divider,
   IconButton,
   SwipeableDrawer,
 } from "@material-ui/core";
+// Styles
+import styles from "./store.module.css";
+// Icons
+import { Badge } from "@material-ui/core";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import axios from "axios";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { useEffect } from "react";
-import Order from "../../../../../models/OrderModel";
-import Image from "next/image";
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
+import { ShoppingCartOutlined } from "@material-ui/icons";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 import FmdBadIcon from "@mui/icons-material/FmdBad";
+// Images
+import digicafes from "../../../../../assets/digi_logo.svg";
+// Utils
+import db from "../../../../../utils/db.js";
+import QRMenu from "../../../../../models/QRMenu2Model.js";
+import Order from "../../../../../models/OrderModel";
+
+// Context
 import { useContext } from "react";
 import { Store } from "../../../../../redux/store";
-import { ShoppingCartOutlined } from "@material-ui/icons";
+// Translation
 import useTranslation from "next-translate/useTranslation";
 import i18nConfig from "../../../../../i18n.json";
 
 const StoreMenu = ({ menu, number }) => {
-  const [open, setOpen] = useState(false);
+  // States
   const [storeName, setStoreName] = useState(menu?.storeName);
-  const { locales } = i18nConfig;
-  const Router = useRouter();
-  const { t, lang } = useTranslation();
-  const [isFetching, setIsFetching] = useState(false);
-  const [waiterModal, setWaiterModal] = useState(false);
-  const [tableModal, setTableModal] = useState(false);
-  const handleOpenWaiterModal = () => setWaiterModal(true);
-  const handleOpenTableModal = () => setTableModal(true);
-  const [cartTotal, setCartTotal] = useState(null);
-  const [orderNotes, setOrderNotes] = useState("");
-  const handleCloseWaiterModal = () => setWaiterModal(false);
-  const handleCloseTableModal = () => setTableModal(false);
-  const { state, dispatch } = useContext(Store);
-  const [isSure, setIsSure] = useState(false);
-  const [callName, setCallName] = useState("");
-  const { cart } = state;
-  const [cartItems, setCartItems] = useState([...cart]);
   const [tableNum, setTableNum] = useState(number);
-  const [openIsSure, setOpenIsSure] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [openCart, setOpenCart] = useState(false);
   const [listType, setListType] = useState(menu?.listType);
+  const sorted = menu.categories.sort((a, b) => {
+    if (a.order < b.order) return -1;
+    return a.order > b.order ? 1 : 0;
+  });
   const [filteredOrders, setFilteredOrders] = useState(
     menu?.orders.filter((o) => o.cartItems.length === 1)
   );
   const [favs, setFavs] = useState(
     filteredOrders.map((o) => o.cartItems.map((a) => a.name).toString())
   );
-  console.log(
-    menu?.orders?.map((o) => o.cartItems.map((a) => a.name).toString())
-  );
+  const [open, setOpen] = useState(false);
+  const [openIsSure, setOpenIsSure] = useState(false);
+  const [isSure, setIsSure] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [openCart, setOpenCart] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  // Favs
   const duplicates = favs.filter((item, index) => index !== favs.indexOf(item));
   const trinity = Array.from(new Set(duplicates));
   const [favItem, setFavItem] = useState(trinity[trinity.length - 1]);
   const [favItem2, setFavItem2] = useState(trinity[trinity.length - 2]);
   const [favItem3, setFavItem3] = useState(trinity[trinity.length - 3]);
-  const [isMobile, setIsMobile] = useState();
+  // Router
+  const Router = useRouter();
+  // Translation
+  const { locales } = i18nConfig;
+  const { t, lang } = useTranslation();
+  // Context
+  const { state, dispatch } = useContext(Store);
+  const { cart } = state;
+  const [waiterModal, setWaiterModal] = useState(false);
+  const [tableModal, setTableModal] = useState(false);
+  const [cartTotal, setCartTotal] = useState(null);
+  const [orderNotes, setOrderNotes] = useState("");
+  const [callName, setCallName] = useState("");
+  const [cartItems, setCartItems] = useState([...cart]);
+  const quantity = cart?.length;
+
   useLayoutEffect(() => {
     if (window.innerWidth <= 1000) {
       setIsMobile(true);
     }
   }, []);
-  /*  let m = 0;
-  const [favItemCount, setFavItemCount] = useState(null); */
-  const sorted = menu.categories.sort((a, b) => {
-    if (a.order < b.order) return -1;
-    return a.order > b.order ? 1 : 0;
-  });
-  /* 
-  function setFavItems() {
-    for (let i = 0; i < favs?.length; i++) {
-      for (let j = i; j < favs?.length; j++) {
-        if (favs[i] == favs[j]) m++;
-        if (favItemCount < m) {
-          favItemCount = m;
-          if (favs[i].split(",")) {
-            setFavItem(favs[i].split(",")[0]);
-          }
-          if (favs[i - 1]?.split(",")) {
-            setFavItem2(favs[i - 1]?.split(",")[0]);
-            setFavItem3(favs[i - 1]?.split(",")[1]);
-          } else {
-            setFavItem(favs[i]);
-            setFavItem2(favs[i - 1]);
-            setFavItem2(favs[i - 2]);
-          }
-          if (
-            menu?.products.filter(
-              (p) =>
-                p?.name?.toLowerCase() === favs[i]?.split(",")[0]?.toLowerCase()
-            ).length === 0
-          ) {
-            setFavItem(menu?.products[1].name);
-          }
-          if (
-            menu?.products.filter(
-              (p) =>
-                p?.name?.toLowerCase() ===
-                favs[i - 1]?.split(",")[0]?.toLowerCase()
-            ).length === 0
-          ) {
-            setFavItem2(menu?.products[1].name);
-          }
-          if (
-            menu?.products.filter(
-              (p) =>
-                p?.name?.toLowerCase() ===
-                favs[i - 1]?.split(",")[1]?.toLowerCase()
-            ).length === 0
-          ) {
-            setFavItem3(menu?.products[1].name);
-          }
-          setFavItemCount(favItemCount);
-        }
-      }
-      m = 0;
-    }
-  }
-  useLayoutEffect(() => {
-    setFavItems();
-  }, []); */
 
-  const quantity = cart?.length;
   useEffect(() => {
     if (isSuccess) {
       setTimeout(() => {
@@ -142,9 +92,7 @@ const StoreMenu = ({ menu, number }) => {
       }, 2000);
     }
   }, [isSuccess]);
-  const handleOpenCart = () => {
-    setOpenCart(true);
-  };
+
   useEffect(() => {
     setCartTotal(
       cartItems.reduce(function (a, b) {
@@ -152,15 +100,6 @@ const StoreMenu = ({ menu, number }) => {
       }, 0)
     );
   }, [cartItems]);
-  const handleCloseCart = () => {
-    setOpenCart(false);
-    setOrderNotes("");
-  };
-  const handleCloseOpenIsSure = () => setOpenIsSure(false);
-  const handleOpenIsSure = () => {
-    setOpenCart(false);
-    setOpenIsSure(true);
-  };
 
   useEffect(() => {
     if (isSure) {
@@ -171,6 +110,23 @@ const StoreMenu = ({ menu, number }) => {
       handleCloseOpenIsSure();
     }
   }, [isSure]);
+
+  const handleOpenCart = () => {
+    setOpenCart(true);
+  };
+  const handleOpenIsSure = () => {
+    setOpenCart(false);
+    setOpenIsSure(true);
+  };
+  const handleOpenWaiterModal = () => setWaiterModal(true);
+  const handleOpenTableModal = () => setTableModal(true);
+  const handleCloseWaiterModal = () => setWaiterModal(false);
+  const handleCloseTableModal = () => setTableModal(false);
+  const handleCloseOpenIsSure = () => setOpenIsSure(false);
+  const handleCloseCart = () => {
+    setOpenCart(false);
+    setOrderNotes("");
+  };
 
   const handleCartOrder = async () => {
     setIsFetching(true);
@@ -193,6 +149,7 @@ const StoreMenu = ({ menu, number }) => {
       console.log(err);
     }
   };
+
   const handleCalls = async ({ callName }) => {
     setIsFetching(true);
     const createdAt = new Date();
@@ -234,7 +191,7 @@ const StoreMenu = ({ menu, number }) => {
               }}
             >
               <CheckCircleIcon style={{ fontSize: "8rem" }} color="success" />
-              <h1>{t("common:request")}</h1>
+              <h3>{t("common:request")}</h3>
             </Modal.Body>
           </Modal>
           <Modal
@@ -296,7 +253,7 @@ const StoreMenu = ({ menu, number }) => {
                     <>
                       <div key={Math.random()} className={styles.cart}>
                         <div className={styles.cartHeader}>
-                          <img
+                          <Image
                             src={item?.img}
                             alt=""
                             className={styles.cartImg}
@@ -502,7 +459,7 @@ const StoreMenu = ({ menu, number }) => {
               <MenuIcon style={{ color: "white", fontSize: "2rem" }} />
             </IconButton>
             {menu?.storeLogo?.includes("cloudinary") ? (
-              <img src={menu?.storeLogo} alt="Logo" className={styles.logo} />
+              <Image src={menu?.storeLogo} alt="Logo" width="80" height="80" />
             ) : (
               <h4 className={styles.storeName}>
                 {menu?.storeName.toUpperCase()}
@@ -630,7 +587,13 @@ const StoreMenu = ({ menu, number }) => {
                           }}
                           className={styles.favsItem}
                         >
-                          <img src={a?.image} className={styles.favsImage} />
+                          <Image
+                            width="90"
+                            height="70"
+                            alt="Favs"
+                            src={a?.image}
+                            className={styles.favsImage}
+                          />
                           <h4 className={styles.favsName}>{a?.name}</h4>
                         </div>
                       ))}
@@ -654,7 +617,13 @@ const StoreMenu = ({ menu, number }) => {
                             }
                           }}
                         >
-                          <img src={a?.image} className={styles.favsImage} />
+                          <Image
+                            src={a?.image}
+                            className={styles.favsImage}
+                            width="90"
+                            height="70"
+                            alt="Favs"
+                          />
                           <h4 className={styles.favsName}>{a?.name}</h4>
                         </div>
                       ))}
@@ -680,7 +649,13 @@ const StoreMenu = ({ menu, number }) => {
                           }}
                         >
                           {a?.image && (
-                            <img src={a?.image} className={styles.favsImage} />
+                            <Image
+                              src={a?.image}
+                              width="90"
+                              height="70"
+                              alt="Favs"
+                              className={styles.favsImage}
+                            />
                           )}
                           <h4 className={styles.favsName}>{a?.name}</h4>
                         </div>
@@ -819,7 +794,7 @@ const StoreMenu = ({ menu, number }) => {
               rel="noreferrer"
               target="_blank"
             >
-              <Image src={digicafes} width={160} height={160} />
+              <Image src={digicafes} width={160} height={160} alt="Digicafes" />
             </a>
             <span>
               ©{new Date().getFullYear()} {t("common:rights")}
@@ -843,15 +818,20 @@ const StoreMenu = ({ menu, number }) => {
 };
 
 export async function getServerSideProps(context) {
+  // Router Query
   const { storeLinkName } = context.query;
   const { tableNum } = context.query;
+
+  // DB
   await db.connect();
   const menu = await QRMenu.findOne({
     storeLinkName,
   });
-
   const order = await Order.findOne({ menuv2: menu?._id });
   const newDate = new Date();
+  await db.disconnect();
+
+  // Security
   if (
     new Date(order?.expiry?.toString()).getTime() > newDate.getTime() ===
     false
@@ -864,7 +844,6 @@ export async function getServerSideProps(context) {
     };
   }
 
-  await db.disconnect();
   return {
     props: {
       menu: JSON.parse(JSON.stringify(menu)),

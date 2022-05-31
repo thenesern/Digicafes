@@ -9,15 +9,7 @@
   width: 100% !important;
   overflow: hidden !important;
 }
-.wpBtn {
-  position: fixed !important;
-  width: 3rem !important;
-  height: 3rem !important;
-  bottom: 2rem !important;
-  left: 2rem;
-  z-index: 12;
-  cursor: pointer;
-}
+
 .image,
 .image2,
 .image3 {

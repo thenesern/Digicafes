@@ -36,5 +36,6 @@
   "notFoundProduct": "Not found any product.",
   "loading": "Loading...",
   "categoryImage": "Category Image",
-  "notFoundImage": "Not found any image."
+  "notFoundImage": "Not found any image.",
+  "404": "The page you were looking for doesn't exist or you don't have acces!"
 }

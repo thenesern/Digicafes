@@ -1,6 +1,7 @@
-import React from "react";
+// Components
 import Nav2 from "../../components/Nav2/Nav";
 import Footer from "../../components/Footer/Footer";
+// Styles
 import styles from "./TermsOfService.module.css";
 
 const TermsOfService = () => {

@@ -1,4 +1,4 @@
-import React from "react";
+// Components
 import Nav2 from "../components/Nav2/Nav";
 import Footer from "../components/Footer/Footer";
 import Component404 from "../components/Component404/Component404";

@@ -75,8 +75,6 @@
   max-height: 1rem;
 }
 .favsImage {
-  width: 5rem;
-  height: 3rem;
   object-fit: cover;
   border-radius: 1rem;
 }
@@ -114,11 +112,7 @@
   align-items: center;
   justify-content: center;
 }
-.logo {
-  object-fit: contain;
-  width: 4rem;
-  height: auto;
-}
+
 .productQuantity {
   display: flex;
   align-items: center;

@@ -1,65 +1,50 @@
-import React from "react";
-import Footer from "../components/Footer/Footer";
-import Nav from "../components/Nav/Nav";
 // Packages and Dependencies
-import LinkRouter from "next/link";
-import Head from "next/head";
-import { Link } from "react-scroll";
+import React from "react";
 import Image from "next/image";
+import route from "../assets/refers/route.png";
+import { useRouter } from "next/router";
+import { useLayoutEffect } from "react";
+import useTranslation from "next-translate/useTranslation";
+// Images
 import digitalMenuMockup from "../assets/image/DigitalMenuPanelMockup.png";
 import digitalMenuMockupEn from "../assets/image/DigitalMenuPanelMockup_en.png";
 import TabletMockup from "../assets/image/tabletMockup.png";
 import TabletMockupEn from "../assets/image/tabletMockup_en.png";
 import QRMenuMockup from "../assets/image/QRMenuMockup.png";
 import QRMenuMockupEn from "../assets/image/QRMenuMockup_en.png";
-import DigitalMenuStepper from "../components/DigitalMenuPage/DigitalMenuStepper/DigitalMenuStepper";
-import StepperMobile from "../components/DigitalMenuPage/StepperMobile/StepperMobile";
-import FAQ from "../components/FAQ/FAQ";
-import ContactForm from "../components/ContactForm/ContactForm";
-import favicon from "../public/favicon.ico";
-import whatsapp from "../assets/image/whatsapp.png";
-import marcopascha from "../assets/refers/marcologo.png";
-import route from "../assets/refers/route.png";
-import { useRouter } from "next/router";
-import HeroImage from "../assets/image/HeroImage.png";
 import HeroImageEn from "../assets/image/HeroImage_en.png";
+import marcopascha from "../assets/refers/marcologo.png";
+import HeroImage from "../assets/image/HeroImage.png";
 // Styles
 import styles from "./DigitalMenuPage.module.css";
+// Animations
 import Aos from "aos";
-import { useEffect } from "react";
-import { useState } from "react";
 import "aos/dist/aos.css";
+// Components
+import Nav from "../components/Nav/Nav";
 import Features from "../components/Features/Features";
-import useTranslation from "next-translate/useTranslation";
+import StepperMobile from "../components/DigitalMenuPage/StepperMobile/StepperMobile";
+import DigitalMenuStepper from "../components/DigitalMenuPage/DigitalMenuStepper/DigitalMenuStepper";
+import FAQ from "../components/FAQ/FAQ";
+import ContactForm from "../components/ContactForm/ContactForm";
+import Footer from "../components/Footer/Footer";
 
 const DijitalMenu = () => {
   const router = useRouter();
+
+  // Translation
   const { t } = useTranslation();
-  useEffect(() => {
+
+  // Animations
+  useLayoutEffect(() => {
     Aos.init({ duration: 2000 });
     Aos.refresh();
   }, []);
-  const [isMobile, setIsMobile] = useState();
-  useEffect(() => {
-    if (window.innerWidth <= 760) {
-      setIsMobile(true);
-    }
-  }, []);
+
   return (
     <div>
       <Nav />
       <div className={styles.container}>
-        {router?.locale === "tr" && (
-          <div className={styles.wpBtn}>
-            <a
-              href="https://api.whatsapp.com/send?phone=905012345324"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Image layout="responsive" objectFit="contain" src={whatsapp} />
-            </a>
-          </div>
-        )}
         <div className={styles.topBox}>
           <div className={styles.top}>
             <div className={styles.topLeft}>
@@ -100,6 +85,7 @@ const DijitalMenu = () => {
                 objectFit="contain"
                 src={marcopascha}
                 className={styles.reference}
+                alt="Marco Pascha"
               />
               <Image
                 width={200}
@@ -107,6 +93,7 @@ const DijitalMenu = () => {
                 className={styles.reference}
                 objectFit="contain"
                 src={route}
+                alt="Route"
               />
             </div>
           </div>
@@ -143,7 +130,6 @@ const DijitalMenu = () => {
               <p>{t("home:d1")}</p>
             </div>
           </article>
-
           <article className={styles.second}>
             <div className={styles.secondDes}>
               <h2 className={styles.secondHeader}>

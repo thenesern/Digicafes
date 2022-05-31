@@ -36,5 +36,6 @@
   "notFoundProduct": "Ürün bulunamadı.",
   "loading": "Yükleniyor...",
   "categoryImage": "Kategori Görseli",
-  "notFoundImage": "Görsel bulunamadı."
+  "notFoundImage": "Görsel bulunamadı.",
+  "404": "Aradığınız sayfaya ulaşılamıyor ya da erişim izniniz yok!"
 }

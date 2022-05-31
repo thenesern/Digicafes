@@ -1,7 +1,7 @@
-import React from "react";
-import Footer from "../../components/Footer/Footer";
-import MembershipAgreement from "../../components/MembershipAgreement/MembershipAgreement";
+// Components
 import Nav2 from "../../components/Nav2/Nav";
+import MembershipAgreement from "../../components/MembershipAgreement/MembershipAgreement";
+import Footer from "../../components/Footer/Footer";
 
 const index = () => {
   return (

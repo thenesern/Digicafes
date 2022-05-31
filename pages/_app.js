@@ -1,12 +1,19 @@
-import "../styles/globals.css";
-import Head from "next/head";
+// Packages or Dependencies
 import { SnackbarProvider } from "notistack";
-import { StoreProvider } from "../redux/store";
 import { SSRProvider } from "react-bootstrap";
+// Head
+import Head from "next/head";
+// Styles
+import "../styles/globals.css";
+// Store
+import { StoreProvider } from "../redux/store";
+// Translation
 import useTranslation from "next-translate/useTranslation";
 
 function MyApp({ Component, pageProps }) {
+  // Translation
   const { t } = useTranslation();
+
   return (
     <StoreProvider>
       <Head>
