@@ -16,16 +16,15 @@ import useTranslation from "next-translate/useTranslation";
 const User = ({ orders, isFetching }) => {
   // States
   let profile;
+  if (Cookies.get("userInfo")) {
+    profile = JSON.parse(Cookies.get("userInfo"));
+  }
   const [firstName, setFirstName] = useState(profile?.firstName);
   const [lastName, setLastName] = useState(profile?.lastName);
   const [isChanged, setIsChanged] = useState(false);
   // Translation
   const { t } = useTranslation();
 
-  if (Cookies.get("userInfo")) {
-    profile = JSON.parse(Cookies.get("userInfo"));
-  }
-  
   const firstNameChangeHandler = (e) => {
     setFirstName(e.target.value);
   };
