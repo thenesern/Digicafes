@@ -1216,7 +1216,8 @@ const UserDashboard = ({ userOrder, userId }) => {
                           className={styles.qrButtons}
                           style={{
                             height: "2rem",
-                            minWidth: "10rem",
+                            minWidth: "11rem",
+                            fontSize: "13px",
                             color: "#fbeee0",
                             border: "1px solid #fbeee0",
                           }}
@@ -1231,12 +1232,12 @@ const UserDashboard = ({ userOrder, userId }) => {
                   {order?.menuv2 && (
                     <Stack direction="row" spacing={1}>
                       <Button
-                        className={styles.qrButtons}
                         variant="outlined"
                         onClick={handleOpenQRImages}
                         style={{
                           height: "2rem",
-                          minWidth: "10rem",
+                          minWidth: "11rem",
+                          fontSize: "13px",
                           color: "#fbeee0",
                           border: "1px solid #fbeee0",
                         }}
@@ -1249,10 +1250,10 @@ const UserDashboard = ({ userOrder, userId }) => {
                     <a href={src} download={`${storeName}`}>
                       <Button
                         variant="outlined"
-                        className={styles.qrButtons}
                         style={{
                           height: "2rem",
-                          minWidth: "10rem",
+                          minWidth: "11rem",
+                          fontSize: "13px",
                           color: "#fbeee0",
                           border: "1px solid #fbeee0",
                         }}
@@ -1261,6 +1262,23 @@ const UserDashboard = ({ userOrder, userId }) => {
                       </Button>
                     </a>
                   )}
+                </li>
+
+                <li>
+                  <Button
+                    variant="outlined"
+                    style={{
+                      height: "2rem",
+                      minWidth: "11rem",
+                      fontSize: "13px",
+                      color: "#fbeee0",
+                      border: "1px solid #fbeee0",
+                    }}
+                    type="submit"
+                    onClick={handleOpenUploadLogo}
+                  >
+                    {t("panel:uploadLogo")}
+                  </Button>
                 </li>
                 <li>
                   {order?.menuv2 && (
@@ -1274,11 +1292,11 @@ const UserDashboard = ({ userOrder, userId }) => {
                             variant="outlined"
                             style={{
                               height: "2rem",
-                              minWidth: "10rem",
+                              minWidth: "11rem",
+                              fontSize: "13px",
                               color: "#fbeee0",
                               border: "1px solid #fbeee0",
                             }}
-                            className={styles.qrButtons}
                           >
                             {t("panel:orderPanel")}
                           </Button>
@@ -1286,22 +1304,6 @@ const UserDashboard = ({ userOrder, userId }) => {
                       </a>
                     </Link>
                   )}
-                </li>
-                <li>
-                  <Button
-                    variant="outlined"
-                    style={{
-                      height: "2rem",
-                      minWidth: "10rem",
-                      color: "#fbeee0",
-                      border: "1px solid #fbeee0",
-                    }}
-                    className={styles.qrButtons}
-                    type="submit"
-                    onClick={handleOpenUploadLogo}
-                  >
-                    {t("panel:uploadLogo")}
-                  </Button>
                 </li>
               </ul>
             </div>
