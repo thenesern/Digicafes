@@ -22,6 +22,7 @@ const StoreMenu = ({ menu }) => {
   const Router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
   const [listType, setListType] = useState(menu?.listType);
+  const [categories, setCategories] = useState(menu?.categories);
   const [isMobile, setIsMobile] = useState();
   useLayoutEffect(() => {
     if (window.innerWidth <= 1000) {
@@ -35,7 +36,7 @@ const StoreMenu = ({ menu }) => {
   const [array, setArray] = useState([]);
   useEffect(() => {
     setArray(menu?.products?.sort(() => Math.random() - 0.5).splice(0, 3));
-  }, []);
+  }, [menu?.products]);
   return (
     <>
       {isMobile ? (
@@ -105,15 +106,15 @@ const StoreMenu = ({ menu }) => {
               </ul>
             </SwipeableDrawer>
           </navbar>
-          {menu?.categories.length == 0 && (
+          {categories.length == 0 && (
             <div className={styles.notFound}>
               <FmdBadIcon style={{ fontSize: "3rem", color: "#001219" }} />
               <h3>{t("common:warning")}</h3>
             </div>
           )}
-          {menu?.categories.length > 0 && (
+          {categories.length > 0 && (
             <>
-              {menu?.products.length > 3 && (
+              {array?.length > 2 && (
                 <div className={styles.favsBox}>
                   <h3 className={styles.favsHeader}>{t("common:favs")}</h3>
                   <div className={styles.favs}>
