@@ -3,9 +3,11 @@ import React from "react";
 import { Collapse, Text } from "@nextui-org/react";
 // Styles
 import styles from "./FAQ.module.css";
+// Translation
 import useTranslation from "next-translate/useTranslation";
 
 const FAQ = () => {
+  // Translation
   const { t } = useTranslation();
 
   return (

@@ -1,11 +1,5 @@
+// Packages and Dependencies
 import React from "react";
-import SideBar from "../../../components/Dashboard/SideBar/SideBar";
-import Widget from "../../../components/Dashboard/Widget/Widget";
-import Order from "../../../models/OrderModel";
-import Product from "../../../models/ProductModel";
-import User from "../../../models/UserModel";
-import db from "../../../utils/db";
-import styles from "./panel.module.css";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -17,6 +11,17 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+// Components
+import SideBar from "../../../components/Dashboard/SideBar/SideBar";
+import Widget from "../../../components/Dashboard/Widget/Widget";
+// Utils
+import Order from "../../../models/OrderModel";
+import Product from "../../../models/ProductModel";
+import User from "../../../models/UserModel";
+import db from "../../../utils/db";
+// Styles
+import styles from "./panel.module.css";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,

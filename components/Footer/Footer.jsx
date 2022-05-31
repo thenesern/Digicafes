@@ -1,18 +1,21 @@
 // Packages and Dependencies
 import React from "react";
 import Image from "next/image";
-import useTranslation from "next-translate/useTranslation";
 import { useRouter } from "next/router";
 // Styles
+import styles from "./Footer.module.css";
+// Images
 import { Facebook, Instagram } from "@material-ui/icons";
 import logo from "../../assets/digi_dark_logo.svg";
-import styles from "./Footer.module.css";
 import Providers from "../../assets/paymentProvider/providers.svg";
 import whatsapp from "../../assets/image/whatsapp.png";
+// Translation
+import useTranslation from "next-translate/useTranslation";
 
 const Footer = () => {
-  const { t } = useTranslation();
   const router = useRouter();
+  // Translation
+  const { t } = useTranslation();
 
   return (
     <div className={styles.container}>

@@ -1,12 +1,16 @@
+// Packages and Dependencies
 import React from "react";
+// Components
 import OrderTable from "../../../../components/Dashboard/OrderTable/OrderTable";
 import SideBar from "../../../../components/Dashboard/SideBar/SideBar";
+// Utils
 import Order from "../../../../models/OrderModel";
 import Product from "../../../../models/ProductModel";
 import QRMenu1 from "../../../../models/QRMenu1Model";
 import QRMenu2 from "../../../../models/QRMenu2Model";
 import User from "../../../../models/UserModel";
 import db from "../../../../utils/db";
+// Styles
 import styles from "./orders.module.css";
 
 const orders = ({ orders }) => {

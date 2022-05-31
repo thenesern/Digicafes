@@ -7,17 +7,13 @@ import {
   ListItem,
   TextField,
 } from "@material-ui/core";
-import { PhotoCamera } from "@material-ui/icons";
 import axios from "axios";
-import React, { useState } from "react";
-import { useEffect } from "react";
-import DashboardIcon from "@mui/icons-material/Dashboard";
+import React, { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { DataGrid, trTR, enUS } from "@mui/x-data-grid";
 import QRCode from "qrcode";
 import { fadeInRightBig } from "react-animations";
 import Radium, { StyleRoot } from "radium";
-import Cookies from "js-cookie";
 import Box from "@mui/material/Box";
 import { Loading, Modal, Spacer, Button as ButtonMui } from "@nextui-org/react";
 import ModalMui from "@mui/material/Modal";
@@ -30,17 +26,23 @@ import Chip from "@mui/material/Chip";
 import { useTheme } from "@mui/material/styles";
 import Link from "next/link";
 import Stack from "@mui/material/Stack";
+import { useRouter } from "next/router";
 import { useSnackbar } from "notistack";
 // Styles
 import styles from "./UserDashboard.module.css";
+// Icons
 import DownloadIcon from "@mui/icons-material/Download";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DeleteIcon from "@mui/icons-material/Delete";
 import QrCodeIcon from "@mui/icons-material/QrCode";
+import { PhotoCamera } from "@material-ui/icons";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import ViewListIcon from "@mui/icons-material/ViewList";
+// Translation
 import useTranslation from "next-translate/useTranslation";
-import { useRouter } from "next/router";
+// Cookies
+import Cookies from "js-cookie";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -54,9 +56,35 @@ const MenuProps = {
 };
 
 const UserDashboard = ({ userOrder, userId }) => {
-  const { t } = useTranslation();
-  const router = useRouter();
+  // States
   const [order, setOrder] = useState(userOrder[0] || null);
+  const [menu, setMenu] = useState(order?.menuv1 || order?.menuv2 || "");
+  const [currency, setCurrency] = useState(menu?.currency);
+  const [storeName, setStoreName] = useState(menu?.storeName || "");
+  const [storeLinkName, setStoreLinkName] = useState(menu?.storeLinkName || "");
+  const [products, setProducts] = useState([...(menu?.products || "")]);
+  const [gallery, setGallery] = useState(menu?.gallery || null);
+  const [categories, setCategories] = useState([...(menu?.categories || "")]);
+  const [galleryName, setGalleryName] = useState(menu?.gallery?.name);
+  const [storeLogo, setStoreLogo] = useState(
+    menu?.storeLogo ||
+      "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1650137521/uploads/logoDefault_ez8obk.png"
+  );
+  const [isGalleryActive, setIsGalleryActive] = useState(
+    menu?.gallery?.isActive || false
+  );
+  const [images, setImages] = useState(menu?.gallery?.images || []);
+  const [galleryImage, setGalleryImage] = useState(
+    menu?.gallery?.galleryImage || null
+  );
+  const [tableNum, setTableNum] = useState(menu?.tableNum || null);
+  const [listType, setListType] = useState(menu?.listType || null);
+  const arrayProducts = Array.from(products);
+  let arrayCategories = Array.from(categories);
+  const [version, setVersion] = useState(
+    order?.product?.name === "Dijital Menü - V1" ? "v1" : "v2"
+  );
+  const router = useRouter();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [file, setFile] = useState(null);
   const [isPreview, setIsPreview] = useState(false);
@@ -65,12 +93,10 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [updatePrice, setUpdatePrice] = useState("");
   const [updateDescription, setUpdateDescription] = useState("");
   const [updateSubCategory, setUpdateSubCategory] = useState("");
-  const [menu, setMenu] = useState(order?.menuv1 || order?.menuv2 || "");
   const [name, setName] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [price, setPrice] = useState();
   const [description, setDescription] = useState("");
-  const [currency, setCurrency] = useState(menu?.currency);
   const [updateCurrency, setUpdateCurrency] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [updatedCategories, setUpdatedCategories] = useState([]);
@@ -80,43 +106,37 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [isFetching, setIsFetching] = useState(false);
   const [isFetchingForFirst, setIsFetchingForFirst] = useState(false);
   const [isFirst, setIsFirst] = useState(false);
-  const [storeName, setStoreName] = useState(menu?.storeName || "");
-  const [storeLinkName, setStoreLinkName] = useState(menu?.storeLinkName || "");
   const [addCategory, setAddCategory] = useState("");
-  const [products, setProducts] = useState([...(menu?.products || "")]);
-  const arrayProducts = Array.from(products);
-  const [categories, setCategories] = useState([...(menu?.categories || "")]);
-  let arrayCategories = Array.from(categories);
   const [deleteId, setDeleteId] = useState("");
-  const [gallery, setGallery] = useState(menu?.gallery || null);
-  const [galleryName, setGalleryName] = useState(menu?.gallery?.name);
-  const [isGalleryActive, setIsGalleryActive] = useState(
-    menu?.gallery?.isActive || false
-  );
-  const [images, setImages] = useState(menu?.gallery?.images || []);
-  const [galleryImage, setGalleryImage] = useState(
-    menu?.gallery?.galleryImage || null
-  );
-
   const [secondStep, setSecondStep] = useState(false);
-  const [tableNum, setTableNum] = useState(menu?.tableNum || null);
   const [category, setCategory] = useState([]);
-  const [listType, setListType] = useState(menu?.listType || null);
   const [menusv1, setMenusv1] = useState([]);
   const [menusv2, setMenusv2] = useState([]);
-  const [version, setVersion] = useState(
-    order?.product?.name === "Dijital Menü - V1" ? "v1" : "v2"
-  );
   const [categoryOrder, setCategoryOrder] = useState(null);
   const [updateCategoryOrder, setUpdateCategoryOrder] = useState(null);
   const [QRCodes, setQRCodes] = useState([]);
   const [deleteName, setDeleteName] = useState("");
   const [deleteCategory, setDeleteCategory] = useState(false);
-  const [storeLogo, setStoreLogo] = useState(
-    menu?.storeLogo ||
-      "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1650137521/uploads/logoDefault_ez8obk.png"
-  );
-
+  const [pageSize, setPageSize] = useState(10);
+  const [openAddProduct, setOpenAddProduct] = useState(false);
+  const [openCurrency, setOpenCurrency] = useState(false);
+  const [updateCategory, setUpdateCategory] = useState([]);
+  const [openUpdateCategory, setOpenUpdateCategory] = useState(false);
+  const [openUpdateProduct, setOpenUpdateProduct] = useState(false);
+  const [openDeleteProduct, setOpenDelete] = useState(false);
+  const [openAddCategory, setOpenAddCategory] = useState(false);
+  const [openUploadLogo, setOpenUploadLogo] = useState(false);
+  const [openQRImages, setOpenQRImages] = useState(false);
+  const [openListType, setOpenListType] = useState(false);
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
+  let user;
+  // Translation
+  const { t } = useTranslation();
+  // Animation
   const animate = {
     fadeInRightBig: {
       animation: "x 2s",
@@ -124,26 +144,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       animationName: Radium.keyframes(fadeInRightBig, "fadeInRightBig"),
     },
   };
-  const [pageSize, setPageSize] = React.useState(10);
-  const [openAddProduct, setOpenAddProduct] = useState(false);
-  const [openCurrency, setOpenCurrency] = useState(false);
-  const handleOpenCurrency = () => {
-    setOpenCurrency(true);
-  };
-  const handleCloseCurrency = () => {
-    setOpenCurrency(false);
-    setUpdateCurrency("");
-  };
-  const [updateCategory, setUpdateCategory] = useState([]);
-  const handleOpenAddProduct = () => setOpenAddProduct(true);
-  const handleCloseAddProduct = () => setOpenAddProduct(false);
-  const handleOpenDelete = () => setOpenDelete(true);
-  const handleCloseDelete = () => {
-    setOpenDelete(false);
-    setDeleteCategory(false);
-    setDeleteId("");
-  };
-  let user;
+
   useEffect(() => {
     setTableNum(menu?.tableNum);
     setStoreName(menu?.storeName);
@@ -153,13 +154,91 @@ const UserDashboard = ({ userOrder, userId }) => {
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
   }
-  const [openUpdateCategory, setOpenUpdateCategory] = useState(false);
-  const [openUpdateProduct, setOpenUpdateProduct] = useState(false);
-  const [openDeleteProduct, setOpenDelete] = useState(false);
-  const [openAddCategory, setOpenAddCategory] = useState(false);
-  const [openUploadLogo, setOpenUploadLogo] = useState(false);
-  const [openQRImages, setOpenQRImages] = useState(false);
-  const [openListType, setOpenListType] = useState(false);
+
+  useEffect(() => {
+    if (isFirst) {
+      const getMenus = async () => {
+        await axios
+          .get("/api/qr/v1/menus", {
+            headers: { authorization: `Bearer ${user.token}` },
+          })
+          .then((response) => {
+            setMenusv1(response.data.menusv1);
+          });
+        await axios
+          .get("/api/qr/v2/menus", {
+            headers: { authorization: `Bearer ${user.token}` },
+          })
+          .then((response) => {
+            setMenusv2(response.data.menusv2);
+          });
+      };
+      getMenus();
+    }
+  }, [isFirst]);
+
+  useEffect(() => {
+    if (!menu) {
+      setIsFirst(true);
+    }
+  }, [menu]);
+
+  useEffect(() => {
+    var opts = {
+      errorCorrectionLevel: "H",
+      type: "image/png",
+      quality: 1,
+      margin: 0,
+      padding: 0,
+    };
+    QRCode.toDataURL(
+      `https://www.digicafes.com/qr/${version}/${storeLinkName}`,
+      opts
+    ).then(setSrc);
+  }, [menu?.storeLinkName, version, storeLinkName]);
+  useEffect(() => {
+    var opts = {
+      errorCorrectionLevel: "H",
+      type: "image/png",
+      quality: 1,
+      margin: 0,
+      padding: 0,
+    };
+    if (!isFirst) {
+      for (let i = 0; i < tableNum; i++) {
+        QRCode.toDataURL(
+          `https://www.digicafes.com/qr/${version}/${storeLinkName}/${i + 1}`,
+          opts
+        ).then((url) => QRCodes.push(url));
+      }
+    }
+  }, [tableNum, isFirst]);
+  useEffect(() => {
+    if (updatedCategories.length > 0) {
+      handleSendUpdatedCategories();
+    }
+  }, [updatedCategories]);
+  useEffect(() => {
+    if (updatedProducts.length > 0) {
+      handleSendUpdatedProducts();
+    }
+  }, [updatedProducts]);
+
+  const handleOpenCurrency = () => {
+    setOpenCurrency(true);
+  };
+  const handleOpenAddProduct = () => setOpenAddProduct(true);
+  const handleOpenDelete = () => setOpenDelete(true);
+  const handleCloseAddProduct = () => setOpenAddProduct(false);
+  const handleCloseCurrency = () => {
+    setOpenCurrency(false);
+    setUpdateCurrency("");
+  };
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+    setDeleteCategory(false);
+    setDeleteId("");
+  };
   const handleCloseUpdateProduct = () => {
     setOpenUpdateProduct(false);
     setFile(null);
@@ -204,27 +283,6 @@ const UserDashboard = ({ userOrder, userId }) => {
       typeof value === "string" ? value.split(",") : value
     );
   };
-  useEffect(() => {
-    if (isFirst) {
-      const getMenus = async () => {
-        await axios
-          .get("/api/qr/v1/menus", {
-            headers: { authorization: `Bearer ${user.token}` },
-          })
-          .then((response) => {
-            setMenusv1(response.data.menusv1);
-          });
-        await axios
-          .get("/api/qr/v2/menus", {
-            headers: { authorization: `Bearer ${user.token}` },
-          })
-          .then((response) => {
-            setMenusv2(response.data.menusv2);
-          });
-      };
-      getMenus();
-    }
-  }, [isFirst]);
 
   const handleUpdateChange = (event) => {
     const {
@@ -235,17 +293,6 @@ const UserDashboard = ({ userOrder, userId }) => {
       typeof value === "string" ? value.split(",") : value
     );
   };
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm();
-
-  useEffect(() => {
-    if (!menu) {
-      setIsFirst(true);
-    }
-  }, [menu]);
 
   const firstTimeHandler = async (e) => {
     e.preventDefault();
@@ -417,6 +464,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       handleCloseGallery();
     }
   };
+
   const handleUpdateListType = async (e) => {
     e.preventDefault();
     setIsFetching(true);
@@ -450,6 +498,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       handleCloseListType();
     }
   };
+
   const handleSendCurrency = async (e) => {
     e.preventDefault();
     setIsFetching(true);
@@ -480,6 +529,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       });
     }
   };
+
   const addProductHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -550,6 +600,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       enqueueSnackbar(t("panel:notAddedProduct"), { variant: "error" });
     }
   };
+
   const deleteProductHandler = async () => {
     setIsFetching(true);
 
@@ -579,6 +630,7 @@ const UserDashboard = ({ userOrder, userId }) => {
     }
     setIsFetching(false);
   };
+
   const deleteCategoryHandler = async () => {
     setIsFetching(true);
     if (
@@ -663,6 +715,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       setFile(null);
     }
   };
+
   const handleSendUpdatedProducts = async () => {
     try {
       const updatedMenu = await axios.patch(
@@ -794,10 +847,12 @@ const UserDashboard = ({ userOrder, userId }) => {
       enqueueSnackbar(t("panel:notAddedCategory"), { variant: "error" });
     }
   };
+
   function containsSpecialChars(str) {
     const specialChars = /[`!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?~]/;
     return specialChars.test(str);
   }
+
   const uploadLogoHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -833,46 +888,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       enqueueSnackbar(t("panel:notUploadedLogo"), { variant: "error" });
     }
   };
-  useEffect(() => {
-    var opts = {
-      errorCorrectionLevel: "H",
-      type: "image/png",
-      quality: 1,
-      margin: 0,
-      padding: 0,
-    };
-    QRCode.toDataURL(
-      `https://www.digicafes.com/qr/${version}/${storeLinkName}`,
-      opts
-    ).then(setSrc);
-  }, [menu?.storeLinkName, version, storeLinkName]);
-  useEffect(() => {
-    var opts = {
-      errorCorrectionLevel: "H",
-      type: "image/png",
-      quality: 1,
-      margin: 0,
-      padding: 0,
-    };
-    if (!isFirst) {
-      for (let i = 0; i < tableNum; i++) {
-        QRCode.toDataURL(
-          `https://www.digicafes.com/qr/${version}/${storeLinkName}/${i + 1}`,
-          opts
-        ).then((url) => QRCodes.push(url));
-      }
-    }
-  }, [tableNum, isFirst]);
-  useEffect(() => {
-    if (updatedCategories.length > 0) {
-      handleSendUpdatedCategories();
-    }
-  }, [updatedCategories]);
-  useEffect(() => {
-    if (updatedProducts.length > 0) {
-      handleSendUpdatedProducts();
-    }
-  }, [updatedProducts]);
+
   const columns = [
     {
       field: "name",
@@ -973,6 +989,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       },
     },
   ];
+
   const categoryColumns = [
     {
       field: "name",

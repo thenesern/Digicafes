@@ -2,26 +2,30 @@
 import List from "./List";
 import { TextField } from "@material-ui/core";
 import { useState } from "react";
-import Cookies from "js-cookie";
 import axios from "axios";
 import { Loading } from "@nextui-org/react";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
-import useTranslation from "next-translate/useTranslation";
-
+// Cookies
+import Cookies from "js-cookie";
 // Styles
 import styles from "./User.module.css";
+// Translation
+import useTranslation from "next-translate/useTranslation";
 
 const User = ({ orders, isFetching }) => {
+  // States
   let profile;
-  if (Cookies.get("userInfo")) {
-    profile = JSON.parse(Cookies.get("userInfo"));
-  }
   const [firstName, setFirstName] = useState(profile?.firstName);
   const [lastName, setLastName] = useState(profile?.lastName);
   const [isChanged, setIsChanged] = useState(false);
+  // Translation
   const { t } = useTranslation();
 
+  if (Cookies.get("userInfo")) {
+    profile = JSON.parse(Cookies.get("userInfo"));
+  }
+  
   const firstNameChangeHandler = (e) => {
     setFirstName(e.target.value);
   };

@@ -7,11 +7,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+// Translation
 import useTranslation from "next-translate/useTranslation";
 // Styles
 import styles from "./List.module.css";
 
 const List = ({ orders }) => {
+  // Translation
   const { t } = useTranslation();
   return (
     <TableContainer component={Paper}>

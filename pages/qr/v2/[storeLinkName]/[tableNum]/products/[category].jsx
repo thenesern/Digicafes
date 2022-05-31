@@ -1,48 +1,33 @@
-import { Router, useRouter } from "next/router";
-import React, { useContext } from "react";
-import styles from "./products.module.css";
+// Packages and Dependencies
+import React, { useContext, useState, useEffect } from "react";
+import axios from "axios";
+import Link from "next/link";
+import { Box } from "@material-ui/core";
+import { Loading, Modal, Spacer, Textarea } from "@nextui-org/react";
+import Image from "next/image";
+import { Badge, Button } from "@material-ui/core";
+// Utils
 import db from "../../../../../../utils/db.js";
 import QRMenu from "../../../../../../models/QRMenu2Model.js";
-import Link from "next/link";
-import { Badge, Button } from "@material-ui/core";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { Loading, Modal, Spacer, Textarea } from "@nextui-org/react";
-import { useState } from "react";
-import { Box, Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { ShoppingCartOutlined } from "@material-ui/icons";
-import { Store } from "../../../../../../redux/store";
-import Order from "../../../../../../models/OrderModel";
 import Product from "../../../../../../models/ProductModel";
-import { useEffect } from "react";
-import axios from "axios";
+import Order from "../../../../../../models/OrderModel";
+// Styles
+import styles from "./products.module.css";
+// Icons
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
-import { GridCheckCircleIcon } from "@mui/x-data-grid";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { ShoppingCartOutlined } from "@material-ui/icons";
+// Context
+import { Store } from "../../../../../../redux/store";
+// Translation
 import useTranslation from "next-translate/useTranslation";
 
 const StoreMenu = ({ menu, category, order, number }) => {
-  const [storeName, setStoreName] = useState(menu?.storeName);
-  const { state, dispatch } = useContext(Store);
-  const { cart } = state;
-  const { t } = useTranslation();
-  const quantity = cart?.length;
-  const [open, setOpen] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
-  const [openCart, setOpenCart] = useState(false);
-  const [productName, setProductName] = useState("");
+  // States
   const [listType, setListType] = useState(menu?.listType);
-  const [productImage, setProductImage] = useState("");
-  const [productPrice, setProductPrice] = useState(null);
-  const [orderNotes, setOrderNotes] = useState("");
-  const [productDescription, setProductDescription] = useState("");
-  const [tableNum, setTableNum] = useState(number);
-  const [cartTotal, setCartTotal] = useState(null);
-  const [cartItems, setCartItems] = useState([...cart]);
-  const [openIsSure, setOpenIsSure] = useState(false);
-  const [isSure, setIsSure] = useState(false);
+  const [storeName, setStoreName] = useState(menu?.storeName);
   const [hasSubCategories, setHasSubCategories] = useState(
     menu?.products.filter(
       (p) => p?.category?.includes(category) && p?.subCategory
@@ -54,6 +39,32 @@ const StoreMenu = ({ menu, category, order, number }) => {
   const [uniqueSubCategories, setUniqueSubCategories] = useState([
     ...new Set(subCategories),
   ]);
+  const filtered = menu?.products.filter(
+    (a) => a?.category?.includes(category) && !a.subCategory
+  );
+  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [openCart, setOpenCart] = useState(false);
+  const [productName, setProductName] = useState("");
+  const [version, setVersion] = useState("");
+  const [productImage, setProductImage] = useState("");
+  const [productPrice, setProductPrice] = useState(null);
+  const [orderNotes, setOrderNotes] = useState("");
+  const [productDescription, setProductDescription] = useState("");
+  const [tableNum, setTableNum] = useState(number);
+  const [cartTotal, setCartTotal] = useState(null);
+  const [openIsSure, setOpenIsSure] = useState(false);
+  const [isSure, setIsSure] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  // Context
+  const { state, dispatch } = useContext(Store);
+  const { cart } = state;
+  const quantity = cart?.length;
+  const [cartItems, setCartItems] = useState([...cart]);
+  // Translation
+  const { t } = useTranslation();
+
   const handleOpenModal = () => setOpenModal(true);
   const handleOpenIsSure = () => {
     setOpenCart(false);
@@ -74,11 +85,6 @@ const StoreMenu = ({ menu, category, order, number }) => {
     setOrderNotes("");
   };
 
-  const [isFetching, setIsFetching] = useState(false);
-  const filtered = menu?.products.filter(
-    (a) => a?.category?.includes(category) && !a.subCategory
-  );
-  const [isSuccess, setIsSuccess] = useState(false);
   useEffect(() => {
     if (isSuccess) {
       setTimeout(() => {
@@ -86,6 +92,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
       }, 2000);
     }
   }, [isSuccess]);
+
   useEffect(() => {
     setCartTotal(
       cartItems.reduce(function (a, b) {
@@ -93,6 +100,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
       }, 0)
     );
   }, [cartItems]);
+
   useEffect(() => {
     if (isSure) {
       handleCartOrder();
@@ -102,6 +110,15 @@ const StoreMenu = ({ menu, category, order, number }) => {
       handleCloseOpenIsSure();
     }
   }, [isSure]);
+
+  useEffect(() => {
+    if (order[0]?.product?.name === "Dijital Menü - V1") {
+      setVersion("v1");
+    } else {
+      setVersion("v2");
+    }
+  }, [order]);
+
   const handleCartOrder = async () => {
     setIsFetching(true);
     const createdAt = new Date();
@@ -137,14 +154,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
     );
     dispatch({ type: "CART", payload: cartItems });
   };
-  const [version, setVersion] = useState("");
-  useEffect(() => {
-    if (order[0]?.product?.name === "Dijital Menü - V1") {
-      setVersion("v1");
-    } else {
-      setVersion("v2");
-    }
-  }, [order]);
+
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
@@ -169,7 +179,13 @@ const StoreMenu = ({ menu, category, order, number }) => {
           </Button>
         </Link>
         {menu?.storeLogo?.includes("cloudinary") ? (
-          <img src={menu?.storeLogo} alt="Logo" className={styles.logo} />
+          <Image
+            src={menu?.storeLogo}
+            alt="Logo"
+            className={styles.logo}
+            width="80"
+            height="80"
+          />
         ) : (
           <span className={styles.logo}>{menu?.storeLogo}</span>
         )}
@@ -226,7 +242,15 @@ const StoreMenu = ({ menu, category, order, number }) => {
               {productPrice}
             </span>
           </div>
-          <img src={productImage} alt="Menu" className={styles.modalImage} />
+          {productImage && (
+            <Image
+              src={productImage || ""}
+              alt="Menu"
+              className={styles.modalImage}
+              width="500"
+              height="300"
+            />
+          )}
           <p className={styles.modalDesc}>{productDescription}</p>
         </Box>
       </Modal>
@@ -252,7 +276,13 @@ const StoreMenu = ({ menu, category, order, number }) => {
                 <>
                   <div key={Math.random()} className={styles.cart}>
                     <div className={styles.cartHeader}>
-                      <img src={item?.img} alt="" className={styles.cartImg} />
+                      <Image
+                        src={item?.img}
+                        alt=""
+                        className={styles.cartImg}
+                        width="60"
+                        height="60"
+                      />
                       <h4
                         style={{
                           maxWidth: "8rem",
@@ -497,9 +527,11 @@ const StoreMenu = ({ menu, category, order, number }) => {
             {menu &&
               filtered?.map((m) => (
                 <li key={m?.name} className={styles.listItem}>
-                  <img
+                  <Image
                     className={styles.img}
                     src={m?.image}
+                    width="200"
+                    height="160"
                     alt=""
                     onClick={() => {
                       setProductName(m?.name);

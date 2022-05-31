@@ -1,49 +1,64 @@
+// Packages and Dependencies
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import styles from "./store.module.css";
+import { Link, Loading, Modal, Spacer } from "@nextui-org/react";
+import { IconButton, SwipeableDrawer } from "@material-ui/core";
+import Image from "next/image";
+// Utils
 import db from "../../../../utils/db.js";
 import QRMenu from "../../../../models/QRMenu1Model.js";
-import { Link, Loading, Modal, Spacer } from "@nextui-org/react";
-import { Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import Order from "../../../../models/OrderModel.js";
-import Image from "next/image";
+// Styles
+import styles from "./store.module.css";
+// Icons
+import MenuIcon from "@mui/icons-material/Menu";
 import FmdBadIcon from "@mui/icons-material/FmdBad";
+// Images
 import digicafes from "../../../../assets/digi_logo.svg";
-import { useEffect, useLayoutEffect } from "react";
+// Translation
 import i18nConfig from "../../../../i18n.json";
 import useTranslation from "next-translate/useTranslation";
 
 const StoreMenu = ({ menu }) => {
-  const { locales } = i18nConfig;
-  const { t, lang } = useTranslation();
+  // States
+  const sorted = menu?.categories?.sort((a, b) => {
+    if (a.order < b.order) return -1;
+    return a.order > b.order ? 1 : 0;
+  });
   const [open, setOpen] = useState(false);
   const Router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
   const [listType, setListType] = useState(menu?.listType);
   const [categories, setCategories] = useState(menu?.categories);
   const [isMobile, setIsMobile] = useState();
+  const [array, setArray] = useState([]);
+  // Translation
+  const { locales } = i18nConfig;
+  const { t, lang } = useTranslation();
+
   useLayoutEffect(() => {
     if (window.innerWidth <= 1000) {
       setIsMobile(true);
     }
   }, []);
-  const sorted = menu?.categories?.sort((a, b) => {
-    if (a.order < b.order) return -1;
-    return a.order > b.order ? 1 : 0;
-  });
-  const [array, setArray] = useState([]);
+
   useEffect(() => {
     setArray(menu?.products?.sort(() => Math.random() - 0.5).splice(0, 3));
   }, [menu?.products]);
+
   return (
     <>
       {isMobile ? (
         <div className={styles.container}>
           <navbar className={styles.navbar}>
             {menu?.storeLogo?.includes("cloudinary") ? (
-              <img src={menu?.storeLogo} alt="Logo" className={styles.logo} />
+              <Image
+                src={menu?.storeLogo}
+                alt="Logo"
+                className={styles.logo}
+                width="80"
+                height="80"
+              />
             ) : (
               <h4 className={styles.storeName}>
                 {menu?.storeName.toUpperCase()}
@@ -135,8 +150,11 @@ const StoreMenu = ({ menu }) => {
                             }}
                             className={styles.favsItem}
                           >
-                            <img
+                            <Image
                               src={fav?.image}
+                              width="90"
+                              height="70"
+                              alt="Favs"
                               className={styles.favsImage}
                             />
                             <h4 className={styles.favsName}>{fav?.name}</h4>
@@ -270,7 +288,7 @@ const StoreMenu = ({ menu }) => {
               rel="noreferrer"
               target="_blank"
             >
-              <Image src={digicafes} width={160} height={160} />
+              <Image src={digicafes} width={160} height={160} alt="Digicafes" />
             </a>
             <span>
               ©{new Date().getFullYear()} {t("common:rights")}

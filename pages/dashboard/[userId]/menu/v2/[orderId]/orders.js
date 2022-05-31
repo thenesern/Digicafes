@@ -1,17 +1,21 @@
+// Packages and Dependencies
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useRef } from "react";
 import { useSnackbar } from "notistack";
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+// Components
 import Nav from "../../../../../../components/Nav/Nav";
 import OrderNav from "../../../../../../components/OrderNav/OrderNav";
 import StoreOrders from "../../../../../../components/StoreOrders/StoreOrders";
+// Utils
 import Order from "../../../../../../models/OrderModel";
 import QRMenu from "../../../../../../models/QRMenu2Model";
 import db from "../../../../../../utils/db";
+// Styles
 import styles from "./orders.module.css";
+// Audio
 import ReactAudioPlayer from "react-audio-player";
-import { useRef } from "react";
+// Translation
 import useTranslation from "next-translate/useTranslation";
 
 const StoreOrderPanel = ({ data, order }) => {
@@ -24,18 +28,20 @@ const StoreOrderPanel = ({ data, order }) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [isNew, setIsNew] = useState(false);
   const [isNotification, setIsNotification] = useState(false);
+  // Audio
   const audioRef = useRef();
   const alertRef = useRef();
-  const { t } = useTranslation();
-
   const audio = audioRef?.current?.audioEl?.current;
   const alert = alertRef?.current?.audioEl?.current;
+  // Translation
+  const { t } = useTranslation();
 
   useEffect(() => {
     retrieveData().finally(() => {
       setTimeout(() => setRefreshToken(Math.random()), 15000);
     });
   }, [refreshToken]);
+
   async function retrieveData() {
     try {
       const menus = await axios.post(`/api/qr/v2/${storeName}/orders`, {

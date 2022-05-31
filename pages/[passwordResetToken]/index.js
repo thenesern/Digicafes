@@ -1,34 +1,41 @@
-import React from "react";
-import User from "../../models/UserModel";
-import db from "../../utils/db";
+// Packages and Dependencies
+import React, { useState, useEffect } from "react";
 import crypto from "crypto";
 import { ListItem, TextField } from "@mui/material";
-import { Controller, useForm } from "react-hook-form";
-import Button from "@mui/material/Button";
-import Nav from "../../components/Nav2/Nav";
-import Footer from "../../components/Footer/Footer";
-import styles from "./passwordResetToken.module.css";
+import { useRouter } from "next/router";
+import axios from "axios";
 import { Input } from "@nextui-org/react";
 import { Loading, Modal, Spacer } from "@nextui-org/react";
 import bcrypt from "bcryptjs";
-import axios from "axios";
-import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import Button from "@mui/material/Button";
+// Utils
+import User from "../../models/UserModel";
+import db from "../../utils/db";
+// Components
+import Nav from "../../components/Nav2/Nav";
+import Footer from "../../components/Footer/Footer";
+// Styles
+import styles from "./passwordResetToken.module.css";
+
+// Icons
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
+// Translation
 import useTranslation from "next-translate/useTranslation";
 
 const PasswordResetToken = ({ user }) => {
   const [isFetching, setIsFetching] = useState(false);
   const Router = useRouter();
-  const { t } = useTranslation();
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm();
   const [sentPasswordMail, setSentPasswordMail] = useState(null);
+  // Translation
+  const { t } = useTranslation();
+
   useEffect(() => {
     if (sentPasswordMail === true) {
       setTimeout(() => {
@@ -36,6 +43,7 @@ const PasswordResetToken = ({ user }) => {
       }, 3000);
     }
   }, [sentPasswordMail]);
+
   const handleUpdatePassword = async ({ password }) => {
     setIsFetching(true);
     try {
@@ -56,6 +64,7 @@ const PasswordResetToken = ({ user }) => {
       return setIsFetching(false);
     }
   };
+
   return (
     <div>
       <Nav />

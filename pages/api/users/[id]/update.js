@@ -1,5 +1,5 @@
 import nc from "next-connect";
-import { isAdmin, isAuth, signToken } from "../../../../utils/auth";
+import { isAuth, signToken } from "../../../../utils/auth";
 import User from "../../../../models/UserModel";
 import db from "../../../../utils/db";
 

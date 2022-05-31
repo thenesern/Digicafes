@@ -1,8 +1,12 @@
+// Packages and Dependencies
 import React from "react";
+// Components
 import SideBar from "../../../../components/Dashboard/SideBar/SideBar";
 import UserTable from "../../../../components/Dashboard/UserTable/UserTable";
+// Utils
 import User from "../../../../models/UserModel";
 import db from "../../../../utils/db";
+// Styles
 import styles from "./users.module.css";
 
 const users = ({ users }) => {

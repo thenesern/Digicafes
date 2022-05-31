@@ -1,34 +1,30 @@
+// Packages and Dependencies
 import { Button } from "@mui/material";
 import React, { useEffect } from "react";
-import styles from "./Features.module.css";
 import QRCode from "qrcode";
 import { useState } from "react";
 import Aos from "aos";
-import useTranslation from "next-translate/useTranslation";
+import { useRouter } from "next/router";
+// Context
 import { Store } from "../../redux/store";
 import { useContext } from "react";
-import { useRouter } from "next/router";
+// Styles
+import styles from "./Features.module.css";
+// Translation
+import useTranslation from "next-translate/useTranslation";
 
 const Features = () => {
   const { state } = useContext(Store);
   const router = useRouter();
   const { userInfo } = state;
   const [isMobile, setIsMobile] = useState();
-  const { t } = useTranslation();
-  useEffect(() => {
-    if (window.innerWidth <= 760) {
-      setIsMobile(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    Aos.init({ duration: 2000 });
-    Aos.refresh();
-  }, []);
   const [src, setSrc] = useState("");
   const [src2, setSrc2] = useState("");
   const [srcEn, setSrcEn] = useState("");
   const [src2En, setSrc2En] = useState("");
+  // Translation
+  const { t } = useTranslation();
+
   var opts = {
     errorCorrectionLevel: "H",
     type: "image/png",
@@ -49,6 +45,17 @@ const Features = () => {
   QRCode.toDataURL("https://www.digicafes.com/qr/v2/demo-en/1", opts).then(
     setSrc2En
   );
+
+  useEffect(() => {
+    if (window.innerWidth <= 760) {
+      setIsMobile(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    Aos.init({ duration: 2000 });
+    Aos.refresh();
+  }, []);
 
   return (
     <section className={styles.section} id="paketler">

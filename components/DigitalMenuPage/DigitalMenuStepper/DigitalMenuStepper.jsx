@@ -8,12 +8,13 @@ import StepLabel from "@mui/material/StepLabel";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
-
-// Styles
+// Icons
 import SettingsIcon from "@mui/icons-material/Settings";
 import VideoLabelIcon from "@mui/icons-material/VideoLabel";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+// Styles
 import { styled } from "@mui/material/styles";
+// Translation
 import useTranslation from "next-translate/useTranslation";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({

@@ -3,11 +3,12 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { trTR, enUS } from "@mui/x-data-grid";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { useRouter } from "next/router";
 // Styles
 import classes from "./StoreOrders.module.css";
-import { useState } from "react";
-import { useRouter } from "next/router";
+// Mmoent
 import moment from "moment";
+// Translation
 import useTranslation from "next-translate/useTranslation";
 
 const StoreOrders = (props) => {
@@ -17,6 +18,7 @@ const StoreOrders = (props) => {
   const date2 = moment(now).subtract(2, "minutes").toDate();
   const date1 = moment(now).subtract(1, "minutes").toDate();
   const date = moment(now).subtract(0, "minutes").toDate();
+  // Translation
   const { t } = useTranslation();
   const callColumns = [
     {

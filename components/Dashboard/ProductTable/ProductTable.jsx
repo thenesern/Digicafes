@@ -1,11 +1,6 @@
-import styles from "./ProductTable.module.css";
+// Packages and Dependencies
 import { DataGrid } from "@mui/x-data-grid";
 import Link from "next/link";
-import {
-  AccountBox,
-  Delete,
-  StoreMallDirectoryTwoTone,
-} from "@material-ui/icons";
 import {
   Box,
   Button,
@@ -17,9 +12,12 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
+import { Controller, useForm } from "react-hook-form";
+// Context
 import { Store } from "../../../redux/store";
 import { useContext } from "react";
-import { Controller, useForm } from "react-hook-form";
+// Styles
+import styles from "./ProductTable.module.css";
 
 const ProductTable = (props) => {
   const [id, setId] = useState();

@@ -1,8 +1,9 @@
 // Packages and Dependencies
 import React, { useState, useEffect } from "react";
-import useTranslation from "next-translate/useTranslation";
 // Styles
 import styles from "./OrderNav.module.css";
+// Translation
+import useTranslation from "next-translate/useTranslation";
 
 const OrderNav = (props) => {
   let newDates = [];
@@ -15,10 +16,29 @@ const OrderNav = (props) => {
   const [favs, setFavs] = useState(
     props.orders?.map((o) => o.cartItems.map((a) => a.name).toString())
   );
-  const { t } = useTranslation();
   const [favItemCount, setFavItemCount] = useState(null);
   let m = 0;
   const [favItem, setFavItem] = useState("");
+  const date = new Date().toLocaleString("tr-TR").split(" ")[0];
+  const week = [];
+  const month = [];
+  const [length, setLength] = useState(null);
+  const days = [
+    "Pazar",
+    "Pazartesi",
+    "Salı",
+    "Çarşamba",
+    "Perşembe",
+    "Cuma",
+    "Cumartesi",
+  ];
+  const weekOrders = [];
+  const monthOrders = [];
+  const d = new Date();
+  let day = days[d.getDay()];
+  // Translation
+  const { t } = useTranslation();
+
   function setFavItems() {
     for (let i = 0; i < favs.length; i++) {
       for (let j = i; j < favs.length; j++) {
@@ -36,12 +56,11 @@ const OrderNav = (props) => {
   useEffect(() => {
     setFavItems();
   }, []);
+
   useEffect(() => {
     setDates(props.orders?.map((o) => o.createdAt.split(" ")[0]));
   }, [props]);
-  const date = new Date().toLocaleString("tr-TR").split(" ")[0];
-  const week = [];
-  const month = [];
+
   useEffect(() => {
     if (day === "Pazar") {
       setLength(7);
@@ -61,7 +80,7 @@ const OrderNav = (props) => {
       return;
     }
   }, []);
-  const [length, setLength] = useState(null);
+
   for (let i = 0; i < length; i++) {
     week.push(date.replace(date.split(".")[0][1], date.split(".")[0][1] - i));
   }
@@ -74,19 +93,7 @@ const OrderNav = (props) => {
       return;
     }
   }
-  const days = [
-    "Pazar",
-    "Pazartesi",
-    "Salı",
-    "Çarşamba",
-    "Perşembe",
-    "Cuma",
-    "Cumartesi",
-  ];
-  const weekOrders = [];
-  const monthOrders = [];
-  const d = new Date();
-  let day = days[d.getDay()];
+
   for (let i = 0; i < newDates.length; i++) {
     if (newDates.some((ele) => week?.includes(ele))) {
       weekOrders.push("true");

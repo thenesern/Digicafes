@@ -1,15 +1,19 @@
-import styles from "./UserTable.module.css";
+// Packages and Dependencies
 import { DataGrid } from "@mui/x-data-grid";
 import Link from "next/link";
-import { AccountBox, Delete } from "@material-ui/icons";
 import { useEffect } from "react";
 import { Button } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
-import { Store } from "../../../redux/store";
-import { useContext } from "react";
 import { Input, Modal } from "@nextui-org/react";
 import { Grid } from "@material-ui/core";
+// Context
+import { Store } from "../../../redux/store";
+import { useContext } from "react";
+// Styles
+import styles from "./UserTable.module.css";
+// Icons
+import { AccountBox, Delete } from "@material-ui/icons";
 
 const UserTable = (props) => {
   const [users, setUsers] = useState(

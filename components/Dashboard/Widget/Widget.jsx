@@ -1,12 +1,14 @@
+// Packages and Dependencies
 import React from "react";
-import styles from "./Widget.module.css";
-
 import Link from "next/link";
+// Icons
 import {
   PersonOutlined,
   ShoppingCartOutlined,
   StoreMallDirectoryTwoTone,
 } from "@material-ui/icons";
+// Styles
+import styles from "./Widget.module.css";
 
 const Widget = (props) => {
   let data;

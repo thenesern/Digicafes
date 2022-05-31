@@ -59,7 +59,6 @@
 }
 .logo {
   object-fit: contain;
-  width: 2rem;
   height: auto;
 }
 .footer {
@@ -100,8 +99,6 @@
   max-height: 1rem;
 }
 .favsImage {
-  width: 5rem;
-  height: 3rem;
   object-fit: cover;
   border-radius: 1rem;
 }

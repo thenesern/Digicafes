@@ -1,26 +1,29 @@
-import React from "react";
-import Nav2 from "../../../components/Nav2/Nav";
-import styles from "./dashboard.module.css";
-import moment from "moment";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { Loading, Modal, Spacer } from "@nextui-org/react";
-import { useState } from "react";
+// Packages and Dependencies
 import axios from "axios";
-import { useEffect } from "react";
-import Cookies from "js-cookie";
-import Skeleton from "@mui/material/Skeleton";
+import React, { useState, useEffect } from "react";
+import { Image, Loading, Modal, Spacer } from "@nextui-org/react";
+import Link from "next/link";
 import Stack from "@mui/material/Stack";
+import { useRouter } from "next/router";
+// Components
+import Nav2 from "../../../components/Nav2/Nav";
+// Styles
+import Skeleton from "@mui/material/Skeleton";
+import styles from "./dashboard.module.css";
+// Cookies
+import Cookies from "js-cookie";
+// Translationg
 import useTranslation from "next-translate/useTranslation";
 
 const Dashboard = () => {
-  const { t } = useTranslation();
   const router = useRouter();
   const userId = router.query.userId;
   const [isFetching, setIsFetching] = useState(false);
   const [orders, setOrders] = useState(null);
   const [userToken, setUserToken] = useState(null);
   const newDate = new Date();
+  // Translation
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (Cookies.get("userInfo")) {
@@ -247,8 +250,11 @@ const Dashboard = () => {
         )}
         {orders?.length < 1 && (
           <div className={styles.orderNotFound}>
-            <img
+            <Image
               className={styles.orderNotFoundImage}
+              width="160"
+              height="200"
+              alt="Order not found"
               src="https://img.icons8.com/cotton/452/shopping-cart--v1.png"
             />
             <h4>Sipariş bulunamadı.</h4>

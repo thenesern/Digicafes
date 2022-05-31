@@ -1,3 +1,9 @@
+// Packages and Dependencies
+import React from "react";
+import Link from "next/link";
+// Styles
+import styles from "./SideBar.module.css";
+// Icons
 import {
   BarChartOutlined,
   CallToAction,
@@ -7,9 +13,6 @@ import {
   ShoppingCartOutlined,
   StoreMallDirectory,
 } from "@material-ui/icons";
-import React from "react";
-import Link from "next/link";
-import styles from "./SideBar.module.css";
 
 const SideBar = () => {
   return (

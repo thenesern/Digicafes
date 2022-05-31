@@ -1,32 +1,26 @@
+// Packages and Dependencies
+import React, { useState, useEffect } from "react";
+import { Box, Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
 import { Router, useRouter } from "next/router";
-import React from "react";
+import Link from "next/link";
+import { Image, Loading, Modal, Spacer } from "@nextui-org/react";
+import { Badge, Button } from "@material-ui/core";
+// Styles
 import styles from "./products.module.css";
+// Utils
 import db from "../../../../../utils/db.js";
 import QRMenu from "../../../../../models/QRMenu1Model.js";
-import Link from "next/link";
-import { Badge, Button } from "@material-ui/core";
+import Order from "../../../../../models/OrderModel";
+// Icons
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { Loading, Modal, Spacer } from "@nextui-org/react";
-import { useState } from "react";
-import { Box, Divider, IconButton, SwipeableDrawer } from "@material-ui/core";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { ShoppingCartOutlined } from "@material-ui/icons";
-import Order from "../../../../../models/OrderModel";
-import { useEffect } from "react";
+// Translation
 import useTranslation from "next-translate/useTranslation";
 
 const StoreMenu = ({ menu, category }) => {
-  const [open, setOpen] = useState(false);
-  const { t } = useTranslation();
-  const [openModal, setOpenModal] = useState(false);
-  const [productName, setProductName] = useState("");
-  const [productImage, setProductImage] = useState("");
-  const [listType, setListType] = useState(menu?.listType);
-  const Router = useRouter();
-  const [productDescription, setProductDescription] = useState("");
-  const [productPrice, setProductPrice] = useState(null);
-  const handleOpenModal = () => setOpenModal(true);
+  // States
   const [hasSubCategories, setHasSubCategories] = useState(
     menu?.products?.filter(
       (p) => p?.category?.includes(category) && p?.subCategory
@@ -35,10 +29,26 @@ const StoreMenu = ({ menu, category }) => {
   const [subCategories, setSubCategories] = useState(
     hasSubCategories.map((c) => c.subCategory)
   );
-
   const [uniqueSubCategories, setUniqueSubCategories] = useState([
     ...new Set(subCategories),
   ]);
+  const filtered = menu?.products.filter(
+    (a) => a?.category?.includes(category) && !a.subCategory
+  );
+  const [listType, setListType] = useState(menu?.listType);
+  const [isFetching, setIsFetching] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [productName, setProductName] = useState("");
+  const [productImage, setProductImage] = useState("");
+  const [productDescription, setProductDescription] = useState("");
+  const [productPrice, setProductPrice] = useState(null);
+  const Router = useRouter();
+
+  // Translation
+  const { t } = useTranslation();
+
+  const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => {
     setOpenModal(false);
     setProductName("");
@@ -46,10 +56,7 @@ const StoreMenu = ({ menu, category }) => {
     setProductPrice(null);
     setProductDescription("");
   };
-  const [isFetching, setIsFetching] = useState(false);
-  const filtered = menu?.products.filter(
-    (a) => a?.category?.includes(category) && !a.subCategory
-  );
+
   return (
     <div className={styles.container}>
       <navbar className={styles.navbar}>
@@ -71,7 +78,13 @@ const StoreMenu = ({ menu, category }) => {
           </Button>
         </Link>
         {menu?.storeLogo?.includes("cloudinary") ? (
-          <img src={menu?.storeLogo} alt="Logo" className={styles.logo} />
+          <Image
+            src={menu?.storeLogo}
+            width="80"
+            height="80"
+            alt="Logo"
+            className={styles.logo}
+          />
         ) : (
           <span className={styles.logo}>{menu?.storeLogo}</span>
         )}
@@ -145,7 +158,13 @@ const StoreMenu = ({ menu, category }) => {
               {productPrice}
             </span>
           </div>
-          <img src={productImage} alt="Menu" className={styles.modalImage} />
+          <Image
+            src={productImage}
+            alt="Menu"
+            width="400"
+            height="200"
+            className={styles.modalImage}
+          />
           <p className={styles.modalDesc}>{productDescription}</p>
         </Box>
       </Modal>
@@ -180,7 +199,13 @@ const StoreMenu = ({ menu, category }) => {
                     handleOpenModal();
                   }}
                 >
-                  <img className={styles.img} src={m?.image} alt="" />
+                  <Image
+                    className={styles.img}
+                    src={m?.image}
+                    alt=""
+                    width="400"
+                    height="200"
+                  />
                   <h3 className={styles.name}>{m?.name}</h3>
                   <p className={styles.price}>
                     {menu?.currency === "dolar"

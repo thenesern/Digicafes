@@ -1,4 +1,4 @@
-import React from "react";
+// Components
 import Footer from "../Footer/Footer";
 import Nav from "../Nav/Nav";
 import styles from "./PrivacyPolicy.module.css";

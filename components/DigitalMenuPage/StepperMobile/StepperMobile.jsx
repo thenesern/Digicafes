@@ -7,9 +7,11 @@ import StepLabel from "@mui/material/StepLabel";
 import StepContent from "@mui/material/StepContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+// Translation
 import useTranslation from "next-translate/useTranslation";
 
 export default function VerticalLinearStepper() {
+  // Translation
   const { t } = useTranslation();
 
   const [activeStep, setActiveStep] = React.useState(0);

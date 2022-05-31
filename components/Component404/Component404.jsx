@@ -1,5 +1,6 @@
-import React from "react";
+// Styles
 import styles from "./Component404.module.css";
+// Translation
 import useTranslation from "next-translate/useTranslation";
 
 const Component404 = () => {

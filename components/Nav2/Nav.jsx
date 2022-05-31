@@ -1,12 +1,9 @@
 // Packages and Dependencies
 import React, { useState, useContext, useEffect } from "react";
 import LinkRouter from "next/link";
-import Cookies from "js-cookie";
-import { Store } from "../../redux/store";
 import { useSnackbar } from "notistack";
 import axios from "axios";
 import { Controller, useForm } from "react-hook-form";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import Backdrop from "@mui/material/Backdrop";
 import { Link } from "react-scroll";
 import { useRouter } from "next/router";
@@ -14,14 +11,6 @@ import { Loading, Modal, Spacer } from "@nextui-org/react";
 import ModalMui from "@mui/material/Modal";
 import Image from "next/image";
 import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import ErrorIcon from "@mui/icons-material/Error";
-import i18nConfig from "../../i18n.json";
-const { locales } = i18nConfig;
-// Styles
-import styles from "./Nav.module.css";
-import { AccountCircleRounded } from "@material-ui/icons";
-import LogoutIcon from "@mui/icons-material/Logout";
 import Fade from "@mui/material/Fade";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
@@ -31,31 +20,39 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import MenuIcon from "@material-ui/icons/Menu";
 import { Box } from "@mui/system";
 import { List, ListItem, TextField } from "@material-ui/core";
+// Styles
+import styles from "./Nav.module.css";
+// Images
 import logoDark from "../../assets/digi_dark_logo.svg";
 import logo from "../../assets/digi_logo.svg";
+// Icons
+import LogoutIcon from "@mui/icons-material/Logout";
+import { AccountCircleRounded } from "@material-ui/icons";
+import MenuIcon from "@material-ui/icons/Menu";
+import ErrorIcon from "@mui/icons-material/Error";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+// Translation
 import useTranslation from "next-translate/useTranslation";
+import i18nConfig from "../../i18n.json";
+const { locales } = i18nConfig;
+// Cookies
+import Cookies from "js-cookie";
+// Context
+import { Store } from "../../redux/store";
 
 const Nav2 = () => {
+  // States
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const [isFetching, setIsFetching] = useState(false);
   const [openMuiLogin, setOpenMuiLogin] = useState(false);
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const [openMuiRegister, setOpenMuiRegister] = useState(false);
-  const { t, lang } = useTranslation();
-  const handleOpenMuiLogin = () => setOpenMuiLogin(true);
-  const handleOpenForgotPassword = () => setOpenForgotPassword(true);
-  const handleOpenMuiRegister = () => setOpenMuiRegister(true);
-  const handleCloseMuiLogin = () => setOpenMuiLogin(false);
-  const handleCloseMuiRegister = () => setOpenMuiRegister(false);
-  const handleCloseForgotPassword = () => {
-    setOpenForgotPassword(false);
-    setSentPasswordMail(null);
-  };
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [fix, setFix] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const [sentPasswordMail, setSentPasswordMail] = useState(null);
   const {
@@ -65,17 +62,65 @@ const Nav2 = () => {
   } = useForm();
   let user;
 
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef(null);
+  const prevOpen = React.useRef(open);
+  const signedIn = new Date().toLocaleString("tr-TR");
+  const lowerFirst = fName?.toLowerCase();
+  const betterFirst = lowerFirst?.replace(
+    lowerFirst[0],
+    lowerFirst[0]?.toUpperCase()
+  );
+
+  const lowerLast = lName?.toLowerCase();
+  const betterLast = lowerLast?.replace(
+    lowerLast[0],
+    lowerLast[0]?.toUpperCase()
+  );
+
+  const firstName = betterFirst;
+  const lastName = betterLast;
+  const createdAt = new Date().toLocaleString("tr-TR");
+  // Translation
+  const { t, lang } = useTranslation();
+
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
   }
 
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
+  useEffect(() => {
+    if (sentPasswordMail === true || sentPasswordMail === false) {
+      setTimeout(() => {
+        handleCloseForgotPassword();
+      }, 3000);
+    }
+  }, [sentPasswordMail]);
+  // return focus to the button when we transitioned from !open -> open
+
+  useEffect(() => {
+    window.addEventListener("scroll", setFixed);
+  });
+
+  useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus();
+    }
+
+    prevOpen.current = open;
+  }, [open]);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
-
+  const handleOpenMuiLogin = () => setOpenMuiLogin(true);
+  const handleOpenForgotPassword = () => setOpenForgotPassword(true);
+  const handleOpenMuiRegister = () => setOpenMuiRegister(true);
+  const handleCloseMuiLogin = () => setOpenMuiLogin(false);
+  const handleCloseMuiRegister = () => setOpenMuiRegister(false);
+  const handleCloseForgotPassword = () => {
+    setOpenForgotPassword(false);
+    setSentPasswordMail(null);
+  };
   const handleClose = (event) => {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
@@ -92,22 +137,7 @@ const Nav2 = () => {
       setOpen(false);
     }
   }
-  useEffect(() => {
-    if (sentPasswordMail === true || sentPasswordMail === false) {
-      setTimeout(() => {
-        handleCloseForgotPassword();
-      }, 3000);
-    }
-  }, [sentPasswordMail]);
-  // return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
-    if (prevOpen.current === true && open === false) {
-      anchorRef.current.focus();
-    }
 
-    prevOpen.current = open;
-  }, [open]);
   const logoutHandler = () => {
     dispatch({ type: "USER_LOGOUT" });
     Cookies.remove("userInfo");
@@ -151,7 +181,6 @@ const Nav2 = () => {
     }
   };
 
-  const [fix, setFix] = useState(false);
   function setFixed() {
     if (window.scrollY >= 200) {
       setFix(true);
@@ -159,9 +188,6 @@ const Nav2 = () => {
       setFix(false);
     }
   }
-  useEffect(() => {
-    window.addEventListener("scroll", setFixed);
-  });
 
   const registerHandler = async ({
     fName,
@@ -174,22 +200,7 @@ const Nav2 = () => {
     if (password !== passwordConfirm) {
       return enqueueSnackbar(t("nav:passwordError"), { variant: "error" });
     }
-    const signedIn = new Date().toLocaleString("tr-TR");
-    const lowerFirst = fName?.toLowerCase();
-    const betterFirst = lowerFirst?.replace(
-      lowerFirst[0],
-      lowerFirst[0]?.toUpperCase()
-    );
 
-    const lowerLast = lName?.toLowerCase();
-    const betterLast = lowerLast?.replace(
-      lowerLast[0],
-      lowerLast[0]?.toUpperCase()
-    );
-
-    const firstName = betterFirst;
-    const lastName = betterLast;
-    const createdAt = new Date().toLocaleString("tr-TR");
     try {
       setIsFetching(true);
       const { data } = await axios.post("/api/auth/register", {
@@ -211,6 +222,7 @@ const Nav2 = () => {
       enqueueSnackbar(t("nav:emailError"), { variant: "error" });
     }
   };
+
   return (
     <navbar
       className={

@@ -1,8 +1,12 @@
+// Packages and Dependencies
 import React from "react";
+// Components
 import ProductTable from "../../../../components/Dashboard/ProductTable/ProductTable";
 import SideBar from "../../../../components/Dashboard/SideBar/SideBar";
+// Utils
 import Product from "../../../../models/ProductModel";
 import db from "../../../../utils/db";
+// Styles
 import styles from "./products.module.css";
 
 const products = ({ products }) => {

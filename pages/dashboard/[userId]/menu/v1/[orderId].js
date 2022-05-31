@@ -1,14 +1,18 @@
-import Cookies from "js-cookie";
+// Packages and Dependencies
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
-import React from "react";
-import { useEffect } from "react";
+// Components
 import Nav2 from "../../../../../components/Nav2/Nav";
 import UserDashboard from "../../../../../components/UserDashboard/UserDashboard";
+// Utils
 import Order from "../../../../../models/OrderModel";
 import Product from "../../../../../models/ProductModel";
 import QRMenu from "../../../../../models/QRMenu1Model";
 import User from "../../../../../models/UserModel";
 import db from "../../../../../utils/db";
+// Cookies
+import Cookies from "js-cookie";
+
 const DashboardMenuv1 = ({ userOrder }) => {
   return (
     <div>

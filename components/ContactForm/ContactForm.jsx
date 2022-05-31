@@ -4,9 +4,11 @@ import emailjs from "@emailjs/browser";
 import { Button, Input, Textarea } from "@nextui-org/react";
 import { useState } from "react";
 // Styles
+import styles from "./ContactForm.module.css";
+// Icons
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import ErrorIcon from "@mui/icons-material/Error";
-import styles from "./ContactForm.module.css";
+// Translation
 import useTranslation from "next-translate/useTranslation";
 
 const ContactForm = () => {

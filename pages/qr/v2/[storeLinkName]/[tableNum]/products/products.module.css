@@ -13,16 +13,14 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
     rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
   left: 0;
+  z-index: 100;
 }
 
 .logo {
   object-fit: contain;
-  width: 5rem;
   height: auto;
 }
 .cartImg {
-  width: 3rem;
-  height: 3rem;
   object-fit: cover;
   border-radius: 1rem;
 }
@@ -124,8 +122,7 @@
 }
 .img {
   object-fit: cover;
-  border-radius: 1rem 1rem 0 0;
-  width: 100%;
+  width: 100% !important;
   height: 140px;
 }
 
@@ -177,9 +174,7 @@
   background-color: #023047;
 }
 .modalImage {
-  width: 100%;
   min-height: 12rem;
-  height: 16rem;
   object-fit: cover;
 }
 .cartFooter {

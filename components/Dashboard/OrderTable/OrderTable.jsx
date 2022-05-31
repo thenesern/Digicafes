@@ -1,15 +1,17 @@
-import styles from "./OrderTable.module.css";
+// Packages and Dependencies
 import { DataGrid } from "@mui/x-data-grid";
 import Link from "next/link";
-import { AccountBox, Delete } from "@material-ui/icons";
 import { useEffect } from "react";
 import { Input, Modal } from "@nextui-org/react";
 import { useState } from "react";
 import axios from "axios";
-import { Store } from "../../../redux/store";
-import { useContext } from "react";
 import { Button, Grid } from "@mui/material";
 import { trTR } from "@mui/x-data-grid";
+// Context
+import { Store } from "../../../redux/store";
+import { useContext } from "react";
+// Styles
+import styles from "./OrderTable.module.css";
 
 const OrderTable = (props) => {
   const [orders, setOrders] = useState(props.orders);
@@ -21,6 +23,8 @@ const OrderTable = (props) => {
   const [productName, setProductName] = useState("");
   const { state } = useContext(Store);
   const [orderExpiry, setOrderExpiry] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [pageSize, setPageSize] = useState(10);
   const [quantity, setQuantity] = useState([]);
   const { userInfo } = state;
   let date = new Date();
@@ -49,6 +53,7 @@ const OrderTable = (props) => {
     setPlanExpiry(null);
     date = new Date();
   };
+
   useEffect(() => {
     setNewOrderDate(
       new Date(
@@ -58,6 +63,7 @@ const OrderTable = (props) => {
       )
     );
   }, [planExpiry, orderExpiry]);
+
   const columns = [
     {
       field: "_id",
@@ -227,8 +233,6 @@ const OrderTable = (props) => {
       },
     },
   ];
-  const [open, setOpen] = useState(false);
-  const [pageSize, setPageSize] = useState(10);
 
   const handleDelete = async (id) => {
     try {

@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+// Packages and Dependencies
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
+// Components
 import UserProfile from "../../components/User/User";
 import Nav2 from "../../components/Nav2/Nav";
-import { useEffect } from "react";
-import axios from "axios";
-import { useRouter } from "next/router";
+// Cookies
 import Cookies from "js-cookie";
 
 const Hesap = () => {

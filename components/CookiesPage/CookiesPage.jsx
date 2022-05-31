@@ -1,4 +1,4 @@
-import React from "react";
+// Styles
 import styles from "./CookiesPage.module.css";
 
 const CookiesPage = () => {
