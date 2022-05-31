@@ -11,6 +11,7 @@ import { PhotoCamera } from "@material-ui/icons";
 import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import { Controller, useForm } from "react-hook-form";
 import { DataGrid, trTR, enUS } from "@mui/x-data-grid";
 import QRCode from "qrcode";
@@ -54,6 +55,7 @@ const MenuProps = {
 
 const UserDashboard = ({ userOrder, userId }) => {
   const { t } = useTranslation();
+  console.log(userOrder);
   const router = useRouter();
   const [order, setOrder] = useState(userOrder[0] || null);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -1191,6 +1193,203 @@ const UserDashboard = ({ userOrder, userId }) => {
       )}
       {!isFirst && (
         <div className={styles.container}>
+          <div className={styles.sidebar}>
+            {/*   <img src={src} alt="QR" className={styles.qrImg} /> */}
+            <img src={storeLogo} alt="Logo" className={styles.logo} />
+            <div>
+              <h3 className={styles.sidebarHeader}>
+                <DashboardIcon />
+              </h3>
+              <ul className={styles.sidebarList}>
+                <li className={styles.li}>
+                  <Link
+                    href={
+                      version === "v2"
+                        ? `/qr/${version}/${storeLinkName}/1`
+                        : `/qr/${version}/${storeLinkName}/`
+                    }
+                    passHref
+                  >
+                    <a target="_blank">
+                      <Stack direction="row" spacing={1}>
+                        <Button
+                          variant="outlined"
+                          className={styles.qrButtons}
+                          style={{
+                            height: "2rem",
+                            minWidth: "10rem",
+                            color: "#fbeee0",
+                            border: "1px solid #fbeee0",
+                          }}
+                        >
+                          {t("panel:seeWebsite")}
+                        </Button>
+                      </Stack>
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  {order?.menuv2 && (
+                    <Stack direction="row" spacing={1}>
+                      <Button
+                        className={styles.qrButtons}
+                        variant="outlined"
+                        onClick={handleOpenQRImages}
+                        style={{
+                          height: "2rem",
+                          minWidth: "10rem",
+                          color: "#fbeee0",
+                          border: "1px solid #fbeee0",
+                        }}
+                      >
+                        {t("panel:downloadCodes")}
+                      </Button>
+                    </Stack>
+                  )}
+                  {order?.menuv1 && (
+                    <a href={src} download={`${storeName}`}>
+                      <Button
+                        variant="outlined"
+                        className={styles.qrButtons}
+                        style={{
+                          height: "2rem",
+                          minWidth: "10rem",
+                          color: "#fbeee0",
+                          border: "1px solid #fbeee0",
+                        }}
+                      >
+                        {t("panel:downloadCode")}
+                      </Button>
+                    </a>
+                  )}
+                </li>
+                <li>
+                  {order?.menuv2 && (
+                    <Link
+                      href={`/dashboard/${userId}/menu/${version}/${order?._id}/orders`}
+                      passHref
+                    >
+                      <a target="_blank">
+                        <Stack direction="row" spacing={1}>
+                          <Button
+                            variant="outlined"
+                            style={{
+                              height: "2rem",
+                              minWidth: "10rem",
+                              color: "#fbeee0",
+                              border: "1px solid #fbeee0",
+                            }}
+                            className={styles.qrButtons}
+                          >
+                            {t("panel:orderPanel")}
+                          </Button>
+                        </Stack>
+                      </a>
+                    </Link>
+                  )}
+                </li>
+                <li>
+                  <Button
+                    variant="outlined"
+                    style={{
+                      height: "2rem",
+                      minWidth: "10rem",
+                      color: "#fbeee0",
+                      border: "1px solid #fbeee0",
+                    }}
+                    className={styles.qrButtons}
+                    type="submit"
+                    onClick={handleOpenUploadLogo}
+                  >
+                    {t("panel:uploadLogo")}
+                  </Button>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3 className={styles.sidebarHeader}>
+                <DashboardCustomizeIcon />
+              </h3>
+              <ul className={styles.sidebarList}>
+                <li>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    style={{
+                      minWidth: "10rem",
+                      maxWidth: "10rem",
+                    }}
+                    color="primary"
+                    disabled={categories.length > 0 ? false : true}
+                    onClick={handleOpenAddProduct}
+                    className={styles.menuButtons}
+                  >
+                    {t("panel:addProduct")}
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    className={styles.menuButtons}
+                    variant="contained"
+                    style={{
+                      minWidth: "10rem",
+                      maxWidth: "10rem",
+                    }}
+                    type="submit"
+                    color="primary"
+                    onClick={handleOpenAddCategory}
+                  >
+                    {t("panel:addCategory")}
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    className={styles.menuButtons}
+                    variant="contained"
+                    type="submit"
+                    style={{
+                      minWidth: "10rem",
+                      maxWidth: "10rem",
+                    }}
+                    color="primary"
+                    onClick={handleOpenListType}
+                  >
+                    {t("panel:listType")}
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    className={styles.menuButtons}
+                    variant="contained"
+                    type="submit"
+                    style={{
+                      minWidth: "10rem",
+                      maxWidth: "10rem",
+                    }}
+                    color="primary"
+                    onClick={handleOpenGallery}
+                  >
+                    {t("panel:gallery")}
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    className={styles.menuButtons}
+                    variant="contained"
+                    type="submit"
+                    style={{
+                      minWidth: "10rem",
+                      maxWidth: "10rem",
+                    }}
+                    color="primary"
+                    onClick={handleOpenCurrency}
+                  >
+                    {t("panel:currency")}
+                  </Button>
+                </li>
+              </ul>
+            </div>
+          </div>
           <Modal
             style={{
               background: "transparent",
@@ -1206,115 +1405,13 @@ const UserDashboard = ({ userOrder, userId }) => {
           <div className={styles.box}>
             <div className={styles.left}>
               <div className={styles.leftBox}>
-                <div className={styles.headers}>
-                  <QrCodeIcon color="primary" />
-                  <h3 className={styles.titles}>{t("panel:qrMenuHeader")}</h3>
-                </div>
-                <div className={styles.qr}>
-                  <div className={styles.images}>
-                    <img src={src} alt="QR" className={styles.qrImg} />
-                    <img src={storeLogo} alt="Logo" className={styles.logo} />
-                  </div>
-                  <div className={styles.qrActions}>
-                    <Link
-                      href={
-                        version === "v2"
-                          ? `/qr/${version}/${storeLinkName}/1`
-                          : `/qr/${version}/${storeLinkName}/`
-                      }
-                      passHref
-                    >
-                      <a target="_blank">
-                        <Stack direction="row" spacing={1}>
-                          <Button
-                            variant="outlined"
-                            className={styles.qrButtons}
-                            style={{
-                              height: "2rem",
-                              minWidth: "12rem",
-                            }}
-                            endIcon={
-                              <ArrowRightIcon style={{ fontSize: "2rem" }} />
-                            }
-                          >
-                            {t("panel:seeWebsite")}
-                          </Button>
-                        </Stack>
-                      </a>
-                    </Link>
-                    {order?.menuv2 && (
-                      <Stack direction="row" spacing={1}>
-                        <Button
-                          className={styles.qrButtons}
-                          variant="outlined"
-                          onClick={handleOpenQRImages}
-                          style={{ height: "2rem", minWidth: "12rem" }}
-                          endIcon={
-                            <ArrowRightIcon style={{ fontSize: "2rem" }} />
-                          }
-                        >
-                          {t("panel:downloadCodes")}
-                        </Button>
-                      </Stack>
-                    )}
-                    {order?.menuv1 && (
-                      <a href={src} download={`${storeName}`}>
-                        <Button
-                          variant="outlined"
-                          className={styles.qrButtons}
-                          style={{
-                            height: "2rem",
-                            minWidth: "12rem",
-                          }}
-                          endIcon={<DownloadIcon />}
-                        >
-                          {t("panel:downloadCode")}
-                        </Button>
-                      </a>
-                    )}
-
-                    {order?.menuv2 && (
-                      <Link
-                        href={`/dashboard/${userId}/menu/${version}/${order?._id}/orders`}
-                        passHref
-                      >
-                        <a target="_blank">
-                          <Stack direction="row" spacing={1}>
-                            <Button
-                              variant="outlined"
-                              style={{
-                                height: "2rem",
-                                width: "12rem",
-                              }}
-                              className={styles.qrButtons}
-                              endIcon={
-                                <ArrowRightIcon style={{ fontSize: "2rem" }} />
-                              }
-                            >
-                              {t("panel:orderPanel")}
-                            </Button>
-                          </Stack>
-                        </a>
-                      </Link>
-                    )}
-                  </div>
-                </div>
+                <h3>
+                  {storeName
+                    .toLowerCase()
+                    .replace(storeName[0], storeName[0].toUpperCase())}
+                </h3>
               </div>
               <div className={styles.actions}>
-                <div className={styles.headers}>
-                  <DashboardCustomizeIcon color="primary" />
-                  <h3>{t("panel:management")}</h3>
-                </div>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  color="primary"
-                  disabled={categories.length > 0 ? false : true}
-                  onClick={handleOpenAddProduct}
-                  className={styles.menuButtons}
-                >
-                  {t("panel:addProduct")}
-                </Button>
                 <ModalMui
                   open={openAddProduct}
                   onClose={handleCloseAddProduct}
@@ -1989,11 +2086,8 @@ const UserDashboard = ({ userOrder, userId }) => {
                             justifyContent: "flex-start",
                           }}
                         >
-                          <InputLabel style={{ margin: "10px 0" }}>
-                            {t("panel:order")}
-                          </InputLabel>
-                          <Input
-                            label="Ürün Adı"
+                          <TextField
+                            label={t("panel:order")}
                             value={categoryOrder}
                             inputProps={{ type: "number", maxLength: 100 }}
                             onChange={(e) => setCategoryOrder(e.target.value)}
@@ -2007,14 +2101,6 @@ const UserDashboard = ({ userOrder, userId }) => {
                             gap: "1rem",
                           }}
                         >
-                          <Button
-                            variant="outlined"
-                            type="submit"
-                            onClick={(e) => handleCloseAddCategory(e)}
-                            color="primary"
-                          >
-                            {t("panel:discard")}
-                          </Button>
                           <Button
                             variant="contained"
                             type="submit"
@@ -2418,51 +2504,6 @@ const UserDashboard = ({ userOrder, userId }) => {
                     </div>
                   </Box>
                 </ModalMui>
-                <Button
-                  className={styles.menuButtons}
-                  variant="contained"
-                  type="submit"
-                  color="primary"
-                  onClick={handleOpenAddCategory}
-                >
-                  {t("panel:addCategory")}
-                </Button>
-                <Button
-                  className={styles.menuButtons}
-                  variant="contained"
-                  type="submit"
-                  color="primary"
-                  onClick={handleOpenUploadLogo}
-                >
-                  {t("panel:uploadLogo")}
-                </Button>
-                <Button
-                  className={styles.menuButtons}
-                  variant="contained"
-                  type="submit"
-                  color="primary"
-                  onClick={handleOpenListType}
-                >
-                  {t("panel:listType")}
-                </Button>
-                <Button
-                  className={styles.menuButtons}
-                  variant="contained"
-                  type="submit"
-                  color="primary"
-                  onClick={handleOpenGallery}
-                >
-                  {t("panel:gallery")}
-                </Button>
-                <Button
-                  className={styles.menuButtons}
-                  variant="contained"
-                  type="submit"
-                  color="primary"
-                  onClick={handleOpenCurrency}
-                >
-                  {t("panel:currency")}
-                </Button>
               </div>
             </div>
             <div className={styles.right}>

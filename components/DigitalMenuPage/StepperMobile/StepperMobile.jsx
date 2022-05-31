@@ -58,14 +58,16 @@ export default function VerticalLinearStepper() {
                     onClick={handleNext}
                     sx={{ mt: 1, mr: 1 }}
                   >
-                    {index === steps.length - 1 ? "Bitir" : "Devam"}
+                    {index === steps.length - 1
+                      ? t("stepper:end")
+                      : t("stepper:continue")}
                   </Button>
                   <Button
                     disabled={index === 0}
                     onClick={handleBack}
                     sx={{ mt: 1, mr: 1 }}
                   >
-                    Geri
+                    {t("stepper:back")}
                   </Button>
                 </div>
               </Box>

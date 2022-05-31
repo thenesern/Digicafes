@@ -21,6 +21,8 @@ import whatsapp from "../assets/image/whatsapp.png";
 import marcopascha from "../assets/refers/marcologo.png";
 import route from "../assets/refers/route.png";
 import { useRouter } from "next/router";
+import HeroImage from "../assets/image/HeroImage.png";
+import HeroImageEn from "../assets/image/HeroImage_en.png";
 // Styles
 import styles from "./DigitalMenuPage.module.css";
 import Aos from "aos";
@@ -67,66 +69,20 @@ const DijitalMenu = () => {
             <div className={styles.images}>
               <div
                 className={styles.image}
-                style={{ width: "36rem", height: "auto" }}
+                style={{ width: "36rem", height: "auto", margin: "0" }}
               >
                 {router.locale === "tr" ? (
                   <Image
-                    src={digitalMenuMockup}
-                    layout="responsive"
-                    objectFit="contain"
-                    className={styles.referenceImg}
-                    alt=""
-                  />
-                ) : (
-                  <Image
-                    src={digitalMenuMockupEn}
-                    layout="responsive"
-                    objectFit="contain"
-                    className={styles.referenceImg}
-                    alt=""
-                  />
-                )}
-              </div>
-              <div
-                className={styles.image2}
-                style={{ width: "12rem", height: "auto" }}
-              >
-                {router.locale === "tr" ? (
-                  <Image
-                    layout="responsive"
-                    objectFit="contain"
-                    data-aos="fade-left"
-                    className={styles.referenceImg}
-                    src={TabletMockup}
-                    alt=""
-                  />
-                ) : (
-                  <Image
-                    layout="responsive"
-                    objectFit="contain"
-                    data-aos="fade-left"
-                    className={styles.referenceImg}
-                    src={TabletMockupEn}
-                    alt=""
-                  />
-                )}
-              </div>
-              <div
-                className={styles.image3}
-                style={{ width: "7rem", height: "auto" }}
-              >
-                {router.locale === "tr" ? (
-                  <Image
-                    data-aos="fade-right"
-                    src={QRMenuMockup}
+                    data-aos="fade-up"
+                    src={HeroImage}
                     alt=""
                     layout="responsive"
                     objectFit="contain"
                   />
                 ) : (
                   <Image
-                    data-aos="fade-right"
-                    src={QRMenuMockupEn}
+                    data-aos="fade-up"
+                    src={HeroImageEn}
                     alt=""
                     layout="responsive"
                     objectFit="contain"

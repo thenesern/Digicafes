@@ -422,4 +422,11 @@
   .dropdown {
     color: #212529 !important;
   }
+  .int {
+    margin: 1rem 0;
+  }
+  .lang {
+    border: 1px solid #212529;
+    color: #212529;
+  }
 }

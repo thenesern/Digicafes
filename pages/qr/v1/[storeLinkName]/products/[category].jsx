@@ -198,7 +198,13 @@ const StoreMenu = ({ menu, category }) => {
           {hasSubCategories.filter((c) => c?.category?.includes(category))
             .length > 0
             ? uniqueSubCategories?.map((s) => (
-                <div key={s.name}>
+                <div
+                  key={s.name}
+                  style={{
+                    width: "90%",
+                    margin: "0 auto",
+                  }}
+                >
                   <h3
                     key={s}
                     style={{

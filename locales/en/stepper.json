@@ -4,5 +4,8 @@
   "s3": "Your Digital Menu is ready to use",
   "d1": "We offer you different digital menu solutions for your different needs.",
   "d2": "A Management Panel specific to the solution you selected will be activated in your Profile section immediately. You can add or remove products and edit your Digital Menu easily via the Management Panel.",
-  "d3": "A special sub-domain name and QR Code associated with that domain name are automatically created for your store name that you have entered through the Digital Menu Management Panel. Congratulations, now your Digital Menu is Ready!"
+  "d3": "A special sub-domain name and QR Code associated with that domain name are automatically created for your store name that you have entered through the Digital Menu Management Panel. Congratulations, now your Digital Menu is Ready!",
+  "continue": "Continue",
+  "end": "End",
+  "back": "Back"
 }

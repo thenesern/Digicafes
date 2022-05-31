@@ -13,7 +13,7 @@
   "v2f3": "Sınırsız Güncelleme",
   "v2f4": "Otomatik QR Kod Oluşturucu",
   "v2f5": "Dijital Menü",
-  "v2f6": "Dijital Menü Sipariş Paneli",
+  "v2f6": "Sipariş Paneli",
   "v2f7": "Sipariş Modülü",
   "v2f8": "Garson Çağır ve Adisyon İste Modülü",
   "v2d1": "Dijital Menü V2 ile müşterilerinize Dijital Menü deneyimi sunarken aynı zamanda iş yükünüzü azaltın",
@@ -21,5 +21,6 @@
   "pricev1": "1000₺",
   "pricev2": "1500₺",
   "includesv1": "V1'deki bütün özellikleri içerir",
-  "buy": "Satın Al"
+  "buy": "Satın Al",
+  "signIn": "Satın almak için giriş yapınız."
 }
