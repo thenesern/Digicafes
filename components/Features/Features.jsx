@@ -145,7 +145,7 @@ const Features = () => {
             {t("features:buy")}
           </a>
         ) : (
-          <h4>Satın almak için üye olunuz.</h4>
+          <h4>{t("features:signIn")}</h4>
         )}
       </article>
     </section>

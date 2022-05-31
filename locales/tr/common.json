@@ -32,5 +32,9 @@
   "save": "Kaydet",
   "passwordUpdated": "Şifreniz Başarıyla Değiştirildi.",
   "passwordNotUpdated": "Şifre Değiştirilemedi.",
-  "expired": " Şifrenizi yenilemeniz için mail adresinize gönderilen link geçerlilik süresini doldurdu."
+  "expired": " Şifrenizi yenilemeniz için mail adresinize gönderilen link geçerlilik süresini doldurdu.",
+  "notFoundProduct": "Ürün bulunamadı.",
+  "loading": "Yükleniyor...",
+  "categoryImage": "Kategori Görseli",
+  "notFoundImage": "Görsel bulunamadı."
 }

@@ -37,12 +37,12 @@
   text-align: center;
 }
 .box {
-  padding: 2rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 90vh;
-  gap: 2rem;
+  gap: 1rem;
 }
 .currencies {
   display: flex;
@@ -126,7 +126,7 @@
   width: 100%;
 }
 .grid {
-  height: 26rem !important;
+  height: 36rem !important;
 }
 .modal {
   position: absolute;
@@ -233,7 +233,7 @@
     font-size: 14px !important;
   }
   .grid {
-    height: 15rem !important;
+    height: 30rem !important;
   }
   .data {
     font-size: 14px !important;
@@ -253,12 +253,13 @@
   .menuButtons {
     width: 12rem !important;
   }
+  .grid {
+    height: 28rem !important;
+  }
   .data {
     font-size: 14px;
   }
-  .grid {
-    height: 20rem !important;
-  }
+
   .qrsModal {
     width: 90%;
     height: 36rem;

@@ -9,8 +9,6 @@ handler.use(isAuth);
 
 handler.post(async (req, res) => {
   await db.connect();
-  console.log(req.body);
-
   await QRMenu.findOneAndUpdate(
     { storeName: req.body.storeName },
     {

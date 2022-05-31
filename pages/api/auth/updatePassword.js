@@ -18,7 +18,6 @@ handler.post(async (req, res) => {
       }
     ).select("+password");
     user.save();
-    console.log(user);
     await db.disconnect();
     res.send({
       status: "success",

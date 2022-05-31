@@ -80,7 +80,6 @@ const StoreMenu = ({ menu, number }) => {
     if (a.order < b.order) return -1;
     return a.order > b.order ? 1 : 0;
   });
-  console.log(trinity);
   /* 
   function setFavItems() {
     for (let i = 0; i < favs?.length; i++) {

@@ -32,5 +32,9 @@
   "save": "Save",
   "passwordUpdated": "Your password was updated successfully",
   "passwordNotUpdated": "Something went wrong. Please try again later",
-  "expired": "The password reset token has expired, please try again later"
+  "expired": "The password reset token has expired, please try again later",
+  "notFoundProduct": "Not found any product.",
+  "loading": "Loading...",
+  "categoryImage": "Category Image",
+  "notFoundImage": "Not found any image."
 }

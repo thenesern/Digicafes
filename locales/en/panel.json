@@ -88,5 +88,18 @@
   "orders": "Orders",
   "today": "Today",
   "week": "In this week",
-  "month": "In this month"
+  "month": "In this month",
+  "enterStoreName": "Please enter your store name",
+  "next": "Next",
+  "storeName": "Store Name",
+  "minLength": "Store name length should be minimum 3 characters.",
+  "proveName": "Please enter a store name.",
+  "notSpecial": "Store name is not should contain special characters.",
+  "nameIsInUse": "This store name is already in use.",
+  "enterTableNum": "Please enter your store's table number",
+  "tableZero": "Table number cannot be zero.",
+  "tableNeg": "Table number cannot be negative.",
+  "tableNumMax": "Table number cannot be greater than 50",
+  "numTable": "Table Number",
+  "save": "Save"
 }

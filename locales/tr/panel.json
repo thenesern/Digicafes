@@ -88,5 +88,18 @@
   "orders": "Siparişler",
   "today": "Bugün",
   "week": "Bu Hafta",
-  "month": "Bu Ay"
+  "month": "Bu Ay",
+  "enterStoreName": "Please enter your store name",
+  "next": "İlerle",
+  "storeName": "İş Yeri Adı",
+  "minLength": "İş Yeri Adı minimum 3 karakter olmalıdır!",
+  "proveName": "Lütfen bir İş Yeri Adı yazınız.",
+  "notSpecial": "İş Yeri Adınız Özel Karakter İçermemelidir!",
+  "nameIsInUse": "Bu iş yeri adı kullanılmaktadır. Lütfen başka bir ad giriniz.",
+  "enterTableNum": "Lütfen İş Yerinizdeki Masa Sayısını Giriniz",
+  "tableZero": "Masa Sayısı sıfır olamaz!",
+  "tableNeg": "Masa Sayısı Negatif bir değer olamaz!",
+  "tableNumMax": "Masa sayısı 50'yi geçmemelidir",
+  "numTable": "Masa Sayısı",
+  "save": "Kaydet"
 }

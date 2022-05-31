@@ -55,7 +55,6 @@ const MenuProps = {
 
 const UserDashboard = ({ userOrder, userId }) => {
   const { t } = useTranslation();
-  console.log(userOrder);
   const router = useRouter();
   const [order, setOrder] = useState(userOrder[0] || null);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -1054,7 +1053,7 @@ const UserDashboard = ({ userOrder, userId }) => {
             <StyleRoot>
               <form className={styles.formFirst} style={animate.fadeInRightBig}>
                 <h2 className={styles.headerFirst}>
-                  Lütfen İş Yerinizin Adını Giriniz
+                  {t("panel:enterStoreName")}
                 </h2>
                 <List className={styles.list}>
                   <ListItem>
@@ -1082,19 +1081,19 @@ const UserDashboard = ({ userOrder, userId }) => {
                             .replaceAll("ş", "s")
                         );
                       }}
-                      label="İş Yeri Adı"
+                      label={t("panel:storeName")}
                       helperText={
                         storeName?.length === 0
-                          ? "Lütfen bir İş Yeri Adı yazınız."
+                          ? t("panel:proveName")
                           : storeName?.length < 3
-                          ? "İş Yeri Adı minimum 3 karakter olmalıdır!"
+                          ? t("panel:minLength")
                           : containsSpecialChars(storeName) === true
-                          ? "İş Yeri Adınız Özel Karakter İçermemelidir!"
+                          ? t("panel:notSpecial")
                           : menusv1.filter((s) => s.storeName === storeName)
                               .length > 0 ||
                             menusv2.filter((s) => s.storeName === storeName)
                               .length > 0
-                          ? "Bu iş yeri adı kullanılmaktadır. Lütfen başka bir ad giriniz."
+                          ? t("panel:nameIsInUse")
                           : ""
                       }
                     ></TextField>
@@ -1120,7 +1119,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                           }
                         }}
                       >
-                        İlerle
+                        {t("panel:next")}
                       </Button>
                     </ListItem>
                   )}
@@ -1132,7 +1131,7 @@ const UserDashboard = ({ userOrder, userId }) => {
             <StyleRoot>
               <form className={styles.formFirst} style={animate.fadeInRightBig}>
                 <h2 className={styles.headerFirst}>
-                  Lütfen İş Yerinizdeki Masa Sayısını Giriniz
+                  {t("panel:enterTableNum")}
                 </h2>
                 <List className={styles.list}>
                   <ListItem>
@@ -1152,16 +1151,16 @@ const UserDashboard = ({ userOrder, userId }) => {
                       }}
                       helperText={
                         tableNum === undefined
-                          ? "Lütfen bir Masa Sayısı giriniz."
+                          ? t("panel:enterTableNum")
                           : tableNum === 0
-                          ? "Masa Sayısı sıfır olamaz!"
+                          ? t("panel:tableZero")
                           : tableNum < 0
-                          ? "Masa Sayısı Negatif bir değer olamaz!"
+                          ? t("panel:tableNeg")
                           : tableNum > 50
-                          ? "Masa Sayısı 50'yi geçmemelidir!"
+                          ? t("panel:tableNumMax")
                           : ""
                       }
-                      label="Masa Sayısı"
+                      label={t("panel:numTable")}
                     ></TextField>
                   </ListItem>
                   <ListItem>
@@ -1182,7 +1181,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         }
                       }}
                     >
-                      Kaydet
+                      {t("panel:save")}
                     </Button>
                   </ListItem>
                 </List>
@@ -1405,11 +1404,8 @@ const UserDashboard = ({ userOrder, userId }) => {
           <div className={styles.box}>
             <div className={styles.left}>
               <div className={styles.leftBox}>
-                <h3>
-                  {storeName
-                    .toLowerCase()
-                    .replace(storeName[0], storeName[0].toUpperCase())}
-                </h3>
+                <h3>{storeName.toUpperCase()}</h3>
+                <h3>{}</h3>
               </div>
               <div className={styles.actions}>
                 <ModalMui
@@ -1730,12 +1726,12 @@ const UserDashboard = ({ userOrder, userId }) => {
                         onChange={(e) => setUpdateCategoryOrder(e.target.value)}
                       />
                       <InputLabel style={{ textAlign: "start", width: "100%" }}>
-                        Kategori Görseli
+                        {t("common:categoryImage")}
                       </InputLabel>
                       <Input
                         fullWidth
                         accept="image/*"
-                        label="Kategori Görseli"
+                        label={t("common:categoryImage")}
                         id="icon-button-file"
                         onChange={(e) => {
                           setFile(e.target.files[0]);
@@ -2102,6 +2098,14 @@ const UserDashboard = ({ userOrder, userId }) => {
                           }}
                         >
                           <Button
+                            variant="outlined"
+                            type="submit"
+                            onClick={handleCloseAddCategory}
+                            color="primary"
+                          >
+                            {t("common:discard")}
+                          </Button>
+                          <Button
                             variant="contained"
                             type="submit"
                             onClick={(e) => {
@@ -2164,7 +2168,11 @@ const UserDashboard = ({ userOrder, userId }) => {
                           </h3>
                           <img
                             className={styles.listTypeImage}
-                            src="https://res.cloudinary.com/dlyjd3mnb/image/upload/v1652116621/h3ap73zblrlw6uows3bk.png"
+                            src={
+                              router.locale === "tr"
+                                ? "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1652116621/h3ap73zblrlw6uows3bk.png"
+                                : "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1653995773/xlsyevzt8jvp9vqurgf0.png"
+                            }
                           />
                         </div>
                         <div
@@ -2188,7 +2196,11 @@ const UserDashboard = ({ userOrder, userId }) => {
                           </h3>
                           <img
                             className={styles.listTypeImage}
-                            src="https://res.cloudinary.com/dlyjd3mnb/image/upload/v1652113749/p7kovtut5b2mls3qjask.png"
+                            src={
+                              router.locale === "tr"
+                                ? "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1652113749/p7kovtut5b2mls3qjask.png"
+                                : "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1653995774/qgmoxg5wc5nlybtq3dho.png"
+                            }
                           />
                         </div>
                       </div>
@@ -2304,7 +2316,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                             src={galleryImage}
                           ></img>
                         ) : (
-                          <p>Görsel bulunamadı.</p>
+                          <p>{t("common:notFoundImage")}</p>
                         )}
                       </div>
                       <Input
@@ -2567,7 +2579,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                     />
                   </div>
                 ) : (
-                  "Ürün bulunamadı."
+                  <p>{t("common:notFoundProduct")}</p>
                 )}
               </div>
               <div style={{ height: "100%", width: "100%" }}>
@@ -2576,7 +2588,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   <h3 className={styles.titles}>{t("panel:categoryList")}</h3>
                 </div>
                 {isLoading ? (
-                  <p>Yükleniyor...</p>
+                  <p>{t("common:loading")}</p>
                 ) : categories?.length > 0 ? (
                   <div className={styles.grid}>
                     <DataGrid
@@ -2589,7 +2601,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                       rows={categories}
                       getRowId={(row) => `${row.name}${row.price}`}
                       columns={categoryColumns}
-                      pageSize={6}
+                      pageSize={10}
                       sx={{
                         "& .MuiDataGrid-renderingZone": {
                           maxHeight: "none !important",
@@ -2617,7 +2629,6 @@ const UserDashboard = ({ userOrder, userId }) => {
                           color: "#fbeee0",
                         },
                       }}
-                      rowsPerPageOptions={[5]}
                     />
                   </div>
                 ) : (

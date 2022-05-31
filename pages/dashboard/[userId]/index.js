@@ -145,7 +145,7 @@ const Dashboard = () => {
                         ? new Date(
                             `${order?.menuv1?.updatedAt}`
                           ).toLocaleString("tr-TR")
-                        : "Henüz Güncellenmedi"}
+                        : t("panels:notUpdated")}
                     </p>
                   )}
                   {order?.product?.name === "Dijital Menü - V2" && (
@@ -154,7 +154,7 @@ const Dashboard = () => {
                         ? new Date(
                             `${order?.menuv2?.updatedAt}`
                           ).toLocaleString("tr-TR")
-                        : "Henüz Güncellenmedi"}
+                        : t("panels:notUpdated")}
                     </p>
                   )}
                 </div>

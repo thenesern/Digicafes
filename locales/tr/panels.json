@@ -10,5 +10,6 @@
   "active": "Aktif",
   "continue": "Ücretli planla devam et",
   "expired": "Paketinizin ücretli sürümü sonlandı.",
-  "buy": "Satın Al"
+  "buy": "Satın Al",
+  "notUpdated": "Henüz güncellenmedi"
 }
