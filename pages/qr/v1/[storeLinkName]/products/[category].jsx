@@ -199,13 +199,7 @@ const StoreMenu = ({ menu, category }) => {
                     handleOpenModal();
                   }}
                 >
-                  <Image
-                    className={styles.img}
-                    src={m?.image}
-                    alt=""
-                    width="400"
-                    height="200"
-                  />
+                  <img className={styles.img} src={m?.image} alt="" />
                   <h3 className={styles.name}>{m?.name}</h3>
                   <p className={styles.price}>
                     {menu?.currency === "dolar"

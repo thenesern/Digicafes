@@ -69,7 +69,9 @@
 .icon:nth-child(4) {
   background-color: #e60023;
 }
-
+.links {
+  font-weight: 600;
+}
 .title {
   margin-bottom: 30px;
   color: #353535;
@@ -131,12 +133,16 @@
     padding: 2rem 3rem 2rem 3rem;
     gap: 1rem;
   }
+  .links {
+    font-size: 12px;
+  }
 }
 
 @media only screen and (max-width: 500px) {
   .container {
     padding: 1rem;
   }
+
   .footer {
     flex-direction: column;
     gap: 4rem;
@@ -147,5 +153,10 @@
   .brand {
     font-size: 12px;
     align-items: center;
+  }
+}
+@media only screen and (max-width: 320px) {
+  .desc {
+    text-align: center;
   }
 }

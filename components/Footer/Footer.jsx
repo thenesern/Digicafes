@@ -28,19 +28,19 @@ const Footer = () => {
             objectFit="contain"
             height="60px"
           ></Image>
-          <span>{t("common:footer")}</span>
+          <span className={styles.desc}>{t("common:footer")}</span>
           {router.locale === "tr" ? (
             <div>
               <a href="/uyelik-sozlesmesi" target="_blank">
-                <span style={{ fontWeight: "600" }}>Üyelik Sözleşmesi</span>
+                <span className={styles.links}>Üyelik Sözleşmesi</span>
               </a>
               <a href="/gizlilik-politikasi" target="_blank">
-                <span style={{ fontWeight: "600", marginLeft: "1rem" }}>
+                <span className={styles.links} style={{ marginLeft: "1rem" }}>
                   Gizlilik Politikası
                 </span>
               </a>
               <a href="/cerez-politikasi" target="_blank">
-                <span style={{ fontWeight: "600", marginLeft: "1rem" }}>
+                <span className={styles.links} style={{ marginLeft: "1rem" }}>
                   Çerez Politikası
                 </span>
               </a>
@@ -48,10 +48,10 @@ const Footer = () => {
           ) : (
             <div>
               <a href="/terms-of-service" target="_blank">
-                <span style={{ fontWeight: "600" }}>Terms of Service</span>
+                <span className={styles.links}>Terms of Service</span>
               </a>
               <a href="/privacy-policy" target="_blank">
-                <span style={{ fontWeight: "600", marginLeft: "1rem" }}>
+                <span className={styles.links} style={{ marginLeft: "1rem" }}>
                   Privacy Policy
                 </span>
               </a>
