@@ -99,7 +99,7 @@
   "enterTableNum": "Lütfen İş Yerinizdeki Masa / Oda Sayısını Giriniz",
   "tableZero": "Masa Sayısı sıfır olamaz!",
   "tableNeg": "Masa Sayısı Negatif bir değer olamaz!",
-  "tableNumMax": "Masa sayısı 50'yi geçmemelidir",
+  "tableNumMax": "Masa sayısı 200'ü geçmemelidir",
   "numTable": "Masa Sayısı",
   "save": "Kaydet",
   "downloadAll": "Hepsini indir"

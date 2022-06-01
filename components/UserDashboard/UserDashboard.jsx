@@ -1190,7 +1190,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                           ? t("panel:tableZero")
                           : tableNum < 0
                           ? t("panel:tableNeg")
-                          : tableNum > 50
+                          : tableNum > 200
                           ? t("panel:tableNumMax")
                           : ""
                       }
@@ -1207,7 +1207,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                         e.preventDefault();
                         if (
                           tableNum !== undefined &&
-                          tableNum < 50 &&
+                          tableNum < 201 &&
                           tableNum > 0 &&
                           tableNum !== 0
                         ) {

@@ -99,7 +99,7 @@
   "enterTableNum": "Please enter your store's table / room quantity",
   "tableZero": "Number cannot be zero.",
   "tableNeg": "Number cannot be negative.",
-  "tableNumMax": "Number cannot be greater than 50",
+  "tableNumMax": "Number cannot be greater than 200",
   "numTable": "Quantity",
   "save": "Save",
   "downloadAll": "Download all"
