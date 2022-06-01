@@ -2,7 +2,7 @@
   "qrMenuHeader": "QR Menü Kodu",
   "seeWebsite": "Menü'ye Git",
   "downloadCode": "QR Kodu İndir",
-  "downloadCodes": "Bütün Masalar",
+  "downloadCodes": "Bütün QR Kodları",
   "orderPanel": "Sipariş Paneli",
   "management": "Menü Yönetimi",
   "addProduct": "Ürün Ekle",
@@ -96,10 +96,11 @@
   "proveName": "Lütfen bir İş Yeri Adı yazınız.",
   "notSpecial": "İş Yeri Adınız Özel Karakter İçermemelidir!",
   "nameIsInUse": "Bu iş yeri adı kullanılmaktadır. Lütfen başka bir ad giriniz.",
-  "enterTableNum": "Lütfen İş Yerinizdeki Masa Sayısını Giriniz",
+  "enterTableNum": "Lütfen İş Yerinizdeki Masa / Oda Sayısını Giriniz",
   "tableZero": "Masa Sayısı sıfır olamaz!",
   "tableNeg": "Masa Sayısı Negatif bir değer olamaz!",
   "tableNumMax": "Masa sayısı 50'yi geçmemelidir",
   "numTable": "Masa Sayısı",
-  "save": "Kaydet"
+  "save": "Kaydet",
+  "downloadAll": "Hepsini indir"
 }

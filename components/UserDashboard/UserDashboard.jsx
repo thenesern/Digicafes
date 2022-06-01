@@ -26,7 +26,9 @@ import Chip from "@mui/material/Chip";
 import { useTheme } from "@mui/material/styles";
 import Link from "next/link";
 import Stack from "@mui/material/Stack";
+import JSZip from "jszip";
 import { useRouter } from "next/router";
+import FileSaver from "file-saver";
 import { useSnackbar } from "notistack";
 // Styles
 import styles from "./UserDashboard.module.css";
@@ -334,6 +336,21 @@ const UserDashboard = ({ userOrder, userId }) => {
       setIsFetchingForFirst(false);
     }
   };
+  const handleZip = async (e) => {
+    e.preventDefault();
+    const zip = new JSZip();
+    const folder = zip.folder(storeName);
+
+    for (let i = 0; i < QRCodes.length; i++) {
+      const base64String = QRCodes[i].replace("data:", "").replace(/^.+,/, "");
+      folder.file(`${i + 1}.png`, base64String, { base64: true });
+    }
+
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      FileSaver.saveAs(content, `${storeName}.zip`);
+    });
+  };
+
   const handleUpdateProduct = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -1590,6 +1607,22 @@ const UserDashboard = ({ userOrder, userId }) => {
                     <h1 style={{ textAlign: "center", padding: "1rem" }}>
                       {t("panel:qrCodes")}
                     </h1>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-end",
+                        width: "100%",
+                      }}
+                    >
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={handleZip}
+                      >
+                        {t("panel:downloadAll")}
+                      </Button>
+                    </div>
                     <div className={styles.qrs}>
                       {QRCodes.map((qr, i) => (
                         <div
