@@ -1532,7 +1532,7 @@ const UserDashboard = ({ userOrder, userId }) => {
               <span className={styles.col}>|</span>
               <div className={styles.ratings}>
                 <div>
-                  <h5 className={styles.ratingHeaders}>Lezzet</h5>
+                  <h5 className={styles.ratingHeaders}>{t("common:taste")}</h5>
 
                   <Rating
                     readOnly
@@ -1541,7 +1541,7 @@ const UserDashboard = ({ userOrder, userId }) => {
                   />
                 </div>
                 <div>
-                  <h5 className={styles.ratingHeaders}>Hız</h5>
+                  <h5 className={styles.ratingHeaders}>{t("common:speed")}</h5>
                   <Rating
                     readOnly
                     name="simple-controlled"
@@ -1549,7 +1549,9 @@ const UserDashboard = ({ userOrder, userId }) => {
                   />
                 </div>
                 <div>
-                  <h5 className={styles.ratingHeaders}>Servis</h5>
+                  <h5 className={styles.ratingHeaders}>
+                    {t("common:service")}
+                  </h5>
                   <Rating
                     readOnly
                     name="simple-controlled"
