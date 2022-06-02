@@ -137,7 +137,8 @@
 }
 .ratingHeaders {
   text-align: center;
-  margin: 6px 6px 4px 6px;
+  margin: 6px 0 4px 0;
+  width: 100%;
 }
 .ratings {
   display: flex;
@@ -312,7 +313,7 @@
   .leftBox {
     flex-direction: column;
   }
-  .col{
+  .col {
     display: none;
   }
 }

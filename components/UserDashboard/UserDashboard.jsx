@@ -1523,7 +1523,10 @@ const UserDashboard = ({ userOrder, userId }) => {
                 >
                   <Button variant="outlined" onClick={handleOpenReviews}>
                     <RateReviewIcon color="primary" />
-                    <h6 className={styles.ratingHeaders}>
+                    <h6
+                      className={styles.ratingHeaders}
+                      style={{ marginLeft: "10px" }}
+                    >
                       {t("common:feedbacks")}
                     </h6>
                   </Button>
@@ -1776,7 +1779,12 @@ const UserDashboard = ({ userOrder, userId }) => {
                 aria-describedby="modal-modal-description"
               >
                 <Box className={styles.reviews}>
-                  <h2 style={{ textAlign: "center", padding: "1rem" }}>
+                  <h2
+                    style={{
+                      textAlign: "center",
+                      padding: "1rem",
+                    }}
+                  >
                     {t("common:feedbacks")}
                   </h2>
                   <div className={styles.gridReviews}>
