@@ -74,13 +74,13 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [taste, setTaste] = useState(menu?.ratings?.map((r) => r?.taste));
   const [speed, setSpeed] = useState(menu?.ratings?.map((r) => r?.speed));
   const [service, setService] = useState(menu?.ratings?.map((r) => r?.service));
-  const [ratingsLength, setRatingsLength] = useState(menu?.ratings.length);
-  const [reviews, setReviews] = useState(menu?.ratings.filter((r) => r.note));
+  const [ratingsLength, setRatingsLength] = useState(menu?.ratings?.length);
+  const [reviews, setReviews] = useState(menu?.ratings?.filter((r) => r.note));
   const [tasteRating, setTasteRating] = useState(null);
   const [speedRating, setSpeedRating] = useState(null);
   const [serviceRating, setServiceRating] = useState(null);
   useEffect(() => {
-    if (taste.length > 0) {
+    if (taste?.length > 0) {
       let sum = 0;
       for (let i = 0; i < taste.length; i++) {
         sum += taste[i];
@@ -90,7 +90,7 @@ const UserDashboard = ({ userOrder, userId }) => {
   }, [taste]);
 
   useEffect(() => {
-    if (speed.length > 0) {
+    if (speed?.length > 0) {
       let sum = 0;
       for (let i = 0; i < speed.length; i++) {
         sum += speed[i];
@@ -100,7 +100,7 @@ const UserDashboard = ({ userOrder, userId }) => {
   }, [speed]);
 
   useEffect(() => {
-    if (service.length > 0) {
+    if (service?.length > 0) {
       let sum = 0;
       for (let i = 0; i < service.length; i++) {
         sum += service[i];
@@ -346,7 +346,7 @@ const UserDashboard = ({ userOrder, userId }) => {
 
   const firstTimeHandler = async (e) => {
     e.preventDefault();
-    const createdAt = new Date().toLocaleString("tr-TR");
+    const createdAt = new Date();
 
     try {
       setIsFetchingForFirst(true);

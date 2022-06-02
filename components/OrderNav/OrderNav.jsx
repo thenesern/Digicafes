@@ -19,7 +19,7 @@ const OrderNav = (props) => {
   const [favItemCount, setFavItemCount] = useState(null);
   let m = 0;
   const [favItem, setFavItem] = useState("");
-  const date = new Date().toLocaleString("tr-TR").split(" ")[0];
+  const date = new Date().toLocaleDateString();
   const week = [];
   const month = [];
   const [length, setLength] = useState(null);

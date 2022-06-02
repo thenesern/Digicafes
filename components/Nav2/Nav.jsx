@@ -147,7 +147,7 @@ const Nav2 = () => {
   };
   const loginHandler = async ({ email, password }) => {
     closeSnackbar();
-    const signedIn = new Date().toLocaleString("tr-TR");
+    const signedIn = new Date();
     try {
       setIsFetching(true);
       const { data } = await axios.post("/api/auth/login", {
@@ -185,7 +185,7 @@ const Nav2 = () => {
       return enqueueSnackbar(t("nav:passwordError"), { variant: "error" });
     }
 
-    const signedIn = new Date().toLocaleString("tr-TR");
+    const signedIn = new Date();
     const lowerFirst = fName?.toLowerCase();
     const betterFirst = lowerFirst?.replace(
       lowerFirst[0],
@@ -200,7 +200,7 @@ const Nav2 = () => {
 
     const firstName = betterFirst;
     const lastName = betterLast;
-    const createdAt = new Date().toLocaleString("tr-TR");
+    const createdAt = new Date();
     try {
       setIsFetching(true);
       const { data } = await axios.post("/api/auth/register", {

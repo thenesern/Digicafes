@@ -14,10 +14,7 @@ import useTranslation from "next-translate/useTranslation";
 const StoreOrders = (props) => {
   const now = new Date();
   const router = useRouter();
-  const date3 = moment(now).subtract(3, "minutes").toDate();
-  const date2 = moment(now).subtract(2, "minutes").toDate();
-  const date1 = moment(now).subtract(1, "minutes").toDate();
-  const date = moment(now).subtract(0, "minutes").toDate();
+
   // Translation
   const { t } = useTranslation();
   const callColumns = [
@@ -144,54 +141,8 @@ const StoreOrders = (props) => {
               {new Date(params.row.createdAt).toLocaleString().split(" ")[1]}
             </span>
 
-            {new Date(params.row.createdAt).toLocaleString().split(" ")[0] ===
-            new Date().toLocaleString().split(" ")[0] ? (
-              new Date(params.row.createdAt)
-                .toLocaleString()
-                .split(" ")[1]
-                .split(":")[0] ===
-              new Date().toLocaleString().split(" ")[1].split(":")[0] ? (
-                +date.toLocaleString("tr-TR").split(" ")[1].split(":")[1] ===
-                +new Date(params.row.createdAt)
-                  .toLocaleString("tr-TR")
-                  .split(" ")[1]
-                  .split(":")[1] ? (
-                  <AccessTimeIcon color="error" />
-                ) : +date1
-                    .toLocaleString("tr-TR")
-                    .split(" ")[1]
-                    .split(":")[1] ===
-                  +new Date(params.row.createdAt)
-                    .toLocaleString("tr-TR")
-                    .split(" ")[1]
-                    .split(":")[1] ? (
-                  <AccessTimeIcon color="error" />
-                ) : +date2
-                    .toLocaleString("tr-TR")
-                    .split(" ")[1]
-                    .split(":")[1] ===
-                  +new Date(params.row.createdAt)
-                    .toLocaleString("tr-TR")
-                    .split(" ")[1]
-                    .split(":")[1] ? (
-                  <AccessTimeIcon color="error" />
-                ) : +date3
-                    .toLocaleString("tr-TR")
-                    .split(" ")[1]
-                    .split(":")[1] ===
-                  +new Date(params.row.createdAt)
-                    .toLocaleString("tr-TR")
-                    .split(" ")[1]
-                    .split(":")[1] ? (
-                  <AccessTimeIcon color="error" />
-                ) : (
-                  ""
-                )
-              ) : (
-                ""
-              )
-            ) : (
-              ""
+            {moment().diff(params.row.createdAt, "minutes") < 5 && (
+              <AccessTimeIcon color="error" />
             )}
           </div>
         );
