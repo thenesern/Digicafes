@@ -37,5 +37,14 @@
   "loading": "Yükleniyor...",
   "categoryImage": "Kategori Görseli",
   "notFoundImage": "Görsel bulunamadı.",
-  "404": "Aradığınız sayfaya ulaşılamıyor ya da erişim izniniz yok!"
+  "404": "Aradığınız sayfaya ulaşılamıyor ya da erişim izniniz yok!",
+  "review": "Değerlendir",
+  "completeRatings": "Lütfen puanlandırmayı tamamlayınız.",
+  "taste": "Lezzet",
+  "speed": "Hız",
+  "service": "Servis",
+  "next": "İlerle",
+  "reviewSent": "Değerlendirmeniz iletildi, Teşekkür Ederiz.",
+  "feedbacks": "Geri Dönüşler",
+  "notes": "Not"
 }

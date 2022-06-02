@@ -37,5 +37,14 @@
   "loading": "Loading...",
   "categoryImage": "Category Image",
   "notFoundImage": "Not found any image.",
-  "404": "The page you were looking for doesn't exist or you don't have acces!"
+  "404": "The page you were looking for doesn't exist or you don't have acces!",
+  "review": "Review",
+  "completeRatings": "Please complete the ratings.",
+  "taste": "Taste",
+  "speed": "Speed of service",
+  "service": "Service",
+  "next": "Next",
+  "reviewSent": "Your review sent, thanks for your feedback.",
+  "feedbacks": "Feedbacks",
+  "notes": "Note"
 }

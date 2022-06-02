@@ -1,9 +1,10 @@
 // Packages and Dependencies
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "next/router";
-import { Link, Loading, Modal, Spacer } from "@nextui-org/react";
-import { IconButton, SwipeableDrawer } from "@material-ui/core";
+import { Link, Loading, Modal, Spacer, Textarea } from "@nextui-org/react";
+import { Button, IconButton, SwipeableDrawer } from "@material-ui/core";
 import Image from "next/image";
+import Rating from "@mui/material/Rating";
 // Utils
 import db from "../../../../utils/db.js";
 import QRMenu from "../../../../models/QRMenu1Model.js";
@@ -12,12 +13,14 @@ import Order from "../../../../models/OrderModel.js";
 import styles from "./store.module.css";
 // Icons
 import MenuIcon from "@mui/icons-material/Menu";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import FmdBadIcon from "@mui/icons-material/FmdBad";
 // Images
 import digicafes from "../../../../assets/digi_logo.svg";
 // Translation
 import i18nConfig from "../../../../i18n.json";
 import useTranslation from "next-translate/useTranslation";
+import axios from "axios";
 
 const StoreMenu = ({ menu }) => {
   // States
@@ -25,10 +28,20 @@ const StoreMenu = ({ menu }) => {
     if (a.order < b.order) return -1;
     return a.order > b.order ? 1 : 0;
   });
+  const [storeName, setStoreName] = useState(menu?.storeName);
   const [open, setOpen] = useState(false);
   const Router = useRouter();
   const [isFetching, setIsFetching] = useState(false);
   const [listType, setListType] = useState(menu?.listType);
+  const [taste, setTaste] = useState(null);
+  const [speed, setSpeed] = useState(null);
+  const [isSuccessRating, setIsSuccessRating] = useState(false);
+  const [service, setService] = useState(null);
+  const [tableModal, setTableModal] = useState(false);
+  const [openRating, setOpenRating] = useState(false);
+  const [isNote, setIsNote] = useState(false);
+  const [note, setNote] = useState("");
+  const [isEmpty, setIsEmpty] = useState(false);
   const [categories, setCategories] = useState(menu?.categories);
   const [isMobile, setIsMobile] = useState();
   const [array, setArray] = useState([]);
@@ -41,10 +54,51 @@ const StoreMenu = ({ menu }) => {
       setIsMobile(true);
     }
   }, []);
-
+  useEffect(() => {
+    if (isSuccessRating) {
+      setTimeout(() => {
+        setIsSuccessRating(false);
+      }, 2000);
+    }
+  }, [isSuccessRating]);
   useEffect(() => {
     setArray(menu?.products?.sort(() => Math.random() - 0.5).splice(0, 3));
   }, [menu?.products]);
+  const handleRating = async (e) => {
+    e.preventDefault();
+    setIsFetching(true);
+    try {
+      const response = await axios.patch(`/api/qr/v1/${storeName}/ratings`, {
+        storeName,
+        ratings: {
+          taste,
+          speed,
+          service,
+          note,
+        },
+      });
+      handleCloseRating();
+      setIsFetching(false);
+      setIsSuccessRating(true);
+    } catch (err) {
+      console.log(err);
+      setIsSuccessRating(false);
+      handleCloseRating();
+      setIsFetching(false);
+    }
+  };
+  const handleOpenRating = () => {
+    setOpenRating(true);
+    setOpen(false);
+  };
+  const handleCloseRating = () => {
+    setOpenRating(false);
+    setTaste(null);
+    setSpeed(null);
+    setService(null);
+    setIsNote(false);
+    setNote("");
+  };
 
   return (
     <>
@@ -86,6 +140,19 @@ const StoreMenu = ({ menu }) => {
                     </div>
                   );
                 })}
+                <Button
+                  variant="outlined"
+                  style={{
+                    margin: "10px auto",
+                    minWidth: "10rem",
+                    color: "#eee",
+                    border: "1px solid #eee",
+                  }}
+                  color="secondary"
+                  onClick={handleOpenRating}
+                >
+                  {t("common:review")}
+                </Button>
                 {!menu?.categories.length == 0 && (
                   <h3
                     style={{
@@ -99,6 +166,7 @@ const StoreMenu = ({ menu }) => {
                     {t("common:menu")}
                   </h3>
                 )}
+
                 {menu &&
                   sorted?.map((m) => (
                     <li
@@ -121,6 +189,132 @@ const StoreMenu = ({ menu }) => {
               </ul>
             </SwipeableDrawer>
           </navbar>
+          <Modal
+            style={{ width: "90%", margin: "0 auto" }}
+            open={isSuccessRating}
+            onClose={() => setIsSuccessRating(false)}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Modal.Body
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "3rem",
+              }}
+            >
+              <CheckCircleIcon style={{ fontSize: "8rem" }} color="success" />
+              <h3 style={{ textAlign: "center" }}>{t("common:reviewSent")}</h3>
+            </Modal.Body>
+          </Modal>
+          <Modal
+            style={{ width: "90%", margin: "0 auto", padding: "1rem" }}
+            onClose={handleCloseRating}
+            open={openRating}
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+          >
+            <Modal.Header
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <h1>{t("common:review")}</h1>
+            </Modal.Header>
+            <Modal.Body
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+                padding: "1rem 0",
+              }}
+            >
+              {isEmpty && <p>{t("common:completeRatings")}</p>}
+              {!isNote && (
+                <>
+                  <h3>{t("common:taste")}</h3>
+                  <Rating
+                    name="simple-controlled"
+                    value={taste}
+                    onChange={(event, newValue) => {
+                      setTaste(newValue);
+                    }}
+                  />
+                  <h3>{t("common:speed")}</h3>
+                  <Rating
+                    name="simple-controlled"
+                    value={speed}
+                    onChange={(event, newValue) => {
+                      setSpeed(newValue);
+                    }}
+                  />
+                  <h3>{t("common:service")}</h3>
+                  <Rating
+                    name="simple-controlled"
+                    value={service}
+                    onChange={(event, newValue) => {
+                      setService(newValue);
+                    }}
+                  />
+                </>
+              )}
+              {isNote && (
+                <Textarea
+                  style={{ fontSize: "12px", width: "16rem" }}
+                  placeholder={t("common:message")}
+                  onChange={(e) => setNote(e.target.value)}
+                ></Textarea>
+              )}
+            </Modal.Body>
+            <Modal.Footer
+              style={{ display: "flex", justifyContent: "space-between" }}
+            >
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleCloseRating}
+              >
+                {t("common:discard")}
+              </Button>
+              {!isNote && (
+                <Button
+                  style={{ marginLeft: "2rem " }}
+                  variant="contained"
+                  color="secondary"
+                  onClick={(e) => {
+                    if (speed && taste && service) {
+                      setIsNote(true);
+                    } else {
+                      setIsEmpty(true);
+                    }
+                  }}
+                >
+                  {t("common:next")}
+                </Button>
+              )}
+              {isNote && (
+                <Button
+                  style={{ marginLeft: "2rem " }}
+                  variant="contained"
+                  color="secondary"
+                  onClick={(e) => {
+                    if (speed && taste && service) {
+                      handleRating(e);
+                    } else {
+                      handleCloseRating();
+                    }
+                  }}
+                >
+                  {t("common:confirm")}
+                </Button>
+              )}
+            </Modal.Footer>
+          </Modal>
+
           {categories.length == 0 && (
             <div className={styles.notFound}>
               <FmdBadIcon style={{ fontSize: "3rem", color: "#001219" }} />

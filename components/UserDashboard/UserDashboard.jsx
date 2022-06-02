@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   TextField,
+  Typography,
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -38,6 +39,7 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import DeleteIcon from "@mui/icons-material/Delete";
 import QrCodeIcon from "@mui/icons-material/QrCode";
 import { PhotoCamera } from "@material-ui/icons";
+import RateReviewIcon from "@mui/icons-material/RateReview";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import ViewListIcon from "@mui/icons-material/ViewList";
@@ -45,6 +47,7 @@ import ViewListIcon from "@mui/icons-material/ViewList";
 import useTranslation from "next-translate/useTranslation";
 // Cookies
 import Cookies from "js-cookie";
+import { Rating } from "@mui/material";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -68,6 +71,44 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [gallery, setGallery] = useState(menu?.gallery || null);
   const [categories, setCategories] = useState([...(menu?.categories || "")]);
   const [galleryName, setGalleryName] = useState(menu?.gallery?.name);
+  const [taste, setTaste] = useState(menu?.ratings?.map((r) => r?.taste));
+  const [speed, setSpeed] = useState(menu?.ratings?.map((r) => r?.speed));
+  const [service, setService] = useState(menu?.ratings?.map((r) => r?.service));
+  const [ratingsLength, setRatingsLength] = useState(menu?.ratings.length);
+  const [reviews, setReviews] = useState(menu?.ratings.filter((r) => r.note));
+  const [tasteRating, setTasteRating] = useState(null);
+  const [speedRating, setSpeedRating] = useState(null);
+  const [serviceRating, setServiceRating] = useState(null);
+  useEffect(() => {
+    if (taste.length > 0) {
+      let sum = 0;
+      for (let i = 0; i < taste.length; i++) {
+        sum += taste[i];
+      }
+      setTasteRating(Math.floor(sum / ratingsLength));
+    }
+  }, [taste]);
+
+  useEffect(() => {
+    if (speed.length > 0) {
+      let sum = 0;
+      for (let i = 0; i < speed.length; i++) {
+        sum += speed[i];
+      }
+      setSpeedRating(Math.floor(sum / ratingsLength));
+    }
+  }, [speed]);
+
+  useEffect(() => {
+    if (service.length > 0) {
+      let sum = 0;
+      for (let i = 0; i < service.length; i++) {
+        sum += service[i];
+      }
+      setServiceRating(Math.floor(sum / ratingsLength));
+    }
+  }, [service]);
+
   const [storeLogo, setStoreLogo] = useState(
     menu?.storeLogo ||
       "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1650137521/uploads/logoDefault_ez8obk.png"
@@ -114,6 +155,7 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [category, setCategory] = useState([]);
   const [menusv1, setMenusv1] = useState([]);
   const [menusv2, setMenusv2] = useState([]);
+  const [openReviews, setOpenReviews] = useState(false);
   const [categoryOrder, setCategoryOrder] = useState(null);
   const [updateCategoryOrder, setUpdateCategoryOrder] = useState(null);
   const [QRCodes, setQRCodes] = useState([]);
@@ -146,7 +188,6 @@ const UserDashboard = ({ userOrder, userId }) => {
       animationName: Radium.keyframes(fadeInRightBig, "fadeInRightBig"),
     },
   };
-
   useEffect(() => {
     setTableNum(menu?.tableNum);
     setStoreName(menu?.storeName);
@@ -232,6 +273,13 @@ const UserDashboard = ({ userOrder, userId }) => {
   const handleOpenAddProduct = () => setOpenAddProduct(true);
   const handleOpenDelete = () => setOpenDelete(true);
   const handleCloseAddProduct = () => setOpenAddProduct(false);
+
+  const handleOpenReviews = () => {
+    setOpenReviews(true);
+  };
+  const handleCloseReviews = () => {
+    setOpenReviews(false);
+  };
   const handleCloseCurrency = () => {
     setOpenCurrency(false);
     setUpdateCurrency("");
@@ -864,7 +912,17 @@ const UserDashboard = ({ userOrder, userId }) => {
       enqueueSnackbar(t("panel:notAddedCategory"), { variant: "error" });
     }
   };
+  const [anchorEl, setAnchorEl] = useState(null);
 
+  const handlePopoverOpen = () => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
   function containsSpecialChars(str) {
     const specialChars = /[`!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?~]/;
     return specialChars.test(str);
@@ -1006,7 +1064,13 @@ const UserDashboard = ({ userOrder, userId }) => {
       },
     },
   ];
-
+  const reviewColumns = [
+    {
+      field: "note",
+      headerName: t("common:notes"),
+      flex: 1,
+    },
+  ];
   const categoryColumns = [
     {
       field: "name",
@@ -1438,515 +1502,125 @@ const UserDashboard = ({ userOrder, userId }) => {
             <Spacer />
           </Modal>
           <div className={styles.box}>
-            <div className={styles.left}>
-              <div className={styles.leftBox}>
+            <div className={styles.leftBox}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "2rem",
+                  width: "100%",
+                }}
+              >
                 <h3>{storeName.toUpperCase()}</h3>
-                <h3>{}</h3>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Button variant="outlined" onClick={handleOpenReviews}>
+                    <RateReviewIcon color="primary" />
+                    <h6 className={styles.ratingHeaders}>
+                      {t("common:feedbacks")}
+                    </h6>
+                  </Button>
+                </div>
               </div>
-              <div className={styles.actions}>
-                <ModalMui
-                  open={openAddProduct}
-                  onClose={handleCloseAddProduct}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-                >
-                  <Box className={styles.modal}>
-                    <form>
-                      <List className={styles.list}>
-                        <h3 className={styles.header}>
-                          {t("panel:addProduct")}
-                        </h3>
+              <span className={styles.col}>|</span>
+              <div className={styles.ratings}>
+                <div>
+                  <h5 className={styles.ratingHeaders}>Lezzet</h5>
 
-                        <ListItem>
-                          <TextField
-                            variant="outlined"
-                            fullWidth
-                            id="name"
-                            onChange={(e) => setName(e.target.value)}
-                            label={t("panel:productName")}
-                            inputProps={{ type: "text", maxLength: 38 }}
-                            helperText={t("panel:forExample1")}
-                          ></TextField>
-                        </ListItem>
-                        <ListItem>
-                          <TextField
-                            variant="outlined"
-                            fullWidth
-                            id="description"
-                            label={t("panel:productDesc")}
-                            onChange={(e) => setDescription(e.target.value)}
-                            inputProps={{ type: "text" }}
-                            helperText={t("panel:forExample2")}
-                          ></TextField>
-                        </ListItem>
-                        <ListItem>
-                          <TextField
-                            variant="outlined"
-                            fullWidth
-                            id="subCategory"
-                            onChange={(e) => setSubCategory(e.target.value)}
-                            label={t("panel:productSubCategory")}
-                            inputProps={{ type: "text", maxLength: 38 }}
-                          ></TextField>
-                        </ListItem>
-                        <ListItem
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            gap: "2rem",
-                          }}
-                        >
-                          <FormControl>
-                            <InputLabel id="demo-multiple-chip-label">
-                              {t("panel:category")}
-                            </InputLabel>
-                            <Select
-                              labelId="demo-multiple-chip-label"
-                              id="demo-multiple-chip"
-                              multiple
-                              value={category}
-                              style={{ minWidth: "8rem" }}
-                              onChange={handleChange}
-                              input={
-                                <OutlinedInput
-                                  id="select-multiple-chip"
-                                  label="Kategori"
-                                />
-                              }
-                              renderValue={(selected) => (
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    flexWrap: "wrap",
-                                    gap: 0.5,
-                                  }}
-                                >
-                                  {selected.map((value) => (
-                                    <Chip key={value} label={value} />
-                                  ))}
-                                </Box>
-                              )}
-                              MenuProps={MenuProps}
-                            >
-                              {categories.map((category) => (
-                                <MenuItem
-                                  key={category.name}
-                                  value={category.name}
-                                  style={{
-                                    padding: "10px",
-                                    width: "100%",
-                                  }}
-                                >
-                                  {category.name}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </FormControl>
-                          <TextField
-                            variant="outlined"
-                            id="price"
-                            onChange={(e) => setPrice(e.target.value)}
-                            label={t("panel:price")}
-                            inputProps={{ type: "number" }}
-                            helperText={t("panel:forExample") + 50}
-                          ></TextField>
-                        </ListItem>
-                        <ListItem
-                          style={{
-                            display: "flex",
-                            alignItems: "flex-start",
-                            justifyContent: "flex-start",
-                            flexDirection: "column",
-                          }}
-                        >
-                          <InputLabel>{t("panel:productImage")}</InputLabel>
-                          <Input
-                            accept="image/*"
-                            id="icon-button-file"
-                            type="file"
-                            onChange={(e) => setFile(e.target.files[0])}
-                          />
-                        </ListItem>
-                        <ListItem
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "flex-end",
-                            gap: "1rem",
-                            paddingTop: "1rem",
-                          }}
-                        >
-                          <Button
-                            variant="outlined"
-                            onClick={handleCloseAddProduct}
-                            color="primary"
-                          >
-                            {t("panel:discard")}
-                          </Button>
-                          <Button
-                            variant="contained"
-                            type="submit"
-                            onClick={addProductHandler}
-                            color="secondary"
-                          >
-                            {t("panel:add")}
-                          </Button>
-                        </ListItem>
-                      </List>
-                    </form>
-                  </Box>
-                </ModalMui>
-                <ModalMui
-                  open={openQRImages}
-                  onClose={handleCloseQRImages}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-                >
-                  <Box className={styles.qrsModal}>
-                    <h1 style={{ textAlign: "center", padding: "1rem" }}>
-                      {t("panel:qrCodes")}
-                    </h1>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "flex-end",
-                        width: "100%",
-                      }}
-                    >
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        onClick={handleZip}
-                      >
-                        {t("panel:downloadAll")}
-                      </Button>
-                    </div>
-                    <div className={styles.qrs}>
-                      {QRCodes.map((qr, i) => (
-                        <div
-                          key={i}
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexDirection: "column",
-                            gap: "10px",
-                          }}
-                        >
-                          <p>
-                            {t("panel:tableNum")}
-                            {i + 1}
-                          </p>
-                          <img style={{ width: "7rem" }} src={qr} />
-                          <a href={qr} download={`Masa ${i + 1}`}>
-                            <Button
-                              color="primary"
-                              style={{ width: "7rem" }}
-                              variant="contained"
-                            >
-                              {t("panel:download")}
-                            </Button>
-                          </a>
-                        </div>
-                      ))}
-                    </div>
-                  </Box>
-                </ModalMui>
-                <ModalMui
-                  open={openCurrency}
-                  onClose={handleCloseCurrency}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-                >
-                  <Box className={styles.modal}>
-                    <h1 style={{ textAlign: "center", padding: "1rem" }}>
-                      {t("panel:currency")}
-                    </h1>
-                    <p style={{ textAlign: "center", padding: "0 1rem" }}>
-                      {t("panel:currencyDesc")}
-                    </p>
-                    <div className={styles.currencies}>
-                      <Button
-                        variant={
-                          updateCurrency
-                            ? updateCurrency === "dolar"
-                              ? "contained"
-                              : "outlined"
-                            : currency === "dolar"
-                            ? "contained"
-                            : "outlined"
-                        }
-                        type="submit"
-                        color="primary"
-                        onClick={() => setUpdateCurrency("dolar")}
-                      >
-                        {t("panel:dollar")} ($)
-                      </Button>
-                      <Button
-                        variant={
-                          updateCurrency
-                            ? updateCurrency === "euro"
-                              ? "contained"
-                              : "outlined"
-                            : currency === "euro"
-                            ? "contained"
-                            : "outlined"
-                        }
-                        type="submit"
-                        color="primary"
-                        onClick={() => setUpdateCurrency("euro")}
-                      >
-                        Euro (€)
-                      </Button>
-                      <Button
-                        variant={
-                          updateCurrency
-                            ? updateCurrency === "lira"
-                              ? "contained"
-                              : "outlined"
-                            : currency === "lira"
-                            ? "contained"
-                            : "outlined"
-                        }
-                        type="submit"
-                        color="primary"
-                        onClick={() => setUpdateCurrency("lira")}
-                      >
-                        {t("panel:lira")} (₺)
-                      </Button>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "flex-end",
-                        gap: "2rem",
-                        padding: "1rem 2rem",
-                      }}
-                    >
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        onClick={handleCloseCurrency}
-                      >
-                        {t("panel:discard")}
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={handleSendCurrency}
-                      >
-                        {t("panel:confirm")}
-                      </Button>
-                    </div>
-                  </Box>
-                </ModalMui>
-                <Modal
-                  width="24rem"
-                  style={{ padding: "1rem", margin: "10px" }}
-                  open={openUpdateCategory}
-                  onClose={handleCloseUpdateCategory}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-                >
-                  <Modal.Header>
-                    <h2>{t("panel:editCategory")}</h2>
-                  </Modal.Header>
-                  <Modal.Body>
-                    <form
-                      style={{
-                        width: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexDirection: "column",
-                        gap: "2rem",
-                      }}
-                    >
-                      <TextField
-                        fullWidth
-                        placeholder={t("panel:categoryName")}
-                        value={addCategory}
-                        onChange={(e) => setAddCategory(e.target.value)}
-                      />
-                      <TextField
-                        fullWidth
-                        placeholder={t("panel:categoryOrder")}
-                        value={updateCategoryOrder}
-                        onChange={(e) => setUpdateCategoryOrder(e.target.value)}
-                      />
-                      <InputLabel style={{ textAlign: "start", width: "100%" }}>
-                        {t("common:categoryImage")}
-                      </InputLabel>
-                      <Input
-                        fullWidth
-                        accept="image/*"
-                        label={t("common:categoryImage")}
-                        id="icon-button-file"
-                        onChange={(e) => {
-                          setFile(e.target.files[0]);
-                          setIsPreview(true);
-                        }}
-                        type="file"
-                      />
-                      {isPreview ? (
-                        /*    <img
-                          src={URL.createObjectURL(file)}
-                          width="300px"
-                          height="300px"
-                          style={{ objectFit: "contain" }}
-                        ></img> */
-                        ""
-                      ) : (
-                        <img
-                          src={file}
-                          width="160px"
-                          height="160px"
-                          style={{ objectFit: "contain" }}
-                        ></img>
-                      )}
-                    </form>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "flex",
-                        gap: "1rem",
-                      }}
-                    >
-                      <Button
-                        onClick={handleCloseUpdateCategory}
-                        color="primary"
-                        variant="outlined"
-                      >
-                        {t("panel:discard")}
-                      </Button>
-                      <Button
-                        color="secondary"
-                        variant="contained"
-                        onClick={(e) => {
-                          if (
-                            addCategory != updateCategory ||
-                            categoryOrder !== updateCategoryOrder ||
-                            typeof file === "object"
-                          ) {
-                            handleUpdateCategory(e);
-                          } else {
-                            handleCloseUpdateCategory();
-                            setUpdateCategory("");
-                            setAddCategory("");
-                            setFile("");
-                            setIsPreview(false);
-                            enqueueSnackbar(t("panel:notChanged"), {
-                              variant: "info",
-                            });
-                          }
-                        }}
-                        style={{ marginLeft: "1rem" }}
-                      >
-                        {t("panel:confirm")}
-                      </Button>
-                    </div>
-                  </Modal.Footer>
-                </Modal>
-                <ModalMui
-                  style={{ padding: "6px", width: "100%" }}
-                  open={openUpdateProduct}
-                  onClose={handleCloseUpdateProduct}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-                >
-                  <Box className={styles.modal}>
-                    <form
-                      style={{
-                        width: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexDirection: "column",
-                        gap: "2rem",
-                      }}
-                    >
-                      <h2>{t("panel:editProduct")}</h2>
-                      <div
+                  <Rating
+                    readOnly
+                    name="simple-controlled"
+                    value={tasteRating}
+                  />
+                </div>
+                <div>
+                  <h5 className={styles.ratingHeaders}>Hız</h5>
+                  <Rating
+                    readOnly
+                    name="simple-controlled"
+                    value={speedRating}
+                  />
+                </div>
+                <div>
+                  <h5 className={styles.ratingHeaders}>Servis</h5>
+                  <Rating
+                    readOnly
+                    name="simple-controlled"
+                    value={serviceRating}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className={styles.actions}>
+              <ModalMui
+                open={openAddProduct}
+                onClose={handleCloseAddProduct}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box className={styles.modal}>
+                  <form>
+                    <List className={styles.list}>
+                      <h3 className={styles.header}>{t("panel:addProduct")}</h3>
+
+                      <ListItem>
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          id="name"
+                          onChange={(e) => setName(e.target.value)}
+                          label={t("panel:productName")}
+                          inputProps={{ type: "text", maxLength: 38 }}
+                          helperText={t("panel:forExample1")}
+                        ></TextField>
+                      </ListItem>
+                      <ListItem>
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          id="description"
+                          label={t("panel:productDesc")}
+                          onChange={(e) => setDescription(e.target.value)}
+                          inputProps={{ type: "text" }}
+                          helperText={t("panel:forExample2")}
+                        ></TextField>
+                      </ListItem>
+                      <ListItem>
+                        <TextField
+                          variant="outlined"
+                          fullWidth
+                          id="subCategory"
+                          onChange={(e) => setSubCategory(e.target.value)}
+                          label={t("panel:productSubCategory")}
+                          inputProps={{ type: "text", maxLength: 38 }}
+                        ></TextField>
+                      </ListItem>
+                      <ListItem
                         style={{
                           display: "flex",
-                          alignItems: " center",
-                          width: "100%",
+                          alignItems: "center",
+                          justifyContent: "space-between",
                           gap: "2rem",
-                          justifyContent: "space-between",
                         }}
                       >
-                        <div>
-                          <InputLabel style={{ margin: "10px 0" }}>
-                            {t("panel:productName")}
-                          </InputLabel>
-                          <Input
-                            label="Ürün Adı"
-                            value={updateProduct}
-                            inputProps={{ maxLength: 38 }}
-                            onChange={(e) => setUpdateProduct(e.target.value)}
-                          />
-                        </div>
-                        <div>
-                          <InputLabel style={{ margin: "10px 0" }}>
-                            {t("panel:productPrice")}
-                          </InputLabel>
-                          <Input
-                            label="Ürün Fiyatı"
-                            value={updatePrice}
-                            type="number"
-                            onChange={(e) => setUpdatePrice(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <div style={{ width: "100%" }}>
-                        <InputLabel style={{ margin: "10px 0" }}>
-                          {t("panel:productDesc")}
-                        </InputLabel>
-                        <Input
-                          fullWidth
-                          label="Ürün Açıklaması"
-                          value={updateDescription}
-                          inputProps={{ maxLength: 100 }}
-                          onChange={(e) => setUpdateDescription(e.target.value)}
-                        />
-                      </div>
-                      <div style={{ width: "100%" }}>
-                        <InputLabel style={{ margin: "10px 0" }}>
-                          {t("panel:productSubCategory")}
-                        </InputLabel>
-                        <Input
-                          fullWidth
-                          label="Ürün Alt Kategorisi"
-                          value={updateSubCategory}
-                          inputProps={{ maxLength: 100 }}
-                          onChange={(e) => setUpdateSubCategory(e.target.value)}
-                        />
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: " center",
-                          width: "100%",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <div>
-                          <InputLabel style={{ margin: "10px 0" }}>
-                            {t("panel:productCategory")}
+                        <FormControl>
+                          <InputLabel id="demo-multiple-chip-label">
+                            {t("panel:category")}
                           </InputLabel>
                           <Select
-                            style={{ minWidth: "7rem" }}
                             labelId="demo-multiple-chip-label"
                             id="demo-multiple-chip"
                             multiple
-                            value={updateProductCategory}
-                            onChange={handleUpdateChange}
+                            value={category}
+                            style={{ minWidth: "8rem" }}
+                            onChange={handleChange}
                             input={
                               <OutlinedInput
                                 id="select-multiple-chip"
@@ -1981,53 +1655,573 @@ const UserDashboard = ({ userOrder, userId }) => {
                               </MenuItem>
                             ))}
                           </Select>
-                        </div>
-                        <div>
-                          <InputLabel style={{ margin: "10px 0" }}>
-                            {t("panel:productImage")}
-                          </InputLabel>
-                          <Input
-                            accept="image/*"
-                            label="Ürün Görseli"
-                            id="icon-button-file"
-                            style={{ width: "14rem" }}
-                            onChange={(e) => {
-                              setFile(e.target.files[0]);
-                              setIsPreview(true);
-                            }}
-                            type="file"
-                          />
-                        </div>
+                        </FormControl>
+                        <TextField
+                          variant="outlined"
+                          id="price"
+                          onChange={(e) => setPrice(e.target.value)}
+                          label={t("panel:price")}
+                          inputProps={{ type: "number" }}
+                          helperText={t("panel:forExample") + 50}
+                        ></TextField>
+                      </ListItem>
+                      <ListItem
+                        style={{
+                          display: "flex",
+                          alignItems: "flex-start",
+                          justifyContent: "flex-start",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <InputLabel>{t("panel:productImage")}</InputLabel>
+                        <Input
+                          accept="image/*"
+                          id="icon-button-file"
+                          type="file"
+                          onChange={(e) => setFile(e.target.files[0])}
+                        />
+                      </ListItem>
+                      <ListItem
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-end",
+                          gap: "1rem",
+                          paddingTop: "1rem",
+                        }}
+                      >
+                        <Button
+                          variant="outlined"
+                          onClick={handleCloseAddProduct}
+                          color="primary"
+                        >
+                          {t("panel:discard")}
+                        </Button>
+                        <Button
+                          variant="contained"
+                          type="submit"
+                          onClick={addProductHandler}
+                          color="secondary"
+                        >
+                          {t("panel:add")}
+                        </Button>
+                      </ListItem>
+                    </List>
+                  </form>
+                </Box>
+              </ModalMui>
+              <ModalMui
+                open={openQRImages}
+                onClose={handleCloseQRImages}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box className={styles.qrsModal}>
+                  <h1 style={{ textAlign: "center", padding: "1rem" }}>
+                    {t("panel:qrCodes")}
+                  </h1>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex-end",
+                      width: "100%",
+                    }}
+                  >
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={handleZip}
+                    >
+                      {t("panel:downloadAll")}
+                    </Button>
+                  </div>
+                  <div className={styles.qrs}>
+                    {QRCodes.map((qr, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexDirection: "column",
+                          gap: "10px",
+                        }}
+                      >
+                        <p>
+                          {t("panel:tableNum")}
+                          {i + 1}
+                        </p>
+                        <img style={{ width: "7rem" }} src={qr} />
+                        <a href={qr} download={`Masa ${i + 1}`}>
+                          <Button
+                            color="primary"
+                            style={{ width: "7rem" }}
+                            variant="contained"
+                          >
+                            {t("panel:download")}
+                          </Button>
+                        </a>
                       </div>
-                      {isPreview ? (
-                        /*    <img
+                    ))}
+                  </div>
+                </Box>
+              </ModalMui>
+              <ModalMui
+                open={openReviews}
+                onClose={handleCloseReviews}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box className={styles.reviews}>
+                  <h2 style={{ textAlign: "center", padding: "1rem" }}>
+                    {t("common:feedbacks")}
+                  </h2>
+                  <div className={styles.gridReviews}>
+                    <DataGrid
+                      className={styles.data}
+                      sx={{
+                        "& .MuiDataGrid-renderingZone": {
+                          maxHeight: "none !important",
+                          minHeight: "none !important",
+                        },
+                        "& .MuiDataGrid-cell": {
+                          lineHeight: "unset !important",
+                          maxHeight: "none !important",
+                          minHeight: "none !important",
+                          whiteSpace: "normal",
+                          wordWrap: "break-word",
+                        },
+                        "& .MuiDataGrid-row": {
+                          minHeight: "none !important",
+                          maxHeight: "none !important",
+                        },
+                        virtualScrollerContent: {
+                          height: "100% !important",
+                          overflow: "scroll",
+                        },
+                        height: 1,
+                        width: 1,
+                        "& .dark": {
+                          backgroundColor: "#264653",
+                          color: "#fbeee0",
+                        },
+                      }}
+                      localeText={
+                        router.locale === "tr"
+                          ? trTR.components.MuiDataGrid.defaultProps.localeText
+                          : enUS.components.MuiDataGrid.defaultProps.localeText
+                      }
+                      rows={reviews}
+                      columns={reviewColumns}
+                      getRowId={(row) => row._id}
+                      pageSize={5}
+                      rowsPerPageOptions={[5]}
+                    />
+                  </div>
+                </Box>
+              </ModalMui>
+              <ModalMui
+                open={openCurrency}
+                onClose={handleCloseCurrency}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box className={styles.modal}>
+                  <h1 style={{ textAlign: "center", padding: "1rem" }}>
+                    {t("panel:currency")}
+                  </h1>
+                  <p style={{ textAlign: "center", padding: "0 1rem" }}>
+                    {t("panel:currencyDesc")}
+                  </p>
+                  <div className={styles.currencies}>
+                    <Button
+                      variant={
+                        updateCurrency
+                          ? updateCurrency === "dolar"
+                            ? "contained"
+                            : "outlined"
+                          : currency === "dolar"
+                          ? "contained"
+                          : "outlined"
+                      }
+                      type="submit"
+                      color="primary"
+                      onClick={() => setUpdateCurrency("dolar")}
+                    >
+                      {t("panel:dollar")} ($)
+                    </Button>
+                    <Button
+                      variant={
+                        updateCurrency
+                          ? updateCurrency === "euro"
+                            ? "contained"
+                            : "outlined"
+                          : currency === "euro"
+                          ? "contained"
+                          : "outlined"
+                      }
+                      type="submit"
+                      color="primary"
+                      onClick={() => setUpdateCurrency("euro")}
+                    >
+                      Euro (€)
+                    </Button>
+                    <Button
+                      variant={
+                        updateCurrency
+                          ? updateCurrency === "lira"
+                            ? "contained"
+                            : "outlined"
+                          : currency === "lira"
+                          ? "contained"
+                          : "outlined"
+                      }
+                      type="submit"
+                      color="primary"
+                      onClick={() => setUpdateCurrency("lira")}
+                    >
+                      {t("panel:lira")} (₺)
+                    </Button>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex-end",
+                      gap: "2rem",
+                      padding: "1rem 2rem",
+                    }}
+                  >
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={handleCloseCurrency}
+                    >
+                      {t("panel:discard")}
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={handleSendCurrency}
+                    >
+                      {t("panel:confirm")}
+                    </Button>
+                  </div>
+                </Box>
+              </ModalMui>
+              <Modal
+                width="24rem"
+                style={{ padding: "1rem", margin: "10px" }}
+                open={openUpdateCategory}
+                onClose={handleCloseUpdateCategory}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Modal.Header>
+                  <h2>{t("panel:editCategory")}</h2>
+                </Modal.Header>
+                <Modal.Body>
+                  <form
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                      gap: "2rem",
+                    }}
+                  >
+                    <TextField
+                      fullWidth
+                      placeholder={t("panel:categoryName")}
+                      value={addCategory}
+                      onChange={(e) => setAddCategory(e.target.value)}
+                    />
+                    <TextField
+                      fullWidth
+                      placeholder={t("panel:categoryOrder")}
+                      value={updateCategoryOrder}
+                      onChange={(e) => setUpdateCategoryOrder(e.target.value)}
+                    />
+                    <InputLabel style={{ textAlign: "start", width: "100%" }}>
+                      {t("common:categoryImage")}
+                    </InputLabel>
+                    <Input
+                      fullWidth
+                      accept="image/*"
+                      label={t("common:categoryImage")}
+                      id="icon-button-file"
+                      onChange={(e) => {
+                        setFile(e.target.files[0]);
+                        setIsPreview(true);
+                      }}
+                      type="file"
+                    />
+                    {isPreview ? (
+                      /*    <img
                           src={URL.createObjectURL(file)}
                           width="300px"
                           height="300px"
                           style={{ objectFit: "contain" }}
                         ></img> */
-                        ""
-                      ) : (
-                        <img
-                          src={file}
-                          width="160px"
-                          height="160px"
+                      ""
+                    ) : (
+                      <img
+                        src={file}
+                        width="160px"
+                        height="160px"
+                        style={{ objectFit: "contain" }}
+                      ></img>
+                    )}
+                  </form>
+                </Modal.Body>
+                <Modal.Footer>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex",
+                      gap: "1rem",
+                    }}
+                  >
+                    <Button
+                      onClick={handleCloseUpdateCategory}
+                      color="primary"
+                      variant="outlined"
+                    >
+                      {t("panel:discard")}
+                    </Button>
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      onClick={(e) => {
+                        if (
+                          addCategory != updateCategory ||
+                          categoryOrder !== updateCategoryOrder ||
+                          typeof file === "object"
+                        ) {
+                          handleUpdateCategory(e);
+                        } else {
+                          handleCloseUpdateCategory();
+                          setUpdateCategory("");
+                          setAddCategory("");
+                          setFile("");
+                          setIsPreview(false);
+                          enqueueSnackbar(t("panel:notChanged"), {
+                            variant: "info",
+                          });
+                        }
+                      }}
+                      style={{ marginLeft: "1rem" }}
+                    >
+                      {t("panel:confirm")}
+                    </Button>
+                  </div>
+                </Modal.Footer>
+              </Modal>
+              <ModalMui
+                style={{ padding: "6px", width: "100%" }}
+                open={openUpdateProduct}
+                onClose={handleCloseUpdateProduct}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box className={styles.modal}>
+                  <form
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                      gap: "2rem",
+                    }}
+                  >
+                    <h2>{t("panel:editProduct")}</h2>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: " center",
+                        width: "100%",
+                        gap: "2rem",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <div>
+                        <InputLabel style={{ margin: "10px 0" }}>
+                          {t("panel:productName")}
+                        </InputLabel>
+                        <Input
+                          label="Ürün Adı"
+                          value={updateProduct}
+                          inputProps={{ maxLength: 38 }}
+                          onChange={(e) => setUpdateProduct(e.target.value)}
+                        />
+                      </div>
+                      <div>
+                        <InputLabel style={{ margin: "10px 0" }}>
+                          {t("panel:productPrice")}
+                        </InputLabel>
+                        <Input
+                          label="Ürün Fiyatı"
+                          value={updatePrice}
+                          type="number"
+                          onChange={(e) => setUpdatePrice(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div style={{ width: "100%" }}>
+                      <InputLabel style={{ margin: "10px 0" }}>
+                        {t("panel:productDesc")}
+                      </InputLabel>
+                      <Input
+                        fullWidth
+                        label="Ürün Açıklaması"
+                        value={updateDescription}
+                        inputProps={{ maxLength: 100 }}
+                        onChange={(e) => setUpdateDescription(e.target.value)}
+                      />
+                    </div>
+                    <div style={{ width: "100%" }}>
+                      <InputLabel style={{ margin: "10px 0" }}>
+                        {t("panel:productSubCategory")}
+                      </InputLabel>
+                      <Input
+                        fullWidth
+                        label="Ürün Alt Kategorisi"
+                        value={updateSubCategory}
+                        inputProps={{ maxLength: 100 }}
+                        onChange={(e) => setUpdateSubCategory(e.target.value)}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: " center",
+                        width: "100%",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <div>
+                        <InputLabel style={{ margin: "10px 0" }}>
+                          {t("panel:productCategory")}
+                        </InputLabel>
+                        <Select
+                          style={{ minWidth: "7rem" }}
+                          labelId="demo-multiple-chip-label"
+                          id="demo-multiple-chip"
+                          multiple
+                          value={updateProductCategory}
+                          onChange={handleUpdateChange}
+                          input={
+                            <OutlinedInput
+                              id="select-multiple-chip"
+                              label="Kategori"
+                            />
+                          }
+                          renderValue={(selected) => (
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                gap: 0.5,
+                              }}
+                            >
+                              {selected.map((value) => (
+                                <Chip key={value} label={value} />
+                              ))}
+                            </Box>
+                          )}
+                          MenuProps={MenuProps}
+                        >
+                          {categories.map((category) => (
+                            <MenuItem
+                              key={category.name}
+                              value={category.name}
+                              style={{
+                                padding: "10px",
+                                width: "100%",
+                              }}
+                            >
+                              {category.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </div>
+                      <div>
+                        <InputLabel style={{ margin: "10px 0" }}>
+                          {t("panel:productImage")}
+                        </InputLabel>
+                        <Input
+                          accept="image/*"
+                          label="Ürün Görseli"
+                          id="icon-button-file"
+                          style={{ width: "14rem" }}
+                          onChange={(e) => {
+                            setFile(e.target.files[0]);
+                            setIsPreview(true);
+                          }}
+                          type="file"
+                        />
+                      </div>
+                    </div>
+                    {isPreview ? (
+                      /*    <img
+                          src={URL.createObjectURL(file)}
+                          width="300px"
+                          height="300px"
                           style={{ objectFit: "contain" }}
-                        ></img>
-                      )}
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          width: "100%",
-                          justifyContent: "flex-end",
-                          gap: "10px",
+                        ></img> */
+                      ""
+                    ) : (
+                      <img
+                        src={file}
+                        width="160px"
+                        height="160px"
+                        style={{ objectFit: "contain" }}
+                      ></img>
+                    )}
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        width: "100%",
+                        justifyContent: "flex-end",
+                        gap: "10px",
+                      }}
+                    >
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        onClick={() => {
+                          handleCloseUpdateProduct();
+                          setFile("");
+                          setIsPreview(false);
+                          setUpdateProduct("");
+                          setUpdatePrice(null);
+                          setUpdateDescription("");
+                          setUpdateSubCategory("");
+                          setUpdateProductCategory(null);
                         }}
                       >
-                        <Button
-                          color="primary"
-                          variant="outlined"
-                          onClick={() => {
+                        {t("panel:discard")}
+                      </Button>
+                      <Button
+                        color="secondary"
+                        variant="contained"
+                        onClick={(e) => {
+                          if (
+                            name !== updateProduct ||
+                            price !== updatePrice ||
+                            description !== updateDescription ||
+                            subCategory !== updateSubCategory ||
+                            category.length !== updateProductCategory.length ||
+                            category[0] !== updateProductCategory[0] ||
+                            typeof file === "object"
+                          ) {
+                            handleUpdateProduct(e);
+                          } else {
                             handleCloseUpdateProduct();
                             setFile("");
                             setIsPreview(false);
@@ -2036,539 +2230,504 @@ const UserDashboard = ({ userOrder, userId }) => {
                             setUpdateDescription("");
                             setUpdateSubCategory("");
                             setUpdateProductCategory(null);
-                          }}
-                        >
-                          {t("panel:discard")}
-                        </Button>
-                        <Button
-                          color="secondary"
-                          variant="contained"
-                          onClick={(e) => {
-                            if (
-                              name !== updateProduct ||
-                              price !== updatePrice ||
-                              description !== updateDescription ||
-                              subCategory !== updateSubCategory ||
-                              category.length !==
-                                updateProductCategory.length ||
-                              category[0] !== updateProductCategory[0] ||
-                              typeof file === "object"
-                            ) {
-                              handleUpdateProduct(e);
-                            } else {
-                              handleCloseUpdateProduct();
-                              setFile("");
-                              setIsPreview(false);
-                              setUpdateProduct("");
-                              setUpdatePrice(null);
-                              setUpdateDescription("");
-                              setUpdateSubCategory("");
-                              setUpdateProductCategory(null);
-                              enqueueSnackbar(t("panel:notChanged"), {
-                                variant: "info",
-                              });
-                            }
-                          }}
-                          style={{ marginLeft: "1rem" }}
-                        >
-                          {t("panel:confirm")}
-                        </Button>
-                      </div>
-                    </form>
-                  </Box>
-                </ModalMui>
-                <ModalMui
-                  open={openAddCategory}
-                  onClose={handleCloseAddCategory}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-                >
-                  <Box className={styles.modal}>
-                    <form>
-                      <List className={styles.list}>
-                        <h3 className={styles.header}>
-                          {t("panel:addCategory")}
-                        </h3>
-                        <ListItem>
-                          <TextField
-                            variant="outlined"
-                            fullWidth
-                            id="category"
-                            label={t("panel:category")}
-                            inputProps={{ type: "text", maxLength: 38 }}
-                            onChange={(e) => setAddCategory(e.target.value)}
-                            helperText={t("panel:forExample3")}
-                          ></TextField>
-                        </ListItem>
-                        <ListItem
-                          style={{
-                            display: "flex",
-                            alignItems: "flex-start",
-                            justifyContent: "flex-start",
-                            flexDirection: "column",
-                            margin: "1rem 0",
-                          }}
-                        >
-                          <InputLabel>{t("panel:productImage")}</InputLabel>
-                          <label htmlFor="icon-button-file">
-                            <Input
-                              accept="image/*"
-                              id="icon-button-file"
-                              onChange={(e) => setFile(e.target.files[0])}
-                              type="file"
-                            />
-                            <IconButton
-                              color="primary"
-                              aria-label="upload picture"
-                              component="span"
-                            >
-                              <PhotoCamera />
-                            </IconButton>
-                          </label>
-                        </ListItem>
-                        <ListItem
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "flex-start",
-                            justifyContent: "flex-start",
-                          }}
-                        >
-                          <TextField
-                            label={t("panel:order")}
-                            value={categoryOrder}
-                            inputProps={{ type: "number", maxLength: 100 }}
-                            onChange={(e) => setCategoryOrder(e.target.value)}
-                          />
-                        </ListItem>
-                        <ListItem
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "flex-end",
-                            gap: "1rem",
-                          }}
-                        >
-                          <Button
-                            variant="outlined"
-                            type="submit"
-                            onClick={handleCloseAddCategory}
-                            color="primary"
-                          >
-                            {t("common:discard")}
-                          </Button>
-                          <Button
-                            variant="contained"
-                            type="submit"
-                            onClick={(e) => {
-                              if (
-                                categories.filter((c) => c.name === addCategory)
-                                  .length !== 0
-                              ) {
-                                handleCloseAddCategory();
-                                enqueueSnackbar(
-                                  "Zaten bu isimde bir kategoriniz var",
-                                  {
-                                    variant: "error",
-                                  }
-                                );
-                              } else {
-                                addCategoryHandler(e);
-                              }
-                            }}
-                            color="secondary"
-                          >
-                            {t("panel:add")}
-                          </Button>
-                        </ListItem>
-                      </List>
-                    </form>
-                  </Box>
-                </ModalMui>
-                <ModalMui open={openListType} onClose={handleCloseListType}>
-                  <Box className={styles.modal}>
-                    <h2 style={{ textAlign: "center" }}>
-                      {t("panel:listType")}
-                    </h2>
-                    <form>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: "3rem",
+                            enqueueSnackbar(t("panel:notChanged"), {
+                              variant: "info",
+                            });
+                          }
                         }}
+                        style={{ marginLeft: "1rem" }}
                       >
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexDirection: "column",
-                            gap: "1rem",
-                          }}
-                        >
-                          <input
-                            style={{ cursor: "pointer" }}
-                            type="radio"
-                            name="listType"
-                            checked={listType === "text" ? true : false}
-                            onChange={() => setListType("text")}
-                          ></input>
-                          <h3 className={styles.listTypeHeader}>
-                            {t("panel:text")}
-                          </h3>
-                          <img
-                            className={styles.listTypeImage}
-                            src={
-                              router.locale === "tr"
-                                ? "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1652116621/h3ap73zblrlw6uows3bk.png"
-                                : "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1653995773/xlsyevzt8jvp9vqurgf0.png"
-                            }
-                          />
-                        </div>
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexDirection: "column",
-                            gap: "1rem",
-                          }}
-                        >
-                          <input
-                            style={{ cursor: "pointer" }}
-                            checked={listType === "image" ? true : false}
-                            type="radio"
-                            name="listType"
-                            onChange={() => setListType("image")}
-                          ></input>
-                          <h3 className={styles.listTypeHeader}>
-                            {t("panel:image")}
-                          </h3>
-                          <img
-                            className={styles.listTypeImage}
-                            src={
-                              router.locale === "tr"
-                                ? "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1652113749/p7kovtut5b2mls3qjask.png"
-                                : "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1653995774/qgmoxg5wc5nlybtq3dho.png"
-                            }
-                          />
-                        </div>
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          width: "100%",
-                          justifyContent: "flex-end",
-                          gap: "2rem",
-                          padding: "2rem",
-                        }}
-                      >
-                        <Button
-                          color="primary"
+                        {t("panel:confirm")}
+                      </Button>
+                    </div>
+                  </form>
+                </Box>
+              </ModalMui>
+              <ModalMui
+                open={openAddCategory}
+                onClose={handleCloseAddCategory}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box className={styles.modal}>
+                  <form>
+                    <List className={styles.list}>
+                      <h3 className={styles.header}>
+                        {t("panel:addCategory")}
+                      </h3>
+                      <ListItem>
+                        <TextField
                           variant="outlined"
-                          onClick={handleCloseListType}
-                        >
-                          {t("panel:discard")}
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          onClick={handleUpdateListType}
-                        >
-                          {t("panel:confirm")}
-                        </Button>
-                      </div>
-                    </form>
-                  </Box>
-                </ModalMui>
-                <ModalMui open={openGallery} onClose={handleCloseGallery}>
-                  <Box className={styles.modal}>
-                    <h2 style={{ textAlign: "center", padding: "1rem" }}>
-                      {t("panel:gallery")}
-                    </h2>
-                    <form
-                      style={{
-                        display: "flex",
-                        alignItems: "flex-start",
-                        gap: "1rem",
-                        padding: "0 1rem",
-                        justifyContent: "center",
-                        flexDirection: "column",
-                      }}
-                    >
-                      <TextField
-                        type="text"
-                        value={galleryName}
-                        fullWidth
-                        placeholder={t("panel:galleryName")}
-                        onChange={(e) => setGalleryName(e.target.value)}
-                      />
-                      <div
+                          fullWidth
+                          id="category"
+                          label={t("panel:category")}
+                          inputProps={{ type: "text", maxLength: 38 }}
+                          onChange={(e) => setAddCategory(e.target.value)}
+                          helperText={t("panel:forExample3")}
+                        ></TextField>
+                      </ListItem>
+                      <ListItem
+                        style={{
+                          display: "flex",
+                          alignItems: "flex-start",
+                          justifyContent: "flex-start",
+                          flexDirection: "column",
+                          margin: "1rem 0",
+                        }}
+                      >
+                        <InputLabel>{t("panel:productImage")}</InputLabel>
+                        <label htmlFor="icon-button-file">
+                          <Input
+                            accept="image/*"
+                            id="icon-button-file"
+                            onChange={(e) => setFile(e.target.files[0])}
+                            type="file"
+                          />
+                          <IconButton
+                            color="primary"
+                            aria-label="upload picture"
+                            component="span"
+                          >
+                            <PhotoCamera />
+                          </IconButton>
+                        </label>
+                      </ListItem>
+                      <ListItem
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "flex-start",
+                          justifyContent: "flex-start",
+                        }}
+                      >
+                        <TextField
+                          label={t("panel:order")}
+                          value={categoryOrder}
+                          inputProps={{ type: "number", maxLength: 100 }}
+                          onChange={(e) => setCategoryOrder(e.target.value)}
+                        />
+                      </ListItem>
+                      <ListItem
                         style={{
                           display: "flex",
                           alignItems: "center",
-                          justifyContent: "center",
-                          gap: "3rem",
-                          width: "100%",
-                        }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: "10px",
-                          }}
-                        >
-                          <input
-                            style={{ cursor: "pointer" }}
-                            type="radio"
-                            name="isActive"
-                            checked={isGalleryActive === true ? true : false}
-                            onChange={() => setIsGalleryActive(true)}
-                          ></input>
-                          <h3 className={styles.listTypeHeader}>
-                            {t("panel:active")}
-                          </h3>
-                        </div>
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: "10px",
-                          }}
-                        >
-                          <input
-                            style={{ cursor: "pointer" }}
-                            type="radio"
-                            name="isActive"
-                            checked={isGalleryActive === false ? true : false}
-                            onChange={() => setIsGalleryActive(false)}
-                          ></input>
-                          <h3 className={styles.listTypeHeader}>
-                            {t("panel:passive")}
-                          </h3>
-                        </div>
-                      </div>
-                      <h3 style={{ marginBottom: "0" }}>
-                        {t("panel:galleryCover")}
-                      </h3>
-                      <div>
-                        {galleryImage ? (
-                          <img
-                            style={{
-                              width: "7rem",
-                              height: "5rem",
-                              objectFit: "contain",
-                            }}
-                            src={galleryImage}
-                          ></img>
-                        ) : (
-                          <p>{t("common:notFoundImage")}</p>
-                        )}
-                      </div>
-                      <Input
-                        accept="image/*"
-                        id="icon-button-file"
-                        onChange={(e) => {
-                          setGalleryImage(e.target.files[0]);
-                        }}
-                        type="file"
-                      />
-                      <h3 style={{ marginBottom: "0" }}>
-                        {t("panel:gallery")}
-                      </h3>
-                      <div
-                        style={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr 1fr",
-                        }}
-                      >
-                        {images.length > 0 ? (
-                          images.map((g) => (
-                            <img
-                              onMouseEnter={(e) => {
-                                e.target.style.border = "1px solid gray";
-                              }}
-                              onMouseLeave={(e) => {
-                                e.target.style.border = "none";
-                              }}
-                              onClick={() => {
-                                setImages(
-                                  images.filter((i) => i.image !== g?.image)
-                                );
-                              }}
-                              alt={g?.image}
-                              style={{
-                                width: "7rem",
-                                height: "5rem",
-                                objectFit: "contain",
-                                cursor: "pointer",
-                              }}
-                              key={g?.image}
-                              src={g?.image}
-                            ></img>
-                          ))
-                        ) : (
-                          <p>{t("panel:imageNotFound")}</p>
-                        )}
-                      </div>
-                      <Input
-                        accept="image/*"
-                        id="icon-button-file"
-                        onChange={(e) => {
-                          setFile(e.target.files[0]);
-                        }}
-                        type="file"
-                      />
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          width: "92%",
                           justifyContent: "flex-end",
                           gap: "1rem",
-                          margin: "1rem",
                         }}
                       >
-                        <Button variant="outlined" onClick={handleCloseGallery}>
-                          {t("panel:discard")}
+                        <Button
+                          variant="outlined"
+                          type="submit"
+                          onClick={handleCloseAddCategory}
+                          color="primary"
+                        >
+                          {t("common:discard")}
                         </Button>
                         <Button
                           variant="contained"
-                          color="secondary"
-                          onClick={handleUpdateGallery}
-                        >
-                          {t("panel:confirm")}
-                        </Button>
-                      </div>
-                    </form>
-                  </Box>
-                </ModalMui>
-                <ModalMui
-                  open={openUploadLogo}
-                  onClose={handleCloseUploadLogo}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-                >
-                  <Box className={styles.modal}>
-                    <form>
-                      <List className={styles.list}>
-                        <h3 className={styles.header}>
-                          {t("panel:uploadLogo")}
-                        </h3>
-
-                        <ListItem>
-                          <label htmlFor="icon-button-file">
-                            <Input
-                              accept="image/*"
-                              id="icon-button-file"
-                              onChange={(e) => setFile(e.target.files[0])}
-                              type="file"
-                            />
-                            <IconButton
-                              color="primary"
-                              aria-label="upload picture"
-                              component="span"
-                            >
-                              <PhotoCamera />
-                            </IconButton>
-                          </label>
-                        </ListItem>
-                        <ListItem
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "flex-end",
-                            gap: "1rem",
-                            paddingTop: "1rem",
+                          type="submit"
+                          onClick={(e) => {
+                            if (
+                              categories.filter((c) => c.name === addCategory)
+                                .length !== 0
+                            ) {
+                              handleCloseAddCategory();
+                              enqueueSnackbar(
+                                "Zaten bu isimde bir kategoriniz var",
+                                {
+                                  variant: "error",
+                                }
+                              );
+                            } else {
+                              addCategoryHandler(e);
+                            }
                           }}
+                          color="secondary"
                         >
-                          <Button
-                            variant="outlined"
-                            type="submit"
-                            onClick={handleCloseUploadLogo}
-                            color="primary"
-                          >
-                            {t("panel:discard")}
-                          </Button>
-                          <Button
-                            variant="contained"
-                            type="submit"
-                            onClick={uploadLogoHandler}
-                            color="secondary"
-                          >
-                            {t("panel:upload")}
-                          </Button>
-                        </ListItem>
-                      </List>
-                    </form>
-                  </Box>
-                </ModalMui>
-                <ModalMui
-                  width="24rem"
-                  open={openDeleteProduct}
-                  onClose={handleCloseDelete}
-                  aria-labelledby="modal-modal-title"
-                  aria-describedby="modal-modal-description"
-                  style={{ padding: "1rem", margin: "10px" }}
-                >
-                  <Box className={styles.modal}>
-                    <form>
-                      <List className={styles.list}>
-                        <h3 className={styles.header}>{t("panel:isSure")}</h3>
-
-                        <ListItem>
-                          <p>
-                            {deleteCategory
-                              ? t("panel:category")
-                              : t("panel:product")}
-                            ,
-                            <span className={styles.deleteDescription}>
-                              {deleteName}
-                            </span>
-                            {t("panel:willDelete")}
-                          </p>
-                        </ListItem>
-                      </List>
-                    </form>
-                    <div className={styles.modalButtons}>
-                      <Button
-                        variant="outlined"
-                        type="submit"
-                        onClick={() => {
-                          handleCloseDelete();
-                          setDeleteCategory(false);
+                          {t("panel:add")}
+                        </Button>
+                      </ListItem>
+                    </List>
+                  </form>
+                </Box>
+              </ModalMui>
+              <ModalMui open={openListType} onClose={handleCloseListType}>
+                <Box className={styles.modal}>
+                  <h2 style={{ textAlign: "center" }}>{t("panel:listType")}</h2>
+                  <form>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "3rem",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexDirection: "column",
+                          gap: "1rem",
                         }}
+                      >
+                        <input
+                          style={{ cursor: "pointer" }}
+                          type="radio"
+                          name="listType"
+                          checked={listType === "text" ? true : false}
+                          onChange={() => setListType("text")}
+                        ></input>
+                        <h3 className={styles.listTypeHeader}>
+                          {t("panel:text")}
+                        </h3>
+                        <img
+                          className={styles.listTypeImage}
+                          src={
+                            router.locale === "tr"
+                              ? "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1652116621/h3ap73zblrlw6uows3bk.png"
+                              : "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1653995773/xlsyevzt8jvp9vqurgf0.png"
+                          }
+                        />
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexDirection: "column",
+                          gap: "1rem",
+                        }}
+                      >
+                        <input
+                          style={{ cursor: "pointer" }}
+                          checked={listType === "image" ? true : false}
+                          type="radio"
+                          name="listType"
+                          onChange={() => setListType("image")}
+                        ></input>
+                        <h3 className={styles.listTypeHeader}>
+                          {t("panel:image")}
+                        </h3>
+                        <img
+                          className={styles.listTypeImage}
+                          src={
+                            router.locale === "tr"
+                              ? "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1652113749/p7kovtut5b2mls3qjask.png"
+                              : "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1653995774/qgmoxg5wc5nlybtq3dho.png"
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        width: "100%",
+                        justifyContent: "flex-end",
+                        gap: "2rem",
+                        padding: "2rem",
+                      }}
+                    >
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        onClick={handleCloseListType}
                       >
                         {t("panel:discard")}
                       </Button>
                       <Button
                         variant="contained"
-                        type="submit"
                         color="secondary"
-                        onClick={() => {
-                          if (deleteCategory === true) {
-                            deleteCategoryHandler();
-                            handleCloseDelete();
-                            setDeleteCategory(false);
-                          } else {
-                            deleteProductHandler();
-                            handleCloseDelete();
-                            setDeleteCategory(false);
-                          }
-                        }}
+                        onClick={handleUpdateListType}
                       >
                         {t("panel:confirm")}
                       </Button>
                     </div>
-                  </Box>
-                </ModalMui>
-              </div>
+                  </form>
+                </Box>
+              </ModalMui>
+              <ModalMui open={openGallery} onClose={handleCloseGallery}>
+                <Box className={styles.modal}>
+                  <h2 style={{ textAlign: "center", padding: "1rem" }}>
+                    {t("panel:gallery")}
+                  </h2>
+                  <form
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: "1rem",
+                      padding: "0 1rem",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <TextField
+                      type="text"
+                      value={galleryName}
+                      fullWidth
+                      placeholder={t("panel:galleryName")}
+                      onChange={(e) => setGalleryName(e.target.value)}
+                    />
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "3rem",
+                        width: "100%",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "10px",
+                        }}
+                      >
+                        <input
+                          style={{ cursor: "pointer" }}
+                          type="radio"
+                          name="isActive"
+                          checked={isGalleryActive === true ? true : false}
+                          onChange={() => setIsGalleryActive(true)}
+                        ></input>
+                        <h3 className={styles.listTypeHeader}>
+                          {t("panel:active")}
+                        </h3>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "10px",
+                        }}
+                      >
+                        <input
+                          style={{ cursor: "pointer" }}
+                          type="radio"
+                          name="isActive"
+                          checked={isGalleryActive === false ? true : false}
+                          onChange={() => setIsGalleryActive(false)}
+                        ></input>
+                        <h3 className={styles.listTypeHeader}>
+                          {t("panel:passive")}
+                        </h3>
+                      </div>
+                    </div>
+                    <h3 style={{ marginBottom: "0" }}>
+                      {t("panel:galleryCover")}
+                    </h3>
+                    <div>
+                      {galleryImage ? (
+                        <img
+                          style={{
+                            width: "7rem",
+                            height: "5rem",
+                            objectFit: "contain",
+                          }}
+                          src={galleryImage}
+                        ></img>
+                      ) : (
+                        <p>{t("common:notFoundImage")}</p>
+                      )}
+                    </div>
+                    <Input
+                      accept="image/*"
+                      id="icon-button-file"
+                      onChange={(e) => {
+                        setGalleryImage(e.target.files[0]);
+                      }}
+                      type="file"
+                    />
+                    <h3 style={{ marginBottom: "0" }}>{t("panel:gallery")}</h3>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr 1fr",
+                      }}
+                    >
+                      {images.length > 0 ? (
+                        images.map((g) => (
+                          <img
+                            onMouseEnter={(e) => {
+                              e.target.style.border = "1px solid gray";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.border = "none";
+                            }}
+                            onClick={() => {
+                              setImages(
+                                images.filter((i) => i.image !== g?.image)
+                              );
+                            }}
+                            alt={g?.image}
+                            style={{
+                              width: "7rem",
+                              height: "5rem",
+                              objectFit: "contain",
+                              cursor: "pointer",
+                            }}
+                            key={g?.image}
+                            src={g?.image}
+                          ></img>
+                        ))
+                      ) : (
+                        <p>{t("panel:imageNotFound")}</p>
+                      )}
+                    </div>
+                    <Input
+                      accept="image/*"
+                      id="icon-button-file"
+                      onChange={(e) => {
+                        setFile(e.target.files[0]);
+                      }}
+                      type="file"
+                    />
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        width: "92%",
+                        justifyContent: "flex-end",
+                        gap: "1rem",
+                        margin: "1rem",
+                      }}
+                    >
+                      <Button variant="outlined" onClick={handleCloseGallery}>
+                        {t("panel:discard")}
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={handleUpdateGallery}
+                      >
+                        {t("panel:confirm")}
+                      </Button>
+                    </div>
+                  </form>
+                </Box>
+              </ModalMui>
+              <ModalMui
+                open={openUploadLogo}
+                onClose={handleCloseUploadLogo}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box className={styles.modal}>
+                  <form>
+                    <List className={styles.list}>
+                      <h3 className={styles.header}>{t("panel:uploadLogo")}</h3>
+
+                      <ListItem>
+                        <label htmlFor="icon-button-file">
+                          <Input
+                            accept="image/*"
+                            id="icon-button-file"
+                            onChange={(e) => setFile(e.target.files[0])}
+                            type="file"
+                          />
+                          <IconButton
+                            color="primary"
+                            aria-label="upload picture"
+                            component="span"
+                          >
+                            <PhotoCamera />
+                          </IconButton>
+                        </label>
+                      </ListItem>
+                      <ListItem
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-end",
+                          gap: "1rem",
+                          paddingTop: "1rem",
+                        }}
+                      >
+                        <Button
+                          variant="outlined"
+                          type="submit"
+                          onClick={handleCloseUploadLogo}
+                          color="primary"
+                        >
+                          {t("panel:discard")}
+                        </Button>
+                        <Button
+                          variant="contained"
+                          type="submit"
+                          onClick={uploadLogoHandler}
+                          color="secondary"
+                        >
+                          {t("panel:upload")}
+                        </Button>
+                      </ListItem>
+                    </List>
+                  </form>
+                </Box>
+              </ModalMui>
+              <ModalMui
+                width="24rem"
+                open={openDeleteProduct}
+                onClose={handleCloseDelete}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                style={{ padding: "1rem", margin: "10px" }}
+              >
+                <Box className={styles.modal}>
+                  <form>
+                    <List className={styles.list}>
+                      <h3 className={styles.header}>{t("panel:isSure")}</h3>
+
+                      <ListItem>
+                        <p>
+                          {deleteCategory
+                            ? t("panel:category")
+                            : t("panel:product")}
+                          ,
+                          <span className={styles.deleteDescription}>
+                            {deleteName}
+                          </span>
+                          {t("panel:willDelete")}
+                        </p>
+                      </ListItem>
+                    </List>
+                  </form>
+                  <div className={styles.modalButtons}>
+                    <Button
+                      variant="outlined"
+                      type="submit"
+                      onClick={() => {
+                        handleCloseDelete();
+                        setDeleteCategory(false);
+                      }}
+                    >
+                      {t("panel:discard")}
+                    </Button>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      color="secondary"
+                      onClick={() => {
+                        if (deleteCategory === true) {
+                          deleteCategoryHandler();
+                          handleCloseDelete();
+                          setDeleteCategory(false);
+                        } else {
+                          deleteProductHandler();
+                          handleCloseDelete();
+                          setDeleteCategory(false);
+                        }
+                      }}
+                    >
+                      {t("panel:confirm")}
+                    </Button>
+                  </div>
+                </Box>
+              </ModalMui>
             </div>
             <div className={styles.right}>
               <div

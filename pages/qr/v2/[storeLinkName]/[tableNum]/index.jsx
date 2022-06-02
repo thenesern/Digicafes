@@ -20,7 +20,11 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 import { ShoppingCartOutlined } from "@material-ui/icons";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
+import Rating from "@mui/material/Rating";
 import FmdBadIcon from "@mui/icons-material/FmdBad";
+import ModalMui from "@mui/material/Modal";
+import Backdrop from "@mui/material/Backdrop";
+
 // Images
 import digicafes from "../../../../../assets/digi_logo.svg";
 // Utils
@@ -55,8 +59,12 @@ const StoreMenu = ({ menu, number }) => {
   const [isSure, setIsSure] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isSuccessRating, setIsSuccessRating] = useState(false);
   const [openCart, setOpenCart] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isNote, setIsNote] = useState(false);
+  const [note, setNote] = useState("");
+  const [isEmpty, setIsEmpty] = useState(false);
   // Favs
   const duplicates = favs.filter((item, index) => index !== favs.indexOf(item));
   const trinity = Array.from(new Set(duplicates));
@@ -72,7 +80,11 @@ const StoreMenu = ({ menu, number }) => {
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
   const [waiterModal, setWaiterModal] = useState(false);
+  const [taste, setTaste] = useState(null);
+  const [speed, setSpeed] = useState(null);
+  const [service, setService] = useState(null);
   const [tableModal, setTableModal] = useState(false);
+  const [openRating, setOpenRating] = useState(false);
   const [cartTotal, setCartTotal] = useState(null);
   const [orderNotes, setOrderNotes] = useState("");
   const [callName, setCallName] = useState("");
@@ -84,7 +96,6 @@ const StoreMenu = ({ menu, number }) => {
       setIsMobile(true);
     }
   }, []);
-
   useEffect(() => {
     if (isSuccess) {
       setTimeout(() => {
@@ -92,6 +103,20 @@ const StoreMenu = ({ menu, number }) => {
       }, 2000);
     }
   }, [isSuccess]);
+  useEffect(() => {
+    if (isSuccessRating) {
+      setTimeout(() => {
+        setIsSuccessRating(false);
+      }, 2000);
+    }
+  }, [isSuccessRating]);
+  useEffect(() => {
+    if (isEmpty) {
+      setTimeout(() => {
+        setIsEmpty(false);
+      }, 2000);
+    }
+  }, [isEmpty]);
 
   useEffect(() => {
     setCartTotal(
@@ -120,6 +145,18 @@ const StoreMenu = ({ menu, number }) => {
   };
   const handleOpenWaiterModal = () => setWaiterModal(true);
   const handleOpenTableModal = () => setTableModal(true);
+  const handleOpenRating = () => {
+    setOpenRating(true);
+    setOpen(false);
+  };
+  const handleCloseRating = () => {
+    setOpenRating(false);
+    setTaste(null);
+    setSpeed(null);
+    setService(null);
+    setIsNote(false);
+    setNote("");
+  };
   const handleCloseWaiterModal = () => setWaiterModal(false);
   const handleCloseTableModal = () => setTableModal(false);
   const handleCloseOpenIsSure = () => setOpenIsSure(false);
@@ -127,7 +164,29 @@ const StoreMenu = ({ menu, number }) => {
     setOpenCart(false);
     setOrderNotes("");
   };
-
+  const handleRating = async (e) => {
+    e.preventDefault();
+    setIsFetching(true);
+    try {
+      const response = await axios.patch(`/api/qr/v2/${storeName}/ratings`, {
+        storeName,
+        ratings: {
+          taste,
+          speed,
+          service,
+          note,
+        },
+      });
+      handleCloseRating();
+      setIsFetching(false);
+      setIsSuccessRating(true);
+    } catch (err) {
+      console.log(err);
+      setIsSuccessRating(false);
+      handleCloseRating();
+      setIsFetching(false);
+    }
+  };
   const handleCartOrder = async () => {
     setIsFetching(true);
     const createdAt = new Date();
@@ -195,6 +254,25 @@ const StoreMenu = ({ menu, number }) => {
             </Modal.Body>
           </Modal>
           <Modal
+            style={{ width: "90%", margin: "0 auto" }}
+            open={isSuccessRating}
+            onClose={() => setIsSuccessRating(false)}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Modal.Body
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "3rem",
+              }}
+            >
+              <CheckCircleIcon style={{ fontSize: "8rem" }} color="success" />
+              <h3 style={{ textAlign: "center" }}>{t("common:reviewSent")}</h3>
+            </Modal.Body>
+          </Modal>
+          <Modal
             style={{ width: "92%", margin: "0 auto", padding: "4px" }}
             open={openIsSure}
             onClose={handleCloseOpenIsSure}
@@ -211,7 +289,7 @@ const StoreMenu = ({ menu, number }) => {
               <h5>{t("common:note")}</h5>
               <Textarea
                 style={{ fontSize: "12px" }}
-                placeholder="Mesajınız. (Boş Bırakabilirsiniz)"
+                placeholder={t("common:message")}
                 onChange={(e) => setOrderNotes(e.target.value)}
               ></Textarea>
             </Modal.Body>
@@ -518,6 +596,19 @@ const StoreMenu = ({ menu, number }) => {
                 >
                   {t("common:bill")}
                 </Button>
+                <Button
+                  variant="outlined"
+                  style={{
+                    margin: "10px auto",
+                    minWidth: "10rem",
+                    color: "#eee",
+                    border: "1px solid #eee",
+                  }}
+                  color="secondary"
+                  onClick={handleOpenRating}
+                >
+                  {t("common:review")}
+                </Button>
                 {!menu?.categories.length == 0 && (
                   <h3
                     style={{
@@ -696,7 +787,8 @@ const StoreMenu = ({ menu, number }) => {
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <Button
-                      variant="contained"
+                      variant="outlined"
+                      color="primary"
                       onClick={handleCloseWaiterModal}
                     >
                       {t("panel:discard")}
@@ -715,6 +807,113 @@ const StoreMenu = ({ menu, number }) => {
                   </Modal.Footer>
                 </Modal>
                 <Modal
+                  style={{ width: "90%", margin: "0 auto", padding: "1rem" }}
+                  onClose={handleCloseRating}
+                  open={openRating}
+                  aria-labelledby="transition-modal-title"
+                  aria-describedby="transition-modal-description"
+                >
+                  <Modal.Header
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <h1>{t("common:review")}</h1>
+                  </Modal.Header>
+                  <Modal.Body
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                      padding: "1rem 0",
+                    }}
+                  >
+                    {isEmpty && <p>{t("common:completeRatings")}</p>}
+                    {!isNote && (
+                      <>
+                        <h3>{t("common:taste")}</h3>
+                        <Rating
+                          name="simple-controlled"
+                          value={taste}
+                          onChange={(event, newValue) => {
+                            setTaste(newValue);
+                          }}
+                        />
+                        <h3>{t("common:speed")}</h3>
+                        <Rating
+                          name="simple-controlled"
+                          value={speed}
+                          onChange={(event, newValue) => {
+                            setSpeed(newValue);
+                          }}
+                        />
+                        <h3>{t("common:service")}</h3>
+                        <Rating
+                          name="simple-controlled"
+                          value={service}
+                          onChange={(event, newValue) => {
+                            setService(newValue);
+                          }}
+                        />
+                      </>
+                    )}
+                    {isNote && (
+                      <Textarea
+                        style={{ fontSize: "12px", width: "16rem" }}
+                        placeholder={t("common:message")}
+                        onChange={(e) => setNote(e.target.value)}
+                      ></Textarea>
+                    )}
+                  </Modal.Body>
+                  <Modal.Footer
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={handleCloseRating}
+                    >
+                      {t("common:discard")}
+                    </Button>
+                    {!isNote && (
+                      <Button
+                        style={{ marginLeft: "2rem " }}
+                        variant="contained"
+                        color="secondary"
+                        onClick={(e) => {
+                          if (speed && taste && service) {
+                            setIsNote(true);
+                          } else {
+                            setIsEmpty(true);
+                          }
+                        }}
+                      >
+                        {t("common:next")}
+                      </Button>
+                    )}
+                    {isNote && (
+                      <Button
+                        style={{ marginLeft: "2rem " }}
+                        variant="contained"
+                        color="secondary"
+                        onClick={(e) => {
+                          if (speed && taste && service) {
+                            handleRating(e);
+                          } else {
+                            handleCloseRating();
+                          }
+                        }}
+                      >
+                        {t("common:confirm")}
+                      </Button>
+                    )}
+                  </Modal.Footer>
+                </Modal>
+
+                <Modal
                   style={{ width: "90%", margin: "0 auto" }}
                   onClose={handleCloseTableModal}
                   aria-labelledby="modal-title"
@@ -731,7 +930,11 @@ const StoreMenu = ({ menu, number }) => {
                   <Modal.Footer
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Button variant="contained" onClick={handleCloseTableModal}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={handleCloseTableModal}
+                    >
                       {t("common:discard")}
                     </Button>
                     <Button

@@ -16,6 +16,14 @@ const QRMenuSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    ratings: [
+      {
+        taste: Number,
+        speed: Number,
+        service: Number,
+        note: String,
+      },
+    ],
     currency: {
       type: String,
     },
