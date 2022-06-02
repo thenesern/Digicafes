@@ -17,7 +17,7 @@ handler.post(async (req, res) => {
     const newOrder = new Order({
       product: req.body.product,
       user: req.body.user,
-      createdAt: new Date().toLocaleString("tr-TR"),
+      createdAt: new Date().toLocaleDateString(),
       expiry: req.body.expiry,
       quantity: req.body.quantity,
     });

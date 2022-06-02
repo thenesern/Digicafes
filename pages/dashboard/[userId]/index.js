@@ -147,7 +147,7 @@ const Dashboard = () => {
                       {order?.menuv1?.updatedAt
                         ? new Date(
                             `${order?.menuv1?.updatedAt}`
-                          ).toLocaleString("tr-TR")
+                          ).toLocaleDateString()
                         : t("panels:notUpdated")}
                     </p>
                   )}
@@ -156,7 +156,7 @@ const Dashboard = () => {
                       {order?.menuv2?.updatedAt
                         ? new Date(
                             `${order?.menuv2?.updatedAt}`
-                          ).toLocaleString("tr-TR")
+                          ).toLocaleDateString()
                         : t("panels:notUpdated")}
                     </p>
                   )}
