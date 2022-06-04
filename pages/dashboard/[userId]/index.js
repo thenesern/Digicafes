@@ -186,13 +186,12 @@ const Dashboard = () => {
                       <h4>{t("panels:status")}</h4>
                       <p>
                         {t("panels:active")} (
-                        {
-                          new Date(
-                            new Date(order?.expiry?.toString()).getTime()
-                          )
-                            ?.toLocaleString()
-                            .split(" ")[0]
-                        }
+                        {order?.expiry
+                          ? order?.expiry.includes("GMT") ||
+                            !order?.expiry.includes(" ")
+                            ? new Date(order?.expiry).toLocaleDateString()
+                            : order?.expiry
+                          : t("panels:notUpdated")}
                         )
                       </p>
                     </div>
@@ -210,13 +209,12 @@ const Dashboard = () => {
                         <h4>{t("panels:status")}</h4>
                         <p style={{ margin: "0" }}>
                           {t("panels:expired")} (
-                          {
-                            new Date(
-                              new Date(order?.expiry?.toString()).getTime()
-                            )
-                              ?.toLocaleString()
-                              .split(" ")[0]
-                          }
+                          {order?.expiry
+                            ? order?.expiry.includes("GMT") ||
+                              !order?.expiry.includes(" ")
+                              ? new Date(order?.expiry).toLocaleDateString()
+                              : order?.expiry
+                            : t("panels:notUpdated")}
                           )
                         </p>
                       </div>

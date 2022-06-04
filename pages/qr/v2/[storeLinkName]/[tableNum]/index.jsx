@@ -424,7 +424,7 @@ const StoreMenu = ({ menu, number }) => {
                           <h4
                             style={{
                               maxWidth: "8rem",
-                              overflow: "scroll",
+                              overflow: "auto",
                               fontSize: "14px",
                             }}
                           >
@@ -678,13 +678,17 @@ const StoreMenu = ({ menu, number }) => {
                           }}
                           className={styles.favsItem}
                         >
-                          <Image
-                            width="90"
-                            height="70"
-                            alt="Favs"
-                            src={a?.image}
-                            className={styles.favsImage}
-                          />
+                          {a?.image ? (
+                            <img
+                              src={a?.image || ""}
+                              width="90"
+                              height="70"
+                              alt="Favs"
+                              className={styles.favsImage}
+                            />
+                          ) : (
+                            ""
+                          )}
                           <h4 className={styles.favsName}>{a?.name}</h4>
                         </div>
                       ))}
@@ -708,13 +712,17 @@ const StoreMenu = ({ menu, number }) => {
                             }
                           }}
                         >
-                          <Image
-                            src={a?.image}
-                            className={styles.favsImage}
-                            width="90"
-                            height="70"
-                            alt="Favs"
-                          />
+                          {a?.image ? (
+                            <img
+                              src={a?.image || ""}
+                              width="90"
+                              height="70"
+                              alt="Favs"
+                              className={styles.favsImage}
+                            />
+                          ) : (
+                            ""
+                          )}
                           <h4 className={styles.favsName}>{a?.name}</h4>
                         </div>
                       ))}
@@ -739,14 +747,16 @@ const StoreMenu = ({ menu, number }) => {
                             }
                           }}
                         >
-                          {a?.image && (
-                            <Image
-                              src={a?.image}
+                          {a?.image ? (
+                            <img
+                              src={a?.image || ""}
                               width="90"
                               height="70"
                               alt="Favs"
                               className={styles.favsImage}
                             />
+                          ) : (
+                            ""
                           )}
                           <h4 className={styles.favsName}>{a?.name}</h4>
                         </div>
@@ -1010,7 +1020,11 @@ const StoreMenu = ({ menu, number }) => {
             width="360"
             height="700"
             className={styles.iframe}
-            src={`https://www.digicafes.com/qr/v2/${menu?.storeLinkName}/${tableNum}`}
+            src={
+              Router.locale === "tr"
+                ? `https://www.digicafes.com/qr/v2/${menu?.storeLinkName}/${tableNum}`
+                : `https://www.digicafes.com/en/qr/v2/${menu?.storeLinkName}/${tableNum}`
+            }
             title="W3Schools Free Online Web Tutorials"
           ></iframe>
           <p>{t("common:warning2")}</p>

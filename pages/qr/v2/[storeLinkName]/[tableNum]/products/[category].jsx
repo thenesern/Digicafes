@@ -217,7 +217,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
           }}
         >
           <CheckCircleIcon style={{ fontSize: "8rem" }} color="success" />
-          <h1>{t("common:request")}</h1>
+          <h3>{t("common:request")}</h3>
         </Modal.Body>
       </Modal>
       <Modal
@@ -369,7 +369,7 @@ const StoreMenu = ({ menu, category, order, number }) => {
                       <h4
                         style={{
                           maxWidth: "8rem",
-                          overflow: "scroll",
+                          overflow: "auto",
                           fontSize: "14px",
                         }}
                       >
