@@ -1,6 +1,9 @@
 // Packages or Dependencies
 import { SnackbarProvider } from "notistack";
 import { SSRProvider } from "react-bootstrap";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import * as ga from "../lib/google-analytics";
 // Head
 import Head from "next/head";
 // Styles
@@ -12,6 +15,17 @@ import useTranslation from "next-translate/useTranslation";
 import Script from "next/script";
 
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      ga.pageview(url);
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
   // Translation
   const { t } = useTranslation();
 
@@ -30,6 +44,19 @@ function MyApp({ Component, pageProps }) {
         <meta name="description" content={t("common:head")} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Script
+        async
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GA_TRACKING_ID}`}
+      ></Script>
+      <Script
+        id="google-analytics-script"
+        strategy="afterInteractive"
+      >{`window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '${process.env.GA_TRACKING_ID}');`}</Script>
       <Script
         id="google-tag-manager"
         dangerouslySetInnerHTML={{

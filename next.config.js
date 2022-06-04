@@ -10,4 +10,7 @@ module.exports = nextTranslate({
   sounds: {
     formats: ["audio/mpeg", "audio/mp3"],
   },
+  env: {
+    GA_TRACKING_ID: "G-4Y5T6H6FBL",
+  },
 });
