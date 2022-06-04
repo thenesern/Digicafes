@@ -12,8 +12,9 @@ import { useContext } from "react";
 import styles from "./Features.module.css";
 // Translation
 import useTranslation from "next-translate/useTranslation";
+import { Loading } from "@nextui-org/react";
 
-const Features = () => {
+const Features = (props) => {
   const { state } = useContext(Store);
   const router = useRouter();
   const { userInfo } = state;
@@ -62,7 +63,16 @@ const Features = () => {
       <article className={styles.article} data-aos="fade-right">
         <h2 className={styles.header}>{t("features:v1")}</h2>
         <span className={styles.priceDes}>
-          <span className={styles.price}>{t("features:pricev1")}</span>
+          {props.location ? (
+            props.location === "Turkey" ? (
+              <span className={styles.price}>1000₺</span>
+            ) : (
+              <span className={styles.price}>100€</span>
+            )
+          ) : (
+            <Loading type="points-opacity" />
+          )}
+
           <span> / </span>
           {t("features:annually")}
         </span>
@@ -127,7 +137,16 @@ const Features = () => {
       <article className={styles.article} data-aos="fade-left">
         <h2 className={styles.header}>{t("features:v2")}</h2>
         <span className={styles.priceDes}>
-          <span className={styles.price}>{t("features:pricev2")}</span>
+          {props.location ? (
+            props.location === "Turkey" ? (
+              <span className={styles.price}>1500₺</span>
+            ) : (
+              <span className={styles.price}>150€</span>
+            )
+          ) : (
+            <Loading type="points-opacity" />
+          )}
+
           <span> / </span>
           {t("features:annually")}
         </span>

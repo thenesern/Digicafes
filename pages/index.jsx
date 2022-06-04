@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import route from "../assets/refers/route.png";
 import { useRouter } from "next/router";
+import axios from "axios";
 import { useLayoutEffect } from "react";
 import useTranslation from "next-translate/useTranslation";
 // Images
@@ -28,13 +29,20 @@ import DigitalMenuStepper from "../components/DigitalMenuPage/DigitalMenuStepper
 import FAQ from "../components/FAQ/FAQ";
 import ContactForm from "../components/ContactForm/ContactForm";
 import Footer from "../components/Footer/Footer";
+import { useState } from "react";
 
 const DijitalMenu = () => {
   const router = useRouter();
-
+  let [country, setCountry] = useState("");
+  useLayoutEffect(() => {
+    fetch("https://api.ipregistry.co/24.133.65.59?key=qnqzqbjwa1bpjtjv")
+      .then((response) => response.json())
+      .then((response) => {
+        setCountry(response?.location?.country?.name);
+      });
+  }, []);
   // Translation
   const { t } = useTranslation();
-
   // Animations
   useLayoutEffect(() => {
     Aos.init({ duration: 2000 });
@@ -208,7 +216,7 @@ const DijitalMenu = () => {
             </div>
           </article>
           <article>
-            <Features />
+            <Features location={country} />
           </article>
           <article className={styles.faq}>
             <div>
