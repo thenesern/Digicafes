@@ -1,41 +1,62 @@
 // Packages and Dependencies
 import React, { useState, useEffect } from "react";
+import moment from "moment";
 // Styles
 import styles from "./OrderNav.module.css";
 // Translation
 import useTranslation from "next-translate/useTranslation";
 
 const OrderNav = (props) => {
-  let newDates = [];
-  const [dates, setDates] = useState(
-    props.orders?.map((o) => {
-      let createdAt = new Date(o.createdAt);
-      newDates.push(new Date(createdAt).toLocaleString().split(" ")[0]);
-    })
-  );
   const [favs, setFavs] = useState(
     props.orders?.map((o) => o.cartItems.map((a) => a.name).toString())
   );
+  let momentNow = moment();
+  momentNow.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
+
+  const [today, setToday] = useState(
+    props.orders.filter((o) => momentNow.isSame(o.createdAt, "day"))
+  );
+
+  useEffect(() => {
+    setToday(props.orders.filter((o) => momentNow.isSame(o.createdAt, "day")));
+  }, [props?.orders]);
+
+  const monday = moment().startOf("week");
+  monday.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
+
+  const [week, setWeek] = useState(
+    props.orders.filter(
+      (o) =>
+        moment(monday).diff(o.createdAt, "day") < 0 &&
+        moment(monday).diff(o.createdAt, "day") > -7
+    )
+  );
+  useEffect(() => {
+    setWeek(
+      props.orders.filter(
+        (o) =>
+          moment(monday).diff(o.createdAt, "day") < 0 &&
+          moment(monday).diff(o.createdAt, "day") > -7
+      )
+    );
+  }, [props?.orders]);
+
+  const firstDay = moment().startOf("month");
+  firstDay.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
+
+  const [month, setMonth] = useState(
+    props.orders.filter((o) => moment(firstDay).isSame(o.createdAt, "month"))
+  );
+
+  useEffect(() => {
+    setMonth(
+      props.orders.filter((o) => moment(firstDay).isSame(o.createdAt, "month"))
+    );
+  }, [props?.orders]);
+
   const [favItemCount, setFavItemCount] = useState(null);
   let m = 0;
   const [favItem, setFavItem] = useState("");
-  const date = new Date().toLocaleDateString();
-  const week = [];
-  const month = [];
-  const [length, setLength] = useState(null);
-  const days = [
-    "Pazar",
-    "Pazartesi",
-    "Salı",
-    "Çarşamba",
-    "Perşembe",
-    "Cuma",
-    "Cumartesi",
-  ];
-  const weekOrders = [];
-  const monthOrders = [];
-  const d = new Date();
-  let day = days[d.getDay()];
   // Translation
   const { t } = useTranslation();
 
@@ -56,54 +77,6 @@ const OrderNav = (props) => {
   useEffect(() => {
     setFavItems();
   }, []);
-
-  useEffect(() => {
-    setDates(props.orders?.map((o) => o.createdAt.split(" ")[0]));
-  }, [props]);
-
-  useEffect(() => {
-    if (day === "Pazar") {
-      setLength(7);
-    } else if (day === "Pazartesi") {
-      setLength(1);
-    } else if (day === "Salı") {
-      setLength(2);
-    } else if (day === "Çarşamba") {
-      setLength(3);
-    } else if (day === "Perşembe") {
-      setLength(4);
-    } else if (day === "Cuma") {
-      setLength(5);
-    } else if (day === "Cumartesi") {
-      setLength(6);
-    } else {
-      return;
-    }
-  }, []);
-
-  for (let i = 0; i < length; i++) {
-    week.push(date.replace(date.split(".")[0][1], date.split(".")[0][1] - i));
-  }
-  for (let i = 0; i < date.split(".")[0]; i++) {
-    if (date.split(".")[0] !== 0) {
-      month.push(
-        date.replace(date.split(".")[0][1], date.split(".")[0][1] - i)
-      );
-    } else {
-      return;
-    }
-  }
-
-  for (let i = 0; i < newDates.length; i++) {
-    if (newDates.some((ele) => week?.includes(ele))) {
-      weekOrders.push("true");
-    }
-  }
-  for (let i = 0; i < newDates.length; i++) {
-    if (newDates.some((ele) => month?.includes(ele))) {
-      monthOrders.push("true");
-    }
-  }
 
   return (
     <nav className={styles.nav}>
@@ -128,18 +101,15 @@ const OrderNav = (props) => {
         <div className={styles.orders}>
           <div className={styles.periods}>
             <h6 className={styles.title}>{t("panel:today")}</h6>
-            <span>
-              {newDates.map((a) => a === date).filter((d) => d === true)
-                .length || 0}
-            </span>
+            <span>{today.length}</span>
           </div>
           <div className={styles.periods}>
             <h6 className={styles.title}>{t("panel:week")}</h6>
-            <span>{weekOrders.length || 0}</span>
+            <span>{week.length || 0}</span>
           </div>
           <div className={styles.periods}>
             <h6 className={styles.title}>{t("panel:month")}</h6>
-            <span>{monthOrders.length || 0}</span>
+            <span>{month.length || 0}</span>
           </div>
         </div>
       </div>

@@ -71,7 +71,6 @@ const StoreOrderPanel = ({ data, order }) => {
       return;
     }
   }, [isNew, isNotification]);
-
   return (
     <div className={styles.container}>
       <OrderNav orders={orders} storeLogo={storeLogo} storeName={storeName} />

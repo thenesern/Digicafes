@@ -37,11 +37,11 @@ const userSchema = new mongoose.Schema(
       },
     },
     signedIn: {
-      type: String,
+      type: Date,
       required: true,
     },
     createdAt: {
-      type: String,
+      type: Date,
       required: true,
     },
     isAdmin: {

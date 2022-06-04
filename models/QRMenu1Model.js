@@ -99,9 +99,7 @@ const QRMenuSchema = new mongoose.Schema(
         },
       },
     ],
-    createdAt: {
-      type: String,
-    },
+    createdAt: Date,
   },
   { timestamps: true }
 );

@@ -104,7 +104,7 @@ const QRMenuSchema = new mongoose.Schema(
       },
     ],
     createdAt: {
-      type: String,
+      type: Date,
     },
 
     calls: [

@@ -45,12 +45,10 @@ const StoreOrders = (props) => {
       renderCell: (params) => {
         return (
           <div className={classes.gridDates}>
-            <span>
-              {new Date(params.row.createdAt).toLocaleString().split(" ")[0]}
-            </span>
-            <span>
-              {new Date(params.row.createdAt).toLocaleString().split(" ")[1]}
-            </span>
+            <span>{new Date(params.row.createdAt).toLocaleString()}</span>
+            {moment().diff(params.row.createdAt, "minutes") < 5 && (
+              <AccessTimeIcon color="error" />
+            )}
           </div>
         );
       },
@@ -126,20 +124,11 @@ const StoreOrders = (props) => {
       flex: 2,
       headerClassName: "dark",
       editable: false,
-      renderCell: (params) => {
-        return (
-          <span>{new Date(params.row.createdAt).toLocaleDateString()}</span>
-        );
-      },
+
       renderCell: (params) => {
         return (
           <div className={classes.gridDates}>
-            <span>
-              {new Date(params.row.createdAt).toLocaleString().split(" ")[0]}
-            </span>
-            <span>
-              {new Date(params.row.createdAt).toLocaleString().split(" ")[1]}
-            </span>
+            <span>{new Date(params.row.createdAt).toLocaleString()}</span>
 
             {moment().diff(params.row.createdAt, "minutes") < 5 && (
               <AccessTimeIcon color="error" />

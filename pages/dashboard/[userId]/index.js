@@ -134,10 +134,24 @@ const Dashboard = () => {
                 <div className={styles.infoCell}>
                   <h4>{t("panels:created")}</h4>
                   {order?.product?.name === "Dijital Menü - V1" && (
-                    <p>{order?.menuv1?.createdAt || t("panels:not")}</p>
+                    <p>
+                      {order?.menuv1?.createdAt
+                        ? order?.menuv1?.createdAt.includes("GMT") ||
+                          !order?.menuv1?.createdAt.includes(" ")
+                          ? new Date(order?.menuv1?.createdAt).toLocaleString()
+                          : order?.menuv1?.createdAt
+                        : t("panels:not")}
+                    </p>
                   )}
                   {order?.product?.name === "Dijital Menü - V2" && (
-                    <p>{order?.menuv2?.createdAt || t("panels:not")}</p>
+                    <p>
+                      {order?.menuv2?.createdAt
+                        ? order?.menuv2?.createdAt.includes("GMT") ||
+                          !order?.menuv2?.createdAt.includes(" ")
+                          ? new Date(order?.menuv2?.createdAt).toLocaleString()
+                          : order?.menuv2?.createdAt
+                        : t("panels:not")}
+                    </p>
                   )}
                 </div>
                 <div className={styles.infoCell}>
@@ -145,18 +159,20 @@ const Dashboard = () => {
                   {order?.product?.name === "Dijital Menü - V1" && (
                     <p>
                       {order?.menuv1?.updatedAt
-                        ? new Date(
-                            `${order?.menuv1?.updatedAt}`
-                          ).toLocaleDateString()
+                        ? order?.menuv1?.updatedAt.includes("GMT") ||
+                          !order?.menuv1?.updatedAt.includes(" ")
+                          ? new Date(order?.menuv1?.updatedAt).toLocaleString()
+                          : order?.menuv1?.updatedAt
                         : t("panels:notUpdated")}
                     </p>
                   )}
                   {order?.product?.name === "Dijital Menü - V2" && (
                     <p>
                       {order?.menuv2?.updatedAt
-                        ? new Date(
-                            `${order?.menuv2?.updatedAt}`
-                          ).toLocaleDateString()
+                        ? order?.menuv2?.updatedAt.includes("GMT") ||
+                          !order?.menuv2?.updatedAt.includes(" ")
+                          ? new Date(order?.menuv2?.updatedAt).toLocaleString()
+                          : order?.menuv2?.updatedAt
                         : t("panels:notUpdated")}
                     </p>
                   )}
