@@ -121,9 +121,15 @@ const Features = (props) => {
           <a
             className={styles.buy}
             href={
-              router.locale === "tr"
-                ? "https://iyzi.link/AIUgpA"
-                : "https://iyzi.link/AIUo8w"
+              props.location ? (
+                props.location === "Turkey" ? (
+                  "https://iyzi.link/AIUgpA"
+                ) : (
+                  "https://iyzi.link/AIUo8w"
+                )
+              ) : (
+                <Loading type="points-opacity" />
+              )
             }
             rel="noreferrer"
             target="_blank"
@@ -195,9 +201,15 @@ const Features = (props) => {
           <a
             className={styles.buy}
             href={
-              router.locale === "tr"
-                ? "https://iyzi.link/AIUgyw"
-                : "https://iyzi.link/AIUpCw"
+              props.location ? (
+                props.location === "Turkey" ? (
+                  "https://iyzi.link/AIUgyw"
+                ) : (
+                  "https://iyzi.link/AIUpCw"
+                )
+              ) : (
+                <Loading type="points-opacity" />
+              )
             }
             rel="noreferrer"
             target="_blank"
