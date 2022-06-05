@@ -88,25 +88,25 @@ const Panel = ({ users, orders, products, userList }) => {
     .split(" ")[0];
 
   const time7List = userList.filter(
-    (user) => user.createdAt.split(" ")[0] === time7
+    (user) => new Date(user.createdAt).toLocaleDateString() === time7
   );
   const time6List = userList.filter(
-    (user) => user.createdAt.split(" ")[0] === time6
+    (user) => new Date(user.createdAt).toLocaleDateString() === time6
   );
   const time5List = userList.filter(
-    (user) => user.createdAt.split(" ")[0] === time5
+    (user) => new Date(user.createdAt).toLocaleDateString() === time5
   );
   const time4List = userList.filter(
-    (user) => user.createdAt.split(" ")[0] === time4
+    (user) => new Date(user.createdAt).toLocaleDateString() === time4
   );
   const time3List = userList.filter(
-    (user) => user.createdAt.split(" ")[0] === time3
+    (user) => new Date(user.createdAt).toLocaleDateString() === time3
   );
   const time2List = userList.filter(
-    (user) => user.createdAt.split(" ")[0] === time2
+    (user) => new Date(user.createdAt).toLocaleDateString() === time2
   );
   const time1List = userList.filter(
-    (user) => user.createdAt.split(" ")[0] === time1
+    (user) => new Date(user.createdAt).toLocaleDateString() === time1
   );
   const data = {
     labels,

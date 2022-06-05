@@ -24,7 +24,7 @@ const OrderTable = (props) => {
   const { state } = useContext(Store);
   const [orderExpiry, setOrderExpiry] = useState(null);
   const [open, setOpen] = useState(false);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(20);
   const [quantity, setQuantity] = useState([]);
   const { userInfo } = state;
   let date = new Date();
@@ -95,7 +95,7 @@ const OrderTable = (props) => {
     {
       field: "email",
       headerName: "E-mail",
-      width: 200,
+      flex: 2,
       renderCell: (params) => {
         return (
           <div className={styles.userListItem}>{params.row.user?.email}</div>
@@ -105,11 +105,11 @@ const OrderTable = (props) => {
     {
       field: "createdAt",
       headerName: "Plan Başlangıç Tarihi",
-      flex: 1,
+      flex: 2,
       renderCell: (params) => {
         return (
           <div className={styles.userListItem}>
-            {params.row.createdAt.split(" ")[0]}
+            {new Date(params.row.createdAt).toLocaleDateString()}
           </div>
         );
       },
@@ -117,15 +117,11 @@ const OrderTable = (props) => {
     {
       field: "expiry",
       headerName: "Plan Bitiş Tarihi",
-      flex: 1,
+      flex: 2,
       renderCell: (params) => {
         return (
           <div className={styles.userListItem}>
-            {
-              new Date(new Date(params.row.expiry?.toString()).getTime())
-                ?.toLocaleString()
-                .split(" ")[0]
-            }
+            {new Date(params.row.expiry).toLocaleDateString()}
           </div>
         );
       },
@@ -159,7 +155,7 @@ const OrderTable = (props) => {
     {
       field: "storeName",
       headerName: "İş Yeri Adı",
-      flex: 1,
+      flex: 2,
       renderCell: (params) => {
         return (
           <div className={styles.userListItem}>
@@ -173,7 +169,7 @@ const OrderTable = (props) => {
     {
       field: "action",
       headerName: "İşlem",
-      width: 170,
+      width: 100,
       renderCell: (params) => {
         return (
           <div>
@@ -202,7 +198,7 @@ const OrderTable = (props) => {
                 Düzenle
               </span>
             </Button>
-            <Button
+            {/*     <Button
               variant="outlined"
               color="error"
               style={{ marginLeft: "6px" }}
@@ -227,7 +223,7 @@ const OrderTable = (props) => {
               >
                 Sil
               </span>
-            </Button>
+            </Button> */}
           </div>
         );
       },
@@ -247,7 +243,6 @@ const OrderTable = (props) => {
 
   const handleNewOrder = async (e) => {
     e.preventDefault();
-    quantity.push(planExpiry);
     try {
       const orders = await axios.post(
         "/api/order",
@@ -255,7 +250,7 @@ const OrderTable = (props) => {
           product: productId,
           user: id,
           expiry: date,
-          quantity,
+          quantity: [planExpiry],
         },
         {
           headers: { authorization: `Bearer ${userInfo.token}` },
@@ -556,7 +551,7 @@ const OrderTable = (props) => {
           disableSelectionOnClick
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[10, 20, 30]}
+          rowsPerPageOptions={[20, 40, 60]}
           pagination
           className={styles.table}
         />

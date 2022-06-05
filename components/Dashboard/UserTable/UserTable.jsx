@@ -26,7 +26,7 @@ const UserTable = (props) => {
   const { userInfo } = state;
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(20);
   const handleCloseDelete = () => {
     setOpenDelete(false);
     setId("");
@@ -70,31 +70,37 @@ const UserTable = (props) => {
     {
       field: "createdAt",
       headerName: "Kayıt Tarihi",
-      flex: 1.5,
+      width: 160,
       renderCell: (params) => {
         return (
-          <div className={styles.userListItem}>{params.row.createdAt}</div>
+          <div className={styles.userListItem}>
+            {new Date(params.row.createdAt).toLocaleString()}
+          </div>
         );
       },
     },
     {
       field: "signedIn",
       headerName: "Son Giriş",
-      flex: 1.5,
+      width: 160,
       renderCell: (params) => {
-        return <div className={styles.userListItem}>{params.row.signedIn}</div>;
+        return (
+          <div className={styles.userListItem}>
+            {new Date(params.row.signedIn).toLocaleString()}
+          </div>
+        );
       },
     },
     {
       field: "email",
       headerName: "E-mail",
-      width: 200,
+      flex: 2,
     },
 
     {
       field: "action",
       headerName: "İşlem",
-      width: 180,
+      width: 100,
       renderCell: (params) => {
         return (
           <div className={styles.actions}>
@@ -122,7 +128,7 @@ const UserTable = (props) => {
                 Düzenle
               </span>
             </Button>
-            <Button
+            {/*   <Button
               variant="outlined"
               color="error"
               onClick={() => {
@@ -145,7 +151,7 @@ const UserTable = (props) => {
               >
                 Sil
               </span>
-            </Button>
+            </Button> */}
           </div>
         );
       },
@@ -270,17 +276,19 @@ const UserTable = (props) => {
       </Modal>
       <div className={styles.tableDiv}>
         <span className={styles.datatableTitle}>Kullanıcılar</span>
-        <DataGrid
-          rows={users}
-          columns={columns}
-          getRowId={(row) => row._id}
-          className={styles.table}
-          disableSelectionOnClick
-          pageSize={pageSize}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[10, 20, 30]}
-          pagination
-        />
+        <div className={styles.grid}>
+          <DataGrid
+            rows={users}
+            columns={columns}
+            getRowId={(row) => row._id}
+            className={styles.table}
+            disableSelectionOnClick
+            pageSize={pageSize}
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            rowsPerPageOptions={[20, 40, 60]}
+            pagination
+          />
+        </div>
       </div>
     </div>
   );

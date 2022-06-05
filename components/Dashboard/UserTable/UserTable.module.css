@@ -1,7 +1,10 @@
 .datatable {
   padding: 1rem 20px;
   height: 100vh;
-  overflow: scroll;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .datatableTitle {
@@ -19,8 +22,11 @@
   width: 100%;
   height: 48rem;
 }
+.grid {
+  height: 48rem !important;
+}
 .table {
-  overflow: scroll;
+  overflow: auto;
   width: 100%;
 }
 .link {
@@ -56,5 +62,8 @@
   .tableDiv {
     width: 100%;
     height: 40rem;
+  }
+  .grid {
+    height: 36rem !important;
   }
 }

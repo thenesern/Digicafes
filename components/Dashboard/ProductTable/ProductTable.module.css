@@ -1,7 +1,11 @@
 .datatable {
   padding: 1rem 20px;
   height: 100vh;
-  overflow: scroll;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .datatableTitle {
@@ -187,7 +191,7 @@
   height: 48rem;
 }
 .table {
-  overflow: scroll;
+  overflow: auto;
   width: 100%;
 }
 @media only screen and (max-width: 1366px) {
