@@ -1,5 +1,5 @@
 // Packages and Dependencies
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Link, Loading, Modal, Spacer, Textarea } from "@nextui-org/react";
 import { Button, IconButton, SwipeableDrawer } from "@material-ui/core";
@@ -50,7 +50,7 @@ const StoreMenu = ({ menu }) => {
   const { locales } = i18nConfig;
   const { t, lang } = useTranslation();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (window.innerWidth <= 1000) {
       setIsMobile(true);
     }

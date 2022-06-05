@@ -22,7 +22,6 @@ const Footer = () => {
       <div className={styles.footer}>
         <div className={styles.brand}>
           <Image
-            style={{ cursor: "pointer" }}
             src={logo}
             width="200px"
             objectFit="contain"

@@ -748,7 +748,6 @@ const Nav = () => {
           <LinkRouter href="/" passHref>
             {!fix ? (
               <Image
-                style={{ cursor: "pointer" }}
                 src={logoDark}
                 objectFit="contain"
                 width="160px"
@@ -756,7 +755,6 @@ const Nav = () => {
               ></Image>
             ) : (
               <Image
-                style={{ cursor: "pointer" }}
                 src={logo}
                 width="160px"
                 objectFit="contain"

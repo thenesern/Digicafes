@@ -1,10 +1,9 @@
 // Packages and Dependencies
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import route from "../assets/refers/route.png";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { useLayoutEffect } from "react";
 import useTranslation from "next-translate/useTranslation";
 // Images
 import digitalMenuMockup from "../assets/image/DigitalMenuPanelMockup.png";
@@ -34,7 +33,7 @@ import { useState } from "react";
 const DijitalMenu = () => {
   const router = useRouter();
   let [country, setCountry] = useState("");
-  useLayoutEffect(() => {
+  useEffect(() => {
     fetch("https://api.ipregistry.co/24.133.65.59?key=qnqzqbjwa1bpjtjv")
       .then((response) => response.json())
       .then((response) => {
@@ -44,7 +43,7 @@ const DijitalMenu = () => {
   // Translation
   const { t } = useTranslation();
   // Animations
-  useLayoutEffect(() => {
+  useEffect(() => {
     Aos.init({ duration: 2000 });
     Aos.refresh();
   }, []);
