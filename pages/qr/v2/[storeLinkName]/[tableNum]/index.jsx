@@ -1,6 +1,7 @@
 // Packages and Dependencies
-import React, { useState, useLayoutEffect, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 import { Loading, Modal, Spacer, Textarea, Link } from "@nextui-org/react";
 import axios from "axios";
 import Image from "next/image";
@@ -24,14 +25,12 @@ import Rating from "@mui/material/Rating";
 import FmdBadIcon from "@mui/icons-material/FmdBad";
 import ModalMui from "@mui/material/Modal";
 import Backdrop from "@mui/material/Backdrop";
-
 // Images
 import digicafes from "../../../../../assets/digi_logo.svg";
 // Utils
 import db from "../../../../../utils/db.js";
 import QRMenu from "../../../../../models/QRMenu2Model.js";
 import Order from "../../../../../models/OrderModel";
-
 // Context
 import { useContext } from "react";
 import { Store } from "../../../../../redux/store";
@@ -91,7 +90,7 @@ const StoreMenu = ({ menu, number }) => {
   const [cartItems, setCartItems] = useState([...cart]);
   const quantity = cart?.length;
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (window.innerWidth <= 1000) {
       setIsMobile(true);
     }
@@ -125,7 +124,6 @@ const StoreMenu = ({ menu, number }) => {
       }, 0)
     );
   }, [cartItems]);
-
   useEffect(() => {
     if (isSure) {
       handleCartOrder();
@@ -231,7 +229,22 @@ const StoreMenu = ({ menu, number }) => {
   };
 
   return (
-    <>
+    <div>
+      <Head>
+        <title>
+          {Router.locale === "tr"
+            ? storeName.toLowerCase().toUpperCase() +
+              " - " +
+              "powered by Digicafes."
+            : storeName.toLowerCase().toUpperCase() +
+              " - " +
+              "Digicafes tarafından deskteklenmektedir. "}
+        </title>
+        <meta charset="UTF-8" />
+        <meta name="keywords" content="titla, meta, nextjs" />
+        <meta name="author" content="Syamlal CM" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
       {isMobile ? (
         <div className={styles.container}>
           <Modal
@@ -1030,7 +1043,7 @@ const StoreMenu = ({ menu, number }) => {
           <p>{t("common:warning2")}</p>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

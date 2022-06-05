@@ -3,6 +3,7 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "next/router";
 import { Link, Loading, Modal, Spacer, Textarea } from "@nextui-org/react";
 import { Button, IconButton, SwipeableDrawer } from "@material-ui/core";
+import Head from "next/head";
 import Image from "next/image";
 import Rating from "@mui/material/Rating";
 // Utils
@@ -102,6 +103,21 @@ const StoreMenu = ({ menu }) => {
 
   return (
     <>
+      <Head>
+        <title>
+          {Router.locale === "tr"
+            ? storeName.toLowerCase().toUpperCase() +
+              " - " +
+              "powered by Digicafes."
+            : storeName.toLowerCase().toUpperCase() +
+              " - " +
+              "Digicafes tarafından deskteklenmektedir. "}
+        </title>
+        <meta charset="UTF-8" />
+        <meta name="keywords" content="titla, meta, nextjs" />
+        <meta name="author" content="Syamlal CM" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </Head>
       {isMobile ? (
         <div className={styles.container}>
           <navbar className={styles.navbar}>
