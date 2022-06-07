@@ -508,8 +508,8 @@ const StoreMenu = ({ menu }) => {
       ) : (
         <div className={styles.desktopBox}>
           <iframe
-            width="360"
-            height="700"
+            width="380"
+            height="790"
             className={styles.iframe}
             src={`https://www.digicafes.com/qr/v1/${menu?.storeLinkName}`}
             title="W3Schools Free Online Web Tutorials"

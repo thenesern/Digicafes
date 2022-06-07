@@ -1030,8 +1030,8 @@ const StoreMenu = ({ menu, number }) => {
       ) : (
         <div className={styles.desktopBox}>
           <iframe
-            width="360"
-            height="700"
+            width="380"
+            height="790"
             className={styles.iframe}
             src={
               Router.locale === "tr"
