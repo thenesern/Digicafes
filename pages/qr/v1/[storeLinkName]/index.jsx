@@ -51,6 +51,14 @@ const StoreMenu = ({ menu }) => {
   const { t, lang } = useTranslation();
 
   useEffect(() => {
+    if (isEmpty) {
+      setTimeout(() => {
+        setIsEmpty(false);
+      }, 2000);
+    }
+  }, [isEmpty]);
+
+  useEffect(() => {
     if (window.innerWidth <= 1000) {
       setIsMobile(true);
     }
@@ -249,7 +257,11 @@ const StoreMenu = ({ menu }) => {
                 padding: "1rem 0",
               }}
             >
-              {isEmpty && <p>{t("common:completeRatings")}</p>}
+              {isEmpty && (
+                <p style={{ fontSize: "12px" }}>
+                  {t("common:completeRatings")}
+                </p>
+              )}
               {!isNote && (
                 <>
                   <h3>{t("common:taste")}</h3>
