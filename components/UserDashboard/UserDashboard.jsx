@@ -1273,40 +1273,16 @@ const UserDashboard = ({ userOrder, userId }) => {
           )}
         </div>
       )}
+
       {!isFirst && (
         <div className={styles.container}>
           <div className={styles.sidebar}>
-            {/*   <img src={src} alt="QR" className={styles.qrImg} /> */}
             <img src={storeLogo} alt="Logo" className={styles.logo} />
             <div>
               <h3 className={styles.sidebarHeader}>
                 <DashboardIcon />
               </h3>
               <ul className={styles.sidebarList}>
-                {router.locale === "tr" && (
-                  <Link
-                    href="https://www.youtube.com/watch?v=ELtbQkulWaU"
-                    passHref
-                  >
-                    <a target="_blank">
-                      <Stack direction="row" spacing={1}>
-                        <Button
-                          variant="outlined"
-                          className={styles.qrButtons}
-                          style={{
-                            height: "2rem",
-                            minWidth: "11rem",
-                            fontSize: "13px",
-                            color: "#fbeee0",
-                            border: "1px solid #fbeee0",
-                          }}
-                        >
-                          Kullanım Kılavuzu
-                        </Button>
-                      </Stack>
-                    </a>
-                  </Link>
-                )}
                 <li className={styles.li}>
                   <Link
                     href={
@@ -1370,7 +1346,6 @@ const UserDashboard = ({ userOrder, userId }) => {
                     </a>
                   )}
                 </li>
-
                 <li>
                   <Button
                     variant="outlined"
