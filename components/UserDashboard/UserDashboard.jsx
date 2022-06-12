@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { DataGrid, trTR, enUS } from "@mui/x-data-grid";
 import QRCode from "qrcode";
 import { fadeInRightBig } from "react-animations";
@@ -34,10 +34,6 @@ import { useSnackbar } from "notistack";
 // Styles
 import styles from "./UserDashboard.module.css";
 // Icons
-import DownloadIcon from "@mui/icons-material/Download";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import DeleteIcon from "@mui/icons-material/Delete";
-import QrCodeIcon from "@mui/icons-material/QrCode";
 import { PhotoCamera } from "@material-ui/icons";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -131,7 +127,6 @@ const UserDashboard = ({ userOrder, userId }) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [file, setFile] = useState(null);
   const [isPreview, setIsPreview] = useState(false);
-  const theme = useTheme();
   const [updateProduct, setUpdateProduct] = useState("");
   const [updatePrice, setUpdatePrice] = useState("");
   const [updateDescription, setUpdateDescription] = useState("");
@@ -912,17 +907,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       enqueueSnackbar(t("panel:notAddedCategory"), { variant: "error" });
     }
   };
-  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handlePopoverOpen = () => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
   function containsSpecialChars(str) {
     const specialChars = /[`!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?~]/;
     return specialChars.test(str);
@@ -1298,6 +1283,30 @@ const UserDashboard = ({ userOrder, userId }) => {
                 <DashboardIcon />
               </h3>
               <ul className={styles.sidebarList}>
+                {router.locale === "tr" && (
+                  <Link
+                    href="https://www.youtube.com/watch?v=ELtbQkulWaU"
+                    passHref
+                  >
+                    <a target="_blank">
+                      <Stack direction="row" spacing={1}>
+                        <Button
+                          variant="outlined"
+                          className={styles.qrButtons}
+                          style={{
+                            height: "2rem",
+                            minWidth: "11rem",
+                            fontSize: "13px",
+                            color: "#fbeee0",
+                            border: "1px solid #fbeee0",
+                          }}
+                        >
+                          Kullanım Kılavuzu
+                        </Button>
+                      </Stack>
+                    </a>
+                  </Link>
+                )}
                 <li className={styles.li}>
                   <Link
                     href={

@@ -60,6 +60,16 @@
   gap: 1rem;
   height: 30vh;
 }
+.youtube {
+  padding: 12rem 0 6rem 0;
+  margin: 0 auto;
+}
+.videoBG {
+  padding: 8rem 2rem;
+  border-radius: 50%;
+  background-color: lightgray;
+}
+
 .references {
   display: flex;
   align-items: center;
@@ -330,7 +340,10 @@
   .top {
     height: 75vh;
   }
-
+  .videoBG {
+    padding: 7rem 2rem;
+    border-radius: 50%;
+  }
   .featuresImage1 {
     width: 32rem !important;
     margin: 0 auto;
@@ -472,6 +485,14 @@
   .referenceImg {
     width: 1rem !important;
     height: 1rem !important;
+  }
+  .videoBG {
+    padding: 3rem 1rem;
+    border-radius: 50%;
+  }
+  .iframe {
+    width: 18rem;
+    height: 12rem;
   }
   .references {
     padding: 0 2rem;

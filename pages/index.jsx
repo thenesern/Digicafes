@@ -217,6 +217,22 @@ const DijitalMenu = () => {
           <article>
             <Features location={country} />
           </article>
+          {router.locale === "tr" && (
+            <article className={styles.youtube}>
+              <div className={styles.videoBG} data-aos="fade-up">
+                <iframe
+                  src="https://www.youtube.com/embed/ELtbQkulWaU"
+                  frameBorder="0"
+                  width="560"
+                  height="315"
+                  className={styles.iframe}
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  title="video"
+                />
+              </div>
+            </article>
+          )}
           <article className={styles.faq}>
             <div>
               <div data-aos="fade-up">
