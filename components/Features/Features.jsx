@@ -1,6 +1,6 @@
 // Packages and Dependencies
 import { Button } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import QRCode from "qrcode";
 import { useState } from "react";
 import Aos from "aos";
@@ -47,8 +47,8 @@ const Features = (props) => {
     setSrc2En
   );
 
-  useEffect(() => {
-    if (window.innerWidth <= 760) {
+  useLayoutEffect(() => {
+    if (window.screen.width <= 500) {
       setIsMobile(true);
     }
   }, []);

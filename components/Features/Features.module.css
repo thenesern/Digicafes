@@ -111,7 +111,8 @@
   .article {
     padding: 2rem;
     width: 22rem;
-    height: 40rem;
+    min-height: 40rem;
+    height: 42rem;
   }
 }
 @media only screen and (max-width: 375px) {
