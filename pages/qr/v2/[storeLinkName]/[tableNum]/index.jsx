@@ -854,7 +854,11 @@ const StoreMenu = ({ menu, number }) => {
                       padding: "1rem 0",
                     }}
                   >
-                    {isEmpty && <p>{t("common:completeRatings")}</p>}
+                    {isEmpty && (
+                      <p style={{ fontSize: "14px", textAlign: "center" }}>
+                        {t("common:completeRatings")}
+                      </p>
+                    )}
                     {!isNote && (
                       <>
                         <h3>{t("common:taste")}</h3>
@@ -885,7 +889,7 @@ const StoreMenu = ({ menu, number }) => {
                     )}
                     {isNote && (
                       <Textarea
-                        style={{ fontSize: "12px", width: "16rem" }}
+                        style={{ fontSize: "12px", width: "15rem" }}
                         placeholder={t("common:message")}
                         onChange={(e) => setNote(e.target.value)}
                       ></Textarea>
