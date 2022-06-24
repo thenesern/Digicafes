@@ -24,7 +24,7 @@ const orders = ({ orders }) => {
   );
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   await db.connect();
   const orders = await Order.find()
     .populate({

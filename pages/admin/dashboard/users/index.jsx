@@ -20,7 +20,7 @@ const users = ({ users }) => {
   );
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   await db.connect();
   const users = await User.find();
   await db.disconnect();

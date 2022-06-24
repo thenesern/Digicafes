@@ -38,11 +38,15 @@ const List = ({ orders }) => {
                   ? t("account:v1")
                   : t("account:v2")}
               </TableCell>
-              <TableCell>{row.createdAt}</TableCell>
+              <TableCell>
+                {new Date(
+                  new Date(row.createdAt?.toString()).getTime()
+                )?.toLocaleDateString()}
+              </TableCell>
               <TableCell>
                 {new Date(
                   new Date(row.expiry?.toString()).getTime()
-                )?.toLocaleString()}
+                )?.toLocaleDateString()}
               </TableCell>
             </TableRow>
           ))}

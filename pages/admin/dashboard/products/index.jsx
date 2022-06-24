@@ -20,7 +20,7 @@ const products = ({ products }) => {
   );
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   await db.connect();
   const products = await Product.find();
   await db.disconnect();
