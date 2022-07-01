@@ -81,7 +81,9 @@ const Dashboard = () => {
                   href={
                     order?.product?.name === "Dijital Menü - V1"
                       ? `/dashboard/${userId}/menu/v1/${order._id}`
-                      : `/dashboard/${userId}/menu/v2/${order._id}`
+                      : order?.product?.name === "Dijital Menü - V2"
+                      ? `/dashboard/${userId}/menu/v2/${order._id}`
+                      : `/dashboard/${userId}/booking/${order._id}`
                   }
                   passHref
                 >
@@ -99,7 +101,9 @@ const Dashboard = () => {
                     <h6 className={styles.subtitle}>
                       {order?.product?.name.includes("V1")
                         ? t("panels:v1")
-                        : t("panels:v2")}
+                        : order?.product?.name.includes("V2")
+                        ? t("panels:v2")
+                        : t("panels:booking")}
                     </h6>
                   </button>
                 </Link>
@@ -130,6 +134,18 @@ const Dashboard = () => {
                       </div>
                     </div>
                   )}
+                  {order?.product?.name === "Booking" && (
+                    <div>
+                      <div>
+                        <h4>{t("panels:store")}</h4>
+                        <p>
+                          {order?.booking
+                            ? order?.booking?.storeName
+                            : t("panels:not")}
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className={styles.infoCell}>
                   <h4>{t("panels:created")}</h4>
@@ -153,6 +169,16 @@ const Dashboard = () => {
                         : t("panels:not")}
                     </p>
                   )}
+                  {order?.product?.name === "Booking" && (
+                    <p>
+                      {order?.booking?.createdAt
+                        ? order?.booking?.createdAt.includes("GMT") ||
+                          !order?.booking?.createdAt.includes(" ")
+                          ? new Date(order?.booking?.createdAt).toLocaleString()
+                          : order?.booking?.createdAt
+                        : t("panels:not")}
+                    </p>
+                  )}
                 </div>
                 <div className={styles.infoCell}>
                   <h4>{t("panels:updated")}</h4>
@@ -173,6 +199,16 @@ const Dashboard = () => {
                           !order?.menuv2?.updatedAt.includes(" ")
                           ? new Date(order?.menuv2?.updatedAt).toLocaleString()
                           : order?.menuv2?.updatedAt
+                        : t("panels:notUpdated")}
+                    </p>
+                  )}
+                  {order?.product?.name === "Booking" && (
+                    <p>
+                      {order?.booking?.updatedAt
+                        ? order?.booking?.updatedAt.includes("GMT") ||
+                          !order?.booking?.updatedAt.includes(" ")
+                          ? new Date(order?.booking?.updatedAt).toLocaleString()
+                          : order?.booking?.updatedAt
                         : t("panels:notUpdated")}
                     </p>
                   )}

@@ -1,4 +1,5 @@
 import nc from "next-connect";
+import Booking from "../../../../models/Booking";
 import Order from "../../../../models/OrderModel";
 import Product from "../../../../models/ProductModel";
 import QRMenu1 from "../../../../models/QRMenu1Model";
@@ -23,7 +24,9 @@ handler.delete(async (req, res) => {
       })
       .populate({ path: "user", model: User })
       .populate({ path: "menuv1", model: QRMenu1 })
-      .populate({ path: "menuv2", model: QRMenu2 });
+      .populate({ path: "menuv2", model: QRMenu2 })
+      .populate({ path: "booking", model: Booking });
+
     res.send({
       status: "success",
       message: "Order removed successfully",
