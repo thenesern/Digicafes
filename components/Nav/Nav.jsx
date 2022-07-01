@@ -146,6 +146,7 @@ const Nav = () => {
         password,
         signedIn,
       });
+      Cookies.remove("userInfo");
       dispatch({ type: "USER_LOGIN", payload: data });
       Cookies.set("userInfo", JSON.stringify(data));
       setIsFetching(false);
@@ -206,6 +207,7 @@ const Nav = () => {
         createdAt,
         quantity: [14],
       });
+      Cookies.remove("userInfo");
       dispatch({ type: "USER_LOGIN", payload: data });
       Cookies.set("userInfo", JSON.stringify(data));
       setIsFetching(false);
