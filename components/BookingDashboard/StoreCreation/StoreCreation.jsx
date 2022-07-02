@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Loading, Modal, Spacer, Button as ButtonMui } from "@nextui-org/react";
 import Radium, { StyleRoot } from "radium";
 import { Button, List, ListItem, TextField } from "@material-ui/core";
@@ -8,10 +8,11 @@ import useTranslation from "next-translate/useTranslation";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import { Store } from "../../../redux/store";
 
 const StoreCreation = ({ userOrder, booking }) => {
   const [order, setOrder] = useState(userOrder[0] || null);
-  console.log(order);
+  const { state, dispatch } = useContext(Store);
   const [isFirst, setIsFirst] = useState(null);
   const [isFetchingForFirst, setIsFetchingForFirst] = useState(false);
   const [storeName, setStoreName] = useState(booking?.storeName || "");
@@ -21,7 +22,6 @@ const StoreCreation = ({ userOrder, booking }) => {
   const [storeLinkName, setStoreLinkName] = useState(
     booking?.storeLinkName || ""
   );
-
   const [secondStep, setSecondStep] = useState(false);
   const { t } = useTranslation();
   const animate = {
@@ -37,22 +37,18 @@ const StoreCreation = ({ userOrder, booking }) => {
   }
 
   useEffect(() => {
-    if (isFirst) {
-      router.push("/");
-    }
-  }, [isFirst]);
-  /*   useEffect(() => {
     const getMenus = async () => {
       await axios
-        .get("/api/bookings", {
+        .get("/api/booking", {
           headers: { authorization: `Bearer ${user.token}` },
         })
         .then((response) => {
-          setAllStoreNames(response.data.store);
+          console.log(response);
+          setAllStoreNames(response.data.bookings.map((s) => s.storeName));
         });
     };
     getMenus();
-  }, []); */
+  }, []);
 
   function containsSpecialChars(str) {
     const specialChars = /[`!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?~]/;
@@ -78,7 +74,6 @@ const StoreCreation = ({ userOrder, booking }) => {
           headers: { authorization: `Bearer ${user.token}` },
         }
       );
-      console.log(data);
       const attachedOrder = await axios.patch(
         "/api/order/attachBooking",
         {
@@ -91,6 +86,7 @@ const StoreCreation = ({ userOrder, booking }) => {
         }
       );
       setOrder(attachedOrder?.data?.order);
+      dispatch({ type: "STORE_CREATED", payload: true });
       setIsFirst(false);
       setIsFetchingForFirst(false);
     } catch (err) {
@@ -153,9 +149,7 @@ const StoreCreation = ({ userOrder, booking }) => {
                         ? t("panel:minLength")
                         : containsSpecialChars(storeName) === true
                         ? t("panel:notSpecial")
-                        : allStoreNames?.filter(
-                            (s) => s?.storeName === storeName
-                          ).length > 0
+                        : allStoreNames?.includes(storeName)
                         ? t("panel:nameIsInUse")
                         : ""
                     }
@@ -173,9 +167,7 @@ const StoreCreation = ({ userOrder, booking }) => {
                         if (
                           storeName?.length > 2 &&
                           !containsSpecialChars(storeName) &&
-                          allStoreNames?.filter(
-                            (s) => s?.storeName === storeName
-                          ).length === 0
+                          !allStoreNames?.includes(storeName)
                         ) {
                           setSecondStep(true);
                         }

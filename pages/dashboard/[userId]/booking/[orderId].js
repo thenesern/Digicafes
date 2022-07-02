@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Nav2 from "../../../../components/Nav2/Nav";
 import styles from "./booking.module.css";
 import Order from "../../../../models/OrderModel";
@@ -11,9 +11,18 @@ import { useEffect } from "react";
 import StoreCreation from "../../../../components/BookingDashboard/StoreCreation/StoreCreation";
 import BookingDashboard from "../../../../components/BookingDashboard/Dashboard/BookingDashboard";
 import { Avatar, Skeleton } from "@mui/material";
+import { Store } from "../../../../redux/store";
 
 const Booking = ({ userOrder }) => {
   const [isFirst, setIsFirst] = useState(null);
+  const { state } = useContext(Store);
+  const { storeCreated } = state;
+
+  useEffect(() => {
+    if (storeCreated === true) {
+      setIsFirst(false);
+    }
+  }, [storeCreated]);
 
   useEffect(() => {
     if (userOrder) {
