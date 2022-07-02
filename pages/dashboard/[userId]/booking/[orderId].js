@@ -38,7 +38,7 @@ const Booking = ({ userOrder }) => {
     return (
       <div className={styles.container}>
         <Nav2 />
-        <BookingDashboard />
+        <BookingDashboard userOrder={userOrder[0]} />
       </div>
     );
   }
