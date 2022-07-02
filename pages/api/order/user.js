@@ -6,6 +6,7 @@ import Product from "../../../models/ProductModel";
 import User from "../../../models/UserModel";
 import QRMenu1 from "../../../models/QRMenu1Model";
 import QRMenu2 from "../../../models/QRMenu2Model";
+import Booking from "../../../models/Booking";
 
 const handler = nc();
 
@@ -20,7 +21,9 @@ handler.post(async (req, res) => {
       })
       .populate({ path: "user", model: User })
       .populate({ path: "menuv1", model: QRMenu1 })
-      .populate({ path: "menuv2", model: QRMenu2 });
+      .populate({ path: "menuv2", model: QRMenu2 })
+      .populate({ path: "booking", model: Booking });
+
     await db.disconnect();
     res.send({ status: "success", order });
   } catch (err) {

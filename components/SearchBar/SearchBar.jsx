@@ -5,9 +5,9 @@ import styles from "./SearchBar.module.css";
 
 const SearchBar = () => {
   const CssTextField = styled(TextField)({
-    minWidth: 700,
     backgroundColor: "white",
     color: "black",
+    borderColor: "black",
     "& label.Mui-focused": {
       color: "gray",
     },
