@@ -15,6 +15,9 @@ const bookingSchema = new mongoose.Schema(
     storeLogo: {
       type: String,
     },
+    stage: {
+      type: String,
+    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

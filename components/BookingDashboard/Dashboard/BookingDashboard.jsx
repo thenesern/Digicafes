@@ -3,18 +3,14 @@ import styles from "./BookingDashboard.module.css";
 import DragDrop from "../DragDrop";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import Link from "next/link";
-import Stack from "@mui/material/Stack";
 import useTranslation from "next-translate/useTranslation";
-import {
-  Button,
-  IconButton,
-  Input,
-  List,
-  ListItem,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Loading, Modal, Spacer } from "@nextui-org/react";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import { Button, IconButton, Input, List, ListItem } from "@material-ui/core";
 import ModalMui from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { PhotoCamera } from "@material-ui/icons";
@@ -30,6 +26,7 @@ const BookingDashboard = ({ userOrder }) => {
   const [openUploadLogo, setOpenUploadLogo] = useState(false);
   const [order, setOrder] = useState([]);
   const { t } = useTranslation();
+  const [stage, setStage] = useState(store?.stage || "none");
   let user;
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
@@ -40,6 +37,15 @@ const BookingDashboard = ({ userOrder }) => {
   );
   const handleOpenUploadLogo = () => setOpenUploadLogo(true);
   const handleCloseUploadLogo = () => setOpenUploadLogo(false);
+  const [openStage, setOpenStage] = useState(false);
+  const handleOpenStage = () => setOpenStage(true);
+  const handleCloseStage = () => {
+    setOpenStage(false);
+
+    if (stage !== store?.stage) {
+      setStage(store?.stage);
+    }
+  };
   const uploadLogoHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -71,6 +77,34 @@ const BookingDashboard = ({ userOrder }) => {
       setIsFetching(false);
       setFile(null);
       enqueueSnackbar(t("panel:notUploadedLogo"), { variant: "error" });
+    }
+  };
+  const handleUpdateStage = async (e) => {
+    e.preventDefault();
+    try {
+      setIsFetching(true);
+      await axios
+        .post(
+          `/api/booking/${store?.storeName}/stage`,
+          {
+            storeName: store?.storeName,
+            stage,
+          },
+          {
+            headers: { authorization: `Bearer ${user.token}` },
+          }
+        )
+        .then((res) => {
+          setStore(res.data.store);
+        });
+      setOpenStage(false);
+      setIsFetching(false);
+      enqueueSnackbar("Sahne başarıyla güncellendi.", { variant: "success" });
+    } catch (err) {
+      console.log(err);
+      setIsFetching(false);
+      setFile(null);
+      enqueueSnackbar("Sahne güncellemesi başarısız.", { variant: "error" });
     }
   };
 
@@ -106,6 +140,24 @@ const BookingDashboard = ({ userOrder }) => {
             <h3 className={styles.sidebarHeader}>
               <DashboardCustomizeIcon />
             </h3>
+            <ul className={styles.sidebarList}>
+              <li>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{
+                    height: "2rem",
+                    minWidth: "11rem",
+                    fontSize: "13px",
+                    color: "#fbeee0",
+                  }}
+                  type="submit"
+                  onClick={handleOpenStage}
+                >
+                  Sahne
+                </Button>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -170,6 +222,260 @@ const BookingDashboard = ({ userOrder }) => {
           </form>
         </Box>
       </ModalMui>
+      <ModalMui
+        open={openStage}
+        onClose={handleCloseStage}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box className={styles.modal}>
+          <form>
+            <List className={styles.list}>
+              <h3 className={styles.header}>Sahne Ayarı</h3>
+              <ListItem style={{ margin: "0 auto" }}>
+                <FormControl
+                  style={{
+                    margin: "1rem auto",
+                  }}
+                >
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex-start",
+                      gap: "10px",
+                    }}
+                  >
+                    <FormControlLabel
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        gap: "4px",
+                        minWidth: "6rem",
+                      }}
+                      value="mid"
+                      checked={stage !== "none" ? true : false}
+                      control={<Radio />}
+                      onClick={(e) => setStage(e.target.value)}
+                      label="Sahne Var"
+                    />
+                    <FormControlLabel
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        gap: "4px",
+                        minWidth: "6rem",
+                      }}
+                      value="none"
+                      checked={stage === "none" ? true : false}
+                      control={<Radio />}
+                      onClick={(e) => setStage(e.target.value)}
+                      label="Sahne Yok"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </ListItem>
+              {stage !== "none" && (
+                <ListItem style={{ margin: "0 auto" }}>
+                  <FormControl
+                    style={{
+                      margin: "0 auto",
+                    }}
+                  >
+                    <RadioGroup
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr 1fr",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        width: "100%",
+                        gap: "6px",
+                      }}
+                      row
+                      aria-labelledby="demo-row-radio-buttons-group-label"
+                      name="row-radio-buttons-group"
+                    >
+                      <FormControlLabel
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-start",
+                          gap: "4px",
+                          minWidth: "6rem",
+                        }}
+                        value="left-up"
+                        control={<Radio />}
+                        checked={stage === "left-up" ? true : false}
+                        label="Sol Üst"
+                        onClick={(e) => setStage(e.target.value)}
+                      />
+                      <FormControlLabel
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-start",
+                          gap: "4px",
+                          minWidth: "6rem",
+                        }}
+                        value="up"
+                        checked={stage === "up" ? true : false}
+                        control={<Radio />}
+                        label="Üst"
+                        onClick={(e) => setStage(e.target.value)}
+                      />
+                      <FormControlLabel
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-start",
+                          gap: "4px",
+                          minWidth: "6rem",
+                        }}
+                        value="right-up"
+                        checked={stage === "right-up" ? true : false}
+                        control={<Radio />}
+                        label="Sağ Üst"
+                        onClick={(e) => setStage(e.target.value)}
+                      />
+                      <FormControlLabel
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-start",
+                          gap: "4px",
+                          minWidth: "6rem",
+                        }}
+                        value="left"
+                        checked={stage === "left" ? true : false}
+                        control={<Radio />}
+                        label="Sol"
+                        onClick={(e) => setStage(e.target.value)}
+                      />
+                      <FormControlLabel
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-start",
+                          gap: "4px",
+                          minWidth: "6rem",
+                        }}
+                        value="mid"
+                        control={<Radio />}
+                        checked={stage === "mid" ? true : false}
+                        label="Orta"
+                        onClick={(e) => setStage(e.target.value)}
+                      />
+                      <FormControlLabel
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-start",
+                          gap: "4px",
+                          minWidth: "6rem",
+                        }}
+                        value="right"
+                        control={<Radio />}
+                        checked={stage === "right" ? true : false}
+                        label="Sağ"
+                        onClick={(e) => setStage(e.target.value)}
+                      />
+                      <FormControlLabel
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-start",
+                          gap: "4px",
+                          minWidth: "6rem",
+                        }}
+                        value="left-down"
+                        control={<Radio />}
+                        checked={stage === "left-down" ? true : false}
+                        label="Sol Alt"
+                        onClick={(e) => setStage(e.target.value)}
+                      />
+                      <FormControlLabel
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-start",
+                          gap: "4px",
+                          minWidth: "6rem",
+                        }}
+                        value="down"
+                        control={<Radio />}
+                        checked={stage === "down" ? true : false}
+                        label="Alt"
+                        onClick={(e) => setStage(e.target.value)}
+                      />
+                      <FormControlLabel
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "flex-start",
+                          gap: "4px",
+                          minWidth: "6rem",
+                        }}
+                        value="right-down"
+                        control={<Radio />}
+                        checked={stage === "right-down" ? true : false}
+                        label="Sağ Alt"
+                        onClick={(e) => setStage(e.target.value)}
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </ListItem>
+              )}
+              <ListItem
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "1rem",
+                  paddingTop: "2rem",
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  type="submit"
+                  onClick={handleCloseStage}
+                  color="primary"
+                >
+                  {t("panel:discard")}
+                </Button>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  onClick={(e) => {
+                    if (stage !== null) {
+                      handleUpdateStage(e);
+                    }
+                  }}
+                  color="secondary"
+                >
+                  {t("panel:save")}
+                </Button>
+              </ListItem>
+            </List>
+          </form>
+        </Box>
+      </ModalMui>
+      <Modal
+        style={{
+          background: "transparent",
+          boxShadow: "none",
+        }}
+        preventClose
+        aria-labelledby="modal-title"
+        open={isFetching}
+      >
+        <Loading color="white" size="xl" />
+        <Spacer />
+      </Modal>
     </div>
   );
 };

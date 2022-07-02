@@ -43,7 +43,6 @@ const StoreCreation = ({ userOrder, booking }) => {
           headers: { authorization: `Bearer ${user.token}` },
         })
         .then((response) => {
-          console.log(response);
           setAllStoreNames(response.data.bookings.map((s) => s.storeName));
         });
     };
