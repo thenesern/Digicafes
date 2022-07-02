@@ -97,9 +97,11 @@
   "notSpecial": "İş Yeri Adınız Özel Karakter İçermemelidir!",
   "nameIsInUse": "Bu iş yeri adı kullanılmaktadır. Lütfen başka bir ad giriniz.",
   "enterTableNum": "Lütfen İş Yerinizdeki Masa / Oda Sayısını Giriniz",
+  "tableQuantity": "Lütfen İş Yerinizdeki Masa Sayısını Giriniz",
   "tableZero": "Masa Sayısı sıfır olamaz!",
   "tableNeg": "Masa Sayısı Negatif bir değer olamaz!",
   "tableNumMax": "Masa sayısı 200'ü geçmemelidir",
+  "tableNumMax2": "Masa sayısı 100'ü geçmemelidir",
   "numTable": "Masa Sayısı",
   "save": "Kaydet",
   "downloadAll": "Hepsini indir"

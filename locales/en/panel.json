@@ -97,9 +97,11 @@
   "notSpecial": "Store name is not should contain special characters.",
   "nameIsInUse": "This store name is already in use.",
   "enterTableNum": "Please enter your store's table / room quantity",
+  "tableQuantity": "Please enter your store's table quantity",
   "tableZero": "Number cannot be zero.",
   "tableNeg": "Number cannot be negative.",
   "tableNumMax": "Number cannot be greater than 200",
+  "tableNumMax2": "Number cannot be greater than 100",
   "numTable": "Quantity",
   "save": "Save",
   "downloadAll": "Download all"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Nav2 from "../../../../components/Nav2/Nav";
 import styles from "./booking.module.css";
 import Order from "../../../../models/OrderModel";
@@ -7,18 +7,95 @@ import User from "../../../../models/UserModel";
 import db from "../../../../utils/db";
 import BookingModel from "../../../../models/Booking";
 import Cookies from "js-cookie";
+import { useEffect } from "react";
+import StoreCreation from "../../../../components/BookingDashboard/StoreCreation/StoreCreation";
+import BookingDashboard from "../../../../components/BookingDashboard/Dashboard/BookingDashboard";
+import { Avatar, Skeleton } from "@mui/material";
 
-const Booking = () => {
-  return (
-    <div className={styles.container}>
-      <Nav2 />
-      <div className={styles.wrapper}>
-        <div className={styles.sideBar}></div>
-        <div className={styles.app}></div>
+const Booking = ({ userOrder }) => {
+  const [isFirst, setIsFirst] = useState(null);
+
+  useEffect(() => {
+    if (userOrder) {
+      if (userOrder[0].booking) {
+        setIsFirst(false);
+      } else {
+        setIsFirst(true);
+      }
+    }
+  }, [userOrder]);
+
+  // Rendering
+  if (isFirst === true) {
+    return (
+      <div className={styles.container}>
+        <Nav2 />
+        <StoreCreation userOrder={userOrder} />
       </div>
-    </div>
-  );
+    );
+  }
+  if (isFirst === false) {
+    return (
+      <div className={styles.container}>
+        <Nav2 />
+        <BookingDashboard />
+      </div>
+    );
+  }
+  if (isFirst === null) {
+    return (
+      <div className={styles.container}>
+        <Nav2 />
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            height: "90vh",
+            padding: "0 2rem",
+          }}
+        >
+          <div
+            style={{
+              width: "10vw",
+              height: "90vh",
+              padding: "1rem 0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
+              gap: "1rem",
+            }}
+          >
+            <Skeleton
+              variant="circular"
+              width={"10vw"}
+              height={"20vh"}
+              style={{ margin: "0 auto" }}
+            >
+              <Avatar />
+            </Skeleton>
+            <Skeleton variant="rectangular" width={"10vw"} height={"70vh"} />
+          </div>
+          <div
+            style={{
+              width: "90vw",
+              height: "90vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Skeleton
+              variant="rectangular"
+              style={{ width: "80vw", height: "80vh", margin: "0 auto" }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 };
+
 export async function getServerSideProps(context) {
   const { orderId } = context.query;
   const { userId } = context.query;
