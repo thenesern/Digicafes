@@ -20,6 +20,10 @@ const orderSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "QRMenu2",
     },
+    booking: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Booking",
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

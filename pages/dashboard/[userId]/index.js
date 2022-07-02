@@ -294,10 +294,25 @@ const Dashboard = () => {
             </div>
           ))
         ) : (
-          <Stack spacing={1} width={"100%"}>
-            <Skeleton width={"98%"} style={{ margin: "0 auto" }} height={200} />
+          <Stack
+            width={"98%"}
+            margin={"0 auto"}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "1rem",
+              flexWrap: "wrap",
+              height: "70vh",
+            }}
+          >
+            <Skeleton width={"98%"} style={{ margin: "0 auto", flex: "1" }} />
+            <Skeleton width={"98%"} style={{ margin: "0 auto", flex: "1" }} />
+            <Skeleton width={"98%"} style={{ margin: "0 auto", flex: "1" }} />
+            <Skeleton width={"98%"} style={{ margin: "0 auto", flex: "1" }} />
           </Stack>
         )}
+
         {orders?.length < 1 && (
           <div className={styles.orderNotFound}>
             <Image

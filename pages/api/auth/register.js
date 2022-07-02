@@ -1,10 +1,8 @@
 import nc from "next-connect";
-import bcrypt from "bcryptjs";
 import User from "../../../models/UserModel";
 import db from "../../../utils/db";
 import { signToken } from "../../../utils/auth";
 import Order from "../../../models/OrderModel";
-import Booking from "../../../models/Booking";
 
 const handler = nc();
 
@@ -44,14 +42,14 @@ handler.post(async (req, res) => {
   });
   await newOrder2.save();
 
-  const newBooking = new Order({
+  const newOrder3 = new Order({
     product: "62bf17d63c33439aac11b362",
     user: user?._id,
     createdAt: req.body.createdAt,
     expiry: date,
     quantity: req.body.quantity,
   });
-  await newBooking.save();
+  await newOrder3.save();
   await db.disconnect();
 
   res.send({
