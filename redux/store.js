@@ -7,6 +7,7 @@ const initialState = {
     ? JSON.parse(Cookies.get("userInfo"))
     : null,
   cart: [],
+  storeCreated: null,
 };
 
 function reducer(state, action) {
@@ -22,6 +23,11 @@ function reducer(state, action) {
       return {
         ...state,
         cart: action.payload,
+      };
+    case "STORE_CREATED":
+      return {
+        ...state,
+        storeCreated: action.payload,
       };
     default:
       return state;
