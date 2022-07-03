@@ -17,6 +17,7 @@ import { PhotoCamera } from "@material-ui/icons";
 import { useSnackbar } from "notistack";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useEffect } from "react";
 
 const BookingDashboard = ({ userOrder }) => {
   const [store, setStore] = useState(userOrder?.booking);
@@ -24,11 +25,20 @@ const BookingDashboard = ({ userOrder }) => {
   const [file, setFile] = useState(null);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [openUploadLogo, setOpenUploadLogo] = useState(false);
+  const [openColumns, setOpenColumns] = useState(false);
+  const [openStage, setOpenStage] = useState(false);
+  const [openGate, setOpenGate] = useState(false);
+  const [openSavedColumns, setOpenSavedColumns] = useState(false);
   const [order, setOrder] = useState([]);
   const { t } = useTranslation();
-  const [openColumns, setOpenColumns] = useState(false);
+  const [gate, setGate] = useState(store?.bookingSchema?.gate || "none");
   const [stage, setStage] = useState(store?.bookingSchema?.stage || "none");
   const [columns, setColumns] = useState(store?.bookingSchema?.columns || null);
+  const [signalToColumns, setSignalToColumns] = useState(false);
+  const [signalReturned, setSignalReturned] = useState(false);
+  const [savedColumns, setSavedColumns] = useState(
+    store?.bookingSchema?.savedColumns || {}
+  );
   let user;
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
@@ -38,10 +48,13 @@ const BookingDashboard = ({ userOrder }) => {
       "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1650137521/uploads/logoDefault_ez8obk.png"
   );
   const handleOpenUploadLogo = () => setOpenUploadLogo(true);
+  const handleCloseUploadLogo = () => setOpenUploadLogo(false);
   const handleOpenColumns = () => setOpenColumns(true);
   const handleCloseColumns = () => setOpenColumns(false);
-  const handleCloseUploadLogo = () => setOpenUploadLogo(false);
-  const [openStage, setOpenStage] = useState(false);
+  const handleOpenGate = () => setOpenGate(true);
+  const handleCloseGate = () => setOpenGate(false);
+  const handleOpenSavedColumns = () => setOpenSavedColumns(true);
+  const handleCloseSavedColumns = () => setOpenSavedColumns(false);
   const handleOpenStage = () => setOpenStage(true);
   const handleCloseStage = () => {
     setOpenStage(false);
@@ -50,6 +63,7 @@ const BookingDashboard = ({ userOrder }) => {
       setStage(store?.bookingSchema?.stage);
     }
   };
+
   const uploadLogoHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -83,6 +97,7 @@ const BookingDashboard = ({ userOrder }) => {
       enqueueSnackbar(t("panel:notUploadedLogo"), { variant: "error" });
     }
   };
+
   const handleUpdateStage = async (e) => {
     e.preventDefault();
     try {
@@ -92,7 +107,11 @@ const BookingDashboard = ({ userOrder }) => {
           `/api/booking/${store?.storeName}/stage`,
           {
             storeName: store?.storeName,
-            stage,
+            bookingSchema: {
+              stage,
+              columns: store?.bookingSchema?.columns,
+              gate: store?.bookingSchema?.gate,
+            },
           },
           {
             headers: { authorization: `Bearer ${user.token}` },
@@ -111,6 +130,7 @@ const BookingDashboard = ({ userOrder }) => {
       enqueueSnackbar("Sahne güncellemesi başarısız.", { variant: "error" });
     }
   };
+
   const handleUpdateColumns = async (e) => {
     e.preventDefault();
     try {
@@ -120,7 +140,11 @@ const BookingDashboard = ({ userOrder }) => {
           `/api/booking/${store?.storeName}/columns`,
           {
             storeName: store?.storeName,
-            columns,
+            bookingSchema: {
+              stage: store?.bookingSchema?.stage,
+              columns,
+              gate: store?.bookingSchema?.gate,
+            },
           },
           {
             headers: { authorization: `Bearer ${user.token}` },
@@ -139,6 +163,88 @@ const BookingDashboard = ({ userOrder }) => {
       enqueueSnackbar("Sütun güncellemesi başarısız.", { variant: "error" });
     }
   };
+
+  const handleUpdateGate = async (e) => {
+    e.preventDefault();
+    try {
+      setIsFetching(true);
+      await axios
+        .post(
+          `/api/booking/${store?.storeName}/gate`,
+          {
+            storeName: store?.storeName,
+            bookingSchema: {
+              stage: store?.bookingSchema?.stage,
+              columns: store?.bookingSchema?.columns,
+              gate,
+            },
+          },
+          {
+            headers: { authorization: `Bearer ${user.token}` },
+          }
+        )
+        .then((res) => {
+          setStore(res.data.store);
+        });
+      setOpenGate(false);
+      setIsFetching(false);
+      enqueueSnackbar("Giriş noktası başarıyla güncellendi.", {
+        variant: "success",
+      });
+    } catch (err) {
+      console.log(err);
+      setIsFetching(false);
+      setFile(null);
+      enqueueSnackbar("Giriş noktası güncellemesi başarısız.", {
+        variant: "error",
+      });
+    }
+  };
+
+  const handleUpdateSavedColumns = async () => {
+    try {
+      setIsFetching(true);
+      await axios
+        .post(
+          `/api/booking/${store?.storeName}/savedColumns`,
+          {
+            storeName: store?.storeName,
+            bookingSchema: {
+              stage: store?.bookingSchema?.stage,
+              columns: store?.bookingSchema?.columns,
+              gate: store?.bookingSchema?.gate,
+              savedColumns,
+            },
+          },
+          {
+            headers: { authorization: `Bearer ${user.token}` },
+          }
+        )
+        .then((res) => {
+          setStore(res.data.store);
+        });
+      setOpenSavedColumns(false);
+      setIsFetching(false);
+      enqueueSnackbar("Düzen başarıyla güncellendi.", {
+        variant: "success",
+      });
+    } catch (err) {
+      console.log(err);
+      setIsFetching(false);
+      setFile(null);
+      enqueueSnackbar("Düzen güncellemesi başarısız.", {
+        variant: "error",
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (signalReturned === true) {
+      setSignalReturned(false);
+      handleUpdateSavedColumns();
+    }
+  }, [signalReturned]);
+
   return (
     <div className={styles.container}>
       <div className={styles.sideBar}>
@@ -204,15 +310,52 @@ const BookingDashboard = ({ userOrder }) => {
                   Sütun
                 </Button>
               </li>
+              <li>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{
+                    height: "2rem",
+                    minWidth: "11rem",
+                    fontSize: "13px",
+                    color: "#fbeee0",
+                  }}
+                  type="submit"
+                  onClick={handleOpenGate}
+                >
+                  Giriş Noktası
+                </Button>
+              </li>
+              <li>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{
+                    height: "2rem",
+                    minWidth: "11rem",
+                    fontSize: "13px",
+                    color: "#fbeee0",
+                  }}
+                  type="submit"
+                  onClick={handleOpenSavedColumns}
+                >
+                  Düzeni Kaydet
+                </Button>
+              </li>
             </ul>
           </div>
         </div>
       </div>
       <div className={styles.app}>
         <DragDrop
-          stage={stage}
+          stage={store?.bookingSchema?.stage}
           storeName={store?.storeName}
           tableNum={store?.tableNum}
+          setSignalReturned={setSignalReturned}
+          gate={store?.bookingSchema?.gate}
+          signalToColumns={signalToColumns}
+          savedColumns={savedColumns}
+          setSavedColumns={setSavedColumns}
           bookingColumns={store?.bookingSchema?.columns}
         />
       </div>
@@ -272,6 +415,47 @@ const BookingDashboard = ({ userOrder }) => {
               </ListItem>
             </List>
           </form>
+        </Box>
+      </ModalMui>
+      <ModalMui
+        open={openSavedColumns}
+        onClose={handleCloseSavedColumns}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box className={styles.modal}>
+          <List className={styles.list}>
+            <h3 className={styles.header}>Emin misiniz?</h3>
+            <p style={{ margin: "1rem" }}>Masa düzeni kaydedilecek.</p>
+            <ListItem
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                gap: "1rem",
+                paddingTop: "1rem",
+              }}
+            >
+              <Button
+                variant="outlined"
+                type="submit"
+                onClick={handleCloseSavedColumns}
+                color="primary"
+              >
+                {t("panel:discard")}
+              </Button>
+              <Button
+                variant="contained"
+                type="submit"
+                onClick={(e) => {
+                  setSignalToColumns(true);
+                }}
+                color="secondary"
+              >
+                {t("panel:save")}
+              </Button>
+            </ListItem>
+          </List>
         </Box>
       </ModalMui>
       <ModalMui
@@ -356,6 +540,188 @@ const BookingDashboard = ({ userOrder }) => {
                   onClick={(e) => {
                     if (stage !== null) {
                       handleUpdateStage(e);
+                    }
+                  }}
+                  color="secondary"
+                >
+                  {t("panel:save")}
+                </Button>
+              </ListItem>
+            </List>
+          </form>
+        </Box>
+      </ModalMui>
+      <ModalMui
+        open={openGate}
+        onClose={handleCloseGate}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box className={styles.modal}>
+          <form>
+            <List className={styles.list}>
+              <h3 className={styles.header}>
+                Mekan&apos;a Giriş Noktası (Kuş Bakışı)
+              </h3>
+              <ListItem style={{ margin: "0 auto" }}>
+                <FormControl
+                  style={{
+                    margin: "0 auto",
+                  }}
+                >
+                  <RadioGroup
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr 1fr",
+                      alignItems: "center",
+                      justifyContent: "flex-start",
+                      width: "100%",
+                      gap: "6px",
+                    }}
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                  >
+                    <FormControlLabel
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        gap: "4px",
+                        minWidth: "6rem",
+                      }}
+                      value="left-up"
+                      control={<Radio />}
+                      checked={gate === "left-up" ? true : false}
+                      label="Sol Üst"
+                      onClick={(e) => setGate(e.target.value)}
+                    />
+                    <FormControlLabel
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        gap: "4px",
+                        minWidth: "6rem",
+                      }}
+                      value="up"
+                      checked={gate === "up" ? true : false}
+                      control={<Radio />}
+                      label="Üst"
+                      onClick={(e) => setGate(e.target.value)}
+                    />
+                    <FormControlLabel
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        gap: "4px",
+                        minWidth: "6rem",
+                      }}
+                      value="right-up"
+                      checked={gate === "right-up" ? true : false}
+                      control={<Radio />}
+                      label="Sağ Üst"
+                      onClick={(e) => setGate(e.target.value)}
+                    />
+                    <FormControlLabel
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        gap: "4px",
+                        minWidth: "6rem",
+                      }}
+                      value="left"
+                      checked={gate === "left" ? true : false}
+                      control={<Radio />}
+                      label="Sol"
+                      onClick={(e) => setGate(e.target.value)}
+                    />
+                    <div />
+                    <FormControlLabel
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        gap: "4px",
+                        minWidth: "6rem",
+                      }}
+                      value="right"
+                      control={<Radio />}
+                      checked={gate === "right" ? true : false}
+                      label="Sağ"
+                      onClick={(e) => setGate(e.target.value)}
+                    />
+                    <FormControlLabel
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        gap: "4px",
+                        minWidth: "6rem",
+                      }}
+                      value="left-down"
+                      control={<Radio />}
+                      checked={gate === "left-down" ? true : false}
+                      label="Sol Alt"
+                      onClick={(e) => setGate(e.target.value)}
+                    />
+                    <FormControlLabel
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        gap: "4px",
+                        minWidth: "6rem",
+                      }}
+                      value="down"
+                      control={<Radio />}
+                      checked={gate === "down" ? true : false}
+                      label="Alt"
+                      onClick={(e) => setGate(e.target.value)}
+                    />
+                    <FormControlLabel
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        gap: "4px",
+                        minWidth: "6rem",
+                      }}
+                      value="right-down"
+                      control={<Radio />}
+                      checked={gate === "right-down" ? true : false}
+                      label="Sağ Alt"
+                      onClick={(e) => setGate(e.target.value)}
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </ListItem>
+
+              <ListItem
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "1rem",
+                  paddingTop: "2rem",
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  type="submit"
+                  onClick={handleCloseGate}
+                  color="primary"
+                >
+                  {t("panel:discard")}
+                </Button>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  onClick={(e) => {
+                    if (gate !== null) {
+                      handleUpdateGate(e);
                     }
                   }}
                   color="secondary"
