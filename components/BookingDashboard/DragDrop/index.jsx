@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import styles from "./DragDrop.module.css";
 
-const DragDrop = ({ stage, storeName, tableNum }) => {
+const DragDrop = ({ stage, bookingColumns, storeName, tableNum }) => {
   const [items, setItems] = useState([{ id: "0", content: "Test" }]);
 
   useEffect(() => {
@@ -60,6 +60,38 @@ const DragDrop = ({ stage, storeName, tableNum }) => {
       items: [],
     },
   };
+
+  const columns6and1 = {
+    1: {
+      name: "Eşyalar",
+      items: items,
+    },
+    2: {
+      name: "",
+      items: [],
+    },
+    3: {
+      name: "",
+      items: [],
+    },
+    4: {
+      name: "",
+      items: [],
+    },
+    5: {
+      name: "",
+      items: [],
+    },
+    6: {
+      name: "",
+      items: [],
+    },
+    7: {
+      name: "",
+      items: [],
+    },
+  };
+
   const columns3and1 = {
     1: {
       name: "Eşyalar",
@@ -78,10 +110,19 @@ const DragDrop = ({ stage, storeName, tableNum }) => {
       items: [],
     },
   };
+
   const [columns, setColumns] = useState({});
   useEffect(() => {
-    setColumns(columns3and1);
-  }, [items]);
+    if (bookingColumns === 3) {
+      setColumns(columns3and1);
+    }
+    if (bookingColumns === 6) {
+      setColumns(columns6and1);
+    }
+    if (bookingColumns === 9) {
+      setColumns(columns9and1);
+    }
+  }, [items, bookingColumns]);
   const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return;
     const { source, destination } = result;

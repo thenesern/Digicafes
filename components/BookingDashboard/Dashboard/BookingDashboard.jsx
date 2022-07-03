@@ -26,7 +26,9 @@ const BookingDashboard = ({ userOrder }) => {
   const [openUploadLogo, setOpenUploadLogo] = useState(false);
   const [order, setOrder] = useState([]);
   const { t } = useTranslation();
+  const [openColumns, setOpenColumns] = useState(false);
   const [stage, setStage] = useState(store?.bookingSchema?.stage || "none");
+  const [columns, setColumns] = useState(store?.bookingSchema?.columns || null);
   let user;
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
@@ -36,6 +38,8 @@ const BookingDashboard = ({ userOrder }) => {
       "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1650137521/uploads/logoDefault_ez8obk.png"
   );
   const handleOpenUploadLogo = () => setOpenUploadLogo(true);
+  const handleOpenColumns = () => setOpenColumns(true);
+  const handleCloseColumns = () => setOpenColumns(false);
   const handleCloseUploadLogo = () => setOpenUploadLogo(false);
   const [openStage, setOpenStage] = useState(false);
   const handleOpenStage = () => setOpenStage(true);
@@ -107,7 +111,34 @@ const BookingDashboard = ({ userOrder }) => {
       enqueueSnackbar("Sahne güncellemesi başarısız.", { variant: "error" });
     }
   };
-
+  const handleUpdateColumns = async (e) => {
+    e.preventDefault();
+    try {
+      setIsFetching(true);
+      await axios
+        .post(
+          `/api/booking/${store?.storeName}/columns`,
+          {
+            storeName: store?.storeName,
+            columns,
+          },
+          {
+            headers: { authorization: `Bearer ${user.token}` },
+          }
+        )
+        .then((res) => {
+          setStore(res.data.store);
+        });
+      setOpenColumns(false);
+      setIsFetching(false);
+      enqueueSnackbar("Sütun başarıyla güncellendi.", { variant: "success" });
+    } catch (err) {
+      console.log(err);
+      setIsFetching(false);
+      setFile(null);
+      enqueueSnackbar("Sütun güncellemesi başarısız.", { variant: "error" });
+    }
+  };
   return (
     <div className={styles.container}>
       <div className={styles.sideBar}>
@@ -157,6 +188,22 @@ const BookingDashboard = ({ userOrder }) => {
                   Sahne
                 </Button>
               </li>
+              <li>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{
+                    height: "2rem",
+                    minWidth: "11rem",
+                    fontSize: "13px",
+                    color: "#fbeee0",
+                  }}
+                  type="submit"
+                  onClick={handleOpenColumns}
+                >
+                  Sütun
+                </Button>
+              </li>
             </ul>
           </div>
         </div>
@@ -166,6 +213,7 @@ const BookingDashboard = ({ userOrder }) => {
           stage={stage}
           storeName={store?.storeName}
           tableNum={store?.tableNum}
+          bookingColumns={store?.bookingSchema?.columns}
         />
       </div>
       <ModalMui
@@ -308,6 +356,113 @@ const BookingDashboard = ({ userOrder }) => {
                   onClick={(e) => {
                     if (stage !== null) {
                       handleUpdateStage(e);
+                    }
+                  }}
+                  color="secondary"
+                >
+                  {t("panel:save")}
+                </Button>
+              </ListItem>
+            </List>
+          </form>
+        </Box>
+      </ModalMui>
+      <ModalMui
+        open={openColumns}
+        onClose={handleCloseColumns}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box className={styles.modal}>
+          <form>
+            <List className={styles.list}>
+              <h3 className={styles.header}>Sütun Ayarı</h3>
+              <ListItem style={{ margin: "0 auto" }}>
+                <FormControl
+                  style={{
+                    margin: "1rem auto",
+                  }}
+                >
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex-start",
+                      gap: "10px",
+                    }}
+                  >
+                    <FormControlLabel
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        gap: "4px",
+                        minWidth: "6rem",
+                      }}
+                      value={3}
+                      checked={columns === 3 ? true : false}
+                      control={<Radio />}
+                      onClick={(e) => setColumns(Number(e.target.value))}
+                      label="3"
+                    />
+                    <FormControlLabel
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        gap: "4px",
+                        minWidth: "6rem",
+                      }}
+                      value={6}
+                      checked={columns === 6 ? true : false}
+                      control={<Radio />}
+                      onClick={(e) => setColumns(Number(e.target.value))}
+                      label="6"
+                    />
+                    <FormControlLabel
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        gap: "4px",
+                        minWidth: "6rem",
+                      }}
+                      value={9}
+                      checked={columns === 9 ? true : false}
+                      control={<Radio />}
+                      onClick={(e) => setColumns(Number(e.target.value))}
+                      label="9"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </ListItem>
+
+              <ListItem
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "1rem",
+                  paddingTop: "2rem",
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  type="submit"
+                  onClick={handleCloseColumns}
+                  color="primary"
+                >
+                  {t("panel:discard")}
+                </Button>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  onClick={(e) => {
+                    if (columns !== null) {
+                      handleUpdateColumns(e);
                     }
                   }}
                   color="secondary"
