@@ -22,6 +22,12 @@ const bookingSchema = new mongoose.Schema(
       columns: {
         type: Number,
       },
+      gate: {
+        type: String,
+      },
+      savedColumns: {
+        type: Object,
+      },
     },
     tableNum: {
       type: Number,

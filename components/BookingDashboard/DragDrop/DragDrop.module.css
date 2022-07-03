@@ -21,6 +21,76 @@
   text-align: center;
   width: 100%;
 }
+.gate1 {
+  position: absolute;
+  left: 25%;
+  top: 0;
+  font-weight: bold;
+  background: #fff;
+  padding: 10px;
+  border: 1px solid gray;
+}
+.gate2 {
+  position: absolute;
+  top: 0;
+  font-weight: bold;
+  background: #fff;
+  padding: 10px;
+  border: 1px solid gray;
+}
+.gate3 {
+  position: absolute;
+  right: 25%;
+  top: 0;
+  font-weight: bold;
+  background: #fff;
+  padding: 10px;
+  border: 1px solid gray;
+}
+.gate4 {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  font-weight: bold;
+  background: #fff;
+  padding: 10px;
+  border: 1px solid gray;
+}
+.gate5 {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  font-weight: bold;
+  background: #fff;
+  padding: 10px;
+  border: 1px solid gray;
+}
+.gate6 {
+  position: absolute;
+  left: 25%;
+  bottom: 0;
+  font-weight: bold;
+  background: #fff;
+  padding: 10px;
+  border: 1px solid gray;
+}
+.gate7 {
+  position: absolute;
+  bottom: 0;
+  font-weight: bold;
+  background: #fff;
+  padding: 10px;
+  border: 1px solid gray;
+}
+.gate8 {
+  position: absolute;
+  right: 25%;
+  bottom: 0;
+  font-weight: bold;
+  background: #fff;
+  padding: 10px;
+  border: 1px solid gray;
+}
 .header {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
