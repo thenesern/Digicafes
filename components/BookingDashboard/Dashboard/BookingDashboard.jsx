@@ -18,6 +18,8 @@ import { useSnackbar } from "notistack";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
+import Link from "next/link";
+import { Stack } from "@mui/material";
 
 const BookingDashboard = ({ userOrder }) => {
   const [store, setStore] = useState(userOrder?.booking);
@@ -255,6 +257,27 @@ const BookingDashboard = ({ userOrder }) => {
               <DashboardIcon />
             </h3>
             <ul className={styles.sidebarList}>
+              <li className={styles.li}>
+                <Link href={`/booking/${store?.storeLinkName}`} passHref>
+                  <a target="_blank">
+                    <Stack direction="row" spacing={1}>
+                      <Button
+                        variant="outlined"
+                        className={styles.qrButtons}
+                        style={{
+                          height: "2rem",
+                          minWidth: "11rem",
+                          fontSize: "13px",
+                          color: "#fbeee0",
+                          border: "1px solid #fbeee0",
+                        }}
+                      >
+                        Profile Git
+                      </Button>
+                    </Stack>
+                  </a>
+                </Link>
+              </li>
               <li>
                 <Button
                   variant="outlined"
