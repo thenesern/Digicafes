@@ -96,6 +96,7 @@ const Nav2 = () => {
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
+
   const handleOpenMuiLogin = () => setOpenMuiLogin(true);
   const handleOpenForgotPassword = () => setOpenForgotPassword(true);
   const handleOpenMuiRegister = () => setOpenMuiRegister(true);
@@ -127,6 +128,15 @@ const Nav2 = () => {
     Cookies.remove("userInfo");
     router.push("/");
   };
+  const [isBookingDashboard, setIsBookingDashboard] = useState(false);
+  useEffect(() => {
+    if (
+      router.pathname.includes("dashboard") &&
+      router.pathname.includes("booking")
+    ) {
+      setIsBookingDashboard(true);
+    }
+  }, []);
 
   const resetPasswordHandler = async ({ email }) => {
     setIsFetching(true);
@@ -227,6 +237,9 @@ const Nav2 = () => {
     <navbar
       className={
         !fix ? `${styles.container}` : `${styles.container} ${styles.fixed}`
+      }
+      style={
+        isBookingDashboard === true ? { height: "7vh" } : { height: "10vh" }
       }
     >
       <Modal
