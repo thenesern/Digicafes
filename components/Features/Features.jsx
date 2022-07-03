@@ -145,7 +145,7 @@ const Features = (props) => {
         <span className={styles.priceDes}>
           {props.location ? (
             props.location === "Turkey" ? (
-              <span className={styles.price}>1500₺</span>
+              <span className={styles.price}>2000₺</span>
             ) : (
               <span className={styles.price}>150€</span>
             )
