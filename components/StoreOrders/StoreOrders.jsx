@@ -112,11 +112,17 @@ const StoreOrders = (props) => {
       headerClassName: "dark",
       editable: false,
     },
+
     {
       field: "createdAt",
       headerClassName: "dark",
       hide: true,
       editable: false,
+      renderCell: (params) => {
+        return (
+          <span>{new Date(params.row.createdAt).toLocaleDateString()}</span>
+        );
+      },
     },
     {
       field: "date",
