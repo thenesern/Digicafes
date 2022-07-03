@@ -15,8 +15,16 @@ const bookingSchema = new mongoose.Schema(
     storeLogo: {
       type: String,
     },
-    stage: {
-      type: String,
+    bookingSchema: {
+      stage: {
+        type: String,
+      },
+      columns: {
+        type: Number,
+      },
+    },
+    tableNum: {
+      type: Number,
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,

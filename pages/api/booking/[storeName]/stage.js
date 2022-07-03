@@ -12,7 +12,9 @@ handler.post(async (req, res) => {
   await Booking.findOneAndUpdate(
     { storeName: req.body.storeName },
     {
-      stage: req.body.stage,
+      bookingSchema: {
+        stage: req.body.stage,
+      },
     }
   );
   const store = await Booking.findOne({ storeName: req.body.storeName });
