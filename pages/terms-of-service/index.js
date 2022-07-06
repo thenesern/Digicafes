@@ -15,7 +15,7 @@ const TermsOfService = () => {
             <h2>1. AGREEMENT TO TERMS</h2>
             These Terms of Use constitute a legally binding agreement made
             between you, whether personally or on behalf of an entity (“you”)
-            and AES Softwares (&quot;Company&quot;, “we”, “us”, or “our”),
+            and Aes Software (&quot;Company&quot;, “we”, “us”, or “our”),
             concerning your access to and use of the http://www.digicafes.com
             website as well as any other media form, media channel, mobile
             website or mobile application related, linked, or otherwise
@@ -413,7 +413,7 @@ const TermsOfService = () => {
           <article>
             <h2>18. GOVERNING LAW</h2>
             These Terms shall be governed by and defined following the laws of
-            Turkey. AES Softwares and yourself irrevocably consent that the
+            Turkey. Aes Software and yourself irrevocably consent that the
             courts of Turkey shall have exclusive jurisdiction to resolve any
             dispute which may arise in connection with these terms.
           </article>
@@ -527,7 +527,7 @@ const TermsOfService = () => {
             <h2>25. CONTACT US</h2>
             In order to resolve a complaint regarding the Site or to receive
             further information regarding use of the Site, please contact us at:
-            AES Softwares Cankaya/Ankara, Turkey info@digicafes.com
+            Aes Software Cankaya/Ankara, Turkey info@digicafes.com
           </article>
         </section>
       </div>

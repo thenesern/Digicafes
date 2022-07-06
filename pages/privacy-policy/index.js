@@ -10,7 +10,7 @@ const PrivacyPolicy = () => {
       <div className={styles.container}>
         <h2 className={styles.header}>Privacy Policy</h2>
         <h5 className={styles.subHeader}>
-          This privacy notice for AES Softwares (&quot;Company,&quot;
+          This privacy notice for Aes Software (&quot;Company,&quot;
           &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;), describes how and
           why we might collect, store, use, and/or share (&quot;process&quot;)
           your information when you use our services (&quot;Services&quot;),
@@ -255,7 +255,7 @@ const PrivacyPolicy = () => {
           <article>
             <h2>9. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</h2> If you have
             questions or comments about this notice, you may email us at
-            info@digicafes.com or by post to: AES Softwares Cankaya/Ankara,
+            info@digicafes.com or by post to: Aes Software Cankaya/Ankara,
             Turkey
           </article>
         </section>

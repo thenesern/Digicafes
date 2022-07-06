@@ -32,14 +32,14 @@ const MembershipAgreement = () => {
             koşullara peşinen uyacağını kabul etmiş sayılmaktadır.
           </p>
           <p>
-            2.2 Bu SİTE&apos;de sunulan hizmetler AES Softwares Şahıs Şirketi
-            bundan böyle kısaca &apos;AES Softwares&apos; olarak anılacaktır)
+            2.2 Bu SİTE&apos;de sunulan hizmetler Aes Software Şahıs Şirketi
+            bundan böyle kısaca &apos;Aes Software&apos; olarak anılacaktır)
             tarafından sağlanmaktadır ve digicafes.com’un yasal sahibi AES
             Softwares olup, SİTE üzerinde her türlü kullanım ve tasarruf yetkisi
-            AES Softwares’e aittir.
+            Aes Software’e aittir.
           </p>
           <p>
-            2.3 İşbu üyelik sözleşmesi AES Softwares tarafından gerekli görülen
+            2.3 İşbu üyelik sözleşmesi Aes Software tarafından gerekli görülen
             koşullar altında ve değişik zamanlarda değiştirebilir ancak bu
             değişiklikler düzenli olarak digicafes.com’da yayınlanarak
             KULLANICILAR’ın ve ÜYELER’in bilgisine sunulacak ve aynı tarihten
@@ -47,12 +47,12 @@ const MembershipAgreement = () => {
           </p>
           <p>
             2.4 SİTE hizmetlerinden yararlanan ve digicafes.com’a erişim
-            sağlayan her gerçek ve tüzel kişi, AES Softwares tarafından işbu
+            sağlayan her gerçek ve tüzel kişi, Aes Software tarafından işbu
             kullanım koşulları hükümlerinde yapılan her değişikliği, önceden
             kabul etmiş sayılmaktadır.
           </p>
           <p>
-            2.5 AES Softwares digicafes.com sitesi içeriğinde yer alan veya
+            2.5 Aes Software digicafes.com sitesi içeriğinde yer alan veya
             alacak olan bilgileri, formları ve içeriği dilediği zaman değiştirme
             hakkını saklı tutmaktadır.
           </p>
@@ -60,9 +60,9 @@ const MembershipAgreement = () => {
         <article>
           <h1>3) Tanımlar</h1>
           <p>
-            3.1. ÜYE : AES Softwares’den ürün / mal / hizmet alımı yapmak üzere
+            3.1. ÜYE : Aes Software’den ürün / mal / hizmet alımı yapmak üzere
             faydalanmak isteyen, seçmiş olduğu üyelik formunu eksiksiz
-            doldurarak, AES Softwares tarafından üyelikleri onaylanarak AES
+            doldurarak, Aes Software tarafından üyelikleri onaylanarak AES
             Softwares &apos;e üyeliği kabul edilen her gerçek ve tüzel kişidir.
             (Bu sözleşmede kısaca &apos;ÜYE&apos; olarak anılacaklardır.)
           </p>
@@ -81,12 +81,12 @@ const MembershipAgreement = () => {
             Softwares üyeliğin iptali / durdurulması hakkını saklı tutar.
           </p>
           <p>
-            3.2. KULLANICI : AES Softwares’e ait digicafes.com sitesini
-            alışveriş yaparak ya da alışveriş yapmaksızın ziyaret eden kişidir.
+            3.2. KULLANICI : Aes Software’e ait digicafes.com sitesini alışveriş
+            yaparak ya da alışveriş yapmaksızın ziyaret eden kişidir.
           </p>
           <p>
             3.3. ONAYLAMA İŞLEMİ: ÜYE tarafından, üyelik formunda belirtilen cep
-            telefonu numarasından AES Softwares&apos;e email göndermesi ile AES
+            telefonu numarasından Aes Software&apos;e email göndermesi ile AES
             Softwares&apos;in KULLANICI’nın üyeliğini aktif hale getirilebilmesi
             için yapılması gereken işlemdir.
           </p>
@@ -105,8 +105,7 @@ const MembershipAgreement = () => {
             3.6. WEB SİTESİ KULLANIM KOŞULLARI VE ÜYELİK SÖZLEŞMESİ:
             digicafes.com vasıtasıyla sunulmakta olan ticari ve kişiye özel
             nitelikteki hizmetlerden yararlanacak gerçek ve/veya tüzel kişilerle
-            AES Softwares arasında elektronik ortamda akdedilen işbu
-            sözleşmedir.
+            Aes Software arasında elektronik ortamda akdedilen işbu sözleşmedir.
           </p>
           <p>
             3.7. KİŞİSEL BİLGİ: Üyenin kimliği, adresi, elektronik posta adresi,
@@ -118,21 +117,21 @@ const MembershipAgreement = () => {
         <article>
           <h1>4) HİZMETLERİN KAPSAMI</h1>
           <p>
-            4.1. AES Softwares’in, digicafes.com üzerinden sunacağı hizmetler
+            4.1. Aes Software’in, digicafes.com üzerinden sunacağı hizmetler
             genel itibariyle Tüketici Hukuku mevzuatında tanımlanan elektronik
             ticaretten ibarettir. ÜYELER ve KULLANICI’lar bu hususu kabul
             ettiklerini şimdiden kabul ve beyan ederler.
           </p>
           <p>
-            4.2. AES Softwares’in digicafes.com üzerinden vereceği hizmetler
+            4.2. Aes Software’in digicafes.com üzerinden vereceği hizmetler
             sınırlı sayıda olmamakla birlikte, bu hizmetlerin en önemlisi
             www.digicafes.com adresinde satışa sunulan dijital hizmetlerin; ÜYE
             tarafından bedeli ödendikten sonra, sistem tarafından gerekli
             hazırlıklar yapıldıktan sonra; mümkün olan en kısa sürede dijital
-            hizmetin müşteriye AES Softwares adına direkt olarak sunulmasıdır.
+            hizmetin müşteriye Aes Software adına direkt olarak sunulmasıdır.
           </p>
           <p>
-            4.3. AES Softwares, digicafes.com üzerinden sunacağı hizmetlerin
+            4.3. Aes Software, digicafes.com üzerinden sunacağı hizmetlerin
             kapsamını ve niteliğini belirlemekte tamamen serbest olup,
             hizmetlere ilişkin olarak yapacağı her türlü değişikliği
             digicafes.com’da yayınlamasıyla yürürlüğe girdiğini beyan eder. ÜYE
@@ -140,9 +139,9 @@ const MembershipAgreement = () => {
           </p>
           <p>
             4.4. digicafes.com bünyesinde sunulacak hizmetlerden yararlanabilmek
-            için; kullanıcıların AES Softwares tarafından belirlenecek olan ve
+            için; kullanıcıların Aes Software tarafından belirlenecek olan ve
             digicafes.com’un ilgili bölümünün içeriğinde belirtilen özellikleri
-            taşıması gereklidir. AES Softwares, bu özellikleri belirlemekte
+            taşıması gereklidir. Aes Software, bu özellikleri belirlemekte
             tamamen serbest olup, özelliklere ilişkin olarak yapacağı
             değişikliklerin digicafes.com’da yayınlamasıyla yürürlüğe gireceğini
             beyan eder. ÜYE ve KULLANICILAR bu durumu şimdiden kabul ederler.
@@ -174,15 +173,15 @@ const MembershipAgreement = () => {
             işlemlerde bulunamaz.
           </p>
           <p>
-            5.4. AES Softwares, üye verilerinin yetkisiz kişilerce okunmasından
+            5.4. Aes Software, üye verilerinin yetkisiz kişilerce okunmasından
             ve üye yazılım ve verilerine gelebilecek zararlardan dolayı sorumlu
             olmayacaktır. ÜYELER ve KULLANICILAR, digicafes.com internet
             sitesinin kullanılmasından dolayı uğrayabileceği herhangi bir zarar
-            yüzünden AES Softwares&apos;den tazminat talep etmemeyi peşinen
-            kabul etmiştir.
+            yüzünden Aes Software&apos;den tazminat talep etmemeyi peşinen kabul
+            etmiştir.
           </p>
           <p>
-            5.5. SİTE üzerinden, AES Softwares’in kendi kontrolünde olmayan
+            5.5. SİTE üzerinden, Aes Software’in kendi kontrolünde olmayan
             ve/veya başkaca üçüncü kişilerin sahip olduğu ve/veya işlettiği
             başka web sitelerine ve/veya başka içeriklere link verilebilir. Bu
             linkler KULLANICI’lara ve ÜYE’lere yönlenme kolaylığı sağlamak
@@ -190,7 +189,7 @@ const MembershipAgreement = () => {
             kişiyi desteklememektedir. Link verilen web sitesinin içerdiği
             bilgilere yönelik herhangi bir türde bir beyan veya garanti niteliği
             taşımamaktadır. digicafes.com üzerindeki linkler vasıtasıyla
-            erişilen web siteleri ve içerikleri hakkında AES Softwares&apos;in
+            erişilen web siteleri ve içerikleri hakkında Aes Software&apos;in
             herhangi bir sorumluluğu yoktur ve bu sitelerin kullanımıyla
             doğabilecek zararlar, KULLANICI’ların ve ÜYE’lerin kendi
             sorumluluğundadır.
@@ -198,14 +197,14 @@ const MembershipAgreement = () => {
           <p>
             5.6. İşbu üyelik sözleşmesi içerisinde sayılan maddelerden bir ya da
             birkaçını ihlal eden üye işbu ihlal nedeniyle cezai ve hukuki olarak
-            şahsen sorumlu olup, AES Softwares’i bu ihlallerin hukuki ve cezai
+            şahsen sorumlu olup, Aes Software’i bu ihlallerin hukuki ve cezai
             sonuçlarından ari tutacaktır. Ayrıca; işbu ihlal nedeniyle, olayın
-            hukuk alanına intikal ettirilmesi halinde, AES Softwares’in üyeye
+            hukuk alanına intikal ettirilmesi halinde, Aes Software’in üyeye
             karşı üyelik sözleşmesine uyulmamasından dolayı tazminat talebinde
             bulunma hakkı saklıdır.
           </p>
           <p>
-            5.7. digicafes.com internet sitesi yazılım ve tasarımı AES Softwares
+            5.7. digicafes.com internet sitesi yazılım ve tasarımı Aes Software
             mülkiyetinde olup, bunlara ilişkin telif hakkı ve/veya diğer fikri
             mülkiyet hakları ilgili kanunlarca korunmakta olup, bunlar ÜYE veya
             KULLANICILAR tarafından izinsiz kullanılamaz, iktisap edilemez ve
@@ -214,15 +213,15 @@ const MembershipAgreement = () => {
             mülkiyet hakları kapsamında korunmaktadır.
           </p>
           <p>
-            5.8. AES Softwares, ÜYE’nin kişisel bilgilerini yasal bir zorunluluk
+            5.8. Aes Software, ÜYE’nin kişisel bilgilerini yasal bir zorunluluk
             olarak istendiği takdirde; yasal gereklere uygun hareket etmek veya
-            AES Softwares’e tebliğ edilen yasal işlemlere uymak ya da AES
+            Aes Software’e tebliğ edilen yasal işlemlere uymak ya da AES
             Softwares’in haklarını ve mülkiyetini korumak ve savunmak için
             gerekli olduğuna kanaat getirdiği hallerde bu bilgileri ilgili
             mercilere açıklama hakkına sahiptir.
           </p>
           <p>
-            5.9. AES Softwares, digicafes.com mevcut olan bilgilerin doğruluk ve
+            5.9. Aes Software, digicafes.com mevcut olan bilgilerin doğruluk ve
             güncelliğini sürekli olarak kontrol etmektedir. Ancak gösterilen
             çabaya rağmen, digicafes.com üzerindeki bilgiler güncel
             değişikliklerin gerisinde kalabilir. digicafes.com muhteviyatında
@@ -231,13 +230,13 @@ const MembershipAgreement = () => {
             digicafes.com’da yer alan durumu arasında farklılık olabilir.
             digicafes.com’da yer alan bilgilerin, güncelliği, doğruluğu,
             şartları, kalitesi, performansı, pazarlanabilirliği, belli bir amaca
-            uygunluğu ve AES Softwares&apos;in digicafes.com’da mevcut ve
+            uygunluğu ve Aes Software&apos;in digicafes.com’da mevcut ve
             bunlarla sınırlı olmayan, bunlarla bağlantılı veya bağımsız diğer
             bilgi, hizmet veya ürünlere etkisi ile tamlığı hakkında herhangi bir
             sarih ya da zımni garanti vermemektedir.
           </p>
           <p>
-            5.10. AES Softwares, işbu SİTE ve SİTE uzantısında mevcut her tür
+            5.10. Aes Software, işbu SİTE ve SİTE uzantısında mevcut her tür
             hizmet, ürün, kampanya vs. bilgiler ve digicafes.com kullanma
             koşulları ile digicafes.com’da sunulan bilgileri önceden bir ihtara
             gerek olmaksızın değiştirme, digicafes.com’u ve içeriğini yeniden
@@ -250,13 +249,13 @@ const MembershipAgreement = () => {
           </p>
           <p>
             5.11. digicafes.com dâhilinde üçüncü kişiler tarafından sağlanan
-            hizmetlerden ve yayınlanan içeriklerden dolayı AES Softwares’in,
-            işbirliği içinde bulunduğu kurumların, AES Softwares çalışanlarının
-            ve yöneticilerinin, AES Softwares yetkili satıcılarının sorumluluğu
+            hizmetlerden ve yayınlanan içeriklerden dolayı Aes Software’in,
+            işbirliği içinde bulunduğu kurumların, Aes Software çalışanlarının
+            ve yöneticilerinin, Aes Software yetkili satıcılarının sorumluluğu
             bulunmamaktadır.Herhangi bir üçüncü kişi tarafından sağlanan ve
             yayınlanan bilgilerin, içeriklerin, görsel ve işitsel imgelerin
             doğruluğu ve hukuka uygunluğunun taahhüdü bütünüyle bu eylemleri
-            gerçekleştiren üçüncü kişilerin sorumluluğundadır. AES Softwares,
+            gerçekleştiren üçüncü kişilerin sorumluluğundadır. Aes Software,
             üçüncü kişiler tarafından sağlanan hizmetlerin ve içeriklerin
             güvenliğini, doğruluğunu ve hukuka uygunluğunu taahhüt ve garanti
             etmemektedir.
@@ -266,19 +265,19 @@ const MembershipAgreement = () => {
             amaçlarla digicafes.com üzerinde işlem yapabilirler. KULLANICI’ların
             ve ÜYE’lerin, digicafes.com dâhilinde yaptığı her işlem ve eylemdeki
             hukuki ve cezai sorumlulukları kendilerine aittir. Her KULLANICI ve
-            her ÜYE, AES Softwares ve/veya başka bir üçüncü kişinin haklarına
+            her ÜYE, Aes Software ve/veya başka bir üçüncü kişinin haklarına
             tecavüz teşkil edecek nitelikteki herhangi bir faaliyette
             bulunmayacağını taahhüt eder. KULLANICI ve ÜYE’lerin digicafes.com
             üzerindeki faaliyetleri nedeniyle üçüncü kişilerin uğradıkları veya
-            uğrayabilecekleri zararlardan dolayı AES Softwares&apos;in doğrudan
+            uğrayabilecekleri zararlardan dolayı Aes Software&apos;in doğrudan
             ve/veya dolaylı hiçbir sorumluluğu yoktur.
           </p>
           <p>
-            5.13. AES Softwares, digicafes.com üzerinden KULLANICI‘lar ve
-            ÜYE‘ler tarafından kendisine iletilen bilgileri &quot;Gizlilik
+            5.13. Aes Software, digicafes.com üzerinden KULLANICI‘lar ve ÜYE‘ler
+            tarafından kendisine iletilen bilgileri &quot;Gizlilik
             Politikası&quot; hükümleri doğrultusunda kullanabilir. Bu bilgileri
             işleyebilir, bir veritabanı üzerinde tasnif edip muhafaza edebilir.
-            AES Softwares aynı zamanda; KULLANICI ve ÜYE’nin kimliği, adresi,
+            Aes Software aynı zamanda; KULLANICI ve ÜYE’nin kimliği, adresi,
             elektronik posta adresi, telefon numarası, IP adresi, digicafes.com
             hangi bölümlerini ziyaret ettiği, domain tipi, browser tipi, ziyaret
             tarihi, saati vs bilgileri de istatistiki değerlendirme,
@@ -286,15 +285,15 @@ const MembershipAgreement = () => {
             gibi amaçlarla kullanabilir.
           </p>
           <p>
-            5.14. İşbu SİTE Kullanım Koşulları dâhilinde AES Softwares
-            tarafından açıkça yetki verilmediği hallerde AES Softwares; AES
-            Softwares hizmetleri, AES Softwares bilgileri, AES Softwares telif
-            haklarına tâbi çalışmaları, AES Softwares ticari markaları, AES
-            Softwares ticari görünümü veya bu SİTE vasıtasıyla sağladığı başkaca
-            varlık ve bilgilere yönelik tüm haklarını saklı tutmaktadır.
+            5.14. İşbu SİTE Kullanım Koşulları dâhilinde Aes Software tarafından
+            açıkça yetki verilmediği hallerde Aes Software; AES Softwares
+            hizmetleri, Aes Software bilgileri, Aes Software telif haklarına
+            tâbi çalışmaları, Aes Software ticari markaları, AES Softwares
+            ticari görünümü veya bu SİTE vasıtasıyla sağladığı başkaca varlık ve
+            bilgilere yönelik tüm haklarını saklı tutmaktadır.
           </p>
           <p>
-            5.15. Taraflar, AES Softwares’e ait tüm bilgisayar kayıtlarının tek
+            5.15. Taraflar, Aes Software’e ait tüm bilgisayar kayıtlarının tek
             ve gerçek münhasır delil olarak, HUMK madde 287&apos;ye uygun
             şekilde esas alınacağını ve söz konusu kayıtların bir delil
             sözleşmesi teşkil ettiği hususunu kabul ve beyan eder.
@@ -303,15 +302,15 @@ const MembershipAgreement = () => {
         <article>
           <h1>6) SORUMLULUĞUN SINIRLANDIRILMASI</h1>
           <p>
-            AES Softwares, digicafes.com’a erişilmesi, digicafes.com’un ya da
+            Aes Software, digicafes.com’a erişilmesi, digicafes.com’un ya da
             digicafes.com’daki bilgilerin ve diğer verilerin programların vs.
             kullanılması sebebiyle, sözleşmenin ihlali, haksız fiil, ya da
             başkaca sebeplere binaen, doğabilecek doğrudan ya da dolaylı hiçbir
-            zarardan sorumlu değildir. AES Softwares, sözleşmenin ihlali, haksız
+            zarardan sorumlu değildir. Aes Software, sözleşmenin ihlali, haksız
             fiil, ihmal veya diğer sebepler neticesinde; işlemin kesintiye
             uğraması, hata, ihmal, kesinti hususunda herhangi bir sorumluluk
             kabul etmez. digicafes.com’a ya da link verilen diğer web sitelerine
-            erişilmesi ya da digicafes.com’un kullanılması ile AES Softwares’in,
+            erişilmesi ya da digicafes.com’un kullanılması ile Aes Software’in,
             kullanım/ziyaret sonucunda, doğabilecek her tür sorumluluktan,
             mahkeme ve diğer masraflar da dahil olmak üzere her tür zarar ve
             talep hakkından ayrı kılındığı kabul edilmektedir. KULLANICILAR ve
@@ -323,7 +322,7 @@ const MembershipAgreement = () => {
         <article>
           <h1>7) GİZLİLİK- KİŞİSEL VERİLER</h1>
           <p>
-            AES Softwares, KULLANICI YA DA ÜYELER’e ilişkin bilgileri, işbu
+            Aes Software, KULLANICI YA DA ÜYELER’e ilişkin bilgileri, işbu
             sözleşmenin sözleşmeye aykırılık teşkil etmedikçe yasal
             düzenlemelere uygun olarak kullanabilir. Elektronik Ticaret
             işlemleri nedeniyle digicafes.com’un tüketiciden elde ettiği kişisel
@@ -334,11 +333,11 @@ const MembershipAgreement = () => {
             alışveriş ve/veya tüketici davranış bilgilerinin kendisine ürün ve
             hizmet tanıtımları, reklamlar, kampanyalar, avantajlar, anketler ve
             diğer müşteri memnuniyeti uygulamaları amaçlarıyla toplanmasına, DOL
-            AES Softwares ve bağlantılı organizasyonlar ile paylaşılmasına
+            Aes Software ve bağlantılı organizasyonlar ile paylaşılmasına
             digicafes.com ve bağlantılı organizasyonlar tarafından
             kullanılmasına ve arşivlenmesine izin verdiğini beyan ve kabul eder.
             Üye, aksini bildirmediği sürece üyeliği sona erdiğinde de verilerin
-            toplanmasına, AES Softwares’in bağlantılı organizasyonlar ile
+            toplanmasına, Aes Software’in bağlantılı organizasyonlar ile
             paylaşılmasına, digicafes.com ve bağlantılı organizasyonlar
             tarafından kullanılmasına ve arşivlenmesine izin verdiğini beyan ve
             kabul eder.
@@ -347,10 +346,10 @@ const MembershipAgreement = () => {
         <article>
           <h1>8) DEVİR</h1>
           <p>
-            AES Softwares, bu sözleşmeyi bildirimsiz olarak istediği zaman
-            kısmen veya bütünüyle devredebilir. Ancak KULLANICI veya ÜYE bu
-            sözleşmeyi veya herhangi bir kısmını başka bir tarafa devredemez. Bu
-            türden bir devir girişimi geçersizdir.
+            Aes Software, bu sözleşmeyi bildirimsiz olarak istediği zaman kısmen
+            veya bütünüyle devredebilir. Ancak KULLANICI veya ÜYE bu sözleşmeyi
+            veya herhangi bir kısmını başka bir tarafa devredemez. Bu türden bir
+            devir girişimi geçersizdir.
           </p>
         </article>
         <article>
@@ -371,14 +370,14 @@ const MembershipAgreement = () => {
         <article>
           <h1>10) MÜCBİR SEBEP</h1>
           <p>
-            AES Softwares, hukuken mücbir sebep sayılan tüm durumlarda,
+            Aes Software, hukuken mücbir sebep sayılan tüm durumlarda,
             digicafes.com sitesine ait işbu “üyelik sözleşmesinde geçen
             yükümlülükleri geç ifadan veya hiç ifa etmemekten dolayı herhangi
             bir sorumluluk kabul etmemektedir. Hukuken mücbir sebep sayılan bu
             hallerde, kullanıcılar tarafından gecikme veya ifa etmeme veya
-            temerrüt nedeniyle AES Softwares’den herhangi bir ad veya nam
-            altında tazminat talep etmeleri mümkün olmayacaktır. KULLANICI’LAR
-            veya ÜYE’ler bu durumu şimdiden kabul ve beyan ederler.
+            temerrüt nedeniyle Aes Software’den herhangi bir ad veya nam altında
+            tazminat talep etmeleri mümkün olmayacaktır. KULLANICI’LAR veya
+            ÜYE’ler bu durumu şimdiden kabul ve beyan ederler.
           </p>
         </article>
         <article>
@@ -398,7 +397,7 @@ const MembershipAgreement = () => {
             Softwares tarafından KULLANICI YA DA ÜYELER’e içeriğinde ilan
             edildiği tarihte yürürlülük kazanır. KULLANICI’lar ve ÜYE’ler, işbu
             sözleşme hükümlerini digicafes.com sitesini kullanmakla kabul etmiş
-            olmaktadırlar. AES Softwares, dilediği zaman işbu sözleşme
+            olmaktadırlar. Aes Software, dilediği zaman işbu sözleşme
             hükümlerinde değişikliğe gidebilir, değişiklikler, sürüm numarası ve
             değişiklik tarihi belirtilerek digicafes.com üzerinden yayınlanır ve
             aynı tarihte yürürlüğe girer.
