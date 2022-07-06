@@ -128,7 +128,7 @@ const DragDrop = ({
     },
   };
   const [columns, setColumns] = useState(savedColumns || {});
-  console.log(Object.entries(savedColumns).length);
+
   useEffect(() => {
     if (Object.entries(savedColumns).length > 0) {
       return;

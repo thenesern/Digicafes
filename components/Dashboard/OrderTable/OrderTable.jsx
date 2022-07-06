@@ -154,7 +154,7 @@ const OrderTable = (props) => {
     },
     {
       field: "storeName",
-      headerName: "İş Yeri Adı",
+      headerName: "İşletme Adı",
       flex: 2,
       renderCell: (params) => {
         return (
