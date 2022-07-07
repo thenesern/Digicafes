@@ -7,6 +7,21 @@ const bookingSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    gallery: {
+      isActive: {
+        type: Boolean,
+      },
+      galleryImage: {
+        type: String,
+      },
+      images: [
+        {
+          image: {
+            type: String,
+          },
+        },
+      ],
+    },
     address: {
       country: {
         type: String,
