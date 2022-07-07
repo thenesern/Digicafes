@@ -3,10 +3,13 @@ import Link from "next/link";
 import React, { useState } from "react";
 import styles from "./StoreBookingShowcase.module.css";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import CallIcon from "@mui/icons-material/Call";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import ProgressBar from "./components/ProgressBar";
 
 const StoreBookingShowcase = ({ store }) => {
   const [activeNavBar, setActiveNavBar] = useState("aboutUs");
-  console.log(store);
+
   return (
     <div className={styles.container}>
       <div className={styles.app}>
@@ -15,14 +18,21 @@ const StoreBookingShowcase = ({ store }) => {
             <>
               <div className={styles.titleAndLogo}>
                 <img src={store?.storeLogo} className={styles.logo} />
-                <h1 className={styles.storeName}>{store?.storeName}</h1>
+                <div>
+                  <h1 className={styles.storeName}>{store?.storeName}</h1>
+                  <p
+                    className={styles.address}
+                  >{`${store?.address?.city} / ${store?.address?.state}, ${store?.address?.country}`}</p>
+                </div>
               </div>
+            </>
+          ) : (
+            <div>
+              <h1 className={styles.storeName}>{store?.storeName}</h1>
               <p
                 className={styles.address}
               >{`${store?.address?.city} / ${store?.address?.state}, ${store?.address?.country}`}</p>
-            </>
-          ) : (
-            <h1 className={styles.storeName}>{store?.storeName}</h1>
+            </div>
           )}
           <div className={styles.gallery}>
             <img
@@ -66,21 +76,96 @@ const StoreBookingShowcase = ({ store }) => {
           </div>
           <div className={styles.content}>
             {activeNavBar === "aboutUs" && (
-              <>
+              <div className={styles.aboutUs}>
+                {store?.contact?.phoneNumber && (
+                  <div className={styles.storeContact}>
+                    <h3 className={styles.centeredHeader}>İletişim</h3>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "2rem",
+                        margin: "6px 0",
+                      }}
+                    >
+                      <Button
+                        sx={{
+                          height: "3rem",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "6px",
+                        }}
+                      >
+                        <CallIcon color="success" />
+                        <p
+                          style={{
+                            color: "rgba(58, 67, 84, 0.9)",
+                            fontWeight: "600",
+                          }}
+                        >
+                          {store?.contact?.phoneNumber}
+                        </p>
+                      </Button>
+                      <Button
+                        sx={{
+                          height: "3rem",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "6px",
+                        }}
+                      >
+                        <InstagramIcon color="secondary" />
+                        <a
+                          href={store?.contact?.instagramLink}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <p
+                            style={{
+                              color: "rgba(58, 67, 84, 0.9)",
+                              fontWeight: "600",
+                            }}
+                          >
+                            {store?.contact?.instagramLink.split("/")[3]}
+                          </p>
+                        </a>
+                      </Button>
+                    </div>
+                  </div>
+                )}
                 {store?.address?.address && (
                   <div className={styles.storeAddress}>
                     <h3 className={styles.centeredHeader}>Adres</h3>
-                    <Button sx={{ height: "3rem" }}>
-                      <LocationOnIcon />
-                      <p>{store?.address?.address}</p>
+                    <Button
+                      sx={{
+                        height: "3rem",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "6px",
+                        margin: "6px 0",
+                      }}
+                    >
+                      <LocationOnIcon color="primary" />
+                      <p
+                        style={{
+                          color: "rgba(58, 67, 84, 0.9)",
+                          fontWeight: "600",
+                        }}
+                      >
+                        {store?.address?.address}
+                      </p>
                     </Button>
                   </div>
                 )}
-              </>
+              </div>
             )}
-            {activeNavBar === "menu" && <p>b</p>}
+            {activeNavBar === "menu" && <div className={styles.menu}></div>}
             {activeNavBar === "photos" && (
-              <div>
+              <div className={styles.photos}>
                 {store?.gallery?.images.length > 0 ? (
                   <div className={styles.galleryBottomImages}>
                     {store?.gallery?.images.map((img) => (
@@ -99,7 +184,12 @@ const StoreBookingShowcase = ({ store }) => {
             )}
           </div>
         </div>
-        <div className={styles.right}>asdasd</div>
+        <div className={styles.right}>
+          <div className={styles.quota}>
+            <h3>Doluluk Oranı</h3>
+            <ProgressBar value={30} />
+          </div>
+        </div>
       </div>
     </div>
   );
