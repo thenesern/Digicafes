@@ -7,6 +7,14 @@ const bookingSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    contact: {
+      phoneNumber: {
+        type: String,
+      },
+      instagramLink: {
+        type: String,
+      },
+    },
     gallery: {
       isActive: {
         type: Boolean,

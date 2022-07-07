@@ -21,6 +21,8 @@ import Cookies from "js-cookie";
 import { useEffect } from "react";
 import Link from "next/link";
 import { InputLabel, NativeSelect, Stack, TextField } from "@mui/material";
+import CallIcon from "@mui/icons-material/Call";
+import InstagramIcon from "@mui/icons-material/Instagram";
 
 const BookingDashboard = ({ userOrder }) => {
   const [store, setStore] = useState(userOrder?.booking);
@@ -30,6 +32,8 @@ const BookingDashboard = ({ userOrder }) => {
   const [countryName, setCountryName] = useState(store?.address?.country);
   const [stateName, setStateName] = useState(store?.address?.state);
   const [cityName, setCityName] = useState(store?.address?.city);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [instagramLink, setInstagramLink] = useState("");
   const [countryCode, setCountryCode] = useState("");
   const [stateCities, setStateCities] = useState([]);
   const [countryStates, setCountryStates] = useState([]);
@@ -68,6 +72,7 @@ const BookingDashboard = ({ userOrder }) => {
   );
   const allCountries = Country.getAllCountries();
   const allStates = State.getAllStates();
+  const [openContact, setOpenContact] = useState(false);
   let user;
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
@@ -91,6 +96,8 @@ const BookingDashboard = ({ userOrder }) => {
   };
   const handleOpenUploadLogo = () => setOpenUploadLogo(true);
   const handleCloseUploadLogo = () => setOpenUploadLogo(false);
+  const handleOpenContact = () => setOpenContact(true);
+  const handleCloseContact = () => setOpenContact(false);
   const handleOpenColumns = () => setOpenColumns(true);
   const handleCloseColumns = () => setOpenColumns(false);
   const handleOpenGate = () => setOpenGate(true);
@@ -351,6 +358,37 @@ const BookingDashboard = ({ userOrder }) => {
     }
   };
 
+  const handleUpdateContact = async () => {
+    try {
+      setIsFetching(true);
+      await axios.post(
+        `/api/booking/${store?.storeName}/contact`,
+        {
+          storeName: store?.storeName,
+          contact: {
+            phoneNumber,
+            instagramLink,
+          },
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
+
+      setOpenContact(false);
+      setIsFetching(false);
+      enqueueSnackbar("İletişim Bilgileri başarıyla güncellendi.", {
+        variant: "success",
+      });
+    } catch (err) {
+      console.log(err);
+      setIsFetching(false);
+      enqueueSnackbar("İletişim Bilgileri güncellemesi başarısız.", {
+        variant: "error",
+      });
+    }
+  };
+
   const handleUpdateAddressInfos = async () => {
     try {
       setIsFetching(true);
@@ -473,6 +511,22 @@ const BookingDashboard = ({ userOrder }) => {
                   onClick={handleOpenAddress}
                 >
                   Adres Bilgileri
+                </Button>
+              </li>
+              <li>
+                <Button
+                  variant="outlined"
+                  style={{
+                    height: "2rem",
+                    minWidth: "11rem",
+                    fontSize: "13px",
+                    color: "#fbeee0",
+                    border: "1px solid #fbeee0",
+                  }}
+                  type="submit"
+                  onClick={handleOpenContact}
+                >
+                  İletişim Bilgileri
                 </Button>
               </li>
               <li>
@@ -1237,7 +1291,9 @@ const BookingDashboard = ({ userOrder }) => {
       </ModalMui>
       <ModalMui open={openAddress} onClose={handleCloseAddress}>
         <Box className={styles.modal}>
-          <h2 style={{ textAlign: "center", padding: "1rem" }}>
+          <h2
+            style={{ textAlign: "center", padding: "1rem", color: "#000814" }}
+          >
             Adres Bilgileri
           </h2>
           <form
@@ -1250,7 +1306,15 @@ const BookingDashboard = ({ userOrder }) => {
               flexDirection: "column",
             }}
           >
-            <List>
+            <List
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
               <ListItem>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
@@ -1364,13 +1428,112 @@ const BookingDashboard = ({ userOrder }) => {
                 margin: "1rem",
               }}
             >
-              <Button variant="outlined" onClick={handleCloseGallery}>
+              <Button variant="outlined" onClick={handleCloseAddress}>
                 {t("panel:discard")}
               </Button>
               <Button
                 variant="contained"
                 color="secondary"
                 onClick={handleUpdateAddressInfos}
+              >
+                {t("panel:confirm")}
+              </Button>
+            </div>
+          </form>
+        </Box>
+      </ModalMui>
+      <ModalMui open={openContact} onClose={handleCloseContact}>
+        <Box className={styles.modal}>
+          <h2
+            style={{ textAlign: "center", padding: "1rem", color: "#000814" }}
+          >
+            İletişim Bilgileri
+          </h2>
+          <form
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+              padding: "0 1rem",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
+            <List
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
+              <ListItem
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "1rem",
+                }}
+              >
+                <CallIcon color="primary" />
+                <TextField
+                  variant="outlined"
+                  id="phone"
+                  type="number"
+                  value={phoneNumber}
+                  style={{ width: "100%" }}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    setPhoneNumber(e.target.value);
+                  }}
+                  label="Telefon Numarası"
+                ></TextField>
+              </ListItem>
+              <ListItem
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "1rem",
+                }}
+              >
+                <InstagramIcon color="primary" />
+                <TextField
+                  variant="outlined"
+                  id="instagram"
+                  type="text"
+                  value={instagramLink}
+                  style={{ width: "100%", height: "100%" }}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    setInstagramLink(e.target.value);
+                  }}
+                  label="Instagram Linki"
+                ></TextField>
+              </ListItem>
+            </List>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                width: "92%",
+                justifyContent: "flex-end",
+                gap: "1rem",
+                margin: "1rem",
+              }}
+            >
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleCloseContact}
+              >
+                {t("panel:discard")}
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleUpdateContact}
               >
                 {t("panel:confirm")}
               </Button>
