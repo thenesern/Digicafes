@@ -27,9 +27,23 @@ const Footer = () => {
             objectFit="contain"
             height="60px"
           ></Image>
+          <ul className={styles.footerNavBar}>
+            <li>
+              <a href="about-us" target="_blank" className={styles.navLinks}>
+                {t("footer:aboutUs")}
+              </a>
+            </li>
+          </ul>
           <span className={styles.desc}>{t("common:footer")}</span>
           {router.locale === "tr" ? (
-            <div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexWrap: "wrap",
+              }}
+            >
               <a href="/uyelik-sozlesmesi" target="_blank">
                 <span className={styles.links}>Üyelik Sözleşmesi</span>
               </a>
@@ -41,6 +55,16 @@ const Footer = () => {
               <a href="/cerez-politikasi" target="_blank">
                 <span className={styles.links} style={{ marginLeft: "1rem" }}>
                   Çerez Politikası
+                </span>
+              </a>
+              <a href="/mesafeli-satis-sozlesmesi" target="_blank">
+                <span className={styles.links} style={{ marginLeft: "1rem" }}>
+                  Mesafeli Satış Sözleşmesi
+                </span>
+              </a>
+              <a href="/iptal-ve-iade-kosullari" target="_blank">
+                <span className={styles.links} style={{ marginLeft: "1rem" }}>
+                  İptal ve İade Koşulları
                 </span>
               </a>
             </div>

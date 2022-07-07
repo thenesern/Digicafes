@@ -39,7 +39,14 @@
 .description {
   margin: 0 auto;
 }
-
+.footerNavBar {
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0;
+}
+.desc {
+  margin: 10px 0;
+}
 .social-container {
   display: flex;
   align-items: center;
@@ -71,10 +78,14 @@
 }
 .links {
   font-weight: 600;
+  font-size: 12px;
 }
 .title {
   margin-bottom: 30px;
   color: #353535;
+}
+.navLinks {
+  font-weight: 600;
 }
 
 .list {
