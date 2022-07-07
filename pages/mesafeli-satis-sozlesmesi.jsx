@@ -1,5 +1,5 @@
 import React from "react";
-import Nav from "components/Nav2/Nav";
+import Nav from "../components/Nav2/Nav";
 import Footer from "../components/Footer/Footer";
 import MesafeliSatisSozlesmesiPage from "../components/MesafeliSatisSozlesmesiPage/MesafeliSatisSozlesmesiPage";
 
