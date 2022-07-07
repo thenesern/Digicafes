@@ -19,7 +19,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import Link from "next/link";
-import { Stack } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 
 const BookingDashboard = ({ userOrder }) => {
   const [store, setStore] = useState(userOrder?.booking);
@@ -38,6 +38,14 @@ const BookingDashboard = ({ userOrder }) => {
   const [columns, setColumns] = useState(store?.bookingSchema?.columns || null);
   const [signalToColumns, setSignalToColumns] = useState(false);
   const [signalReturned, setSignalReturned] = useState(false);
+  const [gallery, setGallery] = useState(store?.gallery || null);
+  const [isGalleryActive, setIsGalleryActive] = useState(
+    store?.gallery?.isActive || false
+  );
+  const [images, setImages] = useState(store?.gallery?.images || []);
+  const [galleryImage, setGalleryImage] = useState(
+    store?.gallery?.galleryImage || null
+  );
   const [savedColumns, setSavedColumns] = useState(
     store?.bookingSchema?.savedColumns || {}
   );
@@ -49,6 +57,11 @@ const BookingDashboard = ({ userOrder }) => {
     store?.storeLogo ||
       "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1650137521/uploads/logoDefault_ez8obk.png"
   );
+  const [openGallery, setOpenGallery] = useState(false);
+  const handleCloseGallery = () => {
+    setOpenGallery(false);
+  };
+  const handleOpenGallery = () => setOpenGallery(true);
   const handleOpenUploadLogo = () => setOpenUploadLogo(true);
   const handleCloseUploadLogo = () => setOpenUploadLogo(false);
   const handleOpenColumns = () => setOpenColumns(true);
@@ -63,6 +76,86 @@ const BookingDashboard = ({ userOrder }) => {
 
     if (stage !== store?.bookingSchema?.stage) {
       setStage(store?.bookingSchema?.stage);
+    }
+  };
+
+  const handleUpdateGallery = async (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    const data2 = new FormData();
+    data.append("file", file);
+    data2.append("file", galleryImage);
+    data.append("upload_preset", "uploads");
+    data2.append("upload_preset", "uploads");
+    try {
+      setIsFetching(true);
+      let storeName = store?.storeName;
+      let uploadRes;
+      if (file) {
+        uploadRes = await axios.post(
+          "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
+          data
+        );
+      }
+      let uploadImage;
+      if (typeof galleryImage === "object") {
+        uploadImage = await axios.post(
+          "https://api.cloudinary.com/v1_1/dlyjd3mnb/image/upload",
+          data2
+        );
+      }
+      if (uploadRes) {
+        images.push({
+          image: uploadRes?.data.url,
+        });
+      }
+      if (uploadImage) {
+        uploadImage = uploadImage?.data?.url;
+      }
+      if (uploadImage) {
+        const newGallery = await axios.patch(
+          `/api/booking/${storeName}/gallery`,
+          {
+            storeName,
+            gallery: {
+              images,
+              galleryImage: uploadImage,
+              isActive: isGalleryActive,
+            },
+          },
+          {
+            headers: { authorization: `Bearer ${user.token}` },
+          }
+        );
+        setGalleryImage(newGallery?.data?.gallery?.galleryImage);
+        setImages(newGallery?.data?.gallery?.images);
+      } else {
+        const newGallery = await axios.patch(
+          `/api/booking/${storeName}/gallery`,
+          {
+            storeName,
+            gallery: {
+              images,
+              galleryImage,
+              isActive: isGalleryActive,
+            },
+          },
+          {
+            headers: { authorization: `Bearer ${user.token}` },
+          }
+        );
+        setGalleryImage(newGallery?.data?.gallery?.galleryImage);
+        setImages(newGallery?.data?.gallery?.images);
+      }
+      handleCloseGallery();
+      setIsFetching(false);
+      return enqueueSnackbar(t("panel:galleryUpdated"), {
+        variant: "success",
+      });
+    } catch (err) {
+      console.log(err);
+      setIsFetching(false);
+      handleCloseGallery();
     }
   };
 
@@ -272,7 +365,7 @@ const BookingDashboard = ({ userOrder }) => {
                           border: "1px solid #fbeee0",
                         }}
                       >
-                        Profile Git
+                        İşletme Sayfası
                       </Button>
                     </Stack>
                   </a>
@@ -302,6 +395,21 @@ const BookingDashboard = ({ userOrder }) => {
             </h3>
             <ul className={styles.sidebarList}>
               <li>
+                <Button
+                  className={styles.menuButtons}
+                  variant="contained"
+                  type="submit"
+                  style={{
+                    minWidth: "10rem",
+                    maxWidth: "10rem",
+                  }}
+                  color="primary"
+                  onClick={handleOpenGallery}
+                >
+                  {t("panel:gallery")}
+                </Button>
+              </li>
+              {/*   <li>
                 <Button
                   variant="contained"
                   color="primary"
@@ -364,13 +472,13 @@ const BookingDashboard = ({ userOrder }) => {
                 >
                   Düzeni Kaydet
                 </Button>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>
       </div>
       <div className={styles.app}>
-        <DragDrop
+        {/*  <DragDrop
           stage={store?.bookingSchema?.stage}
           storeName={store?.storeName}
           tableNum={store?.tableNum}
@@ -380,7 +488,7 @@ const BookingDashboard = ({ userOrder }) => {
           savedColumns={savedColumns}
           setSavedColumns={setSavedColumns}
           bookingColumns={store?.bookingSchema?.columns}
-        />
+        /> */}
       </div>
       <ModalMui
         open={openUploadLogo}
@@ -875,6 +983,154 @@ const BookingDashboard = ({ userOrder }) => {
         <Loading color="white" size="xl" />
         <Spacer />
       </Modal>
+      <ModalMui open={openGallery} onClose={handleCloseGallery}>
+        <Box className={styles.modal}>
+          <h2 style={{ textAlign: "center", padding: "1rem" }}>
+            {t("panel:gallery")}
+          </h2>
+          <form
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: "1rem",
+              padding: "0 1rem",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "3rem",
+                width: "100%",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
+              >
+                <input
+                  style={{ cursor: "pointer" }}
+                  type="radio"
+                  name="isActive"
+                  checked={isGalleryActive === true ? true : false}
+                  onChange={() => setIsGalleryActive(true)}
+                ></input>
+                <h3 className={styles.listTypeHeader}>{t("panel:active")}</h3>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "10px",
+                }}
+              >
+                <input
+                  style={{ cursor: "pointer" }}
+                  type="radio"
+                  name="isActive"
+                  checked={isGalleryActive === false ? true : false}
+                  onChange={() => setIsGalleryActive(false)}
+                ></input>
+                <h3 className={styles.listTypeHeader}>{t("panel:passive")}</h3>
+              </div>
+            </div>
+            <h3 style={{ marginBottom: "0" }}>Öne Çıkar</h3>
+            <div>
+              {galleryImage ? (
+                <img
+                  style={{
+                    width: "7rem",
+                    height: "5rem",
+                    objectFit: "contain",
+                  }}
+                  src={galleryImage}
+                ></img>
+              ) : (
+                <p>{t("common:notFoundImage")}</p>
+              )}
+            </div>
+            <Input
+              accept="image/*"
+              id="icon-button-file"
+              onChange={(e) => {
+                setGalleryImage(e.target.files[0]);
+              }}
+              type="file"
+            />
+            <h3 style={{ marginBottom: "0" }}>{t("panel:gallery")}</h3>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 1fr",
+              }}
+            >
+              {images.length > 0 ? (
+                images.map((g) => (
+                  <img
+                    onMouseEnter={(e) => {
+                      e.target.style.border = "1px solid gray";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.border = "none";
+                    }}
+                    onClick={() => {
+                      setImages(images.filter((i) => i.image !== g?.image));
+                    }}
+                    alt={g?.image}
+                    style={{
+                      width: "7rem",
+                      height: "5rem",
+                      objectFit: "contain",
+                      cursor: "pointer",
+                    }}
+                    key={g?.image}
+                    src={g?.image}
+                  ></img>
+                ))
+              ) : (
+                <p>{t("panel:imageNotFound")}</p>
+              )}
+            </div>
+            <Input
+              accept="image/*"
+              id="icon-button-file"
+              onChange={(e) => {
+                setFile(e.target.files[0]);
+              }}
+              type="file"
+            />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                width: "92%",
+                justifyContent: "flex-end",
+                gap: "1rem",
+                margin: "1rem",
+              }}
+            >
+              <Button variant="outlined" onClick={handleCloseGallery}>
+                {t("panel:discard")}
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleUpdateGallery}
+              >
+                {t("panel:confirm")}
+              </Button>
+            </div>
+          </form>
+        </Box>
+      </ModalMui>
     </div>
   );
 };
