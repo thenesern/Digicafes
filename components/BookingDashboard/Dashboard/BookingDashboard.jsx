@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./BookingDashboard.module.css";
+import { Country, State, City } from "country-state-city";
 import DragDrop from "../DragDrop";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -19,19 +20,28 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
 import Link from "next/link";
-import { Stack, TextField } from "@mui/material";
+import { InputLabel, NativeSelect, Stack, TextField } from "@mui/material";
 
 const BookingDashboard = ({ userOrder }) => {
   const [store, setStore] = useState(userOrder?.booking);
   const [isFetching, setIsFetching] = useState(false);
   const [file, setFile] = useState(null);
+  const [address, setAddress] = useState(store?.address?.address);
+  const [countryName, setCountryName] = useState(store?.address?.country);
+  const [stateName, setStateName] = useState(store?.address?.state);
+  const [cityName, setCityName] = useState(store?.address?.city);
+  const [countryCode, setCountryCode] = useState("");
+  const [stateCities, setStateCities] = useState([]);
+  const [countryStates, setCountryStates] = useState([]);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [openUploadLogo, setOpenUploadLogo] = useState(false);
+  const [openAddress, setOpenAddress] = useState(false);
   const [openColumns, setOpenColumns] = useState(false);
   const [openStage, setOpenStage] = useState(false);
   const [openGate, setOpenGate] = useState(false);
   const [openSavedColumns, setOpenSavedColumns] = useState(false);
   const [order, setOrder] = useState([]);
+  const [stateCode, setStateCode] = useState("");
   const { t } = useTranslation();
   const [gate, setGate] = useState(store?.bookingSchema?.gate || "none");
   const [stage, setStage] = useState(store?.bookingSchema?.stage || "none");
@@ -42,6 +52,13 @@ const BookingDashboard = ({ userOrder }) => {
   const [isGalleryActive, setIsGalleryActive] = useState(
     store?.gallery?.isActive || false
   );
+  const handleChangeState = (event) => {
+    setStateName(event.target.value);
+  };
+  const handleChangeCity = (event) => {
+    setCityName(event.target.value);
+  };
+
   const [images, setImages] = useState(store?.gallery?.images || []);
   const [galleryImage, setGalleryImage] = useState(
     store?.gallery?.galleryImage || null
@@ -49,6 +66,8 @@ const BookingDashboard = ({ userOrder }) => {
   const [savedColumns, setSavedColumns] = useState(
     store?.bookingSchema?.savedColumns || {}
   );
+  const allCountries = Country.getAllCountries();
+  const allStates = State.getAllStates();
   let user;
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
@@ -62,6 +81,14 @@ const BookingDashboard = ({ userOrder }) => {
     setOpenGallery(false);
   };
   const handleOpenGallery = () => setOpenGallery(true);
+  const handleOpenAddress = () => setOpenAddress(true);
+  const handleCloseAddress = () => {
+    setOpenAddress(false);
+    setAddress(store?.address?.address);
+    setCountryName(store?.address?.country);
+    setStateName(store?.address?.state);
+    setCityName(store?.address?.city);
+  };
   const handleOpenUploadLogo = () => setOpenUploadLogo(true);
   const handleCloseUploadLogo = () => setOpenUploadLogo(false);
   const handleOpenColumns = () => setOpenColumns(true);
@@ -78,7 +105,35 @@ const BookingDashboard = ({ userOrder }) => {
       setStage(store?.bookingSchema?.stage);
     }
   };
+  useEffect(() => {
+    if ((countryCode, stateCode)) {
+      setStateCities(City.getCitiesOfState(countryCode, stateCode));
+    }
+  }, [countryCode, stateCode]);
 
+  useEffect(() => {
+    if (countryCode) {
+      setCountryStates(State.getStatesOfCountry(countryCode));
+    }
+  }, [countryCode]);
+
+  useEffect(() => {
+    if (countryName) {
+      setCountryCode(
+        allCountries.filter((country) => country.name === countryName)[0]
+          ?.isoCode
+      );
+      console.log(
+        allCountries.filter((country) => country.name === countryName)[0]
+          ?.isoCode
+      );
+    }
+  }, [countryName]);
+  useEffect(() => {
+    setStateCode(
+      allStates.filter((state) => state.name === stateName)[0]?.isoCode
+    );
+  }, [stateName]);
   const handleUpdateGallery = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -296,6 +351,39 @@ const BookingDashboard = ({ userOrder }) => {
     }
   };
 
+  const handleUpdateAddressInfos = async () => {
+    try {
+      setIsFetching(true);
+      await axios.post(
+        `/api/booking/${store?.storeName}/address`,
+        {
+          storeName: store?.storeName,
+          address: {
+            address,
+            country: countryName,
+            state: stateName,
+            city: cityName,
+          },
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
+
+      setOpenAddress(false);
+      setIsFetching(false);
+      enqueueSnackbar("Adres başarıyla güncellendi.", {
+        variant: "success",
+      });
+    } catch (err) {
+      console.log(err);
+      setIsFetching(false);
+      enqueueSnackbar("Adres güncellemesi başarısız.", {
+        variant: "error",
+      });
+    }
+  };
+
   const handleUpdateSavedColumns = async () => {
     try {
       setIsFetching(true);
@@ -370,6 +458,22 @@ const BookingDashboard = ({ userOrder }) => {
                     </Stack>
                   </a>
                 </Link>
+              </li>
+              <li>
+                <Button
+                  variant="outlined"
+                  style={{
+                    height: "2rem",
+                    minWidth: "11rem",
+                    fontSize: "13px",
+                    color: "#fbeee0",
+                    border: "1px solid #fbeee0",
+                  }}
+                  type="submit"
+                  onClick={handleOpenAddress}
+                >
+                  Adres Bilgileri
+                </Button>
               </li>
               <li>
                 <Button
@@ -1131,6 +1235,161 @@ const BookingDashboard = ({ userOrder }) => {
           </form>
         </Box>
       </ModalMui>
+      <ModalMui open={openAddress} onClose={handleCloseAddress}>
+        <Box className={styles.modal}>
+          <h2 style={{ textAlign: "center", padding: "1rem" }}>
+            Adres Bilgileri
+          </h2>
+          <form
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+              padding: "0 1rem",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
+            <List>
+              <ListItem>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Ülke Seçiniz
+                  </InputLabel>
+                  <NativeSelect
+                    defaultValue={countryName ? countryName : ""}
+                    onChange={(e) => {
+                      setCountryName(e.target.value);
+                    }}
+                    inputProps={{
+                      name: "Ülke Seçiniz",
+                    }}
+                  >
+                    {allCountries.length > 0 &&
+                      allCountries?.map((country) => (
+                        <option key={country.name} value={country.name}>
+                          {country.name}
+                        </option>
+                      ))}
+                  </NativeSelect>
+                </FormControl>
+              </ListItem>
+              <ListItem>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Şehir Seçiniz
+                  </InputLabel>
+                  <NativeSelect
+                    defaultValue={stateName ? stateName : ""}
+                    disabled={countryName ? false : true}
+                    onChange={handleChangeState}
+                    inputProps={{
+                      name: "Şehir Seçiniz",
+                    }}
+                  >
+                    {countryStates.length > 0 &&
+                      countryStates?.map((state) =>
+                        state.name.includes("Province") ? (
+                          <option key={state.name} value={state.name}>
+                            {state.name.split(" ")[0]}
+                          </option>
+                        ) : (
+                          <option key={state.name} value={state.name}>
+                            {state.name}
+                          </option>
+                        )
+                      )}
+                  </NativeSelect>
+                </FormControl>
+              </ListItem>
+              <ListItem>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    İlçe Seçiniz
+                  </InputLabel>
+                  <NativeSelect
+                    defaultValue={cityName ? cityName : ""}
+                    disabled={stateName ? false : true}
+                    onChange={handleChangeCity}
+                    inputProps={{
+                      name: "İlçe Seçiniz",
+                    }}
+                  >
+                    {stateCities.length > 0 &&
+                      stateCities?.map((city) => (
+                        <option key={city.name} value={city.name}>
+                          {city.name}
+                        </option>
+                      ))}
+                  </NativeSelect>
+                </FormControl>
+              </ListItem>
+              <ListItem>
+                <TextField
+                  variant="outlined"
+                  id="address"
+                  type="text"
+                  autoFocus="true"
+                  value={address}
+                  rules={{
+                    required: true,
+                  }}
+                  style={{ width: "100%" }}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    setAddress(e.target.value);
+                  }}
+                  /*  helperText={
+                      tableNum === undefined
+                        ? t("panel:tableQuantity")
+                        : tableNum === 0
+                        ? t("panel:tableZero")
+                        : tableNum < 0
+                        ? t("panel:tableNeg")
+                        : tableNum > 100
+                        ? t("panel:tableNumMax2")
+                        : ""
+                    } */
+                  label="Açık Adresiniz"
+                ></TextField>
+              </ListItem>
+            </List>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                width: "92%",
+                justifyContent: "flex-end",
+                gap: "1rem",
+                margin: "1rem",
+              }}
+            >
+              <Button variant="outlined" onClick={handleCloseGallery}>
+                {t("panel:discard")}
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleUpdateAddressInfos}
+              >
+                {t("panel:confirm")}
+              </Button>
+            </div>
+          </form>
+        </Box>
+      </ModalMui>
+      <Modal
+        style={{
+          background: "transparent",
+          boxShadow: "none",
+        }}
+        preventClose
+        aria-labelledby="modal-title"
+        open={isFetching}
+      >
+        <Loading color="white" size="xl" />
+        <Spacer />
+      </Modal>
     </div>
   );
 };
