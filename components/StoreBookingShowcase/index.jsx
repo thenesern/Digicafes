@@ -1,4 +1,12 @@
 import { Button, Typography } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import Link from "next/link";
 import React, { useState } from "react";
 import styles from "./StoreBookingShowcase.module.css";
@@ -9,6 +17,11 @@ import ProgressBar from "./components/ProgressBar";
 
 const StoreBookingShowcase = ({ store }) => {
   const [activeNavBar, setActiveNavBar] = useState("aboutUs");
+  const [value, setValue] = useState(new Date());
+  const [people, setPeople] = useState("");
+  const handleChange = (newValue) => {
+    setValue(newValue);
+  };
 
   return (
     <div className={styles.container}>
@@ -188,6 +201,61 @@ const StoreBookingShowcase = ({ store }) => {
           <div className={styles.quota}>
             <h3>Doluluk Oranı</h3>
             <ProgressBar value={30} />
+          </div>
+          <div style={{ margin: "4rem 0" }}>
+            <h3 style={{ margin: "1rem 0 0 0", color: "#001219" }}>
+              Yerinizi Ayırtın
+            </h3>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
+                gap: "2rem",
+                margin: "1rem 0",
+                flexDirection: "column",
+              }}
+            >
+              <TextField
+                id="standard-basic"
+                label="Kişi Sayısı"
+                type="number"
+                sx={{ width: "100%" }}
+                variant="standard"
+                onChange={(e) => setPeople(e.target.value)}
+              />
+              <LocalizationProvider
+                dateAdapter={AdapterDateFns}
+                sx={{ width: "100%" }}
+              >
+                <Stack spacing={3} sx={{ width: "100%" }}>
+                  <DesktopDatePicker
+                    sx={{ width: "100%" }}
+                    label="Tarih Seçiniz"
+                    inputFormat="dd/MM/yyyy"
+                    value={value}
+                    onChange={handleChange}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                  {/*     <MobileDatePicker
+                  label="Date mobile"
+                  inputFormat="MM/dd/yyyy"
+                  value={value}
+                  onChange={handleChange}
+                  renderInput={(params) => <TextField {...params} />}
+                /> */}
+                  <TimePicker
+                    label="Zaman Seçiniz"
+                    value={value}
+                    onChange={handleChange}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </Stack>
+              </LocalizationProvider>
+              <Button variant="contained" fullWidth color="warning">
+                {people} Kişi için {value.getUTCDate()}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
