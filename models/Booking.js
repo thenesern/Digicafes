@@ -16,9 +16,6 @@ const bookingSchema = new mongoose.Schema(
       },
     },
     gallery: {
-      isActive: {
-        type: Boolean,
-      },
       galleryImage: {
         type: String,
       },

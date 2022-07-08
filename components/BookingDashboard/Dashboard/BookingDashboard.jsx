@@ -32,8 +32,12 @@ const BookingDashboard = ({ userOrder }) => {
   const [countryName, setCountryName] = useState(store?.address?.country);
   const [stateName, setStateName] = useState(store?.address?.state);
   const [cityName, setCityName] = useState(store?.address?.city);
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [instagramLink, setInstagramLink] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(
+    store?.contact?.phoneNumber || ""
+  );
+  const [instagramLink, setInstagramLink] = useState(
+    store?.contact?.instagramLink || ""
+  );
   const [countryCode, setCountryCode] = useState("");
   const [stateCities, setStateCities] = useState([]);
   const [countryStates, setCountryStates] = useState([]);
@@ -53,9 +57,6 @@ const BookingDashboard = ({ userOrder }) => {
   const [signalToColumns, setSignalToColumns] = useState(false);
   const [signalReturned, setSignalReturned] = useState(false);
   const [gallery, setGallery] = useState(store?.gallery || null);
-  const [isGalleryActive, setIsGalleryActive] = useState(
-    store?.gallery?.isActive || false
-  );
   const handleChangeState = (event) => {
     setStateName(event.target.value);
   };
@@ -636,7 +637,7 @@ const BookingDashboard = ({ userOrder }) => {
         </div>
       </div>
       <div className={styles.app}>
-        {/*  <DragDrop
+        <DragDrop
           stage={store?.bookingSchema?.stage}
           storeName={store?.storeName}
           tableNum={store?.tableNum}
@@ -646,7 +647,7 @@ const BookingDashboard = ({ userOrder }) => {
           savedColumns={savedColumns}
           setSavedColumns={setSavedColumns}
           bookingColumns={store?.bookingSchema?.columns}
-        /> */}
+        />
       </div>
       <ModalMui
         open={openUploadLogo}
@@ -1156,50 +1157,6 @@ const BookingDashboard = ({ userOrder }) => {
               flexDirection: "column",
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "3rem",
-                width: "100%",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "10px",
-                }}
-              >
-                <input
-                  style={{ cursor: "pointer" }}
-                  type="radio"
-                  name="isActive"
-                  checked={isGalleryActive === true ? true : false}
-                  onChange={() => setIsGalleryActive(true)}
-                ></input>
-                <h3 className={styles.listTypeHeader}>{t("panel:active")}</h3>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "10px",
-                }}
-              >
-                <input
-                  style={{ cursor: "pointer" }}
-                  type="radio"
-                  name="isActive"
-                  checked={isGalleryActive === false ? true : false}
-                  onChange={() => setIsGalleryActive(false)}
-                ></input>
-                <h3 className={styles.listTypeHeader}>{t("panel:passive")}</h3>
-              </div>
-            </div>
             <h3 style={{ marginBottom: "0" }}>Öne Çıkar</h3>
             <div>
               {galleryImage ? (
@@ -1275,7 +1232,11 @@ const BookingDashboard = ({ userOrder }) => {
                 margin: "1rem",
               }}
             >
-              <Button variant="outlined" onClick={handleCloseGallery}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleCloseGallery}
+              >
                 {t("panel:discard")}
               </Button>
               <Button
@@ -1428,7 +1389,11 @@ const BookingDashboard = ({ userOrder }) => {
                 margin: "1rem",
               }}
             >
-              <Button variant="outlined" onClick={handleCloseAddress}>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleCloseAddress}
+              >
                 {t("panel:discard")}
               </Button>
               <Button
