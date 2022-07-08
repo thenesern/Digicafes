@@ -7,6 +7,99 @@ const bookingSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    workingTimes: {
+      monday: {
+        isActive: {
+          type: Boolean,
+        },
+        workingHours: {
+          starts: {
+            type: String,
+          },
+          ends: {
+            type: String,
+          },
+        },
+      },
+      tuesday: {
+        isActive: {
+          type: Boolean,
+        },
+        workingHours: {
+          starts: {
+            type: String,
+          },
+          ends: {
+            type: String,
+          },
+        },
+      },
+      wednesday: {
+        isActive: {
+          type: Boolean,
+        },
+        workingHours: {
+          starts: {
+            type: String,
+          },
+          ends: {
+            type: String,
+          },
+        },
+      },
+      thursday: {
+        isActive: {
+          type: Boolean,
+        },
+        workingHours: {
+          starts: {
+            type: String,
+          },
+          ends: {
+            type: String,
+          },
+        },
+      },
+      friday: {
+        isActive: {
+          type: Boolean,
+        },
+        workingHours: {
+          starts: {
+            type: String,
+          },
+          ends: {
+            type: String,
+          },
+        },
+      },
+      saturday: {
+        isActive: {
+          type: Boolean,
+        },
+        workingHours: {
+          starts: {
+            type: String,
+          },
+          ends: {
+            type: String,
+          },
+        },
+      },
+      sunday: {
+        isActive: {
+          type: Boolean,
+        },
+        workingHours: {
+          starts: {
+            type: String,
+          },
+          ends: {
+            type: String,
+          },
+        },
+      },
+    },
     contact: {
       phoneNumber: {
         type: String,

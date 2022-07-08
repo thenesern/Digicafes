@@ -32,7 +32,19 @@ const StoreBookingShowcase = ({ store }) => {
               <div className={styles.titleAndLogo}>
                 <img src={store?.storeLogo} className={styles.logo} />
                 <div>
-                  <h1 className={styles.storeName}>{store?.storeName}</h1>
+                  <h1 className={styles.storeName}>
+                    {store?.storeName.split(" ")[0][0] ===
+                    store?.storeName[0][0].toLowerCase()
+                      ? store?.storeName
+                          .split(" ")
+                          .map((item) =>
+                            item.replace(
+                              item[0],
+                              item[0].toLowerCase().toUpperCase()
+                            )
+                          )
+                      : store?.storeName}
+                  </h1>
                   <p
                     className={styles.address}
                   >{`${store?.address?.city} / ${store?.address?.state}, ${store?.address?.country}`}</p>
@@ -41,7 +53,19 @@ const StoreBookingShowcase = ({ store }) => {
             </>
           ) : (
             <div>
-              <h1 className={styles.storeName}>{store?.storeName}</h1>
+              <h1 className={styles.storeName}>
+                {store?.storeName.split(" ")[0][0] ===
+                store?.storeName[0][0].toLowerCase()
+                  ? store?.storeName
+                      .split(" ")
+                      .map((item) =>
+                        item.replace(
+                          item[0],
+                          item[0].toLowerCase().toUpperCase()
+                        )
+                      )
+                  : store?.storeName}
+              </h1>
               <p
                 className={styles.address}
               >{`${store?.address?.city} / ${store?.address?.state}, ${store?.address?.country}`}</p>
@@ -90,6 +114,97 @@ const StoreBookingShowcase = ({ store }) => {
           <div className={styles.content}>
             {activeNavBar === "aboutUs" && (
               <div className={styles.aboutUs}>
+                {store?.workingTimes && (
+                  <div>
+                    <h3>Çalışma Saatleri</h3>
+                    <ul>
+                      {store?.workingTimes?.monday?.isActive ? (
+                        <li className={styles.workingTimes}>
+                          <h4 className={styles.day}>Pazartesi</h4>
+                          <span className={styles.hours}>
+                            {`${store?.workingTimes?.monday?.workingHours?.starts}`}
+                            <span> - </span>
+                            {`${store?.workingTimes?.monday?.workingHours?.ends}`}
+                          </span>
+                        </li>
+                      ) : (
+                        ""
+                      )}
+                      {store?.workingTimes?.tuesday?.isActive ? (
+                        <li className={styles.workingTimes}>
+                          <h4 className={styles.day}>Salı</h4>
+                          <span className={styles.hours}>
+                            {`${store?.workingTimes?.tuesday?.workingHours?.starts}`}
+                            <span> - </span>
+                            {`${store?.workingTimes?.tuesday?.workingHours?.ends}`}
+                          </span>
+                        </li>
+                      ) : (
+                        ""
+                      )}
+                      {store?.workingTimes?.wednesday?.isActive ? (
+                        <li className={styles.workingTimes}>
+                          <h4 className={styles.day}>Çarşamba</h4>
+                          <span className={styles.hours}>
+                            {`${store?.workingTimes?.wednesday?.workingHours?.starts}`}
+                            <span> - </span>
+                            {`${store?.workingTimes?.wednesday?.workingHours?.ends}`}
+                          </span>
+                        </li>
+                      ) : (
+                        ""
+                      )}
+                      {store?.workingTimes?.thursday?.isActive ? (
+                        <li className={styles.workingTimes}>
+                          <h4 className={styles.day}>Perşembe</h4>
+                          <span className={styles.hours}>
+                            {`${store?.workingTimes?.thursday?.workingHours?.starts}`}
+                            <span> - </span>
+                            {`${store?.workingTimes?.thursday?.workingHours?.ends}`}
+                          </span>
+                        </li>
+                      ) : (
+                        ""
+                      )}
+                      {store?.workingTimes?.friday?.isActive ? (
+                        <li className={styles.workingTimes}>
+                          <h4 className={styles.day}>Cuma</h4>
+                          <span className={styles.hours}>
+                            {`${store?.workingTimes?.friday?.workingHours?.starts}`}
+                            <span> - </span>
+                            {`${store?.workingTimes?.friday?.workingHours?.ends}`}
+                          </span>
+                        </li>
+                      ) : (
+                        ""
+                      )}
+                      {store?.workingTimes?.saturday?.isActive ? (
+                        <li className={styles.workingTimes}>
+                          <h4 className={styles.day}>Cumartesi</h4>
+                          <span className={styles.hours}>
+                            {`${store?.workingTimes?.saturday?.workingHours?.starts}`}
+                            <span> - </span>
+                            {`${store?.workingTimes?.saturday?.workingHours?.ends}`}
+                          </span>
+                        </li>
+                      ) : (
+                        ""
+                      )}
+                      {store?.workingTimes?.sunday?.isActive ? (
+                        <li className={styles.workingTimes}>
+                          <h4 className={styles.day}>Pazar</h4>
+                          <span className={styles.hours}>
+                            {`${store?.workingTimes?.sunday?.workingHours?.starts}`}
+                            <span> - </span>
+                            {`${store?.workingTimes?.sunday?.workingHours?.ends}`}
+                          </span>
+                        </li>
+                      ) : (
+                        ""
+                      )}
+                    </ul>
+                  </div>
+                )}
                 {store?.contact?.phoneNumber && (
                   <div className={styles.storeContact}>
                     <h3 className={styles.centeredHeader}>İletişim</h3>
