@@ -1,9 +1,13 @@
 {
   "header": "Sıkça Sorulan Sorular",
   "q1": "Dijital Menü Nedir?",
+  "Bq1": "Rezervasyonlar Ücretsiz mi?",
   "q2": "Dijital Menü Nasıl Çalışır?",
+  "Bq2": "Rezervasyonumu iptal veya revize edebilir miyim?",
   "q3": "Dijital Menü V1 ile V2 farkı nedir?",
-  "a1": "  Dijital Menü, geleneksel baskı menü yerine menünün internet üzerinden QR Kod kullanılarak müşteriye sunulmasıdır.",
+  "a1": "Dijital Menü, geleneksel baskı menü yerine menünün internet üzerinden QR Kod kullanılarak müşteriye sunulmasıdır.",
+  "Ba1": "Rezervasyonlar, işletmelerin kararına göre Ücretli veya Ücretsiz olmaktadır.",
   "a2": "Menünüz Yönetim Paneli üzerinden oluşturulur. Ardından menünüz sistemimiz tarafından kayıt altına alınır ve QR Kod oluşturur. QR Kod'u okutarak menüye ulaşılır.",
+  "Ba2": "Profil sayfanız üzerinden geçmiş veya güncel rezervasyonları görüntüleyebilir ve dilerseniz güncel rezervasyonlarınızı iptal veya revize edebilirsiniz.",
   "a3": "   Dijital Menü V1 ile menünüzü oluşturabilir, QR Kod kullanarak menüye ulaşabilirsiniz. Bu versiyonda amaç müşterinin menüyü sadece görüntülemesi üzerinedir. Dijital Menü V2 ise aynı menü üzerinden sipariş verme, garson çağırma vb. özellikleri size sunar."
 }

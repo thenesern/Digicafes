@@ -9,7 +9,6 @@ const handler = nc();
 handler.use(isAuth);
 
 handler.patch(async (req, res) => {
-  console.log(req.body);
   try {
     await db.connect();
     let updatedOrder;

@@ -4,7 +4,7 @@ import Order from "../../../models/OrderModel.js";
 import db from "../../../utils/db";
 import Nav from "../../../components/Nav2/Nav";
 import Footer from "../../../components/Footer/Footer";
-import StoreBookingShowcase from "../../../components/StoreBookingShowcase";
+import StoreBookingShowcase from "../../../components/Booking/BookingShowcase/index";
 
 const StoreBookingProfile = ({ store }) => {
   return (

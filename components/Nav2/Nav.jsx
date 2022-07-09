@@ -239,8 +239,9 @@ const Nav2 = ({ color }) => {
         !fix ? `${styles.container}` : `${styles.container} ${styles.fixed}`
       }
       style={
-        (isBookingDashboard === true ? { height: "7vh" } : { height: "10vh" },
-        color ? { backgroundColor: color } : { backgroundColor: "#c9184a" })
+        isBookingDashboard === true
+          ? { height: "7vh", backgroundColor: color ? color : "#c9184a" }
+          : { height: "10vh", backgroundColor: color ? color : "#c9184a" }
       }
     >
       <Modal
