@@ -15,6 +15,10 @@ import CallIcon from "@mui/icons-material/Call";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import ProgressBar from "./components/ProgressBar";
 import Image from "next/image";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { useSnackbar } from "notistack";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const StoreBookingShowcase = ({ store }) => {
   const [hours, setHours] = useState([]);
@@ -26,6 +30,27 @@ const StoreBookingShowcase = ({ store }) => {
   const [endTime, setEndTime] = useState("");
   const [startDate, setStartDate] = useState("");
   const [difference, setDifference] = useState(null);
+  const [selectedHour, setSelectedHour] = useState("");
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
+  let user;
+  if (Cookies.get("userInfo")) {
+    user = JSON.parse(Cookies.get("userInfo"));
+  }
+
+  useEffect(() => {
+    if (selectedHour) {
+      setDate(
+        new Date(
+          date.setHours(
+            selectedHour?.split(":")[0],
+            selectedHour?.split(":")[1],
+            "00"
+          )
+        )
+      );
+    }
+  }, [selectedHour]);
 
   useEffect(() => {
     let number =
@@ -85,7 +110,37 @@ const StoreBookingShowcase = ({ store }) => {
       }
     }
   }, [startDate]);
-  console.log(hours);
+
+  const handleSendBooking = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      await axios.post(
+        `/api/booking/${store?.storeName}/booking`,
+        {
+          storeName: store?.storeName,
+          bookings: [
+            {
+              people: Number(people),
+              date,
+              userName: user.firstName + " " + user.lastName,
+              userEmail: user.email,
+            },
+          ],
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
+
+      setLoading(false);
+      enqueueSnackbar("Rezervasyon başarılı.", { variant: "success" });
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+      enqueueSnackbar("Rezervasyon başarısız.", { variant: "error" });
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -104,10 +159,10 @@ const StoreBookingShowcase = ({ store }) => {
                 />
                 <div>
                   <h1 className={styles.storeName}>
-                    {store?.storeName.split(" ")[0][0] ===
+                    {store?.storeName?.split(" ")[0][0] ===
                     store?.storeName[0][0].toLowerCase()
                       ? store?.storeName
-                          .split(" ")
+                          ?.split(" ")
                           .map((item) =>
                             item.replace(
                               item[0],
@@ -125,10 +180,10 @@ const StoreBookingShowcase = ({ store }) => {
           ) : (
             <div>
               <h1 className={styles.storeName}>
-                {store?.storeName.split(" ")[0][0] ===
+                {store?.storeName?.split(" ")[0][0] ===
                 store?.storeName[0][0].toLowerCase()
                   ? store?.storeName
-                      .split(" ")
+                      ?.split(" ")
                       .map((item) =>
                         item.replace(
                           item[0],
@@ -251,7 +306,7 @@ const StoreBookingShowcase = ({ store }) => {
                                   fontWeight: "600",
                                 }}
                               >
-                                {store?.contact?.instagramLink.split("/")[3]}
+                                {store?.contact?.instagramLink?.split("/")[3]}
                               </p>
                             </a>
                           </Button>
@@ -494,19 +549,63 @@ const StoreBookingShowcase = ({ store }) => {
                     onChange={handleChange}
                     renderInput={(params) => <TextField {...params} />}
                   />
-                  {/*     <MobileDatePicker
-                  label="Date mobile"
-                  inputFormat="MM/dd/yyyy"
-                  value={value}
-                  onChange={handleChange}
-                  renderInput={(params) => <TextField {...params} />}
-                /> */}
-                  {date ? <div></div> : ""}
+
+                  {date ? (
+                    <div className={styles.hourButtons}>
+                      {hours.map((hour, i) => (
+                        <Button
+                          key={i}
+                          variant={
+                            (hour?.split(":")[0].length === 1
+                              ? "0" + `${hour?.split(":")[0]}`
+                              : hour?.split(":")[0]) +
+                              ":" +
+                              (hour?.split(":")[1].length === 1
+                                ? "0" + `${hour?.split(":")[1]}`
+                                : hour?.split(":")[1]) ===
+                            selectedHour
+                              ? "contained"
+                              : "outlined"
+                          }
+                          color="primary"
+                          onClick={(e) =>
+                            setSelectedHour(
+                              (hour?.split(":")[0].length === 1
+                                ? "0" + `${hour?.split(":")[0]}`
+                                : hour?.split(":")[0]) +
+                                ":" +
+                                (hour?.split(":")[1].length === 1
+                                  ? "0" + `${hour?.split(":")[1]}`
+                                  : hour?.split(":")[1])
+                            )
+                          }
+                        >
+                          {hour.split(":")[0].length === 1
+                            ? "0" + `${hour.split(":")[0]}`
+                            : hour.split(":")[0]}
+                          <span> : </span>
+                          {hour.split(":")[1].length === 1
+                            ? "0" + `${hour.split(":")[1]}`
+                            : hour.split(":")[1]}
+                        </Button>
+                      ))}
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </Stack>
               </LocalizationProvider>
-              <Button variant="contained" fullWidth color="warning">
-                {people} Kişi için {date.getUTCDate()}
-              </Button>
+              <LoadingButton
+                size="medium"
+                fullWidth
+                onClick={handleSendBooking}
+                loading={loading}
+                color="warning"
+                variant="contained"
+                disabled={loading}
+              >
+                Rezervasyon Yap
+              </LoadingButton>
             </div>
           </div>
         </div>

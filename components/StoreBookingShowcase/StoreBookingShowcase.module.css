@@ -12,6 +12,33 @@
   align-items: center;
   justify-content: center;
 }
+.hourButtons {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  height: 16rem;
+  width: 100%;
+  overflow: auto;
+  gap: 1rem;
+}
+.hourButtons::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  background-color: #f5f5f5;
+}
+
+.hourButtons::-webkit-scrollbar {
+  width: 6px;
+  background-color: #f5f5f5;
+}
+
+.hourButtons::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #555;
+}
+
 .content {
   display: flex;
   align-items: center;
