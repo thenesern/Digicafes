@@ -1,5 +1,7 @@
 import { Button, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
+import enLocale from "date-fns/locale/en-US";
+import trLocale from "date-fns/locale/tr";
 import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -19,24 +21,47 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useSnackbar } from "notistack";
 import axios from "axios";
 import Cookies from "js-cookie";
+const localeMap = {
+  en: enLocale,
+  tr: trLocale,
+};
 
 const StoreBookingShowcase = ({ store }) => {
+  const [locale, setLocale] = useState("tr");
   const [hours, setHours] = useState([]);
   const [activeNavBar, setActiveNavBar] = useState("aboutUs");
   const [date, setDate] = useState(new Date());
-  const [people, setPeople] = useState("");
+  const [people, setPeople] = useState(1);
   const [dayName, setDayName] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [startDate, setStartDate] = useState("");
   const [difference, setDifference] = useState(null);
   const [selectedHour, setSelectedHour] = useState("");
+  const [isPeopleValid, setIsPeopleValid] = useState(true);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
+  const [isDateValid, setIsDateValid] = useState(true);
   let user;
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
   }
+
+  useEffect(() => {
+    if (date) {
+      setIsDateValid(true);
+    } else {
+      setIsDateValid(false);
+    }
+  }, [date]);
+
+  useEffect(() => {
+    if (!people || people < 1 || people > 99) {
+      setIsPeopleValid(false);
+    } else {
+      setIsPeopleValid(true);
+    }
+  }, [people]);
 
   useEffect(() => {
     if (selectedHour) {
@@ -54,7 +79,7 @@ const StoreBookingShowcase = ({ store }) => {
 
   useEffect(() => {
     let number =
-      Number(endTime.split(":")[0]) - Number(startTime.split(":")[0]);
+      Number(endTime?.split(":")[0]) - Number(startTime?.split(":")[0]);
     setDifference(number * 2);
   }, [startTime, endTime]);
   const handleChange = (newDate) => {
@@ -532,11 +557,17 @@ const StoreBookingShowcase = ({ store }) => {
                 id="standard-basic"
                 label="Kişi Sayısı"
                 type="number"
+                error={!isPeopleValid}
+                helperText={
+                  !isPeopleValid ? "Lütfen geçerli bir sayı giriniz." : ""
+                }
+                defaultValue={people}
                 sx={{ width: "100%" }}
                 variant="standard"
                 onChange={(e) => setPeople(e.target.value)}
               />
               <LocalizationProvider
+                locale={localeMap[locale]}
                 dateAdapter={AdapterDateFns}
                 sx={{ width: "100%" }}
               >
@@ -547,7 +578,15 @@ const StoreBookingShowcase = ({ store }) => {
                     inputFormat="dd/MM/yyyy"
                     value={date}
                     onChange={handleChange}
-                    renderInput={(params) => <TextField {...params} />}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        error={!isDateValid}
+                        helperText={
+                          isDateValid ? "" : "Lütfen bir tarih seçiniz."
+                        }
+                      />
+                    )}
                   />
 
                   {date ? (
@@ -580,13 +619,13 @@ const StoreBookingShowcase = ({ store }) => {
                             )
                           }
                         >
-                          {hour.split(":")[0].length === 1
-                            ? "0" + `${hour.split(":")[0]}`
-                            : hour.split(":")[0]}
+                          {hour?.split(":")[0].length === 1
+                            ? "0" + `${hour?.split(":")[0]}`
+                            : hour?.split(":")[0]}
                           <span> : </span>
-                          {hour.split(":")[1].length === 1
-                            ? "0" + `${hour.split(":")[1]}`
-                            : hour.split(":")[1]}
+                          {hour?.split(":")[1].length === 1
+                            ? "0" + `${hour?.split(":")[1]}`
+                            : hour?.split(":")[1]}
                         </Button>
                       ))}
                     </div>
@@ -598,7 +637,11 @@ const StoreBookingShowcase = ({ store }) => {
               <LoadingButton
                 size="medium"
                 fullWidth
-                onClick={handleSendBooking}
+                onClick={(e) => {
+                  if (isPeopleValid && isDateValid && selectedHour) {
+                    handleSendBooking(e);
+                  }
+                }}
                 loading={loading}
                 color="warning"
                 variant="contained"

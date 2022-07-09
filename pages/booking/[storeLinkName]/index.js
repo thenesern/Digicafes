@@ -9,7 +9,7 @@ import StoreBookingShowcase from "../../../components/StoreBookingShowcase";
 const StoreBookingProfile = ({ store }) => {
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      <Nav />
+      <Nav color={store?.navbar?.color} />
       <StoreBookingShowcase store={store} />
       <Footer />
     </div>
