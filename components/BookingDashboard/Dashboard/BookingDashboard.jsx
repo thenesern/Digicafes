@@ -30,6 +30,7 @@ import {
 import TextField from "@mui/material/TextField";
 import CallIcon from "@mui/icons-material/Call";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import Image from "next/image";
 
 const BookingDashboard = ({ userOrder }) => {
   const [store, setStore] = useState(userOrder?.booking);
@@ -126,9 +127,9 @@ const BookingDashboard = ({ userOrder }) => {
     store?.workingTimes?.sunday?.workingHours?.sundayStarts || "09:00"
   );
 
-  const [sundayEnds, setSundayEnds] = useState(
+  /*   const [sundayEnds, setSundayEnds] = useState(
     store?.workingTimes?.sunday?.workingHours?.sundayEnds || "00:00"
-  );
+  ); */
   const handleChangeState = (event) => {
     setStateName(event.target.value);
   };
@@ -171,7 +172,9 @@ const BookingDashboard = ({ userOrder }) => {
   const handleCloseUploadLogo = () => setOpenUploadLogo(false);
   const handleOpenContact = () => setOpenContact(true);
   const handleOpenWorkingTimes = () => setOpenWorkingTimes(true);
-  const handleCloseWorkingTimes = () => setOpenWorkingTimes(false);
+  const HandleCloseWorkingTimes = () => {
+    setOpenWorkingTimes(false);
+  };
   const handleCloseContact = () => setOpenContact(false);
   const handleOpenColumns = () => setOpenColumns(true);
   const handleCloseColumns = () => setOpenColumns(false);
@@ -359,7 +362,7 @@ const BookingDashboard = ({ userOrder }) => {
           headers: { authorization: `Bearer ${user.token}` },
         }
       );
-      handleCloseWorkingTimes();
+      HandleCloseWorkingTimes();
       setIsFetching(false);
       enqueueSnackbar("Çalışma Günü ve Saatleri güncellendi.", {
         variant: "success",
@@ -622,7 +625,14 @@ const BookingDashboard = ({ userOrder }) => {
     <div className={styles.container}>
       <div className={styles.sideBar}>
         <div className={styles.sidebar}>
-          <img src={storeLogo} alt="Logo" className={styles.logo} />
+          <Image
+            src={storeLogo}
+            alt="Logo"
+            width="70"
+            height="70"
+            objectFit="contain"
+            className={styles.logo}
+          />
           <div>
             <h3 className={styles.sidebarHeader}>
               <DashboardIcon />
@@ -1673,7 +1683,7 @@ const BookingDashboard = ({ userOrder }) => {
           </form>
         </Box>
       </ModalMui>
-      <ModalMui open={openWorkingTimes} onClose={handleCloseWorkingTimes}>
+      <ModalMui open={openWorkingTimes} onClose={HandleCloseWorkingTimes}>
         <Box className={styles.modal}>
           <h2
             style={{ textAlign: "center", padding: "1rem", color: "#000814" }}
@@ -2004,7 +2014,7 @@ const BookingDashboard = ({ userOrder }) => {
               <Button
                 variant="outlined"
                 color="primary"
-                onClick={handleCloseWorkingTimes}
+                onClick={HandleCloseWorkingTimes}
               >
                 {t("panel:discard")}
               </Button>
