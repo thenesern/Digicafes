@@ -51,7 +51,7 @@ const Booking = ({ userOrder }) => {
       </div>
     );
   }
-  if (isFirst === null) {
+  if (isFirst === null || undefined) {
     return (
       <div className={styles.container}>
         <Nav2 />
