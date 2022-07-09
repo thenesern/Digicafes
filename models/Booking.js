@@ -7,6 +7,23 @@ const bookingSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    bookings: [
+      {
+        date: {
+          type: String,
+        },
+        people: {
+          type: Number,
+        },
+        userName: {
+          type: String,
+        },
+        userEmail: {
+          type: String,
+        },
+      },
+    ],
+
     workingTimes: {
       monday: {
         isActive: {
