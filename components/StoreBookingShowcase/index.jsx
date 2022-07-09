@@ -8,7 +8,7 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./StoreBookingShowcase.module.css";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CallIcon from "@mui/icons-material/Call";
@@ -17,12 +17,75 @@ import ProgressBar from "./components/ProgressBar";
 import Image from "next/image";
 
 const StoreBookingShowcase = ({ store }) => {
+  const [hours, setHours] = useState([]);
   const [activeNavBar, setActiveNavBar] = useState("aboutUs");
-  const [value, setValue] = useState(new Date());
+  const [date, setDate] = useState(new Date());
   const [people, setPeople] = useState("");
-  const handleChange = (newValue) => {
-    setValue(newValue);
+  const [dayName, setDayName] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [difference, setDifference] = useState(null);
+
+  useEffect(() => {
+    let number =
+      Number(endTime.split(":")[0]) - Number(startTime.split(":")[0]);
+    setDifference(number * 2);
+  }, [startTime, endTime]);
+  const handleChange = (newDate) => {
+    setDate(newDate);
   };
+
+  useEffect(() => {
+    if (date) {
+      setDayName(
+        date.toLocaleDateString("en-US", { weekday: "long" }).toLowerCase()
+      );
+    }
+  }, [date]);
+
+  useEffect(() => {
+    if (dayName) {
+      setStartTime(
+        store?.workingTimes[`${dayName?.toLowerCase()}`]?.workingHours.starts
+      );
+      setEndTime(
+        store?.workingTimes[`${dayName?.toLowerCase()}`]?.workingHours.ends ===
+          "00:00"
+          ? "24:00"
+          : store?.workingTimes[`${dayName?.toLowerCase()}`]?.workingHours.ends
+      );
+    }
+  }, [dayName, store]);
+
+  useEffect(() => {
+    if (startTime) {
+      setStartDate(
+        new Date(
+          date.setHours(
+            startTime?.split(":")[0],
+            startTime?.split(":")[1],
+            "00"
+          )
+        )
+      );
+    }
+  }, [startTime]);
+
+  useEffect(() => {
+    if (startDate) {
+      let max = difference * 30;
+      for (let i = 0; i <= max; i += 30) {
+        setHours((oldDate) => [
+          ...oldDate,
+          new Date(startDate.getTime() + i * 60000).getHours() +
+            ":" +
+            new Date(startDate.getTime() + i * 60000).getMinutes(),
+        ]);
+      }
+    }
+  }, [startDate]);
+  console.log(hours);
 
   return (
     <div className={styles.container}>
@@ -427,7 +490,7 @@ const StoreBookingShowcase = ({ store }) => {
                     sx={{ width: "100%" }}
                     label="Tarih Seçiniz"
                     inputFormat="dd/MM/yyyy"
-                    value={value}
+                    value={date}
                     onChange={handleChange}
                     renderInput={(params) => <TextField {...params} />}
                   />
@@ -438,16 +501,11 @@ const StoreBookingShowcase = ({ store }) => {
                   onChange={handleChange}
                   renderInput={(params) => <TextField {...params} />}
                 /> */}
-                  <TimePicker
-                    label="Zaman Seçiniz"
-                    value={value}
-                    onChange={handleChange}
-                    renderInput={(params) => <TextField {...params} />}
-                  />
+                  {date ? <div></div> : ""}
                 </Stack>
               </LocalizationProvider>
               <Button variant="contained" fullWidth color="warning">
-                {people} Kişi için {value.getUTCDate()}
+                {people} Kişi için {date.getUTCDate()}
               </Button>
             </div>
           </div>
