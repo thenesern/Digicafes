@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./BookingDashboard.module.css";
 import { Country, State, City } from "country-state-city";
-import DragDrop from "../DragDrop";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import useTranslation from "next-translate/useTranslation";
@@ -10,7 +9,6 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 import { Button, IconButton, Input, List, ListItem } from "@material-ui/core";
 import ModalMui from "@mui/material/Modal";
 import Box from "@mui/material/Box";
@@ -18,7 +16,6 @@ import { PhotoCamera } from "@material-ui/icons";
 import { useSnackbar } from "notistack";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
 import Link from "next/link";
 import {
   Checkbox,
@@ -36,10 +33,10 @@ const BookingDashboard = ({ userOrder }) => {
   const [store, setStore] = useState(userOrder?.booking);
   const [isFetching, setIsFetching] = useState(false);
   const [file, setFile] = useState(null);
-  const [address, setAddress] = useState(store?.address?.address);
-  const [countryName, setCountryName] = useState(store?.address?.country);
-  const [stateName, setStateName] = useState(store?.address?.state);
-  const [cityName, setCityName] = useState(store?.address?.city);
+  const [address, setAddress] = useState(store.address.address);
+  const [countryName, setCountryName] = useState(store.address.country);
+  const [stateName, setStateName] = useState(store.address.state);
+  const [cityName, setCityName] = useState(store.address.city);
   const [phoneNumber, setPhoneNumber] = useState(
     store?.contact?.phoneNumber || ""
   );
@@ -59,77 +56,85 @@ const BookingDashboard = ({ userOrder }) => {
   const [order, setOrder] = useState([]);
   const [stateCode, setStateCode] = useState("");
   const { t } = useTranslation();
-  const [gate, setGate] = useState(store?.bookingSchema?.gate || "none");
-  const [stage, setStage] = useState(store?.bookingSchema?.stage || "none");
-  const [columns, setColumns] = useState(store?.bookingSchema?.columns || null);
+  /*   const [gate, setGate] = useState(store.bookingSchema.gate || "none");
+  const [stage, setStage] = useState(store.bookingSchema.stage || "none");
+  const [columns, setColumns] = useState(store.bookingSchema.columns || null);
   const [signalToColumns, setSignalToColumns] = useState(false);
-  const [signalReturned, setSignalReturned] = useState(false);
-  const [gallery, setGallery] = useState(store?.gallery || null);
+  const [signalReturned, setSignalReturned] = useState(false); */
+  const [gallery, setGallery] = useState(store.gallery || null);
   const [openWorkingTimes, setOpenWorkingTimes] = useState(false);
   const [monday, setMonday] = useState(
-    store?.workingTimes?.monday?.isActive || false
+    store.workingTimes.monday.isActive || false
   );
   const [tuesday, setTuesday] = useState(
-    store?.workingTimes?.tuesday?.isActive || false
+    store.workingTimes.tuesday.isActive || false
   );
   const [wednesday, setWednesday] = useState(
-    store?.workingTimes?.wednesday?.isActive || false
+    store.workingTimes.wednesday.isActive || false
   );
   const [thursday, setThursday] = useState(
-    store?.workingTimes?.thursday?.isActive || false
+    store.workingTimes.thursday.isActive || false
   );
   const [friday, setFriday] = useState(
-    store?.workingTimes?.friday?.isActive || false
+    store.workingTimes.friday.isActive || false
   );
   const [saturday, setSaturday] = useState(
-    store?.workingTimes?.saturday?.isActive || false
+    store.workingTimes.saturday.isActive || false
   );
   const [sunday, setSunday] = useState(
-    store?.workingTimes?.sunday?.isActive || false
+    store.workingTimes.sunday.isActive || false
   );
   const [mondayStarts, setMondayStarts] = useState(
-    store?.workingTimes?.monday?.workingHours?.mondayStarts || "09:00"
+    store.workingTimes.monday.workingHours.mondayStarts || "09:00"
   );
   const [mondayEnds, setMondayEnds] = useState(
-    store?.workingTimes?.monday?.workingHours?.mondayEnds || "00:00"
+    store.workingTimes.monday.workingHours.mondayEnds || "24:00"
   );
   const [tuesdayStarts, setTuesdayStarts] = useState(
-    store?.workingTimes?.tuesday?.workingHours?.tuesdayStarts || "09:00"
+    store.workingTimes.tuesday.workingHours.tuesdayStarts || "09:00"
   );
   const [tuesdayEnds, setTuesdayEnds] = useState(
-    store?.workingTimes?.tuesday?.workingHours?.tuesdayEnds || "00:00"
+    store.workingTimes.tuesday.workingHours.tuesdayEnds || "24:00"
   );
   const [wednesdayStarts, setWednesdayStarts] = useState(
-    store?.workingTimes?.wednesday?.workingHours?.wednesdayStarts || "09:00"
+    store.workingTimes.wednesday.workingHours.wednesdayStarts || "09:00"
   );
   const [wednesdayEnds, setWednesdayEnds] = useState(
-    store?.workingTimes?.wednesday?.workingHours?.wednesdayEnds || "00:00"
+    store.workingTimes.wednesday.workingHours.wednesdayEnds || "24:00"
   );
   const [thursdayStarts, setThursdayStarts] = useState(
-    store?.workingTimes?.thursday?.workingHours?.thursdayStarts || "09:00"
+    store.workingTimes.thursday.workingHours.thursdayStarts || "09:00"
   );
   const [thursdayEnds, setThursdayEnds] = useState(
-    store?.workingTimes?.thursday?.workingHours?.thursdayEnds || "00:00"
+    store.workingTimes.thursday.workingHours.thursdayEnds || "24:00"
   );
   const [fridayStarts, setFridayStarts] = useState(
-    store?.workingTimes?.friday?.workingHours?.fridayStarts || "09:00"
+    store.workingTimes.friday.workingHours.fridayStarts || "09:00"
   );
   const [fridayEnds, setFridayEnds] = useState(
-    store?.workingTimes?.friday?.workingHours?.fridayEnds || "00:00"
+    store.workingTimes.friday.workingHours.fridayEnds || "24:00"
   );
   const [saturdayStarts, setSaturdayStarts] = useState(
-    store?.workingTimes?.saturday?.workingHours?.saturdayStarts || "09:00"
+    store.workingTimes.saturday.workingHours.saturdayStarts || "09:00"
   );
   const [saturdayEnds, setSaturdayEnds] = useState(
-    store?.workingTimes?.saturday?.workingHours?.saturdayEnds || "00:00"
+    store.workingTimes.saturday.workingHours.saturdayEnds || "24:00"
   );
   const [sundayStarts, setSundayStarts] = useState(
-    store?.workingTimes?.sunday?.workingHours?.sundayStarts || "09:00"
+    store.workingTimes.sunday.workingHours.sundayStarts || "09:00"
+  );
+  const [sundayEnds, setSundayEnds] = useState(
+    store.workingTimes.sunday.workingHours.sundayEnds || "24:00"
   );
 
-  /*   const [sundayEnds, setSundayEnds] = useState(
-    store?.workingTimes?.sunday?.workingHours?.sundayEnds || "00:00"
-  ); */
+  const [isMondayValid, setIsMondayValid] = useState(true);
+  const [isTuesdayValid, setIsTuesdayValid] = useState(true);
+  const [isWednesdayValid, setIsWednesdayValid] = useState(true);
+  const [isThursdayValid, setIsThursdayValid] = useState(true);
+  const [isFridayValid, setIsFridayValid] = useState(true);
+  const [isSaturdayValid, setIsSaturdayValid] = useState(true);
+  const [isSundayValid, setIsSundayValid] = useState(true);
+
   const handleChangeState = (event) => {
     setStateName(event.target.value);
   };
@@ -141,9 +146,9 @@ const BookingDashboard = ({ userOrder }) => {
   const [galleryImage, setGalleryImage] = useState(
     store?.gallery?.galleryImage || null
   );
-  const [savedColumns, setSavedColumns] = useState(
+  /*   const [savedColumns, setSavedColumns] = useState(
     store?.bookingSchema?.savedColumns || {}
-  );
+  ); */
   const allCountries = Country.getAllCountries();
   const allStates = State.getAllStates();
   const [openContact, setOpenContact] = useState(false);
@@ -176,20 +181,66 @@ const BookingDashboard = ({ userOrder }) => {
     setOpenWorkingTimes(false);
   };
   const handleCloseContact = () => setOpenContact(false);
-  const handleOpenColumns = () => setOpenColumns(true);
+  /*   const handleOpenColumns = () => setOpenColumns(true);
   const handleCloseColumns = () => setOpenColumns(false);
   const handleOpenGate = () => setOpenGate(true);
   const handleCloseGate = () => setOpenGate(false);
   const handleOpenSavedColumns = () => setOpenSavedColumns(true);
-  const handleCloseSavedColumns = () => setOpenSavedColumns(false);
-  const handleOpenStage = () => setOpenStage(true);
+  const handleCloseSavedColumns = () => setOpenSavedColumns(false); */
+  /*   const handleOpenStage = () => setOpenStage(true);
   const handleCloseStage = () => {
     setOpenStage(false);
 
     if (stage !== store?.bookingSchema?.stage) {
       setStage(store?.bookingSchema?.stage);
     }
-  };
+  }; */
+
+  useEffect(() => {
+    setIsMondayValid(
+      Number(mondayStarts.split(":")[0]) > Number(mondayEnds.split(":")[0])
+    );
+  }, [mondayStarts, mondayEnds]);
+
+  useEffect(() => {
+    setIsTuesdayValid(
+      Number(tuesdayStarts.split(":")[0]) > Number(tuesdayEnds.split(":")[0])
+    );
+  }, [tuesdayStarts, tuesdayEnds]);
+
+  useEffect(() => {
+    if (wednesdayEnds !== "00:00") {
+      setIsWednesdayValid(
+        Number(wednesdayStarts.split(":")[0]) >
+          Number(wednesdayEnds.split(":")[0])
+      );
+    }
+  }, [wednesdayStarts, wednesdayEnds]);
+
+  useEffect(() => {
+    setIsThursdayValid(
+      Number(thursdayStarts.split(":")[0]) > Number(thursdayEnds.split(":")[0])
+    );
+  }, [thursdayStarts, thursdayEnds]);
+
+  useEffect(() => {
+    setIsFridayValid(
+      Number(fridayStarts.split(":")[0]) > Number(fridayEnds.split(":")[0])
+    );
+  }, [fridayStarts, fridayEnds]);
+
+  useEffect(() => {
+    setIsSaturdayValid(
+      Number(saturdayStarts.split(":")[0]) > Number(saturdayEnds.split(":")[0])
+    );
+  }, [saturdayStarts, saturdayEnds]);
+
+  useEffect(() => {
+    setIsSundayValid(
+      Number(sundayStarts.split(":")[0]) > Number(sundayEnds.split(":")[0])
+    );
+  }, [sundayStarts, sundayEnds]);
+
   useEffect(() => {
     if ((countryCode, stateCode)) {
       setStateCities(City.getCitiesOfState(countryCode, stateCode));
@@ -577,7 +628,7 @@ const BookingDashboard = ({ userOrder }) => {
     }
   };
 
-  const handleUpdateSavedColumns = async () => {
+  /* const handleUpdateSavedColumns = async () => {
     try {
       setIsFetching(true);
       await axios
@@ -612,14 +663,14 @@ const BookingDashboard = ({ userOrder }) => {
         variant: "error",
       });
     }
-  };
+  }; */
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (signalReturned === true) {
       setSignalReturned(false);
       handleUpdateSavedColumns();
     }
-  }, [signalReturned]);
+  }, [signalReturned]); */
 
   return (
     <div className={styles.container}>
@@ -884,7 +935,7 @@ const BookingDashboard = ({ userOrder }) => {
           </form>
         </Box>
       </ModalMui>
-      <ModalMui
+      {/*  <ModalMui
         open={openSavedColumns}
         onClose={handleCloseSavedColumns}
         aria-labelledby="modal-modal-title"
@@ -924,8 +975,8 @@ const BookingDashboard = ({ userOrder }) => {
             </ListItem>
           </List>
         </Box>
-      </ModalMui>
-      <ModalMui
+      </ModalMui> */}
+      {/*   <ModalMui
         open={openStage}
         onClose={handleCloseStage}
         aria-labelledby="modal-modal-title"
@@ -1017,8 +1068,8 @@ const BookingDashboard = ({ userOrder }) => {
             </List>
           </form>
         </Box>
-      </ModalMui>
-      <ModalMui
+      </ModalMui> */}
+      {/*  <ModalMui
         open={openGate}
         onClose={handleCloseGate}
         aria-labelledby="modal-modal-title"
@@ -1199,8 +1250,8 @@ const BookingDashboard = ({ userOrder }) => {
             </List>
           </form>
         </Box>
-      </ModalMui>
-      <ModalMui
+      </ModalMui> */}
+      {/*  <ModalMui
         open={openColumns}
         onClose={handleCloseColumns}
         aria-labelledby="modal-modal-title"
@@ -1306,7 +1357,7 @@ const BookingDashboard = ({ userOrder }) => {
             </List>
           </form>
         </Box>
-      </ModalMui>
+      </ModalMui> */}
       <Modal
         style={{
           background: "transparent",
@@ -1754,9 +1805,15 @@ const BookingDashboard = ({ userOrder }) => {
                         <TextField
                           id="standard-basic"
                           label="Kapanış"
+                          error={isMondayValid}
                           sx={{ width: "5rem" }}
                           variant="standard"
                           defaultValue={mondayEnds}
+                          helperText={
+                            isMondayValid
+                              ? "Kapanış Saati Başlangıç Saatinden Erken Olamaz."
+                              : ""
+                          }
                           onChange={(e) => setMondayEnds(e.target.value)}
                         />
                       </>
@@ -1793,6 +1850,12 @@ const BookingDashboard = ({ userOrder }) => {
                         <TextField
                           id="standard-basic"
                           label="Kapanış"
+                          error={isTuesdayValid}
+                          helperText={
+                            isTuesdayValid
+                              ? "Kapanış Saati Başlangıç Saatinden Erken Olamaz."
+                              : ""
+                          }
                           sx={{ width: "5rem" }}
                           variant="standard"
                           defaultValue={tuesdayEnds}
@@ -1832,6 +1895,12 @@ const BookingDashboard = ({ userOrder }) => {
                         <TextField
                           id="standard-basic"
                           label="Kapanış"
+                          error={isWednesdayValid}
+                          helperText={
+                            isWednesdayValid
+                              ? "Kapanış Saati Başlangıç Saatinden Erken Olamaz."
+                              : ""
+                          }
                           sx={{ width: "5rem" }}
                           variant="standard"
                           defaultValue={wednesdayEnds}
@@ -1873,6 +1942,12 @@ const BookingDashboard = ({ userOrder }) => {
                           label="Kapanış"
                           sx={{ width: "5rem" }}
                           variant="standard"
+                          error={isThursdayValid}
+                          helperText={
+                            isThursdayValid
+                              ? "Kapanış Saati Başlangıç Saatinden Erken Olamaz."
+                              : ""
+                          }
                           defaultValue={thursdayEnds}
                           onChange={(e) => setThursdayEnds(e.target.value)}
                         />
@@ -1911,6 +1986,12 @@ const BookingDashboard = ({ userOrder }) => {
                           id="standard-basic"
                           label="Kapanış"
                           sx={{ width: "5rem" }}
+                          error={isFridayValid}
+                          helperText={
+                            isFridayValid
+                              ? "Kapanış Saati Başlangıç Saatinden Erken Olamaz."
+                              : ""
+                          }
                           variant="standard"
                           defaultValue={fridayEnds}
                           onChange={(e) => setFridayEnd(e.target.value)}
@@ -1951,6 +2032,12 @@ const BookingDashboard = ({ userOrder }) => {
                           label="Kapanış"
                           sx={{ width: "5rem" }}
                           variant="standard"
+                          error={isSaturdayValid}
+                          helperText={
+                            isSaturdayValid
+                              ? "Kapanış Saati Başlangıç Saatinden Erken Olamaz."
+                              : ""
+                          }
                           defaultValue={saturdayEnds}
                           onChange={(e) => setSaturdayEnds(e.target.value)}
                         />
@@ -1990,6 +2077,12 @@ const BookingDashboard = ({ userOrder }) => {
                           label="Kapanış"
                           sx={{ width: "5rem" }}
                           variant="standard"
+                          error={isSundayValid}
+                          helperText={
+                            isSundayValid
+                              ? "Kapanış Saati Başlangıç Saatinden Erken Olamaz."
+                              : ""
+                          }
                           defaultValue={sundayEnds}
                           onChange={(e) => setSundayEnds(e.target.value)}
                         />
