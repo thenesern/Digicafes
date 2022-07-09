@@ -8,8 +8,8 @@ import db from "../../../../utils/db";
 import BookingModel from "../../../../models/Booking";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
-import StoreCreation from "../../../../components/BookingDashboard/StoreCreation/StoreCreation";
-import BookingDashboard from "../../../../components/BookingDashboard/Dashboard/BookingDashboard";
+import StoreCreation from "../../../../components/Booking/BookingDashboard/StoreCreation/StoreCreation";
+import BookingDashboard from "../../../../components/Booking/BookingDashboard/Dashboard/BookingDashboard";
 import { Avatar, Skeleton } from "@mui/material";
 import { Store } from "../../../../redux/store";
 

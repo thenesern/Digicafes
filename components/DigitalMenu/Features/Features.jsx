@@ -6,7 +6,7 @@ import { useState } from "react";
 import Aos from "aos";
 import { useRouter } from "next/router";
 // Context
-import { Store } from "../../redux/store";
+import { Store } from "../../../redux/store";
 import { useContext } from "react";
 // Styles
 import styles from "./Features.module.css";

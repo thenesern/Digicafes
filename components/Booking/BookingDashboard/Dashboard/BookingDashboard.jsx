@@ -266,10 +266,6 @@ const BookingDashboard = ({ userOrder }) => {
         allCountries.filter((country) => country.name === countryName)[0]
           ?.isoCode
       );
-      console.log(
-        allCountries.filter((country) => country.name === countryName)[0]
-          ?.isoCode
-      );
     }
   }, [countryName]);
   useEffect(() => {
