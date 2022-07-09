@@ -7,7 +7,7 @@
 }
 
 .sidebar {
-  min-width: 12rem;
+  min-width: 11vw;
   height: 93vh;
   background-color: #264653;
   display: flex;
@@ -59,14 +59,10 @@
   text-align: center;
 }
 .app {
-  width: 90vw;
+  width: 89vw;
   height: 93vh;
   background-color: #fff;
 }
 .logo {
-  object-fit: contain;
-  width: 64px;
-  height: auto;
-  background-color: #fbeee0;
   border-radius: 50%;
 }

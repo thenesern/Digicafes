@@ -14,6 +14,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CallIcon from "@mui/icons-material/Call";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import ProgressBar from "./components/ProgressBar";
+import Image from "next/image";
 
 const StoreBookingShowcase = ({ store }) => {
   const [activeNavBar, setActiveNavBar] = useState("aboutUs");
@@ -30,7 +31,14 @@ const StoreBookingShowcase = ({ store }) => {
           {store?.storeLogo ? (
             <>
               <div className={styles.titleAndLogo}>
-                <img src={store?.storeLogo} className={styles.logo} />
+                <Image
+                  src={store?.storeLogo}
+                  className={styles.logo}
+                  alt={store?.storeName}
+                  objectFit="contain"
+                  width="80"
+                  height="80"
+                />
                 <div>
                   <h1 className={styles.storeName}>
                     {store?.storeName.split(" ")[0][0] ===
@@ -72,9 +80,14 @@ const StoreBookingShowcase = ({ store }) => {
             </div>
           )}
           <div className={styles.gallery}>
-            <img
+            <Image
               src={store?.gallery?.galleryImage}
               className={styles.galleryImage}
+              alt={store?.storeName}
+              width="100%"
+              height="60"
+              layout="responsive"
+              objectFit="contain"
             />
           </div>
           <div className={styles.storeNavBar}>
@@ -114,181 +127,246 @@ const StoreBookingShowcase = ({ store }) => {
           <div className={styles.content}>
             {activeNavBar === "aboutUs" && (
               <div className={styles.aboutUs}>
-                {store?.workingTimes && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
                   <div>
-                    <h3>Çalışma Saatleri</h3>
-                    <ul>
-                      {store?.workingTimes?.monday?.isActive ? (
-                        <li className={styles.workingTimes}>
-                          <h4 className={styles.day}>Pazartesi</h4>
-                          <span className={styles.hours}>
-                            {`${store?.workingTimes?.monday?.workingHours?.starts}`}
-                            <span> - </span>
-                            {`${store?.workingTimes?.monday?.workingHours?.ends}`}
-                          </span>
-                        </li>
-                      ) : (
-                        ""
-                      )}
-                      {store?.workingTimes?.tuesday?.isActive ? (
-                        <li className={styles.workingTimes}>
-                          <h4 className={styles.day}>Salı</h4>
-                          <span className={styles.hours}>
-                            {`${store?.workingTimes?.tuesday?.workingHours?.starts}`}
-                            <span> - </span>
-                            {`${store?.workingTimes?.tuesday?.workingHours?.ends}`}
-                          </span>
-                        </li>
-                      ) : (
-                        ""
-                      )}
-                      {store?.workingTimes?.wednesday?.isActive ? (
-                        <li className={styles.workingTimes}>
-                          <h4 className={styles.day}>Çarşamba</h4>
-                          <span className={styles.hours}>
-                            {`${store?.workingTimes?.wednesday?.workingHours?.starts}`}
-                            <span> - </span>
-                            {`${store?.workingTimes?.wednesday?.workingHours?.ends}`}
-                          </span>
-                        </li>
-                      ) : (
-                        ""
-                      )}
-                      {store?.workingTimes?.thursday?.isActive ? (
-                        <li className={styles.workingTimes}>
-                          <h4 className={styles.day}>Perşembe</h4>
-                          <span className={styles.hours}>
-                            {`${store?.workingTimes?.thursday?.workingHours?.starts}`}
-                            <span> - </span>
-                            {`${store?.workingTimes?.thursday?.workingHours?.ends}`}
-                          </span>
-                        </li>
-                      ) : (
-                        ""
-                      )}
-                      {store?.workingTimes?.friday?.isActive ? (
-                        <li className={styles.workingTimes}>
-                          <h4 className={styles.day}>Cuma</h4>
-                          <span className={styles.hours}>
-                            {`${store?.workingTimes?.friday?.workingHours?.starts}`}
-                            <span> - </span>
-                            {`${store?.workingTimes?.friday?.workingHours?.ends}`}
-                          </span>
-                        </li>
-                      ) : (
-                        ""
-                      )}
-                      {store?.workingTimes?.saturday?.isActive ? (
-                        <li className={styles.workingTimes}>
-                          <h4 className={styles.day}>Cumartesi</h4>
-                          <span className={styles.hours}>
-                            {`${store?.workingTimes?.saturday?.workingHours?.starts}`}
-                            <span> - </span>
-                            {`${store?.workingTimes?.saturday?.workingHours?.ends}`}
-                          </span>
-                        </li>
-                      ) : (
-                        ""
-                      )}
-                      {store?.workingTimes?.sunday?.isActive ? (
-                        <li className={styles.workingTimes}>
-                          <h4 className={styles.day}>Pazar</h4>
-                          <span className={styles.hours}>
-                            {`${store?.workingTimes?.sunday?.workingHours?.starts}`}
-                            <span> - </span>
-                            {`${store?.workingTimes?.sunday?.workingHours?.ends}`}
-                          </span>
-                        </li>
-                      ) : (
-                        ""
-                      )}
-                    </ul>
-                  </div>
-                )}
-                {store?.contact?.phoneNumber && (
-                  <div className={styles.storeContact}>
-                    <h3 className={styles.centeredHeader}>İletişim</h3>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: "2rem",
-                        margin: "6px 0",
-                      }}
-                    >
-                      <Button
-                        sx={{
-                          height: "3rem",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: "6px",
-                        }}
-                      >
-                        <CallIcon color="success" />
-                        <p
+                    {store?.contact?.phoneNumber && (
+                      <div className={styles.storeContact}>
+                        <h3 className={styles.centeredHeader}>İletişim</h3>
+                        <div
                           style={{
-                            color: "rgba(58, 67, 84, 0.9)",
-                            fontWeight: "600",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "2rem",
+                            margin: "6px 0",
                           }}
                         >
-                          {store?.contact?.phoneNumber}
-                        </p>
-                      </Button>
-                      <Button
-                        sx={{
-                          height: "3rem",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: "6px",
-                        }}
-                      >
-                        <InstagramIcon color="secondary" />
-                        <a
-                          href={store?.contact?.instagramLink}
-                          target="_blank"
-                          rel="noreferrer"
+                          <Button
+                            sx={{
+                              height: "3rem",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              gap: "6px",
+                            }}
+                          >
+                            <CallIcon color="success" />
+                            <p
+                              style={{
+                                color: "#006d77",
+                                fontWeight: "600",
+                              }}
+                            >
+                              {store?.contact?.phoneNumber}
+                            </p>
+                          </Button>
+                          <Button
+                            sx={{
+                              height: "3rem",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              gap: "6px",
+                            }}
+                          >
+                            <InstagramIcon color="secondary" />
+                            <a
+                              href={store?.contact?.instagramLink}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <p
+                                style={{
+                                  color: "#006d77",
+                                  fontWeight: "600",
+                                }}
+                              >
+                                {store?.contact?.instagramLink.split("/")[3]}
+                              </p>
+                            </a>
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                    {store?.address?.address && (
+                      <div className={styles.storeAddress}>
+                        <h3 className={styles.centeredHeader}>Adres</h3>
+                        <Button
+                          sx={{
+                            height: "3rem",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "6px",
+                            margin: "6px 0",
+                          }}
                         >
+                          <LocationOnIcon color="primary" />
                           <p
                             style={{
-                              color: "rgba(58, 67, 84, 0.9)",
+                              color: "#006d77",
                               fontWeight: "600",
                             }}
                           >
-                            {store?.contact?.instagramLink.split("/")[3]}
+                            {store?.address?.address}
                           </p>
-                        </a>
-                      </Button>
-                    </div>
+                        </Button>
+                      </div>
+                    )}
                   </div>
-                )}
-                {store?.address?.address && (
-                  <div className={styles.storeAddress}>
-                    <h3 className={styles.centeredHeader}>Adres</h3>
-                    <Button
-                      sx={{
-                        height: "3rem",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        gap: "6px",
-                        margin: "6px 0",
-                      }}
-                    >
-                      <LocationOnIcon color="primary" />
-                      <p
-                        style={{
-                          color: "rgba(58, 67, 84, 0.9)",
-                          fontWeight: "600",
-                        }}
-                      >
-                        {store?.address?.address}
-                      </p>
-                    </Button>
+                  <div
+                    style={{
+                      borderLeft: "1px solid lightgray",
+                    }}
+                  >
+                    {store?.workingTimes && (
+                      <div style={{ padding: "0 3rem" }}>
+                        <h3>Çalışma Saatleri</h3>
+                        <ul>
+                          {store?.workingTimes?.monday?.isActive ? (
+                            <li className={styles.workingTimes}>
+                              <h4 className={styles.day}>Pazartesi</h4>
+                              <span className={styles.hours}>
+                                {`${store?.workingTimes?.monday?.workingHours?.starts}`}
+                                <span> - </span>
+                                {`${store?.workingTimes?.monday?.workingHours?.ends}`}
+                              </span>
+                            </li>
+                          ) : (
+                            <li className={styles.workingTimes}>
+                              <h4 className={styles.dayClose}>Pazartesi</h4>
+                              <span className={styles.hoursClose}>
+                                <span align="center" style={{ width: "100%" }}>
+                                  {" "}
+                                  -{" "}
+                                </span>
+                              </span>
+                            </li>
+                          )}
+                          {store?.workingTimes?.tuesday?.isActive ? (
+                            <li className={styles.workingTimes}>
+                              <h4 className={styles.day}>Salı</h4>
+                              <span className={styles.hours}>
+                                {`${store?.workingTimes?.tuesday?.workingHours?.starts}`}
+                                <span> - </span>
+                                {`${store?.workingTimes?.tuesday?.workingHours?.ends}`}
+                              </span>
+                            </li>
+                          ) : (
+                            <li className={styles.workingTimes}>
+                              <h4 className={styles.dayClose}>Salı</h4>
+                              <span className={styles.hoursClose}>
+                                <span align="center" style={{ width: "100%" }}>
+                                  {" "}
+                                  -{" "}
+                                </span>
+                              </span>
+                            </li>
+                          )}
+                          {store?.workingTimes?.wednesday?.isActive ? (
+                            <li className={styles.workingTimes}>
+                              <h4 className={styles.day}>Çarşamba</h4>
+                              <span className={styles.hours}>
+                                {`${store?.workingTimes?.wednesday?.workingHours?.starts}`}
+                                <span> - </span>
+                                {`${store?.workingTimes?.wednesday?.workingHours?.ends}`}
+                              </span>
+                            </li>
+                          ) : (
+                            <li className={styles.workingTimes}>
+                              <h4 className={styles.dayClose}>Çarşamba</h4>
+                              <span className={styles.hoursClose}>
+                                <span align="center" style={{ width: "100%" }}>
+                                  {" "}
+                                  -{" "}
+                                </span>
+                              </span>
+                            </li>
+                          )}
+                          {store?.workingTimes?.thursday?.isActive ? (
+                            <li className={styles.workingTimes}>
+                              <h4 className={styles.day}>Perşembe</h4>
+                              <span className={styles.hours}>
+                                {`${store?.workingTimes?.thursday?.workingHours?.starts}`}
+                                <span> - </span>
+                                {`${store?.workingTimes?.thursday?.workingHours?.ends}`}
+                              </span>
+                            </li>
+                          ) : (
+                            ""
+                          )}
+                          {store?.workingTimes?.friday?.isActive ? (
+                            <li className={styles.workingTimes}>
+                              <h4 className={styles.day}>Cuma</h4>
+                              <span className={styles.hours}>
+                                {`${store?.workingTimes?.friday?.workingHours?.starts}`}
+                                <span> - </span>
+                                {`${store?.workingTimes?.friday?.workingHours?.ends}`}
+                              </span>
+                            </li>
+                          ) : (
+                            <li className={styles.workingTimes}>
+                              <h4 className={styles.dayClose}>Cuma</h4>
+                              <span className={styles.hoursClose}>
+                                <span align="center" style={{ width: "100%" }}>
+                                  {" "}
+                                  -{" "}
+                                </span>
+                              </span>
+                            </li>
+                          )}
+                          {store?.workingTimes?.saturday?.isActive ? (
+                            <li className={styles.workingTimes}>
+                              <h4 className={styles.day}>Cumartesi</h4>
+                              <span className={styles.hours}>
+                                {`${store?.workingTimes?.saturday?.workingHours?.starts}`}
+                                <span> - </span>
+                                {`${store?.workingTimes?.saturday?.workingHours?.ends}`}
+                              </span>
+                            </li>
+                          ) : (
+                            <li className={styles.workingTimes}>
+                              <h4 className={styles.dayClose}>Cumartesi</h4>
+                              <span className={styles.hoursClose}>
+                                <span align="center" style={{ width: "100%" }}>
+                                  {" "}
+                                  -{" "}
+                                </span>
+                              </span>
+                            </li>
+                          )}
+                          {store?.workingTimes?.sunday?.isActive ? (
+                            <li className={styles.workingTimes}>
+                              <h4 className={styles.day}>Pazar</h4>
+                              <span className={styles.hours}>
+                                {`${store?.workingTimes?.sunday?.workingHours?.starts}`}
+                                <span> - </span>
+                                {`${store?.workingTimes?.sunday?.workingHours?.ends}`}
+                              </span>
+                            </li>
+                          ) : (
+                            <li className={styles.workingTimes}>
+                              <h4 className={styles.dayClose}>Pazar</h4>
+                              <span className={styles.hoursClose}>
+                                <span align="center" style={{ width: "100%" }}>
+                                  {" "}
+                                  -{" "}
+                                </span>
+                              </span>
+                            </li>
+                          )}
+                        </ul>
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
             )}
             {activeNavBar === "menu" && <div className={styles.menu}></div>}
@@ -297,11 +375,12 @@ const StoreBookingShowcase = ({ store }) => {
                 {store?.gallery?.images.length > 0 ? (
                   <div className={styles.galleryBottomImages}>
                     {store?.gallery?.images.map((img) => (
-                      <img
-                        className={styles.galleryBottomImage}
+                      <Image
                         key={img?.id}
                         src={img?.image}
-                        alt=""
+                        alt={store?.storeName}
+                        width="360"
+                        height="200"
                       />
                     ))}
                   </div>
