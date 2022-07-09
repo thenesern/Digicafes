@@ -7,6 +7,11 @@ const bookingSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    navbar: {
+      color: {
+        type: String,
+      },
+    },
     bookings: [
       {
         date: {

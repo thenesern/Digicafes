@@ -47,11 +47,13 @@ const BookingDashboard = ({ userOrder }) => {
   const [stateCities, setStateCities] = useState([]);
   const [countryStates, setCountryStates] = useState([]);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [navbarColor, setNavbarColor] = useState(store?.navbar?.color || "");
   const [openUploadLogo, setOpenUploadLogo] = useState(false);
   const [openAddress, setOpenAddress] = useState(false);
   const [openColumns, setOpenColumns] = useState(false);
   const [openStage, setOpenStage] = useState(false);
   const [openGate, setOpenGate] = useState(false);
+  const [openNavbarColor, setOpenNavbarColor] = useState(false);
   const [openSavedColumns, setOpenSavedColumns] = useState(false);
   const [order, setOrder] = useState([]);
   const [stateCode, setStateCode] = useState("");
@@ -172,6 +174,11 @@ const BookingDashboard = ({ userOrder }) => {
     setCountryName(store?.address?.country);
     setStateName(store?.address?.state);
     setCityName(store?.address?.city);
+  };
+  const handleOpenNavbarColor = () => setOpenNavbarColor(true);
+  const handleCloseNavbarColor = () => {
+    setNavbarColor(store?.navbar?.color);
+    setOpenNavbarColor(false);
   };
   const handleOpenUploadLogo = () => setOpenUploadLogo(true);
   const handleCloseUploadLogo = () => setOpenUploadLogo(false);
@@ -488,9 +495,41 @@ const BookingDashboard = ({ userOrder }) => {
       enqueueSnackbar("Sahne başarıyla güncellendi.", { variant: "success" });
     } catch (err) {
       console.log(err);
+      setOpenStage(false);
       setIsFetching(false);
-      setFile(null);
       enqueueSnackbar("Sahne güncellemesi başarısız.", { variant: "error" });
+    }
+  };
+
+  const handleUpdateNavbarColor = async (e) => {
+    e.preventDefault();
+    try {
+      setIsFetching(true);
+      await axios.post(
+        `/api/booking/${store?.storeName}/color`,
+        {
+          storeName: store?.storeName,
+          navbar: {
+            color: navbarColor,
+          },
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
+
+      setIsFetching(false);
+      setOpenNavbarColor(false);
+      enqueueSnackbar("Navigasyon başarıyla güncellendi.", {
+        variant: "success",
+      });
+    } catch (err) {
+      console.log(err);
+      setOpenNavbarColor(false);
+      setIsFetching(false);
+      enqueueSnackbar("Navigasyon güncellemesi başarısız.", {
+        variant: "error",
+      });
     }
   };
 
@@ -794,6 +833,21 @@ const BookingDashboard = ({ userOrder }) => {
                   onClick={handleOpenGallery}
                 >
                   {t("panel:gallery")}
+                </Button>
+              </li>
+              <li>
+                <Button
+                  className={styles.menuButtons}
+                  variant="contained"
+                  type="submit"
+                  style={{
+                    minWidth: "10rem",
+                    maxWidth: "10rem",
+                  }}
+                  color="primary"
+                  onClick={handleOpenNavbarColor}
+                >
+                  Navigasyon
                 </Button>
               </li>
               {/*   <li>
@@ -1478,6 +1532,54 @@ const BookingDashboard = ({ userOrder }) => {
           </form>
         </Box>
       </ModalMui>
+      <ModalMui open={openNavbarColor} onClose={handleCloseNavbarColor}>
+        <Box className={styles.modal}>
+          <h2 style={{ textAlign: "center", padding: "1rem" }}>Navigasyon</h2>
+          <form
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: "1rem",
+              padding: "0 1rem",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
+            <h3 style={{ marginBottom: "0" }}>Navigasyon Rengi Seçiniz</h3>
+            <input
+              type="color"
+              value={navbarColor}
+              onChange={(e) => setNavbarColor(e.target.value)}
+            />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                width: "92%",
+                justifyContent: "flex-end",
+                gap: "1rem",
+                margin: "1rem",
+              }}
+            >
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleCloseNavbarColor}
+              >
+                {t("panel:discard")}
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleUpdateNavbarColor}
+              >
+                {t("panel:confirm")}
+              </Button>
+            </div>
+          </form>
+        </Box>
+      </ModalMui>
+
       <ModalMui open={openAddress} onClose={handleCloseAddress}>
         <Box className={styles.modal}>
           <h2

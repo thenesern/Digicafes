@@ -43,7 +43,7 @@ import Cookies from "js-cookie";
 // Context
 import { Store } from "../../redux/store";
 
-const Nav2 = () => {
+const Nav2 = ({ color }) => {
   // States
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
@@ -239,7 +239,8 @@ const Nav2 = () => {
         !fix ? `${styles.container}` : `${styles.container} ${styles.fixed}`
       }
       style={
-        isBookingDashboard === true ? { height: "7vh" } : { height: "10vh" }
+        (isBookingDashboard === true ? { height: "7vh" } : { height: "10vh" },
+        color ? { backgroundColor: color } : { backgroundColor: "#c9184a" })
       }
     >
       <Modal

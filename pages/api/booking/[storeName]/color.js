@@ -12,7 +12,7 @@ handler.post(async (req, res) => {
   await Booking.findOneAndUpdate(
     { storeName: req.body.storeName },
     {
-      address: req.body.address,
+      navbar: req.body.navbar,
     }
   );
   res.json({ status: "success" });
