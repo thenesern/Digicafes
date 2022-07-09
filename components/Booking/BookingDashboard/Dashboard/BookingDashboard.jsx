@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./BookingDashboard.module.css";
 import { Country, State, City } from "country-state-city";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
@@ -17,6 +17,8 @@ import { useSnackbar } from "notistack";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
+import { DataGrid } from "@mui/x-data-grid";
+import { trTR } from "@mui/x-data-grid";
 import {
   Checkbox,
   FormGroup,
@@ -43,6 +45,7 @@ const BookingDashboard = ({ userOrder }) => {
   const [instagramLink, setInstagramLink] = useState(
     store?.contact?.instagramLink || ""
   );
+  const [pageSize, setPageSize] = useState(20);
   const [countryCode, setCountryCode] = useState("");
   const [stateCities, setStateCities] = useState([]);
   const [countryStates, setCountryStates] = useState([]);
@@ -203,6 +206,25 @@ const BookingDashboard = ({ userOrder }) => {
     }
   }; */
 
+  const [copySuccess, setCopySuccess] = useState(false);
+
+  // your function to copy here
+
+  const copyToClipBoard = async (copyMe) => {
+    try {
+      await navigator.clipboard.writeText(copyMe);
+      setCopySuccess(true);
+    } catch (err) {
+      setCopySuccess(false);
+    }
+  };
+  useEffect(() => {
+    if (copySuccess) {
+      setTimeout(() => {
+        setCopySuccess(false);
+      }, 3000);
+    }
+  }, [copySuccess]);
   useEffect(() => {
     setIsMondayValid(
       Number(mondayStarts.split(":")[0]) > Number(mondayEnds.split(":")[0])
@@ -273,6 +295,27 @@ const BookingDashboard = ({ userOrder }) => {
       allStates.filter((state) => state.name === stateName)[0]?.isoCode
     );
   }, [stateName]);
+
+  const columns = [
+    {
+      field: "userName",
+      headerName: "Ad Soyad",
+      flex: 1,
+    },
+    {
+      field: "userEmail",
+      headerName: "Email",
+      flex: 1,
+    },
+    {
+      field: "date",
+      headerName: "Rezervasyon Tarihi",
+      flex: 2,
+      renderCell: (params) => {
+        return <div>{new Date(params.row.date).toLocaleString()}</div>;
+      },
+    },
+  ];
 
   const handleUpdateGallery = async (e) => {
     e.preventDefault();
@@ -915,6 +958,54 @@ const BookingDashboard = ({ userOrder }) => {
         </div>
       </div>
       <div className={styles.app}>
+        <div className={styles.topBar}>
+          <div className={styles.side}>
+            <h3 className={styles.header}>İşletme Adı</h3>
+            <p className={styles.desc}> {store?.storeName}</p>
+          </div>
+          <div className={styles.side}>
+            <h3 className={styles.header}>Masa Sayısı</h3>
+            <p className={styles.desc}>{store?.tableNum}</p>
+          </div>
+          <div className={styles.side}>
+            <h3 className={styles.header}>Link</h3>
+            <Button
+              className={styles.copy}
+              onClick={(e) =>
+                copyToClipBoard(
+                  `https://www.digicafes.com/booking/${store?.storeName}`
+                )
+              }
+              variant="outlined"
+            >
+              {copySuccess ? (
+                <span>Kopyalandı!</span>
+              ) : (
+                <span style={{ textTransform: "lowercase" }}>
+                  {`https://www.digicafes.com/booking/${store?.storeName}`}
+                </span>
+              )}
+            </Button>
+          </div>
+        </div>
+        <div className={styles.body}>
+          <DataGrid
+            rows={store?.bookings}
+            columns={columns}
+            initialState={{
+              sorting: {
+                sortModel: [{ field: "createdAt", sort: "desc" }],
+              },
+            }}
+            getRowId={(row) => row._id}
+            localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
+            disableSelectionOnClick
+            pageSize={pageSize}
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            rowsPerPageOptions={[20, 40, 60]}
+            pagination
+          />
+        </div>
         {/*   <DragDrop
           stage={store?.bookingSchema?.stage}
           storeName={store?.storeName}
