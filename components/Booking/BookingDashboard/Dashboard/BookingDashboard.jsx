@@ -17,6 +17,7 @@ import { useSnackbar } from "notistack";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
+import { v4 as uuidv4 } from "uuid";
 import { DataGrid } from "@mui/x-data-grid";
 import { trTR } from "@mui/x-data-grid";
 import {
@@ -145,6 +146,7 @@ const BookingDashboard = ({ userOrder }) => {
   const [isSaturdayValid, setIsSaturdayValid] = useState(true);
   const [isSundayValid, setIsSundayValid] = useState(true);
   const [maxCap, setMaxCap] = useState(null);
+  const [remainTables, setRemainTables] = useState(null);
   const [images, setImages] = useState(store?.gallery?.images || []);
   const [galleryImage, setGalleryImage] = useState(
     store?.gallery?.galleryImage || null
@@ -233,9 +235,12 @@ const BookingDashboard = ({ userOrder }) => {
   };
 
   useEffect(() => {
+    let tables = 0;
     let maxCap = 0;
     capacity.map((table) => (maxCap += table.tableSize * table.tableQuantity));
     setMaxCap(maxCap);
+    capacity.map((table) => (tables += table.tableQuantity));
+    setRemainTables(tables);
   }, [capacity]);
 
   useEffect(() => {
@@ -333,6 +338,7 @@ const BookingDashboard = ({ userOrder }) => {
       headerName: "Kişi Sayısı",
       flex: 1,
     },
+
     {
       field: "date",
       headerName: "Rezervasyon Tarihi",
@@ -350,6 +356,16 @@ const BookingDashboard = ({ userOrder }) => {
             {new Date(params.row.date).toLocaleString()}
           </div>
         );
+      },
+    },
+    {
+      field: "createdAt",
+      headerName: "Oluşturulma Tarihi",
+      hide: false,
+      editable: false,
+      flex: 1,
+      renderCell: (params) => {
+        return <span> {new Date(params.row.createdAt).toLocaleString()}</span>;
       },
     },
   ];
@@ -605,6 +621,35 @@ const BookingDashboard = ({ userOrder }) => {
       setOpenNavbarColor(false);
       setIsFetching(false);
       enqueueSnackbar("Renkler güncellemesi başarısız.", {
+        variant: "error",
+      });
+    }
+  };
+  const handleUpdateCapacity = async (e) => {
+    e.preventDefault();
+    try {
+      setIsFetching(true);
+      await axios.post(
+        `/api/booking/${store?.storeName}/capacity`,
+        {
+          storeName: store?.storeName,
+          capacity,
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
+
+      setIsFetching(false);
+      setOpenCapacity(false);
+      enqueueSnackbar("Kapasite başarıyla güncellendi.", {
+        variant: "success",
+      });
+    } catch (err) {
+      console.log(err);
+      setOpenCapacity(false);
+      setIsFetching(false);
+      enqueueSnackbar("Kapasite güncellemesi başarısız.", {
         variant: "error",
       });
     }
@@ -1020,6 +1065,10 @@ const BookingDashboard = ({ userOrder }) => {
           <div className={styles.side}>
             <h3 className={styles.header}>Masa Sayısı</h3>
             <p className={styles.desc}>{store?.tableNum}</p>
+          </div>
+          <div className={styles.side}>
+            <h3 className={styles.header}>Maksimum Kapasite (Kişi)</h3>
+            <p className={styles.desc}>{maxCap}</p>
           </div>
           <div className={styles.side}>
             <h3 className={styles.header}>Link</h3>
@@ -1907,6 +1956,10 @@ const BookingDashboard = ({ userOrder }) => {
               }}
             >
               <p>Toplam Masa Sayısı: {store?.tableNum}</p>
+              <p>
+                Kalan Masa Sayısı:
+                {Number(store?.tableNum) - Number(remainTables)}
+              </p>
               <p>Maksimum Kişi Sayısı: {maxCap}</p>
               <ListItem
                 style={{
@@ -1923,23 +1976,35 @@ const BookingDashboard = ({ userOrder }) => {
                 {capacity.map((table, i) => (
                   <div
                     key={i}
+                    onClick={() => {
+                      setCapacity(capacity.filter((c) => c.id !== table.id));
+                    }}
                     style={{
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       width: "100%",
+                      height: "7rem",
                       gap: "2rem",
+                      padding: "0 10px",
                       border: "1px solid lightgray",
-                      margin: "0 10px",
                     }}
                   >
                     <div>
-                      <h4>Kaç Kişilik</h4>
-                      <p>{table.tableSize}</p>
+                      <h5 style={{ margin: "0", padding: "6px 0" }}>
+                        Kaç Kişilik
+                      </h5>
+                      <p style={{ margin: "0", padding: "6px 0" }}>
+                        {table.tableSize}
+                      </p>
                     </div>
                     <div>
-                      <h4>Kaç Adet Masa</h4>
-                      <p>{table.tableQuantity}</p>
+                      <h5 style={{ margin: "0", padding: "6px 0" }}>
+                        Kaç Adet Masa
+                      </h5>
+                      <p style={{ margin: "0", padding: "6px 0" }}>
+                        {table.tableQuantity}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -1967,6 +2032,7 @@ const BookingDashboard = ({ userOrder }) => {
                     setCapacity((oldItem) => [
                       ...oldItem,
                       {
+                        id: uuidv4(),
                         tableSize: Number(tableSize),
                         tableQuantity: Number(tableQuantity),
                       },
@@ -1999,7 +2065,7 @@ const BookingDashboard = ({ userOrder }) => {
               <Button
                 variant="contained"
                 color="secondary"
-                /*  onClick={handleUpdateCapacity} */
+                onClick={handleUpdateCapacity}
               >
                 {t("panel:confirm")}
               </Button>

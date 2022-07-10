@@ -24,6 +24,9 @@ const bookingSchema = new mongoose.Schema(
     ],
     bookings: [
       {
+        createdAt: {
+          type: Date,
+        },
         date: {
           type: String,
         },

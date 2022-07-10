@@ -1,9 +1,7 @@
 // Packages and Dependencies
 import React, { useEffect } from "react";
 import Image from "next/image";
-import route from "../assets/refers/route.png";
 import { useRouter } from "next/router";
-import axios from "axios";
 import useTranslation from "next-translate/useTranslation";
 // Images
 import digitalMenuMockup from "../assets/image/DigitalMenuPanelMockup.png";
@@ -13,7 +11,6 @@ import TabletMockupEn from "../assets/image/tabletMockup_en.png";
 import QRMenuMockup from "../assets/image/QRMenuMockup.png";
 import QRMenuMockupEn from "../assets/image/QRMenuMockup_en.png";
 import HeroImageEn from "../assets/image/HeroImage_en.png";
-import marcopascha from "../assets/refers/marcologo.png";
 import HeroImage from "../assets/image/HeroImage.png";
 // Styles
 import styles from "./DigitalMenuPage.module.css";
@@ -40,6 +37,7 @@ const DijitalMenu = () => {
         setCountry(response?.location?.country?.name);
       });
   }, []);
+
   // Translation
   const { t } = useTranslation();
   // Animations
@@ -55,8 +53,8 @@ const DijitalMenu = () => {
         <div className={styles.topBox}>
           <div className={styles.top}>
             <div className={styles.topLeft}>
-              <h1 className={styles.header}>{t("home:productName-menu")}</h1>
-              <p className={styles.description}>{t("home:slogan-menu")}</p>
+              <h1 className={styles.header}>{t("home:productName-booking")}</h1>
+              <p className={styles.description}>{t("home:slogan-booking")}</p>
             </div>
             <div className={styles.images}>
               <div
@@ -83,7 +81,7 @@ const DijitalMenu = () => {
               </div>
             </div>
           </div>
-          <div className={styles.referenceBox}>
+          {/*   <div className={styles.referenceBox}>
             <h3 className={styles.referencesTitle}>{t("home:references")}</h3>
             <div className={styles.references}>
               <Image
@@ -94,16 +92,8 @@ const DijitalMenu = () => {
                 className={styles.reference}
                 alt="Marco Pascha"
               />
-              <Image
-                width={200}
-                height={120}
-                className={styles.reference}
-                objectFit="contain"
-                src={route}
-                alt="Route"
-              />
             </div>
-          </div>
+          </div> */}
         </div>
         <section className={styles.section} data-aos="fade-up" id="features">
           <article className={styles.first}>
@@ -128,27 +118,25 @@ const DijitalMenu = () => {
               )}
             </div>
             <div data-aos="fade-up" className={styles.firstDes}>
-              <h2 className={styles.firstHeader}>
-                {t("home:feature1Header-menu")}
-              </h2>
+              <h2 className={styles.firstHeader}>{t("home:feature1Header")}</h2>
               <ul className={styles.firstList}>
-                <li>{t("home:title1-menu")}</li>
-                <li>{t("home:title2-menu")}</li>
-                <li>{t("home:title3-menu")}</li>
+                <li>{t("home:f1")}</li>
+                <li>{t("home:f2")}</li>
+                <li>{t("home:f3")}</li>
               </ul>
-              <p>{t("home:description1-menu")}</p>
+              <p>{t("home:d1")}</p>
             </div>
           </article>
           <article className={styles.second}>
             <div className={styles.secondDes}>
               <h2 className={styles.secondHeader}>
-                {t("home:feature2Header-menu")}
+                {t("home:feature2Header")}
               </h2>
               <ul className={styles.secondList}>
-                <li>{t("home:title4-menu")}</li>
-                <li>{t("home:title5-menu")}</li>
+                <li>{t("home:f4")}</li>
+                <li>{t("home:f5")}</li>
               </ul>
-              <p>{t("home:description2-menu")}</p>
+              <p>{t("home:d2")}</p>
             </div>
             <div
               style={{ width: "18rem", height: "auto" }}
@@ -197,14 +185,12 @@ const DijitalMenu = () => {
               )}
             </div>
             <div className={styles.thirdDes}>
-              <h2 className={styles.thirdHeader}>
-                {t("home:feature3Header-menu")}
-              </h2>
+              <h2 className={styles.thirdHeader}>{t("home:feature3Header")}</h2>
               <ul className={styles.thirdList}>
-                <li>{t("home:title6-menu")}</li>
-                <li>{t("home:title7-menu")}</li>
+                <li>{t("home:f6")}</li>
+                <li>{t("home:f7")}</li>
               </ul>
-              <p>{t("home:description3-menu")}</p>
+              <p>{t("home:d3")}</p>
             </div>
           </article>
           <article className={styles.steps} data-aos="fade-up" id="process">
