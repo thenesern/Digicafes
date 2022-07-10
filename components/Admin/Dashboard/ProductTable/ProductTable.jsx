@@ -14,7 +14,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Controller, useForm } from "react-hook-form";
 // Context
-import { Store } from "../../../redux/store";
+import { Store } from "../../../../redux/store";
 import { useContext } from "react";
 // Styles
 import styles from "./ProductTable.module.css";

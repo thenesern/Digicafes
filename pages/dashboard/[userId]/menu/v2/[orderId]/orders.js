@@ -5,8 +5,8 @@ import { useRef } from "react";
 import { useSnackbar } from "notistack";
 // Components
 import Nav from "../../../../../../components/Nav/Nav";
-import OrderNav from "../../../../../../components/OrderNav/OrderNav";
-import StoreOrders from "../../../../../../components/StoreOrders/StoreOrders";
+import OrderNav from "../../../../../../components/DigitalMenu/v2/OrderNav/OrderNav";
+import StoreOrders from "../../../../../../components/DigitalMenu/v2/StoreOrders/StoreOrders";
 // Utils
 import Order from "../../../../../../models/OrderModel";
 import QRMenu from "../../../../../../models/QRMenu2Model";

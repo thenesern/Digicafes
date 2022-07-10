@@ -764,7 +764,8 @@ const Nav = () => {
               ></Image>
             )}
           </LinkRouter>
-          {router.pathname === "/" && (
+
+          {router.pathname === "/digital-menu" && (
             <div className={styles.headers}>
               <Link
                 to="features"
@@ -793,6 +794,28 @@ const Nav = () => {
               >
                 <h5 className={styles.link}>{t("nav:services")}</h5>
               </Link>
+              <Link
+                to="faq"
+                spy={true}
+                smooth={true}
+                offset={-200}
+                duration={200}
+              >
+                <h5 className={styles.link}>{t("nav:faq")}</h5>
+              </Link>
+              <Link
+                to="contact"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>{t("nav:contact")}</h5>
+              </Link>
+            </div>
+          )}
+          {router.pathname === "/" && (
+            <div className={styles.headers}>
               <Link
                 to="faq"
                 spy={true}
@@ -952,6 +975,34 @@ const Nav = () => {
               );
             })}
           </div>
+        ) : router.pathname === "/digital-menu" ? (
+          <li className={styles.rightXL}>
+            <button
+              className={styles.signIn}
+              onClick={() => handleOpenMuiLogin(true)}
+            >
+              {t("nav:signIn")}
+            </button>
+            <button
+              className={styles.signUp}
+              onClick={() => handleOpenMuiRegister(true)}
+            >
+              {t("nav:tryForFree")}
+            </button>
+
+            {locales.map((lng) => {
+              if (lng === lang) return null;
+              return (
+                <div className={styles.int} key={lng}>
+                  <LinkRouter href={`/${lng}/${router.asPath}`} locale={lng}>
+                    <span className={styles.lang}>
+                      {t(`nav:language-name-${lng}`)}
+                    </span>
+                  </LinkRouter>
+                </div>
+              );
+            })}
+          </li>
         ) : (
           <li className={styles.rightXL}>
             <button
@@ -1162,7 +1213,7 @@ const Nav = () => {
               </button>
             </div>
           )}
-          {router.pathname === "/" && (
+          {router.pathname === "/digital-menu" && (
             <div>
               <Link
                 to="features"
