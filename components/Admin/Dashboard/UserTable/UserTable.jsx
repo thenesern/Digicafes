@@ -8,7 +8,7 @@ import axios from "axios";
 import { Input, Modal } from "@nextui-org/react";
 import { Grid } from "@material-ui/core";
 // Context
-import { Store } from "../../../redux/store";
+import { Store } from "../../../../redux/store";
 import { useContext } from "react";
 // Styles
 import styles from "./UserTable.module.css";
