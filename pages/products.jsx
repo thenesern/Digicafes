@@ -12,25 +12,29 @@ const Products = () => {
       <div className={styles.products}>
         <Link href="/booking" passHref>
           <div className={styles.wrappers}>
-            <Image
-              src={Product1}
-              className={styles.images}
-              width="300"
-              height="300"
-              alt="Online Booking"
-            />
+            <div className={styles.image}>
+              <Image
+                src={Product1}
+                className={styles.images}
+                width="300"
+                height="300"
+                alt="Online Booking"
+              />
+            </div>
             <h3 className={styles.headers}>Online Rezervasyon Sistemi</h3>
           </div>
         </Link>
         <Link href="/digital-menu" passHref>
           <div className={styles.wrappers}>
-            <Image
-              src={Product2}
-              className={styles.images}
-              width="300"
-              height="300"
-              alt="Digital (QR) Menu"
-            />
+            <div className={styles.image}>
+              <Image
+                src={Product2}
+                className={styles.images}
+                width="300"
+                height="300"
+                alt="Digital (QR) Menu"
+              />
+            </div>
             <h3 className={styles.headers}>Dijital (QR) Menü Sistemi</h3>
           </div>
         </Link>

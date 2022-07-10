@@ -8,6 +8,7 @@
   background-color: #c9184a;
   justify-content: center;
   flex-direction: column;
+  gap: 2rem;
 }
 .header {
   color: #eee;
@@ -38,4 +39,27 @@
   width: 100%;
   color: #001219;
   text-align: center;
+}
+
+@media only screen and (max-width: 500px) {
+  .products {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .wrappers {
+    width: 16rem;
+  }
+  .image {
+    width: 10rem !important;
+    margin: 0 auto;
+  }
+  .headers {
+    font-size: 14px;
+  }
+  .header {
+    font-size: 30px;
+  }
+  .container {
+    gap: 1rem;
+  }
 }

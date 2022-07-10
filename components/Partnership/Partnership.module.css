@@ -33,3 +33,15 @@
 .startNow:hover {
   background-color: #f7ede2;
 }
+
+@media only screen and (max-width: 1280px) {
+  .header {
+    font-size: 20px;
+  }
+  .subTitle {
+    font-size: 14px;
+  }
+  .bottom {
+    margin: 2rem 0 1rem 0;
+  }
+}

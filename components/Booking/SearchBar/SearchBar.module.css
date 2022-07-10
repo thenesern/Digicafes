@@ -69,3 +69,18 @@
   height: 54px;
   width: 7rem;
 }
+
+@media only screen and (max-width: 1280px) {
+  .header {
+    font-size: 24px;
+  }
+  .app {
+    padding: 0 6rem;
+  }
+  .wrapper {
+    width: 36rem;
+  }
+  .layout {
+    padding: 1rem;
+  }
+}

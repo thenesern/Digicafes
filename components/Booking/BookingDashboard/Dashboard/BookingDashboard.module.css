@@ -87,6 +87,13 @@
   min-width: 20rem !important;
   width: 100% !important;
 }
+.buttons {
+  height: 2rem !important;
+  min-width: 11rem !important;
+  font-size: 13px !important;
+  color: #fbeee0 !important;
+  border: 1px solid #fbeee0 !important;
+}
 .topBar {
   width: 100%;
   background-color: #edf6f9;
@@ -103,4 +110,94 @@
 }
 .logo {
   border-radius: 50%;
+}
+.actionButtons {
+  min-width: 10rem !important;
+  max-width: 10rem !important;
+}
+
+@media only screen and (max-width: 1280px) {
+  .sidebar {
+    min-width: 13vw;
+  }
+  .header {
+    font-size: 14px;
+  }
+  .buttons {
+    height: 2rem !important;
+    min-width: 9rem !important;
+    font-size: 12px !important;
+  }
+  .actionButtons {
+    min-width: 8rem !important;
+    max-width: 8rem !important;
+  }
+  .app {
+    width: 87vw;
+  }
+  .copy {
+    min-width: 18rem !important;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .sidebar {
+    min-width: 18vw;
+  }
+  .app {
+    width: 82vw;
+  }
+  .topBar {
+    padding: 0 2rem;
+  }
+  .copy {
+    min-width: 12rem !important;
+    max-width: 12rem !important;
+    overflow: hidden;
+  }
+}
+
+@media only screen and (max-width: 840px) {
+  .header {
+    font-size: 13px;
+  }
+  .buttons {
+    font-size: 11px !important;
+  }
+  .sidebar {
+    min-width: 20vw;
+  }
+  .app {
+    width: 80vw;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .container {
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: normal;
+  }
+  .sidebar {
+    width: 100vw;
+  }
+  .app {
+    width: 100vw;
+  }
+  .header {
+    font-size: 10px;
+  }
+  .copy {
+    max-width: 6rem !important;
+    min-width: 6rem !important;
+  }
+  .topBar {
+    padding: 0 1rem;
+  }
+  .body {
+    width: 100%;
+    height: 24rem;
+    background-color: #fff;
+  }
 }
