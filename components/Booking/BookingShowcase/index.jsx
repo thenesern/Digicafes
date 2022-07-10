@@ -181,8 +181,8 @@ const StoreBookingShowcase = ({ store }) => {
                   className={styles.logo}
                   alt={store?.storeName}
                   objectFit="contain"
-                  width="80"
-                  height="80"
+                  width="70"
+                  height="70"
                 />
                 <div>
                   <h1 className={styles.storeName}>
@@ -242,6 +242,7 @@ const StoreBookingShowcase = ({ store }) => {
                   href=""
                   variant={activeNavBar === "aboutUs" ? "contained" : ""}
                   color="primary"
+                  className={styles.menuButtons}
                   onClick={() => setActiveNavBar("aboutUs")}
                 >
                   Hakkımızda
@@ -251,6 +252,7 @@ const StoreBookingShowcase = ({ store }) => {
                 <Button
                   variant={activeNavBar === "menu" ? "contained" : ""}
                   href=""
+                  className={styles.menuButtons}
                   color="primary"
                   onClick={() => setActiveNavBar("menu")}
                 >
@@ -261,6 +263,7 @@ const StoreBookingShowcase = ({ store }) => {
                 <Button
                   variant={activeNavBar === "photos" ? "contained" : ""}
                   href=""
+                  className={styles.menuButtons}
                   color="primary"
                   onClick={() => setActiveNavBar("photos")}
                 >
@@ -272,15 +275,8 @@ const StoreBookingShowcase = ({ store }) => {
           <div className={styles.content}>
             {activeNavBar === "aboutUs" && (
               <div className={styles.aboutUs}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    width: "100%",
-                  }}
-                >
-                  <div>
+                <div className={styles.aboutUs}>
+                  <div style={{ width: "100%" }}>
                     {store?.contact?.phoneNumber && (
                       <div className={styles.storeContact}>
                         <h3 className={styles.centeredHeader}>İletişim</h3>
@@ -293,15 +289,7 @@ const StoreBookingShowcase = ({ store }) => {
                             margin: "6px 0",
                           }}
                         >
-                          <Button
-                            sx={{
-                              height: "3rem",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              gap: "6px",
-                            }}
-                          >
+                          <Button className={styles.buttons}>
                             <CallIcon color="success" />
                             <p
                               style={{
@@ -312,15 +300,7 @@ const StoreBookingShowcase = ({ store }) => {
                               {store?.contact?.phoneNumber}
                             </p>
                           </Button>
-                          <Button
-                            sx={{
-                              height: "3rem",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              gap: "6px",
-                            }}
-                          >
+                          <Button className={styles.buttons}>
                             <InstagramIcon color="secondary" />
                             <a
                               href={store?.contact?.instagramLink}
@@ -343,16 +323,7 @@ const StoreBookingShowcase = ({ store }) => {
                     {store?.address?.address && (
                       <div className={styles.storeAddress}>
                         <h3 className={styles.centeredHeader}>Adres</h3>
-                        <Button
-                          sx={{
-                            height: "3rem",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: "6px",
-                            margin: "6px 0",
-                          }}
-                        >
+                        <Button className={styles.buttons}>
                           <LocationOnIcon color="primary" />
                           <p
                             style={{
@@ -366,15 +337,13 @@ const StoreBookingShowcase = ({ store }) => {
                       </div>
                     )}
                   </div>
-                  <div
-                    style={{
-                      borderLeft: "1px solid lightgray",
-                    }}
-                  >
+                  <div className={styles.bodyRight}>
                     {store?.workingTimes && (
-                      <div style={{ padding: "0 3rem" }}>
-                        <h3>Çalışma Saatleri</h3>
-                        <ul>
+                      <div className={styles.workingTimesTable}>
+                        <h3 className={styles.workingTimesHeader}>
+                          Çalışma Saatleri
+                        </h3>
+                        <ul style={{ margin: "0", padding: "0" }}>
                           {store?.workingTimes?.monday?.isActive ? (
                             <li className={styles.workingTimes}>
                               <h4 className={styles.day}>Pazartesi</h4>

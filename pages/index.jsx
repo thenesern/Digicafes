@@ -23,7 +23,7 @@ const HomePage = () => {
         <SearchBar />
       </div>
       <section className={styles.section} data-aos="fade-up" id="features">
-        <article>
+        <article className={styles.partner}>
           <div>
             <Partnership />
           </div>

@@ -19,7 +19,7 @@ const Partnership = () => {
           <h4 className={styles.subTitle}>
             Bizimle birlikte işinizi büyütmeye hazır mısınız?
           </h4>
-          <p>
+          <p classnName={styles.desc}>
             <em style={{ color: "#003049", fontWeight: "500" }}>
               Daha fazla müşteriye ulaşmanıza{" "}
             </em>
@@ -29,7 +29,7 @@ const Partnership = () => {
             </em>{" "}
             rezervasyon uygulamamızla tanışın.
           </p>
-          <p>
+          <p classnName={styles.desc}>
             Hemen aramıza katılabilir ve muhteşem avantajlara sahip iş
             ortaklarımızdan biri olabilirsiniz.
           </p>

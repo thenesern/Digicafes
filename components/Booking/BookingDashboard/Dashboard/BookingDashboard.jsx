@@ -854,17 +854,7 @@ const BookingDashboard = ({ userOrder }) => {
                 <Link href={`/booking/${store?.storeLinkName}`} passHref>
                   <a target="_blank">
                     <Stack direction="row" spacing={1}>
-                      <Button
-                        variant="outlined"
-                        className={styles.qrButtons}
-                        style={{
-                          height: "2rem",
-                          minWidth: "11rem",
-                          fontSize: "13px",
-                          color: "#fbeee0",
-                          border: "1px solid #fbeee0",
-                        }}
-                      >
+                      <Button variant="outlined" className={styles.buttons}>
                         İşletme Sayfası
                       </Button>
                     </Stack>
@@ -874,13 +864,7 @@ const BookingDashboard = ({ userOrder }) => {
               <li>
                 <Button
                   variant="outlined"
-                  style={{
-                    height: "2rem",
-                    minWidth: "11rem",
-                    fontSize: "13px",
-                    color: "#fbeee0",
-                    border: "1px solid #fbeee0",
-                  }}
+                  className={styles.buttons}
                   type="submit"
                   onClick={handleOpenAddress}
                 >
@@ -890,13 +874,7 @@ const BookingDashboard = ({ userOrder }) => {
               <li>
                 <Button
                   variant="outlined"
-                  style={{
-                    height: "2rem",
-                    minWidth: "11rem",
-                    fontSize: "13px",
-                    color: "#fbeee0",
-                    border: "1px solid #fbeee0",
-                  }}
+                  className={styles.buttons}
                   type="submit"
                   onClick={handleOpenContact}
                 >
@@ -906,13 +884,7 @@ const BookingDashboard = ({ userOrder }) => {
               <li>
                 <Button
                   variant="outlined"
-                  style={{
-                    height: "2rem",
-                    minWidth: "11rem",
-                    fontSize: "13px",
-                    color: "#fbeee0",
-                    border: "1px solid #fbeee0",
-                  }}
+                  className={styles.buttons}
                   type="submit"
                   onClick={handleOpenWorkingTimes}
                 >
@@ -922,13 +894,7 @@ const BookingDashboard = ({ userOrder }) => {
               <li>
                 <Button
                   variant="outlined"
-                  style={{
-                    height: "2rem",
-                    minWidth: "11rem",
-                    fontSize: "13px",
-                    color: "#fbeee0",
-                    border: "1px solid #fbeee0",
-                  }}
+                  className={styles.buttons}
                   type="submit"
                   onClick={handleOpenCapacity}
                 >
@@ -938,13 +904,7 @@ const BookingDashboard = ({ userOrder }) => {
               <li>
                 <Button
                   variant="outlined"
-                  style={{
-                    height: "2rem",
-                    minWidth: "11rem",
-                    fontSize: "13px",
-                    color: "#fbeee0",
-                    border: "1px solid #fbeee0",
-                  }}
+                  className={styles.buttons}
                   type="submit"
                   onClick={handleOpenUploadLogo}
                 >
@@ -960,13 +920,9 @@ const BookingDashboard = ({ userOrder }) => {
             <ul className={styles.sidebarList}>
               <li>
                 <Button
-                  className={styles.menuButtons}
                   variant="contained"
                   type="submit"
-                  style={{
-                    minWidth: "10rem",
-                    maxWidth: "10rem",
-                  }}
+                  className={styles.actionButtons}
                   color="primary"
                   onClick={handleOpenGallery}
                 >
@@ -975,13 +931,9 @@ const BookingDashboard = ({ userOrder }) => {
               </li>
               <li>
                 <Button
-                  className={styles.menuButtons}
+                  className={styles.actionButtons}
                   variant="contained"
                   type="submit"
-                  style={{
-                    minWidth: "10rem",
-                    maxWidth: "10rem",
-                  }}
                   color="primary"
                   onClick={handleOpenNavbarColor}
                 >
