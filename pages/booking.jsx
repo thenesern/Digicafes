@@ -4,8 +4,10 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import useTranslation from "next-translate/useTranslation";
 // Images
-import digitalMenuMockup from "../assets/image/DigitalMenuPanelMockup.png";
+import bookingHeroTR from "../assets/image/bookingHeroTR.png";
 import digitalMenuMockupEn from "../assets/image/DigitalMenuPanelMockup_en.png";
+import bookingDashboardTR from "../assets/image/bookingDashboardTR.png";
+import bookingShowcaseTR from "../assets/image/bookingShowcaseTR.png";
 import TabletMockup from "../assets/image/tabletMockup.png";
 import TabletMockupEn from "../assets/image/tabletMockup_en.png";
 import QRMenuMockup from "../assets/image/QRMenuMockup.png";
@@ -20,12 +22,13 @@ import "aos/dist/aos.css";
 // Components
 import Nav from "../components/Nav/Nav";
 import Features from "../components/DigitalMenu/Features/Features";
-import StepperMobile from "../components/DigitalMenu/Steppers/StepperMobile/StepperMobile";
-import DigitalMenuStepper from "../components/DigitalMenu/Steppers/DigitalMenuStepper/DigitalMenuStepper";
-import FAQ from "../components/DigitalMenu/FAQ/FAQ";
+import StepperMobile from "../components/Booking/Steppers/StepperMobile/StepperMobile";
+import BookingStepper from "../components/Booking/Steppers/BookingStepper/BookingStepper";
+import FAQ from "../components/Booking/FAQ/FAQ";
 import ContactForm from "../components/ContactForm/ContactForm";
 import Footer from "../components/Footer/Footer";
 import { useState } from "react";
+import PricingTable from "../components/Booking/PricingTable";
 
 const DijitalMenu = () => {
   const router = useRouter();
@@ -64,7 +67,7 @@ const DijitalMenu = () => {
                 {router.locale === "tr" ? (
                   <Image
                     data-aos="fade-up"
-                    src={HeroImage}
+                    src={bookingHeroTR}
                     alt=""
                     layout="responsive"
                     objectFit="contain"
@@ -105,7 +108,7 @@ const DijitalMenu = () => {
                 <Image
                   layout="responsive"
                   objectFit="contain"
-                  src={digitalMenuMockup}
+                  src={bookingDashboardTR}
                   alt=""
                 />
               ) : (
@@ -118,35 +121,37 @@ const DijitalMenu = () => {
               )}
             </div>
             <div data-aos="fade-up" className={styles.firstDes}>
-              <h2 className={styles.firstHeader}>{t("home:feature1Header")}</h2>
+              <h2 className={styles.firstHeader}>
+                {t("home:feature1Header-booking")}
+              </h2>
               <ul className={styles.firstList}>
-                <li>{t("home:f1")}</li>
-                <li>{t("home:f2")}</li>
-                <li>{t("home:f3")}</li>
+                <li>{t("home:title1-booking")}</li>
+                <li>{t("home:title2-booking")}</li>
+                <li>{t("home:title3-booking")}</li>
               </ul>
-              <p>{t("home:d1")}</p>
+              <p>{t("home:description1-booking")}</p>
             </div>
           </article>
           <article className={styles.second}>
             <div className={styles.secondDes}>
               <h2 className={styles.secondHeader}>
-                {t("home:feature2Header")}
+                {t("home:feature2Header-booking")}
               </h2>
               <ul className={styles.secondList}>
-                <li>{t("home:f4")}</li>
-                <li>{t("home:f5")}</li>
+                <li>{t("home:title4-booking")}</li>
+                <li>{t("home:title5-booking")}</li>
               </ul>
-              <p>{t("home:d2")}</p>
+              <p>{t("home:description2-booking")}</p>
             </div>
             <div
-              style={{ width: "18rem", height: "auto" }}
-              className={styles.featuresImage2}
+              style={{ width: "40rem", height: "auto" }}
+              className={styles.featuresImage1}
             >
               {router.locale === "tr" ? (
                 <Image
                   layout="responsive"
                   objectFit="contain"
-                  src={TabletMockup}
+                  src={bookingShowcaseTR}
                   data-aos="fade-left"
                   alt=""
                 />
@@ -161,41 +166,10 @@ const DijitalMenu = () => {
               )}
             </div>
           </article>
-          <article className={styles.third}>
-            <div
-              className={styles.featuresImage3}
-              style={{ width: "12rem", height: "auto" }}
-            >
-              {router.locale === "tr" ? (
-                <Image
-                  src={QRMenuMockup}
-                  alt=""
-                  layout="responsive"
-                  data-aos="fade-right"
-                  objectFit="contain"
-                />
-              ) : (
-                <Image
-                  src={QRMenuMockupEn}
-                  alt=""
-                  layout="responsive"
-                  data-aos="fade-right"
-                  objectFit="contain"
-                />
-              )}
-            </div>
-            <div className={styles.thirdDes}>
-              <h2 className={styles.thirdHeader}>{t("home:feature3Header")}</h2>
-              <ul className={styles.thirdList}>
-                <li>{t("home:f6")}</li>
-                <li>{t("home:f7")}</li>
-              </ul>
-              <p>{t("home:d3")}</p>
-            </div>
-          </article>
+
           <article className={styles.steps} data-aos="fade-up" id="process">
             <div className={styles.stepper}>
-              <DigitalMenuStepper />
+              <BookingStepper />
             </div>
           </article>
 
@@ -205,9 +179,9 @@ const DijitalMenu = () => {
             </div>
           </article>
           <article>
-            <Features location={country} />
+            <PricingTable location={country} />
           </article>
-          {router.locale === "tr" && (
+          {/*  {router.locale === "tr" && (
             <article className={styles.youtube}>
               <div className={styles.videoBG} data-aos="fade-up">
                 <iframe
@@ -222,7 +196,7 @@ const DijitalMenu = () => {
                 />
               </div>
             </article>
-          )}
+          )} */}
           <article className={styles.faq}>
             <div>
               <div data-aos="fade-up">
