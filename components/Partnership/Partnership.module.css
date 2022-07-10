@@ -21,3 +21,15 @@
 .subTitle {
   color: #001219;
 }
+.bottom {
+  margin: 3rem 0;
+}
+.startNow {
+  border-bottom: 1px solid gray;
+  padding: 10px;
+  transition: all ease 0.4s;
+}
+
+.startNow:hover {
+  background-color: #f7ede2;
+}

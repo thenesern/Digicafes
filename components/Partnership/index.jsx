@@ -1,8 +1,8 @@
 import React from "react";
-import Button from "@mui/material/Button";
 import Image from "next/image";
 import PartnershipImage from "../../assets/image/partnership.png";
 import styles from "./Partnership.module.css";
+import Link from "next/link";
 
 const Partnership = () => {
   return (
@@ -33,7 +33,13 @@ const Partnership = () => {
             Hemen aramıza katılabilir ve muhteşem avantajlara sahip iş
             ortaklarımızdan biri olabilirsiniz.
           </p>
-          <Button variant="outlined">Hemen Başlayın</Button>
+          <div className={styles.bottom}>
+            <Link href="/products">
+              <a target="_blank" href="/products" className={styles.startNow}>
+                Hemen Başlayın
+              </a>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
