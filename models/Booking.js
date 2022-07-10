@@ -12,6 +12,16 @@ const bookingSchema = new mongoose.Schema(
         type: String,
       },
     },
+    capacity: [
+      {
+        tableSize: {
+          type: Number,
+        },
+        tableQuantity: {
+          type: Number,
+        },
+      },
+    ],
     bookings: [
       {
         date: {

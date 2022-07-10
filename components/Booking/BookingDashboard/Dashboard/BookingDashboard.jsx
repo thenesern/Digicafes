@@ -23,7 +23,9 @@ import {
   Checkbox,
   FormGroup,
   InputLabel,
+  MenuItem,
   NativeSelect,
+  Select,
   Stack,
 } from "@mui/material";
 import TextField from "@mui/material/TextField";
@@ -52,6 +54,7 @@ const BookingDashboard = ({ userOrder }) => {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [navbarColor, setNavbarColor] = useState(store?.navbar?.color || "");
   const [openUploadLogo, setOpenUploadLogo] = useState(false);
+  const [capacity, setCapacity] = useState(store?.capacity || []);
   const [openAddress, setOpenAddress] = useState(false);
   const [openColumns, setOpenColumns] = useState(false);
   const [openStage, setOpenStage] = useState(false);
@@ -132,6 +135,8 @@ const BookingDashboard = ({ userOrder }) => {
     store.workingTimes.sunday.workingHours.sundayEnds || "24:00"
   );
 
+  const [tableSize, setTableSize] = useState(null);
+  const [tableQuantity, setTableQuantity] = useState(null);
   const [isMondayValid, setIsMondayValid] = useState(true);
   const [isTuesdayValid, setIsTuesdayValid] = useState(true);
   const [isWednesdayValid, setIsWednesdayValid] = useState(true);
@@ -139,14 +144,7 @@ const BookingDashboard = ({ userOrder }) => {
   const [isFridayValid, setIsFridayValid] = useState(true);
   const [isSaturdayValid, setIsSaturdayValid] = useState(true);
   const [isSundayValid, setIsSundayValid] = useState(true);
-
-  const handleChangeState = (event) => {
-    setStateName(event.target.value);
-  };
-  const handleChangeCity = (event) => {
-    setCityName(event.target.value);
-  };
-
+  const [maxCap, setMaxCap] = useState(null);
   const [images, setImages] = useState(store?.gallery?.images || []);
   const [galleryImage, setGalleryImage] = useState(
     store?.gallery?.galleryImage || null
@@ -166,6 +164,15 @@ const BookingDashboard = ({ userOrder }) => {
       "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1650137521/uploads/logoDefault_ez8obk.png"
   );
   const [openGallery, setOpenGallery] = useState(false);
+  const [openCapacity, setOpenCapacity] = useState(false);
+
+  const handleChangeState = (event) => {
+    setStateName(event.target.value);
+  };
+  const handleChangeCity = (event) => {
+    setCityName(event.target.value);
+  };
+
   const handleCloseGallery = () => {
     setOpenGallery(false);
   };
@@ -182,6 +189,12 @@ const BookingDashboard = ({ userOrder }) => {
   const handleCloseNavbarColor = () => {
     setNavbarColor(store?.navbar?.color);
     setOpenNavbarColor(false);
+  };
+  const handleOpenCapacity = () => setOpenCapacity(true);
+  const handleCloseCapacity = () => {
+    setCapacity(store?.capacity || []);
+
+    setOpenCapacity(false);
   };
   const handleOpenUploadLogo = () => setOpenUploadLogo(true);
   const handleCloseUploadLogo = () => setOpenUploadLogo(false);
@@ -218,6 +231,13 @@ const BookingDashboard = ({ userOrder }) => {
       setCopySuccess(false);
     }
   };
+
+  useEffect(() => {
+    let maxCap = 0;
+    capacity.map((table) => (maxCap += table.tableSize * table.tableQuantity));
+    setMaxCap(maxCap);
+  }, [capacity]);
+
   useEffect(() => {
     if (copySuccess) {
       setTimeout(() => {
@@ -225,6 +245,7 @@ const BookingDashboard = ({ userOrder }) => {
       }, 3000);
     }
   }, [copySuccess]);
+
   useEffect(() => {
     setIsMondayValid(
       Number(mondayStarts.split(":")[0]) > Number(mondayEnds.split(":")[0])
@@ -308,11 +329,27 @@ const BookingDashboard = ({ userOrder }) => {
       flex: 1,
     },
     {
+      field: "people",
+      headerName: "Kişi Sayısı",
+      flex: 1,
+    },
+    {
       field: "date",
       headerName: "Rezervasyon Tarihi",
       flex: 2,
       renderCell: (params) => {
-        return <div>{new Date(params.row.date).toLocaleString()}</div>;
+        return (
+          <div
+            style={
+              new Date(params.row.date).toLocaleDateString() ===
+              new Date().toLocaleDateString()
+                ? { backgroundColor: "#f2cc8f", padding: "2rem" }
+                : { backgroundColor: "", padding: "2rem" }
+            }
+          >
+            {new Date(params.row.date).toLocaleString()}
+          </div>
+        );
       },
     },
   ];
@@ -395,6 +432,7 @@ const BookingDashboard = ({ userOrder }) => {
       handleCloseGallery();
     }
   };
+  console.log(capacity);
   const handleUpdateWorkingTimes = async (e) => {
     e.preventDefault();
     try {
@@ -507,7 +545,7 @@ const BookingDashboard = ({ userOrder }) => {
     }
   };
 
-  const handleUpdateStage = async (e) => {
+  /*  const handleUpdateStage = async (e) => {
     e.preventDefault();
     try {
       setIsFetching(true);
@@ -539,7 +577,7 @@ const BookingDashboard = ({ userOrder }) => {
       enqueueSnackbar("Sahne güncellemesi başarısız.", { variant: "error" });
     }
   };
-
+ */
   const handleUpdateNavbarColor = async (e) => {
     e.preventDefault();
     try {
@@ -559,14 +597,14 @@ const BookingDashboard = ({ userOrder }) => {
 
       setIsFetching(false);
       setOpenNavbarColor(false);
-      enqueueSnackbar("Navigasyon başarıyla güncellendi.", {
+      enqueueSnackbar("Renkler başarıyla güncellendi.", {
         variant: "success",
       });
     } catch (err) {
       console.log(err);
       setOpenNavbarColor(false);
       setIsFetching(false);
-      enqueueSnackbar("Navigasyon güncellemesi başarısız.", {
+      enqueueSnackbar("Renkler güncellemesi başarısız.", {
         variant: "error",
       });
     }
@@ -847,6 +885,22 @@ const BookingDashboard = ({ userOrder }) => {
                     border: "1px solid #fbeee0",
                   }}
                   type="submit"
+                  onClick={handleOpenCapacity}
+                >
+                  Toplam Kapasite
+                </Button>
+              </li>
+              <li>
+                <Button
+                  variant="outlined"
+                  style={{
+                    height: "2rem",
+                    minWidth: "11rem",
+                    fontSize: "13px",
+                    color: "#fbeee0",
+                    border: "1px solid #fbeee0",
+                  }}
+                  type="submit"
                   onClick={handleOpenUploadLogo}
                 >
                   {t("panel:uploadLogo")}
@@ -886,7 +940,7 @@ const BookingDashboard = ({ userOrder }) => {
                   color="primary"
                   onClick={handleOpenNavbarColor}
                 >
-                  Navigasyon
+                  Renkler
                 </Button>
               </li>
               {/*   <li>
@@ -991,6 +1045,9 @@ const BookingDashboard = ({ userOrder }) => {
         <div className={styles.body}>
           <DataGrid
             rows={store?.bookings}
+            classnName={styles.table}
+            density="compact"
+            sx={{ padding: "0 1rem" }}
             columns={columns}
             initialState={{
               sorting: {
@@ -1621,7 +1678,7 @@ const BookingDashboard = ({ userOrder }) => {
       </ModalMui>
       <ModalMui open={openNavbarColor} onClose={handleCloseNavbarColor}>
         <Box className={styles.modal}>
-          <h2 style={{ textAlign: "center", padding: "1rem" }}>Navigasyon</h2>
+          <h2 style={{ textAlign: "center", padding: "1rem" }}>Renkler</h2>
           <form
             style={{
               display: "flex",
@@ -1632,7 +1689,7 @@ const BookingDashboard = ({ userOrder }) => {
               flexDirection: "column",
             }}
           >
-            <h3 style={{ marginBottom: "0" }}>Navigasyon Rengi Seçiniz</h3>
+            <h3 style={{ marginBottom: "0" }}>Üst Bar Rengi</h3>
             <input
               type="color"
               value={navbarColor}
@@ -1771,7 +1828,6 @@ const BookingDashboard = ({ userOrder }) => {
                   variant="outlined"
                   id="address"
                   type="text"
-                  autoFocus="true"
                   value={address}
                   rules={{
                     required: true,
@@ -1817,6 +1873,133 @@ const BookingDashboard = ({ userOrder }) => {
                 variant="contained"
                 color="secondary"
                 onClick={handleUpdateAddressInfos}
+              >
+                {t("panel:confirm")}
+              </Button>
+            </div>
+          </form>
+        </Box>
+      </ModalMui>
+      <ModalMui open={openCapacity} onClose={handleCloseCapacity}>
+        <Box className={styles.modal}>
+          <h2
+            style={{ textAlign: "center", padding: "1rem", color: "#000814" }}
+          >
+            Toplam Kapasite
+          </h2>
+          <form
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+              padding: "0 1rem",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
+            <List
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
+              <p>Toplam Masa Sayısı: {store?.tableNum}</p>
+              <p>Maksimum Kişi Sayısı: {maxCap}</p>
+              <ListItem
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  height: "14rem",
+                  overflow: "auto",
+                  margin: "1rem 0",
+                  flexDirection: "column",
+                }}
+              >
+                {capacity.map((table, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: "100%",
+                      gap: "2rem",
+                      border: "1px solid lightgray",
+                      margin: "0 10px",
+                    }}
+                  >
+                    <div>
+                      <h4>Kaç Kişilik</h4>
+                      <p>{table.tableSize}</p>
+                    </div>
+                    <div>
+                      <h4>Kaç Adet Masa</h4>
+                      <p>{table.tableQuantity}</p>
+                    </div>
+                  </div>
+                ))}
+              </ListItem>
+              <ListItem>
+                <TextField
+                  value={tableSize}
+                  label="Kaç Kişilik"
+                  onChange={(e) => setTableSize(e.target.value)}
+                ></TextField>
+              </ListItem>
+              <ListItem>
+                <TextField
+                  value={tableQuantity}
+                  label="Kaç Adet Masa"
+                  onChange={(e) => setTableQuantity(e.target.value)}
+                ></TextField>
+              </ListItem>
+              <ListItem>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  color="primary"
+                  onClick={() => {
+                    setCapacity((oldItem) => [
+                      ...oldItem,
+                      {
+                        tableSize: Number(tableSize),
+                        tableQuantity: Number(tableQuantity),
+                      },
+                    ]);
+                    setTableSize(0);
+                    setTableQuantity(0);
+                  }}
+                >
+                  Ekle
+                </Button>
+              </ListItem>
+            </List>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                width: "92%",
+                justifyContent: "flex-end",
+                gap: "1rem",
+                margin: "1rem",
+              }}
+            >
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleCloseCapacity}
+              >
+                {t("panel:discard")}
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                /*  onClick={handleUpdateCapacity} */
               >
                 {t("panel:confirm")}
               </Button>

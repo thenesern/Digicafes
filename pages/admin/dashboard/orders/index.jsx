@@ -1,8 +1,8 @@
 // Packages and Dependencies
 import React from "react";
 // Components
-import OrderTable from "../../../../components/Dashboard/OrderTable/OrderTable";
-import SideBar from "../../../../components/Dashboard/SideBar/SideBar";
+import OrderTable from "../../../../components/Admin/Dashboard/OrderTable/OrderTable";
+import SideBar from "../../../../components/Admin/Dashboard/SideBar/SideBar";
 // Utils
 import Order from "../../../../models/OrderModel";
 import Product from "../../../../models/ProductModel";
