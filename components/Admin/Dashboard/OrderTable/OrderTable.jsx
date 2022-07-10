@@ -8,10 +8,10 @@ import axios from "axios";
 import { Button, Grid } from "@mui/material";
 import { trTR } from "@mui/x-data-grid";
 // Context
-import { Store } from "../../../redux/store";
 import { useContext } from "react";
 // Styles
 import styles from "./OrderTable.module.css";
+import { Store } from "../../../../redux/store";
 
 const OrderTable = (props) => {
   const [orders, setOrders] = useState(props.orders);
