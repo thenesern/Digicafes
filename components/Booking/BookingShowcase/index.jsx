@@ -510,7 +510,7 @@ const StoreBookingShowcase = ({ store }) => {
             <h3>Doluluk Oranı</h3>
             <ProgressBar value={30} />
           </div>
-          <div style={{ margin: "4rem 0" }}>
+          <div style={{ margin: "2rem 0" }}>
             <h3 style={{ margin: "1rem 0 0 0", color: "#001219" }}>
               Yerinizi Ayırtın
             </h3>

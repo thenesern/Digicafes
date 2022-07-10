@@ -1,10 +1,16 @@
 {
   "s1": "Sizin İçin En Uygun Dijital Menü Paketini Seçin",
+  "s1-booking": "Sizin İçin En Uygun Rezervasyon Paketini Seçin",
   "s2": "Yönetim Paneliniz Üzerinden Menünüzü Düzenleyin",
+  "s2-booking": "Yönetim Paneliniz Üzerinden İşletme Sayfanızı Düzenleyin",
   "s3": "Dijital Menünüz Kullanıma Hazır",
+  "s3-booking": "İşletme Rezervasyon Sayfası Kullanıma Hazır",
   "d1": "İhtiyacınıza özgü Dijital Menü paketleri sunuyoruz. Paketler, farklı sorunlar üzerine farklı çözümler sunuyor. İhtiyacınıza en uygun olanı seçin.",
+  "d1-booking": "Rezervasyon sistemimiz ihtiyaçlarınıza özel olarak tasarlanmıştır.",
   "d2": "Seçtiğiniz Pakete özel bir Yönetim Paneli Hemen Profil kısmınızda aktif edilecek. Yönetim Paneli üzerinden, ürün ekleyip çıkarabilir, Dijital Menünüzü kolayca düzenleyebilirsiniz.",
+  "d2-booking": "Paketi satın aldıktan sonra Yönetim Paneli üzerinden İşletmenizin Rezervasyon Sayfasını düzenleyebilir, hemen rezervasyon almaya başlayabilirsiniz.",
   "d3": "Dijital Menü Yönetim Paneli üzerinden girmiş olduğunuz İşletme adınıza özel bir alt alan adı ve o alan adına bağlı QR Kodu otomatik olarak oluşturulur. Tebrikler, artık Dijital Menünüz Hazır!",
+  "d3-booking": "Rezervasyon Yönetim Paneli üzerinden girmiş olduğunuz İşletme adınıza özel bir alt alan adı ve o alan adına bağlı web sayfası otomatik olarak oluşturulur. Tebrikler, artık rezervasyon almaya hazırsınız!",
   "continue": "Devam",
   "end": "Bitir",
   "back": "Geri"

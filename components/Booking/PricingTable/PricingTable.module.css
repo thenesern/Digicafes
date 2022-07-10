@@ -1,0 +1,215 @@
+/* Body */
+/* Card Themes - Start */
+.container {
+  height: 100%;
+  padding: 4rem 0;
+}
+.basic .pricingHeader {
+  background-color: #1d3557;
+}
+.basic .priceCircle {
+  border: 10px solid #1d3557;
+  transition: all 0.4s;
+}
+.basic:hover .priceCircle {
+  border-width: 5px;
+}
+.basic .buyNow:hover {
+  background-image: none !important;
+  background-color: #1d3557 !important;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.4);
+}
+.echo .pricingHeader {
+  background-color: #f7b731;
+}
+.echo .priceCircle {
+  border: 10px solid #f7b731;
+  transition: all 0.4s;
+}
+.echo:hover .priceCircle {
+  border-width: 5px;
+}
+.echo .buyNow:hover {
+  background-image: none !important;
+  background-color: #f7b731 !important;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.4);
+}
+.pro .pricingHeader {
+  background-color: #1d3557;
+}
+.pro .priceCircle {
+  border: 10px solid #1d3557;
+  transition: all 0.4s;
+}
+.pro:hover .priceCircle {
+  border-width: 5px;
+}
+.pro .buyNow:hover {
+  background-image: none !important;
+  background-color: #c9184a !important;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.4);
+}
+.business .pricingHeader {
+  background-color: #c9184a;
+}
+.business .priceCircle {
+  border: 10px solid #c9184a;
+  transition: all 0.4s;
+}
+.business:hover .priceCircle {
+  border-width: 5px;
+}
+.buyNow {
+  transition: all ease 0.5s;
+}
+.business .buyNow:hover {
+  background-image: none !important;
+  background-color: #c9184a !important;
+  box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.4);
+}
+
+.container {
+  max-width: 1200px;
+  height: auto;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+  gap: 2rem;
+}
+.column {
+  flex: 25%;
+  padding: 10px;
+  width: calc(33.3% - 30px);
+  box-sizing: border-box;
+}
+@media screen and (max-width: 980px) {
+  .column {
+    flex: 50%;
+    display: block;
+  }
+}
+@media screen and (max-width: 700px) {
+  .column {
+    flex: 100%;
+    display: block;
+  }
+}
+.pricingCard {
+  -webkit-transition: 0.4s background-color ease;
+  -ms-transition: 0.4s background-color ease;
+  transition: 0.4s background-color ease;
+  background-color: white;
+  -moz-border-radius: 20px;
+  height: 100%;
+  padding-bottom: 5rem;
+  -webkit-border-radius: 20px;
+  border-radius: 20px;
+  position: relative;
+  transition: all 0.4s;
+}
+.pricingCard:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+  transform: scale(1.05);
+}
+.pricingCard .popular {
+  position: absolute;
+  top: 0;
+  right: 5%;
+  width: auto;
+  padding: 10px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background-color: #eb3b5a;
+  color: white;
+  font-size: 12px;
+  z-index: 1;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+.pricingCard .badgeBox {
+  padding: 0 40px;
+  margin-top: 80px;
+}
+.pricingCard .badgeBox span {
+  display: inline-block;
+  border: 1px solid #1d3557;
+  padding: 4px 12px;
+  border-radius: 25px;
+  overflow: hidden;
+  color: #1d3557;
+}
+.pricingCard .pricingHeader {
+  width: 100%;
+  height: 170px;
+  position: relative;
+  border-radius: 20px 20px 0 0;
+  -webkit-border-radius: 20px 20px 0 0;
+  -moz-border-radius: 20px 20px 0 0;
+  /*border-bottom: 20px solid $primary;
+	*/
+  /* border-radius: $radius $radius 150px 150px;
+	 -webkit-border-radius: $radius $radius 150px 150px;
+	 -moz-border-radius: $radius $radius 150px 150px;
+	 */
+}
+.pricingCard .pricingHeader .planTitle {
+  font-size: 22px;
+  color: white;
+  position: relative;
+  top: 25%;
+}
+.pricingCard .pricingHeader .priceCircle {
+  width: calc(33.3% - 30px);
+  width: 120px;
+  height: 120px;
+  border-radius: 100%;
+  left: calc(50% - 60px);
+  top: 60%;
+  background-color: white;
+  position: absolute;
+}
+.pricingCard .pricingHeader .priceCircle .info {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  color: gray;
+}
+.pricingCard .pricingHeader .priceCircle .priceTitle {
+  display: block;
+  font-size: 28px;
+  padding: 28px 0 0;
+  font-weight: bold;
+}
+.pricingCard .pricingHeader .priceCircle .priceTitle small {
+  font-size: 18px;
+}
+.pricingCard .pricingHeader h2 {
+  position: relative;
+  top: 40%;
+  color: #fff;
+}
+.pricingCard ul {
+  margin: 10px 0 0 0;
+  padding: 0;
+}
+.pricingCard ul li {
+  list-style-type: none;
+  display: block;
+  padding: 15px 0 15px 0;
+  margin: 0;
+  border-bottom: 1px solid #f2f2f2;
+}
+.pricingCard .buyButtonBox {
+  width: 100%;
+  float: left;
+  margin-top: 30px;
+}
+.pricingCard .buyButtonBox .buyNow {
+  text-decoration: none;
+  color: white;
+  padding: 10px 30px;
+  border-radius: 20px;
+  background-image: linear-gradient(to left, #c9184a, #45aaf2);
+  margin-top: 20px;
+}
