@@ -22,10 +22,10 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 // Components
 import Nav from "../components/Nav/Nav";
-import Features from "../components/Features/Features";
-import StepperMobile from "../components/DigitalMenuPage/StepperMobile/StepperMobile";
-import DigitalMenuStepper from "../components/DigitalMenuPage/DigitalMenuStepper/DigitalMenuStepper";
-import FAQ from "../components/FAQ/FAQ";
+import Features from "../components/DigitalMenu/Features/Features";
+import StepperMobile from "../components/DigitalMenu/Steppers/StepperMobile/StepperMobile";
+import DigitalMenuStepper from "../components/DigitalMenu/Steppers/DigitalMenuStepper/DigitalMenuStepper";
+import FAQ from "../components/DigitalMenu/FAQ/FAQ";
 import ContactForm from "../components/ContactForm/ContactForm";
 import Footer from "../components/Footer/Footer";
 import { useState } from "react";

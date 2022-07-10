@@ -12,8 +12,8 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 // Components
-import SideBar from "../../../components/Dashboard/SideBar/SideBar";
-import Widget from "../../../components/Dashboard/Widget/Widget";
+import SideBar from "../../../components/Admin/Dashboard/SideBar/SideBar";
+import Widget from "../../../components/Admin/Dashboard/Widget/Widget";
 // Utils
 import Order from "../../../models/OrderModel";
 import Product from "../../../models/ProductModel";

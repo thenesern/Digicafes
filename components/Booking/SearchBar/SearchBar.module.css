@@ -48,7 +48,7 @@
 .button,
 .button:hover,
 .button:active {
-  background-color: #264653;
+  background-color: #264653 !important;
   height: 54px;
   width: 7rem;
 }
