@@ -138,6 +138,7 @@ const StoreBookingShowcase = ({ store }) => {
 
   const handleSendBooking = async (e) => {
     e.preventDefault();
+    const createdAt = new Date();
     try {
       setLoading(true);
       await axios.post(
@@ -146,6 +147,7 @@ const StoreBookingShowcase = ({ store }) => {
           storeName: store?.storeName,
           bookings: [
             {
+              createdAt,
               people: Number(people),
               date,
               userName: user.firstName + " " + user.lastName,
