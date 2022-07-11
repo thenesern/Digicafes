@@ -26,7 +26,7 @@ const PricingTable = () => {
                 <li>Rezervasyon Sistemi</li>
                 <li>Kapora Modülü</li>
                 <li>Rezervasyon izleme modülü</li>
-                <li>Geçmiş rezervayonlar silinmez</li>
+                <li>Geçmiş rezervasyonlar silinmez</li>
                 <li>Rezervasyonda SMS ve Email ile bilgilendirme</li>
               </ul>
               <div className={styles.buyButtonBox}>
@@ -59,7 +59,7 @@ const PricingTable = () => {
                 <li>Rezervasyon Sistemi</li>
                 <li>Kapora Modülü</li>
                 <li>Rezervasyon izleme modülü</li>
-                <li>Geçmiş rezervayonlar silinmez</li>
+                <li>Geçmiş rezervasyonlar silinmez</li>
                 <li>Rezervasyonda SMS ve Email ile bilgilendirme</li>
                 <li>+</li>
                 <li>Dijital Menü V1</li>
@@ -94,7 +94,7 @@ const PricingTable = () => {
                 <li>Rezervasyon Sistemi</li>
                 <li>Kapora Modülü</li>
                 <li>Rezervasyon izleme modülü</li>
-                <li>Geçmiş rezervayonlar silinmez</li>
+                <li>Geçmiş rezervasyonlar silinmez</li>
                 <li>Rezervasyonda SMS ve Email ile bilgilendirme</li>
                 <li>+</li>
                 <li>Dijital Menü V2</li>
