@@ -12,8 +12,9 @@ import Cookies from "js-cookie";
 import styles from "./User.module.css";
 // Translation
 import useTranslation from "next-translate/useTranslation";
+import UserBookings from "./UserBookings";
 
-const User = ({ orders, isFetching }) => {
+const User = ({ orders, isFetching, bookings, user }) => {
   // States
   let profile;
   if (Cookies.get("userInfo")) {
@@ -98,20 +99,40 @@ const User = ({ orders, isFetching }) => {
         </form>
       </div>
 
-      <div className={styles.right}>
-        <h1 className={styles.title}>{t("account:orders")}</h1>
-        {!isFetching && orders?.length > 0 ? (
-          orders?.filter((order) => order?.quantity.length > 1)?.length > 0 ? (
-            <List orders={orders} style={{ height: "12rem" }} />
+      {user?.userType === "Store Owner" ? (
+        <div className={styles.right}>
+          <h1 className={styles.title}>{t("account:orders")}</h1>
+          {!isFetching &&
+          user?.userType === "Store Owner" &&
+          orders?.length > 0 ? (
+            orders?.filter((order) => order?.quantity.length > 1)?.length >
+            0 ? (
+              <List orders={orders} style={{ height: "12rem" }} />
+            ) : (
+              <h6 className={styles.notFound}>{t("account:notFound")}</h6>
+            )
           ) : (
-            <h6 className={styles.notFound}>{t("account:notFound")}</h6>
-          )
-        ) : (
-          <Stack spacing={1} width={"100%"}>
-            <Skeleton width={"100%"} height={200} />
-          </Stack>
-        )}
-      </div>
+            <Stack spacing={1} width={"100%"}>
+              <Skeleton width={"100%"} height={200} />
+            </Stack>
+          )}
+        </div>
+      ) : (
+        <div className={styles.right}>
+          <h1 className={styles.title}>{t("account:orders")}</h1>
+          {!isFetching && bookings?.length > 0 ? (
+            bookings?.length > 0 ? (
+              <UserBookings bookings={bookings} style={{ height: "12rem" }} />
+            ) : (
+              <h6 className={styles.notFound}>{t("account:notFound")}</h6>
+            )
+          ) : (
+            <Stack spacing={1} width={"100%"}>
+              <Skeleton width={"100%"} height={200} />
+            </Stack>
+          )}
+        </div>
+      )}
     </div>
   );
 };

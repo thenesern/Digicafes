@@ -154,6 +154,7 @@ const StoreBookingShowcase = ({ store }) => {
               userEmail: user.email,
             },
           ],
+          userId: user?.id,
         },
         {
           headers: { authorization: `Bearer ${user.token}` },
