@@ -43,13 +43,14 @@ import i18nConfig from "../../i18n.json";
 const { locales } = i18nConfig;
 import useTranslation from "next-translate/useTranslation";
 
-const Nav = () => {
+const Nav = ({ color }) => {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const [isFetching, setIsFetching] = useState(false);
   const [openMuiLogin, setOpenMuiLogin] = useState(false);
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
   const [openMuiRegister, setOpenMuiRegister] = useState(false);
+  const [openMuiRegisterDefault, setOpenMuiRegisterDefault] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [openMenu, setOpenMenu] = useState(false);
   const [fix, setFix] = useState(false);
@@ -84,8 +85,10 @@ const Nav = () => {
   const handleOpenMuiLogin = () => setOpenMuiLogin(true);
   const handleOpenForgotPassword = () => setOpenForgotPassword(true);
   const handleOpenMuiRegister = () => setOpenMuiRegister(true);
+  const handleOpenMuiRegisterDefault = () => setOpenMuiRegisterDefault(true);
   const handleCloseMuiLogin = () => setOpenMuiLogin(false);
   const handleCloseMuiRegister = () => setOpenMuiRegister(false);
+  const handleCloseMuiRegisterDefault = () => setOpenMuiRegisterDefault(false);
   const handleCloseForgotPassword = () => {
     setOpenForgotPassword(false);
     setSentPasswordMail(null);
@@ -206,6 +209,7 @@ const Nav = () => {
         signedIn,
         createdAt,
         quantity: [14],
+        userType: "Store Owner",
       });
       Cookies.remove("userInfo");
       dispatch({ type: "USER_LOGIN", payload: data });
@@ -218,10 +222,66 @@ const Nav = () => {
     }
   };
 
+  const registerHandlerDefault = async ({
+    fName,
+    lName,
+    email,
+    password,
+    passwordConfirm,
+  }) => {
+    closeSnackbar();
+    if (password !== passwordConfirm) {
+      return enqueueSnackbar(t("nav:passwordError"), { variant: "error" });
+    }
+    const signedIn = new Date();
+    const lowerFirst = fName?.toLowerCase();
+    const betterFirst = lowerFirst?.replace(
+      lowerFirst[0],
+      lowerFirst[0]?.toUpperCase()
+    );
+
+    const lowerLast = lName?.toLowerCase();
+    const betterLast = lowerLast?.replace(
+      lowerLast[0],
+      lowerLast[0]?.toUpperCase()
+    );
+
+    const firstName = betterFirst;
+    const lastName = betterLast;
+    const createdAt = new Date();
+    try {
+      setIsFetching(true);
+      const { data } = await axios.post("/api/auth/register", {
+        firstName,
+        lastName,
+        email,
+        password,
+        passwordConfirm,
+        signedIn,
+        createdAt,
+        quantity: [14],
+        userType: "Default",
+      });
+      Cookies.remove("userInfo");
+      dispatch({ type: "USER_LOGIN", payload: data });
+      Cookies.set("userInfo", JSON.stringify(data));
+      setIsFetching(false);
+      handleCloseMuiRegisterDefault();
+    } catch (err) {
+      setIsFetching(false);
+      enqueueSnackbar(t("nav:emailError"), { variant: "error" });
+    }
+  };
+
   return (
     <navbar
       className={
         !fix ? `${styles.container}` : `${styles.container} ${styles.fixed}`
+      }
+      style={
+        color
+          ? { backgroundColor: color, position: "relative", padding: "0" }
+          : { zIndex: "9999" }
       }
     >
       <Modal
@@ -745,6 +805,283 @@ const Nav = () => {
           </form>
         </Box>
       </ModalMui>
+      <ModalMui
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openMuiRegisterDefault}
+        onClose={handleCloseMuiRegisterDefault}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Box className={styles.registerBox}>
+          <span
+            onClick={handleCloseMuiRegisterDefault}
+            style={{
+              position: "absolute",
+              right: "5%",
+              top: "3%",
+              cursor: "pointer",
+            }}
+          >
+            X
+          </span>
+          <h1 className={styles.title}>{t("nav:signUp")}</h1>
+          <div className={styles.signin}>
+            <p>{t("nav:haveAccount")}</p>
+            <span
+              style={{ fontWeight: "600", cursor: "pointer" }}
+              onClick={() => {
+                handleCloseMuiRegister();
+                handleOpenMuiLogin();
+              }}
+            >
+              {t("nav:signIn")}
+            </span>
+          </div>
+          <form
+            onSubmit={handleSubmit(registerHandlerDefault)}
+            className={styles.form}
+          >
+            <List>
+              <div style={{ display: "flex" }}>
+                <ListItem>
+                  <Controller
+                    name="fName"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      minLength: 2,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="fName"
+                        label={t("nav:name")}
+                        error={Boolean(errors.fName)}
+                        helperText={
+                          errors.fName
+                            ? errors.fName.type === "minLength"
+                              ? t("nav:validName")
+                              : t("nav:proveName")
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Controller
+                    name="lName"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      minLength: 2,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="lName"
+                        label={t("nav:surName")}
+                        error={Boolean(errors.lName)}
+                        helperText={
+                          errors.lName
+                            ? errors.lName.type === "minLength"
+                              ? t("nav:validSurName")
+                              : t("nav:proveSurName")
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+              </div>
+              <ListItem>
+                <Controller
+                  name="email"
+                  control={control}
+                  defaultValue=""
+                  rules={{
+                    required: true,
+                    pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      variant="outlined"
+                      fullWidth
+                      id="email"
+                      label="Email"
+                      inputProps={{ type: "email" }}
+                      error={Boolean(errors.email)}
+                      onChange={(e) => setEmail(e.target.value)}
+                      helperText={
+                        errors.email
+                          ? errors.email.type === "pattern"
+                            ? t("nav:validEmail")
+                            : t("nav:proveEmail")
+                          : ""
+                      }
+                      {...field}
+                    ></TextField>
+                  )}
+                ></Controller>
+              </ListItem>
+              <div style={{ display: "flex" }}>
+                <ListItem>
+                  <Controller
+                    name="password"
+                    control={control}
+                    fullWidth
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      minLength: 6,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        id="password"
+                        fullWidth
+                        label={t("nav:password")}
+                        inputProps={{ type: "password" }}
+                        error={Boolean(errors.password)}
+                        helperText={
+                          errors.password
+                            ? errors.password.type === "minLength"
+                              ? t("nav:passwordMin")
+                              : t("nav:enterAPassword")
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Controller
+                    name="passwordConfirm"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      minLength: 6,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        id="passwordConfirm"
+                        label={t("nav:passwordConfirm")}
+                        inputProps={{ type: "password" }}
+                        error={Boolean(errors.passwordConfirm)}
+                        helperText={
+                          errors.passwordConfirm
+                            ? errors.passwordConfirm.type === "minLength"
+                              ? t("nav:passwordMin")
+                              : t("nav:enterAPassword")
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+              </div>
+              <div className={styles.aggreement}>
+                {router.locale === "tr" ? (
+                  <div className={styles.privacy}>
+                    <p>
+                      Kişisel verileriniz,
+                      <a
+                        href="/gizlilik-politikasi"
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                        target="_blank"
+                      >
+                        Gizlilik Politikası
+                      </a>
+                      kapsamında işlenmektedir. “Üye ol” butonuna basarak
+                      <a
+                        href="/uyelik-sozlesmesi"
+                        target="_blank"
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Üyelik Sözleşmesi
+                      </a>
+                      ’ni, ve
+                      <a
+                        href="/cerez-politikasi"
+                        target="_blank"
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Çerez Politikası
+                      </a>
+                      ’nı okuduğunuzu ve kabul ettiğinizi onaylıyorsunuz.
+                    </p>
+                  </div>
+                ) : (
+                  <p style={{ textAlign: "center" }}>
+                    Click “Sign Up” to agree to Digicafes&apos;
+                    <LinkRouter href="/terms-of-service" passHref>
+                      <span
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Terms of Service
+                      </span>
+                    </LinkRouter>
+                    and acknowledge that Digicafes&apos;
+                    <LinkRouter href="/privacy-policy" passHref>
+                      <span
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Privacy Policy
+                      </span>
+                    </LinkRouter>
+                    applies to you.
+                  </p>
+                )}
+              </div>
+              <ListItem>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  type="submit"
+                  fullWidth
+                  onSubmit={handleSubmit(registerHandler)}
+                >
+                  {t("nav:signUp")}
+                </Button>
+              </ListItem>
+            </List>
+          </form>
+        </Box>
+      </ModalMui>
       <ul className={styles.list}>
         <li className={styles.left}>
           <LinkRouter href="/" passHref>
@@ -766,6 +1103,55 @@ const Nav = () => {
           </LinkRouter>
 
           {router.pathname === "/digital-menu" && (
+            <div className={styles.headers}>
+              <Link
+                to="features"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>{t("nav:features")}</h5>
+              </Link>
+              <Link
+                to="process"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>{t("nav:process")}</h5>
+              </Link>
+              <Link
+                to="paketler"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>{t("nav:services")}</h5>
+              </Link>
+              <Link
+                to="faq"
+                spy={true}
+                smooth={true}
+                offset={-200}
+                duration={200}
+              >
+                <h5 className={styles.link}>{t("nav:faq")}</h5>
+              </Link>
+              <Link
+                to="contact"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>{t("nav:contact")}</h5>
+              </Link>
+            </div>
+          )}
+          {router.pathname === "/booking" && (
             <div className={styles.headers}>
               <Link
                 to="features"
@@ -908,15 +1294,17 @@ const Nav = () => {
                                 }
                               }}
                             >
-                              <LinkRouter
-                                href={"/dashboard/" + user.id}
-                                passHref
-                                className={styles["menu-link"]}
-                              >
-                                <button className={styles["link-item"]}>
-                                  <span>{t("nav:dashboard")}</span>
-                                </button>
-                              </LinkRouter>
+                              {user?.userType === "Store Owner" && (
+                                <LinkRouter
+                                  href={"/dashboard/" + user.id}
+                                  passHref
+                                  className={styles["menu-link"]}
+                                >
+                                  <button className={styles["link-item"]}>
+                                    <span>{t("nav:dashboard")}</span>
+                                  </button>
+                                </LinkRouter>
+                              )}
                             </button>
                           </>
                         ) : (
@@ -975,34 +1363,6 @@ const Nav = () => {
               );
             })}
           </div>
-        ) : router.pathname === "/digital-menu" ? (
-          <li className={styles.rightXL}>
-            <button
-              className={styles.signIn}
-              onClick={() => handleOpenMuiLogin(true)}
-            >
-              {t("nav:signIn")}
-            </button>
-            <button
-              className={styles.signUp}
-              onClick={() => handleOpenMuiRegister(true)}
-            >
-              {t("nav:tryForFree")}
-            </button>
-
-            {locales.map((lng) => {
-              if (lng === lang) return null;
-              return (
-                <div className={styles.int} key={lng}>
-                  <LinkRouter href={`/${lng}/${router.asPath}`} locale={lng}>
-                    <span className={styles.lang}>
-                      {t(`nav:language-name-${lng}`)}
-                    </span>
-                  </LinkRouter>
-                </div>
-              );
-            })}
-          </li>
         ) : (
           <li className={styles.rightXL}>
             <button
@@ -1011,12 +1371,21 @@ const Nav = () => {
             >
               {t("nav:signIn")}
             </button>
-            <button
-              className={styles.signUp}
-              onClick={() => handleOpenMuiRegister(true)}
-            >
-              {t("nav:tryForFree")}
-            </button>
+            {router.pathname !== "/digital-menu" || "/booking" ? (
+              <button
+                className={styles.signUp}
+                onClick={() => handleOpenMuiRegisterDefault(true)}
+              >
+                Üye Ol
+              </button>
+            ) : (
+              <button
+                className={styles.signUp}
+                onClick={() => handleOpenMuiRegister(true)}
+              >
+                {t("nav:tryForFree")}
+              </button>
+            )}
 
             {locales.map((lng) => {
               if (lng === lang) return null;
@@ -1124,15 +1493,17 @@ const Nav = () => {
                                   }
                                 }}
                               >
-                                <LinkRouter
-                                  href={"/dashboard/" + user.id}
-                                  passHref
-                                  className={styles["menu-link"]}
-                                >
-                                  <button className={styles["link-item"]}>
-                                    <span>{t("nav:dashboard")}</span>
-                                  </button>
-                                </LinkRouter>
+                                {user?.userType === "Store Owner" && (
+                                  <LinkRouter
+                                    href={"/dashboard/" + user.id}
+                                    passHref
+                                    className={styles["menu-link"]}
+                                  >
+                                    <button className={styles["link-item"]}>
+                                      <span>{t("nav:dashboard")}</span>
+                                    </button>
+                                  </LinkRouter>
+                                )}
                               </button>
                             </>
                           ) : (
@@ -1208,12 +1579,73 @@ const Nav = () => {
               <button className={styles.signIn} onClick={handleOpenMuiLogin}>
                 {t("nav:signIn")}
               </button>
-              <button className={styles.signUp} onClick={handleOpenMuiRegister}>
-                {t("nav:tryForFree")}
-              </button>
+              {router.pathname === "/digital-menu" || "/booking" ? (
+                <button
+                  className={styles.signUp}
+                  onClick={handleOpenMuiRegister}
+                >
+                  {t("nav:tryForFree")}
+                </button>
+              ) : (
+                <button
+                  className={styles.signUp}
+                  onClick={handleOpenMuiRegisterDefault}
+                >
+                  Üye Ol
+                </button>
+              )}
             </div>
           )}
           {router.pathname === "/digital-menu" && (
+            <div>
+              <Link
+                to="features"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>{t("nav:features")}</h5>
+              </Link>
+              <Link
+                to="process"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>{t("nav:process")}</h5>
+              </Link>
+              <Link
+                to="paketler"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>{t("nav:services")}</h5>
+              </Link>
+              <Link
+                to="faq"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>{t("nav:faq")}</h5>
+              </Link>
+              <Link
+                to="contact"
+                spy={true}
+                smooth={true}
+                offset={-80}
+                duration={200}
+              >
+                <h5 className={styles.link}>{t("nav:contact")}</h5>
+              </Link>
+            </div>
+          )}
+          {router.pathname === "/booking" && (
             <div>
               <Link
                 to="features"

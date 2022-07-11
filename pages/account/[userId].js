@@ -1,16 +1,19 @@
 // Packages and Dependencies
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 // Components
 import UserProfile from "../../components/User/User";
-import Nav2 from "../../components/Nav2/Nav";
+import Nav from "../../components/Nav/Nav";
 // Cookies
 import Cookies from "js-cookie";
+import { Store } from "../../redux/store";
 
 const Hesap = () => {
   const [userToken, setUserToken] = useState(null);
-  const [userOrder, setUserOrder] = useState(null);
+  const [userOrders, setUserOrders] = useState(null);
+  const { state } = useContext(Store);
+  const { userInfo } = state;
   const [isFetching, setIsFetching] = useState(false);
   const router = useRouter();
   const userId = router.query.userId;
@@ -23,7 +26,7 @@ const Hesap = () => {
   }, []);
 
   useEffect(() => {
-    const getUserOrder = async () => {
+    const getUserOrders = async () => {
       setIsFetching(true);
       try {
         const userOrder = await axios.post(
@@ -33,21 +36,27 @@ const Hesap = () => {
           },
           { headers: { authorization: `Bearer ${userToken}` } }
         );
-        setUserOrder(userOrder?.data?.order);
+        setUserOrders(userOrder?.data?.order);
         setIsFetching(false);
       } catch (err) {
         setIsFetching(false);
         console.log(err);
       }
     };
-    getUserOrder();
+
+    getUserOrders();
   }, [userId, userToken]);
 
   return (
     <div>
-      <Nav2 />
+      <Nav color={"#c9184a"} />
       <div>
-        <UserProfile orders={userOrder} isFetching={isFetching} />
+        <UserProfile
+          orders={userOrders}
+          isFetching={isFetching}
+          bookings={userInfo?.bookings}
+          user={userInfo}
+        />
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import styles from "./PricingTable.module.css";
 
 const PricingTable = () => {
   return (
-    <div>
+    <div id="paketler">
       <body>
         <div className={styles.container}>
           <div className={styles.column}>

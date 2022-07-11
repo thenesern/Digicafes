@@ -25,6 +25,8 @@ handler.post(async (req, res) => {
       id: user._id,
       isAdmin: user.isAdmin,
       signedIn: user.signedIn,
+      bookings: user.bookings,
+      userType: user.userType,
     });
   } else {
     res.status(401).send({ message: "Invalid email or password" });

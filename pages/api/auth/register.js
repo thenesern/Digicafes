@@ -17,6 +17,7 @@ handler.post(async (req, res) => {
     passwordConfirm: req.body.passwordConfirm,
     isAdmin: false,
     createdAt: req.body.createdAt,
+    userType: req.body.userType,
   });
   const user = await newUser.save();
 
@@ -59,6 +60,7 @@ handler.post(async (req, res) => {
     id: user._id,
     token,
     isAdmin: user.isAdmin,
+    userType: user?.userType,
   });
 });
 
