@@ -1371,19 +1371,28 @@ const Nav = ({ color }) => {
             >
               {t("nav:signIn")}
             </button>
-            {router.pathname !== "/digital-menu" || "/booking" ? (
-              <button
-                className={styles.signUp}
-                onClick={() => handleOpenMuiRegisterDefault(true)}
-              >
-                Üye Ol
-              </button>
-            ) : (
+            {router.pathname === "/digital-menu" && (
               <button
                 className={styles.signUp}
                 onClick={() => handleOpenMuiRegister(true)}
               >
                 {t("nav:tryForFree")}
+              </button>
+            )}
+            {router.pathname === "/booking" && (
+              <button
+                className={styles.signUp}
+                onClick={() => handleOpenMuiRegister(true)}
+              >
+                {t("nav:tryForFree")}
+              </button>
+            )}
+            {router.pathname === "/" && (
+              <button
+                className={styles.signUp}
+                onClick={() => handleOpenMui(true)}
+              >
+                Üye Ol
               </button>
             )}
 

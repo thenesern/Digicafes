@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./PricingTable.module.css";
+import { Store } from "../../../redux/store";
 
 const PricingTable = () => {
+  const { state } = useContext(Store);
+  const { userInfo } = state;
+  console.log(userInfo);
   return (
     <div id="paketler">
       <body>
@@ -30,9 +34,27 @@ const PricingTable = () => {
                 <li>Rezervasyonda SMS ve Email ile bilgilendirme</li>
               </ul>
               <div className={styles.buyButtonBox}>
-                <a href="" className={styles.buyNow}>
-                  Satın Al
-                </a>
+                {userInfo ? (
+                  <a
+                    href={"/checkout/62bf17d63c33439aac11b362"}
+                    className={styles.buyNow}
+                  >
+                    Satın Al
+                  </a>
+                ) : (
+                  <p
+                    style={{
+                      backgroundColor: "#c9184a",
+                      padding: "10px",
+                      borderRadius: "2rem",
+                      color: "#fff",
+                      width: "90%",
+                      margin: "0 auto",
+                    }}
+                  >
+                    Satın almak için giriş yapınız
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -65,9 +87,24 @@ const PricingTable = () => {
                 <li>Dijital Menü V1</li>
               </ul>
               <div className={styles.buyButtonBox}>
-                <a href="" className={styles.buyNow}>
-                  Satın Al
-                </a>
+                {userInfo ? (
+                  <a href="" className={styles.buyNow}>
+                    Satın Al
+                  </a>
+                ) : (
+                  <p
+                    style={{
+                      backgroundColor: "#c9184a",
+                      padding: "10px",
+                      borderRadius: "2rem",
+                      color: "#fff",
+                      width: "90%",
+                      margin: "0 auto",
+                    }}
+                  >
+                    Satın almak için giriş yapınız
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -100,9 +137,24 @@ const PricingTable = () => {
                 <li>Dijital Menü V2</li>
               </ul>
               <div className={styles.buyButtonBox}>
-                <a href="" className={styles.buyNow}>
-                  Satın Al
-                </a>
+                {userInfo ? (
+                  <a href="" className={styles.buyNow}>
+                    Satın Al
+                  </a>
+                ) : (
+                  <p
+                    style={{
+                      backgroundColor: "#c9184a",
+                      padding: "10px",
+                      borderRadius: "2rem",
+                      color: "#fff",
+                      width: "90%",
+                      margin: "0 auto",
+                    }}
+                  >
+                    Satın almak için giriş yapınız
+                  </p>
+                )}
               </div>
             </div>
           </div>

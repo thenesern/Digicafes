@@ -33,7 +33,7 @@ function useCard() {
             clearable
             className={styles.input}
             bordered
-            width="16rem"
+            width="100%"
             color="primary"
             size="lg"
             name="name"
@@ -46,7 +46,7 @@ function useCard() {
             clearable
             bordered
             className={styles.input}
-            width="16rem"
+            width="100%"
             color="primary"
             size="lg"
             type="tel"
@@ -62,7 +62,7 @@ function useCard() {
               bordered
               className={styles.input}
               name="expiry"
-              width="7rem"
+              width="100%"
               aria-label="expiry"
               onChange={(e) => setExpiry(e.target.value)}
               onFocus={(e) => setFocus(e.target.name)}
@@ -77,7 +77,7 @@ function useCard() {
               aria-label="cvc"
               name="cvc"
               className={styles.input}
-              width="7rem"
+              width="100%"
               onChange={(e) => setCvc(e.target.value)}
               onFocus={(e) => setFocus(e.target.name)}
               color="primary"

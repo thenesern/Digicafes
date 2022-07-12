@@ -1,12 +1,9 @@
 import { Button } from "@mui/material";
 import axios from "axios";
-import { HmacSHA256 } from "crypto-js";
-import Cookies from "js-cookie";
 import Nav from "../../components/Nav/Nav";
 import Product from "../../models/ProductModel";
 import db from "../../utils/db";
 import styles from "./checkout.module.css";
-import * as React from "react";
 import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
@@ -14,30 +11,25 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Check from "@mui/icons-material/Check";
-import SettingsIcon from "@mui/icons-material/Settings";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import VideoLabelIcon from "@mui/icons-material/VideoLabel";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
-import { Input, Modal } from "@nextui-org/react";
+import { Modal } from "@nextui-org/react";
 import { useState } from "react";
 import useCard from "../../components/Card/card";
-import { useEffect } from "react";
 import { useContext } from "react";
 import { Store } from "../../redux/store";
 
 const Checkout = ({ product }) => {
   const { state } = useContext(Store);
   const { userInfo } = state;
-  const [visible, setVisible] = React.useState(false);
+  const [visible, setVisible] = useState(false);
   const handler = () => setVisible(true);
   const [stepper, setStepper] = useState(0);
   const { render, name, number, cvc, expiry } = useCard();
   const closeHandler = () => {
     setVisible(false);
   };
-
   const paymentHandler = async () => {
     try {
       const order = await axios.post(
@@ -152,7 +144,7 @@ const Checkout = ({ product }) => {
 
   return (
     <div>
-      <Nav />
+      <Nav color={"#c9184a"} />
       <div className={styles.container}>
         <Modal
           closeButton
@@ -163,7 +155,7 @@ const Checkout = ({ product }) => {
           onClose={closeHandler}
         >
           <Modal.Header>
-            <h3>Ödemeyi Tamamlayın</h3>
+            <h3>Kart Bilgilerini Giriniz</h3>
           </Modal.Header>
           <Modal.Body>{render}</Modal.Body>
           <Modal.Footer>
@@ -199,15 +191,15 @@ const Checkout = ({ product }) => {
             <div className={styles.informations}>
               <div className={styles.cells}>
                 <h5 className={styles.title}>Ürün Adı</h5>
-                <p>{product.name}</p>
+                <p>{product.nameTR}</p>
               </div>
               <div className={styles.cells}>
                 <h5 className={styles.title}>Adet / Süre</h5>
-                <p>{product.period}lık Hizmet</p>
+                <p>{product.periodTR} Hizmet</p>
               </div>
               <div className={styles.cells}>
                 <h5 className={styles.title}>Fiyat</h5>
-                <p>{product.price}</p>
+                <p>{product.price}₺</p>
               </div>
             </div>
           </div>
@@ -216,7 +208,7 @@ const Checkout = ({ product }) => {
               <h1 className={styles.header}>Özet</h1>
               <div>
                 <p className={styles.SummaryDescription}>
-                  Toplam Tutar: {product.price}
+                  Toplam Tutar: {product.price}₺
                 </p>
               </div>
             </div>
