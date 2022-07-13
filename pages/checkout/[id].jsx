@@ -24,27 +24,31 @@ const Checkout = ({ product }) => {
   const { state } = useContext(Store);
   const { userInfo } = state;
   const [visible, setVisible] = useState(false);
+  const [modal, setModal] = useState(false);
   const handler = () => setVisible(true);
   const [stepper, setStepper] = useState(0);
   const { render, name, number, cvc, expiry } = useCard();
   const closeHandler = () => {
     setVisible(false);
   };
+
   const paymentHandler = async () => {
     try {
-      const order = await axios.post(
+      /*  const order = await axios.post(
         "/api/order",
         { product: product._id, user: userInfo.id },
         {
           headers: { authorization: `Bearer ${userInfo.token}` },
         }
-      );
-
-      await axios.post("/api/payments", {
+      ); */
+      const connection = await axios.get("/api/remote-address");
+      const payment = await axios.post("/api/checkout/payment", {
         order: {
-          id: order.data.id,
-          price: product.price,
-          paidPrice: product.price,
+          id: "33213123",
+        },
+        product: {
+          price: "300",
+          paidPrice: "300",
         },
         /*       card: {
               name,
@@ -60,9 +64,31 @@ const Checkout = ({ product }) => {
           month: "12",
           year: "24",
           cvc: "200",
-          registerCard: 0,
         },
+        user: {
+          id: userInfo.id,
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+          email: userInfo.email,
+          signedIn:
+            userInfo.signedIn.split("T")[0] +
+            " " +
+            userInfo.signedIn.split("T")[1].split(".")[0],
+          ip: connection.ip,
+        },
+        basketItems: [
+          {
+            id: "TT11",
+            name: "Hizmet Adı",
+            category1: "Hizmetler",
+            itemType: "VIRTUAL",
+            price: "300",
+          },
+        ],
       });
+      if (payment.threeDSHtmlContent) {
+        setModal(true);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -170,6 +196,14 @@ const Checkout = ({ product }) => {
             </Button>
           </Modal.Footer>
         </Modal>
+        <Modal
+          preventClose
+          width="46rem"
+          height="46rem"
+          aria-labelledby="modal-title"
+          open={modal}
+          onClose={() => setModal(false)}
+        ></Modal>
         <Stack sx={{ width: "100%" }} spacing={4} className={styles.stepper}>
           <Stepper
             alternativeLabel
@@ -218,7 +252,6 @@ const Checkout = ({ product }) => {
                   className={styles.button}
                   variant="contained"
                   type="submit"
-                  /*   onClick={paymentHandler} */
                   onClick={() => {
                     handler();
                     setStepper(1);
