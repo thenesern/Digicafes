@@ -1,20 +1,19 @@
-const {
+/* const {
   createUserCard,
   getUserCard,
   deleteUserCard,
-} = require("./methods/cards.js");
+} = require("./methods/cards.js"); */
 const Iyzipay = require("iyzipay");
 const nanoid = require("../../utils/nanoid.js");
-const Logs = require("../../utils/logs.js");
 const Installments = require("./methods/installments.js");
 const PaymentsThreeDS = require("./methods/threeds-payments.js");
-const { createAPayment } = require("./methods/payment.js");
+const { createPayment } = require("./methods/payment.js");
 const { initialize, getFormPayment } = require("./methods/checkouts.js");
 const { cancelPayment } = require("./methods/cancel-payments.js");
 const { refundPayment } = require("./methods/refund-payments.js");
 
-const createPayment = () => {
-  return createAPayment({
+const createAPayment = async (req, res) => {
+  return createPayment({
     locale: Iyzipay.LOCALE.TR,
     conversationId: nanoid(),
     price: "300",
@@ -66,22 +65,20 @@ const createPayment = () => {
   })
     .then((result) => {
       console.log(result);
-      Logs("6-payments-yeni-kartla-ödeme-al", result);
     })
     .catch((err) => {
       console.log(err);
-      Logs("6-payments-yeni-kartla-ödeme-al-hata", err);
     });
 };
+/* createAPayment(); */
 
-// createPayment();
-
-const initializeThreeDSPayments = () => {
+const initializeThreeDSPayments = async (data) => {
+  console.log(data);
   PaymentsThreeDS.initializePayment({
     locale: Iyzipay.LOCALE.TR,
     conversationId: nanoid(),
-    price: "300",
-    paidPrice: "300",
+    price: data.price,
+    paidPrice: data.paidPrice,
     currency: Iyzipay.CURRENCY.TRY,
     installment: "1",
     basketId: "A11111",
@@ -130,11 +127,9 @@ const initializeThreeDSPayments = () => {
   })
     .then((result) => {
       console.log(result);
-      Logs("7-payments-yeni-kartla-ödeme-threeDS-başlat", result);
     })
     .catch((err) => {
       console.log(err);
-      Logs("7-payments-yeni-kartla-ödeme-threeDS-başlat-hata", err);
     });
 };
 
@@ -149,11 +144,9 @@ const completeThreeDSPaymet = () => {
   })
     .then((result) => {
       console.log(result);
-      Logs("8-payments-yeni-kartla-ödeme-threeDS-tamamla", result);
     })
     .catch((err) => {
       console.log(err);
-      Logs("8-payments-yeni-kartla-ödeme-threeDS-tamamla-hata", err);
     });
 };
 
@@ -170,7 +163,7 @@ const initializeCheckoutForm = () => {
     basketId: "A11111",
     paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
     paymentGroup: Iyzipay.PAYMENT_GROUP.SUBSCRIPTION,
-    callbackUrl: "https://localhost/api/checkout/complete/payment",
+    callbackUrl: "http://localhost:3000/api/checkout/payment/3ds/complete",
     paymentCard: {
       cardHolderName: "John Doe",
       cardNumber: "5528790000000008",
@@ -213,11 +206,9 @@ const initializeCheckoutForm = () => {
   })
     .then((result) => {
       console.log(result);
-      Logs("13-checkout-form-payments", result);
     })
     .catch((err) => {
       console.log(err);
-      Logs("13-checkout-form-payments-hata", err);
     });
 };
 
@@ -231,11 +222,9 @@ const getCheckoutFormPayment = () => {
   })
     .then((result) => {
       console.log(result);
-      Logs("14-checkout-form-payments-detaylar", result);
     })
     .catch((err) => {
       console.log(err);
-      Logs("14-checkout-form-payments--detaylar-hata", err);
     });
 };
 
@@ -252,11 +241,9 @@ const cancelPayments = () => {
   })
     .then((result) => {
       console.log(result);
-      Logs("15-cancel-payment", result);
     })
     .catch((err) => {
       console.log(err);
-      Logs("15-cancel-payment-hata", err);
     });
 };
 
@@ -275,11 +262,9 @@ const refundPayments = () => {
   })
     .then((result) => {
       console.log(result);
-      Logs("15-cancel-payment", result);
     })
     .catch((err) => {
       console.log(err);
-      Logs("15-cancel-payment-hata", err);
     });
 };
 
@@ -287,4 +272,5 @@ const refundPayments = () => {
 
 module.exports = {
   createPayment,
+  initializeThreeDSPayments,
 };

@@ -1,8 +1,8 @@
 const iyzipay = require("../connection/iyzipay.js");
 
-const createAPayment = (data) => {
+const createPayment = (data) => {
   return new Promise((resolve, reject) => {
-    iyzipay.subscription.initialize(data, (err, result) => {
+    iyzipay.payment.create(data, (err, result) => {
       if (err) {
         reject(err);
       } else {
@@ -13,5 +13,5 @@ const createAPayment = (data) => {
 };
 
 module.exports = {
-  createAPayment,
+  createPayment,
 };
