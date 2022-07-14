@@ -12,16 +12,20 @@ import ModalMui from "@mui/material/Modal";
 import Image from "next/image";
 import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
 import { Box } from "@mui/system";
+import { Button as ButtonNext } from "@nextui-org/react";
 import { List, ListItem, TextField } from "@material-ui/core";
 import Fade from "@mui/material/Fade";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
+import VerifiedIcon from "@mui/icons-material/Verified";
 import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 // Cookies
 import Cookies from "js-cookie";
 // Context
@@ -53,7 +57,14 @@ const Nav = ({ color }) => {
   const [openMuiRegisterDefault, setOpenMuiRegisterDefault] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [openMenu, setOpenMenu] = useState(false);
+  const [isOTPSent, setIsOTPSent] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState(null);
+  const [OTPResult, setOTPResult] = useState(null);
   const [fix, setFix] = useState(false);
+  const [isChecking, setIsChecking] = useState(false);
+  const [errorOTP, setErrorOTP] = useState(false);
+  const [enteredOTP, setEnteredOTP] = useState(null);
+  const [isSentFormWithNotOTP, setIsSentFormWithNotOTP] = useState(false);
   const [sentPasswordMail, setSentPasswordMail] = useState(null);
   const {
     handleSubmit,
@@ -122,6 +133,29 @@ const Nav = ({ color }) => {
     router.push("/");
   };
 
+  const handleCheckOTP = async (e) => {
+    e.preventDefault();
+    setIsChecking(true);
+    try {
+      const result = await axios.post("/api/sms/verify-auth", {
+        to: "+" + phoneNumber,
+        code: enteredOTP,
+      });
+      setOTPResult(result.data.status);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleSendOTP = async (e) => {
+    e.preventDefault();
+    setIsOTPSent(true);
+
+    try {
+      await axios.post("/api/sms/start-auth", { to: "+" + phoneNumber });
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const resetPasswordHandler = async ({ email }) => {
     setIsFetching(true);
     try {
@@ -176,9 +210,13 @@ const Nav = ({ color }) => {
     lName,
     email,
     password,
+    phoneNumber,
     passwordConfirm,
   }) => {
     closeSnackbar();
+    if (OTPResult !== "success") {
+      return setIsSentFormWithNotOTP(true);
+    }
     if (password !== passwordConfirm) {
       return enqueueSnackbar(t("nav:passwordError"), { variant: "error" });
     }
@@ -207,6 +245,7 @@ const Nav = ({ color }) => {
         password,
         passwordConfirm,
         signedIn,
+        phoneNumber,
         createdAt,
         quantity: [14],
         userType: "Store Owner",
@@ -221,6 +260,11 @@ const Nav = ({ color }) => {
       enqueueSnackbar(t("nav:emailError"), { variant: "error" });
     }
   };
+  useEffect(() => {
+    setTimeout(() => {
+      setIsSentFormWithNotOTP(false);
+    }, 3000);
+  }, [isSentFormWithNotOTP]);
 
   const registerHandlerDefault = async ({
     fName,
@@ -230,6 +274,9 @@ const Nav = ({ color }) => {
     passwordConfirm,
   }) => {
     closeSnackbar();
+    if (OTPResult !== "success") {
+      return setIsSentFormWithNotOTP(true);
+    }
     if (password !== passwordConfirm) {
       return enqueueSnackbar(t("nav:passwordError"), { variant: "error" });
     }
@@ -257,6 +304,7 @@ const Nav = ({ color }) => {
         email,
         password,
         passwordConfirm,
+        phoneNumber,
         signedIn,
         createdAt,
         quantity: [14],
@@ -272,7 +320,6 @@ const Nav = ({ color }) => {
       enqueueSnackbar(t("nav:emailError"), { variant: "error" });
     }
   };
-
   return (
     <navbar
       className={
@@ -299,6 +346,7 @@ const Nav = ({ color }) => {
         </Modal.Body>
       </Modal>
       <ModalMui
+        className={styles.modals}
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={openMuiLogin}
@@ -405,16 +453,15 @@ const Nav = ({ color }) => {
                   {t("nav:forgotYourPassword")}
                 </p>
                 <ListItem>
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    type="submit"
-                    fullWidth
-                    style={{ outline: "none" }}
+                  <ButtonNext
+                    flat
+                    color="primary"
+                    auto
+                    style={{ width: "100%" }}
                     onSubmit={handleSubmit(loginHandler)}
                   >
                     {t("nav:signIn")}
-                  </Button>
+                  </ButtonNext>
                 </ListItem>
               </List>
             </form>
@@ -422,6 +469,7 @@ const Nav = ({ color }) => {
         </Box>
       </ModalMui>
       <ModalMui
+        className={styles.modals}
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={openForgotPassword}
@@ -529,6 +577,7 @@ const Nav = ({ color }) => {
         </Box>
       </ModalMui>
       <ModalMui
+        className={styles.modals}
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={openMuiRegister}
@@ -564,10 +613,7 @@ const Nav = ({ color }) => {
               {t("nav:signIn")}
             </span>
           </div>
-          <form
-            onSubmit={handleSubmit(registerHandler)}
-            className={styles.form}
-          >
+          <form className={styles.form}>
             <List>
               <div style={{ display: "flex" }}>
                 <ListItem>
@@ -657,6 +703,7 @@ const Nav = ({ color }) => {
                   )}
                 ></Controller>
               </ListItem>
+
               <div style={{ display: "flex" }}>
                 <ListItem>
                   <Controller
@@ -717,6 +764,88 @@ const Nav = ({ color }) => {
                   ></Controller>
                 </ListItem>
               </div>
+              <ListItem
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "2rem",
+                }}
+              >
+                <PhoneInput
+                  country={"tr"}
+                  value={phoneNumber}
+                  onChange={setPhoneNumber}
+                  disabled={OTPResult === "success" ? true : false}
+                  inputStyle={{
+                    height: "3rem",
+                    fontSize: "1rem",
+                    width: "100%",
+                  }}
+                />
+                {isOTPSent ? (
+                  <>
+                    {OTPResult !== "success" ? (
+                      <div
+                        style={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "2rem",
+                        }}
+                      >
+                        <TextField
+                          fullWidth
+                          type="number"
+                          id="otp"
+                          label="Kodu Giriniz"
+                          error={errorOTP}
+                          helperText={
+                            errorOTP ? "Lütfen Onay Kodunu Giriniz" : ""
+                          }
+                          value={enteredOTP}
+                          onChange={(e) => setEnteredOTP(e.target.value)}
+                        ></TextField>
+                        <ButtonNext
+                          bordered
+                          auto
+                          onClick={(e) => {
+                            if (enteredOTP?.toString().length === 4) {
+                              setErrorOTP(false);
+                              handleCheckOTP(e);
+                            } else {
+                              setErrorOTP(true);
+                            }
+                          }}
+                        >
+                          Gönder
+                        </ButtonNext>
+                      </div>
+                    ) : (
+                      <VerifiedIcon color="success" />
+                    )}
+                  </>
+                ) : (
+                  <ButtonNext
+                    bordered
+                    disabled={phoneNumber ? false : true}
+                    onClick={handleSendOTP}
+                    style={{ width: "90%" }}
+                  >
+                    <span>Kod Gönder</span>
+                  </ButtonNext>
+                )}
+              </ListItem>
+              {isSentFormWithNotOTP && (
+                <p
+                  align="center"
+                  style={{ color: "#d90429", fontSize: "14px" }}
+                >
+                  Lütfen Telefon Numaranızı Onaylayınız.
+                </p>
+              )}
+
               <div className={styles.aggreement}>
                 {router.locale === "tr" ? (
                   <div className={styles.privacy}>
@@ -791,21 +920,22 @@ const Nav = ({ color }) => {
                 )}
               </div>
               <ListItem>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  type="submit"
-                  fullWidth
-                  onSubmit={handleSubmit(registerHandler)}
+                <ButtonNext
+                  flat
+                  color="primary"
+                  auto
+                  style={{ width: "100%" }}
+                  onClick={handleSubmit(registerHandler)}
                 >
                   {t("nav:signUp")}
-                </Button>
+                </ButtonNext>
               </ListItem>
             </List>
           </form>
         </Box>
       </ModalMui>
       <ModalMui
+        className={styles.modals}
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={openMuiRegisterDefault}
@@ -841,10 +971,7 @@ const Nav = ({ color }) => {
               {t("nav:signIn")}
             </span>
           </div>
-          <form
-            onSubmit={handleSubmit(registerHandlerDefault)}
-            className={styles.form}
-          >
+          <form className={styles.form}>
             <List>
               <div style={{ display: "flex" }}>
                 <ListItem>
@@ -934,6 +1061,7 @@ const Nav = ({ color }) => {
                   )}
                 ></Controller>
               </ListItem>
+
               <div style={{ display: "flex" }}>
                 <ListItem>
                   <Controller
@@ -994,6 +1122,88 @@ const Nav = ({ color }) => {
                   ></Controller>
                 </ListItem>
               </div>
+              <ListItem
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "2rem",
+                }}
+              >
+                <PhoneInput
+                  country={"tr"}
+                  value={phoneNumber}
+                  onChange={setPhoneNumber}
+                  disabled={OTPResult === "success" ? true : false}
+                  inputStyle={{
+                    height: "3rem",
+                    fontSize: "1rem",
+                    width: "100%",
+                  }}
+                />
+                {isOTPSent ? (
+                  <>
+                    {OTPResult !== "success" ? (
+                      <div
+                        style={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "2rem",
+                        }}
+                      >
+                        <TextField
+                          fullWidth
+                          type="number"
+                          id="otp"
+                          label="Kodu Giriniz"
+                          error={errorOTP}
+                          helperText={
+                            errorOTP ? "Lütfen Onay Kodunu Giriniz" : ""
+                          }
+                          value={enteredOTP}
+                          onChange={(e) => setEnteredOTP(e.target.value)}
+                        ></TextField>
+                        <ButtonNext
+                          bordered
+                          auto
+                          onClick={(e) => {
+                            if (enteredOTP?.toString().length === 4) {
+                              setErrorOTP(false);
+                              handleCheckOTP(e);
+                            } else {
+                              setErrorOTP(true);
+                            }
+                          }}
+                        >
+                          Gönder
+                        </ButtonNext>
+                      </div>
+                    ) : (
+                      <VerifiedIcon color="success" />
+                    )}
+                  </>
+                ) : (
+                  <ButtonNext
+                    bordered
+                    disabled={phoneNumber ? false : true}
+                    onClick={handleSendOTP}
+                    style={{ width: "90%" }}
+                  >
+                    <span>Kod Gönder</span>
+                  </ButtonNext>
+                )}
+              </ListItem>
+              {isSentFormWithNotOTP && (
+                <p
+                  align="center"
+                  style={{ color: "#d90429", fontSize: "14px" }}
+                >
+                  Lütfen Telefon Numaranızı Onaylayınız.
+                </p>
+              )}
+
               <div className={styles.aggreement}>
                 {router.locale === "tr" ? (
                   <div className={styles.privacy}>
@@ -1068,15 +1278,15 @@ const Nav = ({ color }) => {
                 )}
               </div>
               <ListItem>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  type="submit"
-                  fullWidth
-                  onSubmit={handleSubmit(registerHandler)}
+                <ButtonNext
+                  flat
+                  color="primary"
+                  auto
+                  style={{ width: "100%" }}
+                  onClick={handleSubmit(registerHandlerDefault)}
                 >
                   {t("nav:signUp")}
-                </Button>
+                </ButtonNext>
               </ListItem>
             </List>
           </form>
@@ -1390,7 +1600,7 @@ const Nav = ({ color }) => {
             {router.pathname === "/" && (
               <button
                 className={styles.signUp}
-                onClick={() => handleOpenMui(true)}
+                onClick={() => handleOpenMuiRegisterDefault(true)}
               >
                 Üye Ol
               </button>

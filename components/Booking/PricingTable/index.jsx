@@ -5,7 +5,7 @@ import { Store } from "../../../redux/store";
 const PricingTable = () => {
   const { state } = useContext(Store);
   const { userInfo } = state;
-  console.log(userInfo);
+
   return (
     <div id="paketler">
       <body>
