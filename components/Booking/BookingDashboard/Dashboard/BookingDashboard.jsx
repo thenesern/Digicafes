@@ -448,7 +448,7 @@ const BookingDashboard = ({ userOrder }) => {
       handleCloseGallery();
     }
   };
-  console.log(capacity);
+
   const handleUpdateWorkingTimes = async (e) => {
     e.preventDefault();
     try {

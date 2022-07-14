@@ -15,7 +15,7 @@ import styles from "./List.module.css";
 const UserBookings = ({ bookings }) => {
   // Translation
   const { t } = useTranslation();
-  console.log(bookings);
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">

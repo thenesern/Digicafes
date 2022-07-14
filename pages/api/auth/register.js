@@ -13,6 +13,7 @@ handler.post(async (req, res) => {
     lastName: req.body.lastName,
     signedIn: req.body.signedIn,
     email: req.body.email,
+    phoneNumber: req.body.phoneNumber,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     isAdmin: false,
@@ -62,6 +63,7 @@ handler.post(async (req, res) => {
     email: user.email,
     id: user._id,
     token,
+    phoneNumber: user.phoneNumber,
     isAdmin: user.isAdmin,
     userType: user?.userType,
   });

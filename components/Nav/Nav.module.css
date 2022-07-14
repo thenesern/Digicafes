@@ -12,6 +12,9 @@
   position: fixed;
   background-color: transparent;
 }
+.modals {
+  z-index: 99999999999999;
+}
 .forgotPassword {
   text-align: end;
   padding: 0 1rem;
