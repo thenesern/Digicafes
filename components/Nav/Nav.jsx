@@ -377,7 +377,15 @@ const Nav = ({ color }) => {
                 style={{ fontWeight: "600", cursor: "pointer" }}
                 onClick={() => {
                   handleCloseMuiLogin();
-                  handleOpenMuiRegister();
+                  if (router.pathname === "/booking") {
+                    handleOpenMuiRegister();
+                  }
+                  if (router.pathname === "/digital-menu") {
+                    handleOpenMuiRegister();
+                  }
+                  if (router.pathname === "/") {
+                    handleOpenMuiRegisterDefault();
+                  }
                 }}
               >
                 {t("nav:createAccount")}
@@ -964,7 +972,7 @@ const Nav = ({ color }) => {
             <span
               style={{ fontWeight: "600", cursor: "pointer" }}
               onClick={() => {
-                handleCloseMuiRegister();
+                handleCloseMuiRegisterDefault();
                 handleOpenMuiLogin();
               }}
             >
