@@ -757,39 +757,48 @@ const StoreMenu = ({ menu, category, order, number }) => {
                             </p>
                           )}
                         </div>
-                        <p className={styles.textListPrice}>
-                          {menu?.currency === "dolar"
-                            ? "$"
-                            : menu?.currency === "euro"
-                            ? "€"
-                            : menu?.currency === "lira"
-                            ? "₺"
-                            : ""}
-                          {c?.price}
-                        </p>
-                        <button
+                        <div
                           style={{
-                            borderRadius: " 0",
-                            backgroundColor: "#073b4c",
-                            color: "#f7ede2",
-                            minWidth: "2rem",
-                            height: "2rem",
-                            margin: "0",
-                            borderRadius: "1rem",
-                            padding: "0",
-                            border: "none",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "2rem",
                           }}
-                          onClick={() =>
-                            addToCartHandler({
-                              name: c?.name,
-                              price: c?.price,
-                              img: c?.image,
-                              quantity: 1,
-                            })
-                          }
                         >
-                          <span>+</span>
-                        </button>
+                          <p className={styles.textListPrice}>
+                            {menu?.currency === "dolar"
+                              ? "$"
+                              : menu?.currency === "euro"
+                              ? "€"
+                              : menu?.currency === "lira"
+                              ? "₺"
+                              : ""}
+                            {c?.price}
+                          </p>
+                          <button
+                            style={{
+                              borderRadius: " 0",
+                              backgroundColor: "#073b4c",
+                              color: "#f7ede2",
+                              minWidth: "2rem",
+                              height: "2rem",
+                              margin: "0",
+                              borderRadius: "1rem",
+                              padding: "0",
+                              border: "none",
+                            }}
+                            onClick={() =>
+                              addToCartHandler({
+                                name: c?.name,
+                                price: c?.price,
+                                img: c?.image,
+                                quantity: 1,
+                              })
+                            }
+                          >
+                            <span>+</span>
+                          </button>
+                        </div>
                       </div>
                     ))}
                 </div>
