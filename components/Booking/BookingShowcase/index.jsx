@@ -152,6 +152,8 @@ const StoreBookingShowcase = ({ store }) => {
               date,
               userName: user.firstName + " " + user.lastName,
               userEmail: user.email,
+              storeName: store?.storeName,
+              phoneNumber: user?.phoneNumber,
             },
           ],
           userId: user?.id,
