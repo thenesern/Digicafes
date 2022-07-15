@@ -25,6 +25,7 @@ handler.post(async (req, res) => {
       id: user._id,
       isAdmin: user.isAdmin,
       signedIn: user.signedIn,
+      createdAt: user.createdAt,
       bookings: user.bookings,
       userType: user.userType,
     });

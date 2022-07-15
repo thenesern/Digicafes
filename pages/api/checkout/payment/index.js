@@ -1,22 +1,20 @@
 import moment from "moment";
-import { initializeThreeDSPayments } from "../../../../services/iyzico/index.js";
-import { CompletePayment } from "../../../../utils/payments.js";
+import { createAPayment } from "../../../../services/iyzico/index.js";
 import nc from "next-connect";
 import db from "../../../../utils/db";
 import nanoid from "../../../../utils/nanoid.js";
 import Iyzipay from "iyzipay";
 const handler = nc();
-const PaymentsThreeDS = require("../../../../services/iyzico/methods/threeds-payments.js");
 
 handler.post(async (req, res) => {
-  await PaymentsThreeDS.initializePayment({
+  const result = await createAPayment({
     locale: Iyzipay.LOCALE.TR,
     conversationId: nanoid(),
     price: req.body.product.price,
     paidPrice: req.body.product.paidPrice,
     currency: Iyzipay.CURRENCY.TRY,
     installment: "1",
-    basketId: req.body.order.id,
+    basketId: nanoid(),
     paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
     paymentGroup: Iyzipay.PAYMENT_GROUP.SUBSCRIPTION,
     callbackUrl: "http://localhost:3000/api/checkout/payment/3ds/complete",
@@ -52,8 +50,9 @@ handler.post(async (req, res) => {
     },
     basketItems: req.body.basketItems,
   })
-    .then((result) => {
+    .then((res) => {
       console.log(result);
+      res.json(res);
     })
     .catch((err) => {
       console.log(err);

@@ -63,7 +63,9 @@ handler.post(async (req, res) => {
     email: user.email,
     id: user._id,
     token,
+    signedIn: user.signedIn,
     phoneNumber: user.phoneNumber,
+    createdAt: user.createdAt,
     isAdmin: user.isAdmin,
     userType: user?.userType,
   });
