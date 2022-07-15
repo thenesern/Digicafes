@@ -28,31 +28,34 @@ handler.post(async (req, res) => {
   date.setDate(date.getDate() + 14);
 
   if (req.body.userType === "Store Owner") {
-    const newOrder = new Order({
-      product: "625d3a6821c87548216f71e0",
-      user: user?._id,
-      createdAt: req.body.createdAt,
-      expiry: date,
-      quantity: req.body.quantity,
-    });
-    await newOrder.save();
-    const newOrder2 = new Order({
-      product: "6258375f9e1d43dfdd2eb688",
-      user: user?._id,
-      createdAt: req.body.createdAt,
-      expiry: date,
-      quantity: req.body.quantity,
-    });
-    await newOrder2.save();
-
-    const newOrder3 = new Order({
-      product: "62bf17d63c33439aac11b362",
-      user: user?._id,
-      createdAt: req.body.createdAt,
-      expiry: date,
-      quantity: req.body.quantity,
-    });
-    await newOrder3.save();
+    if (req.body.from === "Digital Menu") {
+      const newOrder = new Order({
+        product: "625d3a6821c87548216f71e0",
+        user: user?._id,
+        createdAt: req.body.createdAt,
+        expiry: date,
+        quantity: req.body.quantity,
+      });
+      await newOrder.save();
+      const newOrder2 = new Order({
+        product: "6258375f9e1d43dfdd2eb688",
+        user: user?._id,
+        createdAt: req.body.createdAt,
+        expiry: date,
+        quantity: req.body.quantity,
+      });
+      await newOrder2.save();
+    }
+    if (req.body.from === "Booking") {
+      const newOrder3 = new Order({
+        product: "62bf17d63c33439aac11b362",
+        user: user?._id,
+        createdAt: req.body.createdAt,
+        expiry: date,
+        quantity: req.body.quantity,
+      });
+      await newOrder3.save();
+    }
   }
 
   await db.disconnect();
