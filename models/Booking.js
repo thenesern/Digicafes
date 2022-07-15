@@ -39,6 +39,9 @@ const bookingSchema = new mongoose.Schema(
         userEmail: {
           type: String,
         },
+        phoneNumber: {
+          type: String,
+        },
       },
     ],
 

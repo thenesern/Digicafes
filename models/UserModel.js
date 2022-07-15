@@ -34,6 +34,12 @@ const userSchema = new mongoose.Schema(
         userEmail: {
           type: String,
         },
+        storename: {
+          type: String,
+        },
+        phoneNumber: {
+          type: String,
+        },
       },
     ],
 

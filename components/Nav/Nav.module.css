@@ -13,7 +13,7 @@
   background-color: transparent;
 }
 .modals {
-  z-index: 99999999999999;
+  z-index: 6;
 }
 .forgotPassword {
   text-align: end;
