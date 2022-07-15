@@ -1,0 +1,25 @@
+.container {
+  display: grid;
+  grid-template-columns: 3fr 7fr;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 90%;
+  margin: 0 auto;
+  min-height: 90vh;
+  height: 100%;
+  padding: 0 12rem;
+}
+
+.left {
+  background-color: lightgray;
+  width: 100%;
+  min-height: 90vh;
+  height: 100%;
+}
+.right {
+  background-color: lightblue;
+  width: 100%;
+  min-height: 90vh;
+  height: 100%;
+}
