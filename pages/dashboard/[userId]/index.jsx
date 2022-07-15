@@ -1,7 +1,7 @@
 // Packages and Dependencies
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Image, Loading, Modal, Spacer } from "@nextui-org/react";
+import { Button, Image, Loading, Modal, Spacer } from "@nextui-org/react";
 import Link from "next/link";
 import Stack from "@mui/material/Stack";
 import { useRouter } from "next/router";
@@ -216,8 +216,11 @@ const Dashboard = () => {
               </div>
               <div className={styles.infos}>
                 <div className={styles.infoCell}>
-                  {new Date(order?.expiry?.toString()).getTime() >
-                  newDate.getTime() ? (
+                  {new Date(
+                    new Date(order.expiry).setMonth(
+                      new Date(order.expiry).getMonth() - 1
+                    )
+                  ) > new Date() ? (
                     <div>
                       <h4>{t("panels:status")}</h4>
                       <p>
@@ -231,6 +234,47 @@ const Dashboard = () => {
                         )
                       </p>
                     </div>
+                  ) : new Date(order?.expiry?.toString()) < new Date() ? (
+                    <div className={styles.expired}>
+                      <div
+                        style={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "flex-start",
+                          flexDirection: "column",
+                          justifyContent: "flex-start",
+                        }}
+                      >
+                        <h4 style={{ padding: " 0", marginBottom: "14px" }}>
+                          {t("panels:status")}
+                        </h4>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "1rem",
+                            margin: "0",
+                          }}
+                        >
+                          <p style={{ margin: "0", padding: "0" }}>
+                            {t("panels:expired")} (
+                            {order?.expiry
+                              ? order?.expiry.includes("GMT") ||
+                                !order?.expiry.includes(" ")
+                                ? new Date(order?.expiry).toLocaleDateString()
+                                : order?.expiry
+                              : t("panels:notUpdated")}
+                            )
+                          </p>
+                          <Link href={`/checkout/${order._id}`} passHref>
+                            <Button bordered size="sm">
+                              Yükselt
+                            </Button>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
                   ) : (
                     <div className={styles.expired}>
                       <div
@@ -242,50 +286,34 @@ const Dashboard = () => {
                           justifyContent: "flex-start",
                         }}
                       >
-                        <h4>{t("panels:status")}</h4>
-                        <p style={{ margin: "0" }}>
-                          {t("panels:expired")} (
-                          {order?.expiry
-                            ? order?.expiry.includes("GMT") ||
-                              !order?.expiry.includes(" ")
-                              ? new Date(order?.expiry).toLocaleDateString()
-                              : order?.expiry
-                            : t("panels:notUpdated")}
-                          )
-                        </p>
-                      </div>
-                      <div
-                        style={{
-                          width: "100%",
-                          display: "flex",
-                          alignItems: "flex-start",
-                          flexDirection: "column",
-                          justifyContent: "flex-start",
-                          minWidth: "15rem",
-                        }}
-                      >
-                        <h4 style={{ width: "100%" }}>
-                          {t("panels:continue")}
+                        <h4 style={{ padding: " 0", marginBottom: "14px" }}>
+                          {t("panels:status")}
                         </h4>
-                        {order?.product?.name.includes("V1") ? (
-                          <a
-                            className={styles.buy}
-                            href="https://iyzi.link/AIUgpA"
-                            rel="noreferrer"
-                            target="_blank"
-                          >
-                            {t("panels:buy")}
-                          </a>
-                        ) : (
-                          <a
-                            className={styles.buy}
-                            href="https://iyzi.link/AIUgyw"
-                            rel="noreferrer"
-                            target="_blank"
-                          >
-                            {t("panels:buy")}
-                          </a>
-                        )}
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "1rem",
+                            margin: "0",
+                          }}
+                        >
+                          <p style={{ margin: "0", padding: "0" }}>
+                            Paketiniz yakında sonlanıyor. (
+                            {order?.expiry
+                              ? order?.expiry.includes("GMT") ||
+                                !order?.expiry.includes(" ")
+                                ? new Date(order?.expiry).toLocaleDateString()
+                                : order?.expiry
+                              : t("panels:notUpdated")}
+                            )
+                          </p>
+                          <Link href={`/checkout/${order._id}`} passHref>
+                            <Button bordered size="sm">
+                              Yükselt
+                            </Button>
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   )}

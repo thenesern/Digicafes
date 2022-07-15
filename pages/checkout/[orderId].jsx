@@ -1,7 +1,6 @@
-import { Button, TextField, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import axios from "axios";
 import Nav from "../../components/Nav/Nav";
-import Product from "../../models/ProductModel";
 import db from "../../utils/db";
 import styles from "./checkout.module.css";
 import PropTypes from "prop-types";
@@ -16,14 +15,17 @@ import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
 import { Modal } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import useCard from "../../components/Card/card";
 import { useContext } from "react";
 import { Store } from "../../redux/store";
 import { LoadingButton } from "@mui/lab";
+import Order from "../../models/OrderModel";
+import Product from "../../models/ProductModel";
+import User from "../../models/UserModel";
 
-const Checkout = ({ product }) => {
+const Checkout = ({ order }) => {
   const { state } = useContext(Store);
   const { userInfo } = state;
   const [visible, setVisible] = useState(false);
@@ -40,18 +42,22 @@ const Checkout = ({ product }) => {
   const paymentHandler = async () => {
     setLoading(true);
     let signedIn =
-      userInfo.signedIn.split("T")[0] +
+      order.user.signedIn.split("T")[0] +
       " " +
-      userInfo.signedIn.split("T")[1].split(".")[0];
+      order.user.signedIn.split("T")[1].split(".")[0];
+    let registered =
+      order.user.createdAt.split("T")[0] +
+      " " +
+      order.user.createdAt.split("T")[1].split(".")[0];
     try {
       const connection = await axios.get("/api/remote-address");
       const payment = await axios.post("/api/checkout/payment", {
-        /*   order: {
-          id: "33213112123",
-        }, */
+        order: {
+          id: order._id,
+        },
         product: {
-          price: product.price,
-          paidPrice: product.price,
+          price: order.product.price,
+          paidPrice: order.product.price,
         },
         /*       card: {
               name,
@@ -69,25 +75,42 @@ const Checkout = ({ product }) => {
           cvc: "200",
         },
         user: {
-          id: userInfo.id,
-          firstName: userInfo.firstName,
-          lastName: userInfo.lastName,
-          email: userInfo.email,
-          userLastLogin: signedIn,
+          id: order.user._id,
+          firstName: order.user.firstName,
+          lastName: order.user.lastName,
+          email: order.user.email,
+          lastLoginDate: signedIn,
+          registrationDate: registered,
           ip: connection.ip,
         },
         basketItems: [
           {
-            id: product._id,
-            name: product.nameTR,
-            category1: product.category,
+            id: order.product._id,
+            name: order.product.nameTR,
+            category1: order.product.category,
             itemType: "VIRTUAL",
-            price: product.price,
+            price: order.product.price,
           },
         ],
       });
       setIsSuccess(payment.data.status);
-
+      if (payment.data.status === "success") {
+        await axios.patch(
+          "/api/order",
+          {
+            id: order._id,
+            quantity: 365,
+            expiry: new Date(
+              new Date(order.expiry)?.setDate(
+                new Date(order.expiry)?.getDate() + 360
+              )
+            ),
+          },
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          }
+        );
+      }
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -232,15 +255,15 @@ const Checkout = ({ product }) => {
             <div className={styles.informations}>
               <div className={styles.cells}>
                 <h5 className={styles.title}>Ürün Adı</h5>
-                <p>{product.nameTR}</p>
+                <p>{order.product.nameTR}</p>
               </div>
               <div className={styles.cells}>
                 <h5 className={styles.title}>Adet / Süre</h5>
-                <p>{product.periodTR} Hizmet</p>
+                <p>{order.product.periodTR} Hizmet</p>
               </div>
               <div className={styles.cells}>
                 <h5 className={styles.title}>Fiyat</h5>
-                <p>{product.price}₺</p>
+                <p>{order.product.price}₺</p>
               </div>
             </div>
           </div>
@@ -250,7 +273,7 @@ const Checkout = ({ product }) => {
                 <h1 className={styles.header}>Özet</h1>
                 <div>
                   <p className={styles.SummaryDescription}>
-                    Toplam Tutar: {product.price}₺
+                    Toplam Tutar: {order.product.price}₺
                   </p>
                 </div>
               </div>
@@ -317,14 +340,19 @@ const Checkout = ({ product }) => {
 };
 
 export async function getServerSideProps(context) {
-  const { id } = context.query;
+  const { orderId } = context.query;
   await db.connect();
-  const product = await Product.findById(id).lean();
+  const order = await Order.findById(orderId)
+    .populate({
+      path: "product",
+      model: Product,
+    })
+    .populate({ path: "user", model: User });
 
   await db.disconnect();
   return {
     props: {
-      product: JSON.parse(JSON.stringify(product)),
+      order: JSON.parse(JSON.stringify(order)),
     },
   };
 }

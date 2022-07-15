@@ -375,7 +375,7 @@ const OrderTable = (props) => {
             <Button
               variant="outlined"
               onClick={() => {
-                setPlanExpiry(360);
+                setPlanExpiry(365);
               }}
             >
               12 AY

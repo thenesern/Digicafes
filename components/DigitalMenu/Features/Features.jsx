@@ -117,28 +117,6 @@ const Features = (props) => {
             </Button>
           </a>
         )}
-        {userInfo ? (
-          <a
-            className={styles.buy}
-            href={
-              props.location ? (
-                props.location === "Turkey" ? (
-                  "https://iyzi.link/AIUgpA"
-                ) : (
-                  "https://iyzi.link/AIUo8w"
-                )
-              ) : (
-                <Loading type="points-opacity" />
-              )
-            }
-            rel="noreferrer"
-            target="_blank"
-          >
-            {t("features:buy")}
-          </a>
-        ) : (
-          <h4>{t("features:signIn")}</h4>
-        )}
       </article>
       <article className={styles.article} data-aos="fade-left">
         <h2 className={styles.header}>{t("features:v2")}</h2>
@@ -196,28 +174,6 @@ const Features = (props) => {
               {t("features:v1s1")}
             </Button>
           </a>
-        )}
-        {userInfo ? (
-          <a
-            className={styles.buy}
-            href={
-              props.location ? (
-                props.location === "Turkey" ? (
-                  "https://iyzi.link/AIUgyw"
-                ) : (
-                  "https://iyzi.link/AIUpCw"
-                )
-              ) : (
-                <Loading type="points-opacity" />
-              )
-            }
-            rel="noreferrer"
-            target="_blank"
-          >
-            {t("features:buy")}
-          </a>
-        ) : (
-          <h4>{t("features:signIn")}</h4>
         )}
       </article>
     </section>
