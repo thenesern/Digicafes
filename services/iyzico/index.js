@@ -271,6 +271,5 @@ const refundPayments = () => {
 // refundPayments();
 
 module.exports = {
-  createPayment,
-  initializeThreeDSPayments,
+  createAPayment,
 };

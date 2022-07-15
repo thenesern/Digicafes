@@ -15,10 +15,11 @@ import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
 import { Modal } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useCard from "../../components/Card/card";
 import { useContext } from "react";
 import { Store } from "../../redux/store";
+import { LoadingButton } from "@mui/lab";
 
 const Checkout = ({ product }) => {
   const { state } = useContext(Store);
@@ -31,24 +32,19 @@ const Checkout = ({ product }) => {
   const closeHandler = () => {
     setVisible(false);
   };
+  const [loading, setLoading] = useState(false);
 
   const paymentHandler = async () => {
+    setLoading(true);
     try {
-      /*  const order = await axios.post(
-        "/api/order",
-        { product: product._id, user: userInfo.id },
-        {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        }
-      ); */
       const connection = await axios.get("/api/remote-address");
       const payment = await axios.post("/api/checkout/payment", {
-        order: {
-          id: "33213123",
-        },
+        /*   order: {
+          id: "33213112123",
+        }, */
         product: {
-          price: "300",
-          paidPrice: "300",
+          price: product.price,
+          paidPrice: product.price,
         },
         /*       card: {
               name,
@@ -78,18 +74,19 @@ const Checkout = ({ product }) => {
         },
         basketItems: [
           {
-            id: "TT11",
-            name: "Hizmet Adı",
-            category1: "Hizmetler",
+            id: product._id,
+            name: product.nameTR,
+            category1: product.category,
             itemType: "VIRTUAL",
-            price: "300",
+            price: product.price,
           },
         ],
       });
-      if (payment.threeDSHtmlContent) {
-        setModal(true);
-      }
+      console.log(payment);
+
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
       console.log(err);
     }
   };
@@ -184,16 +181,22 @@ const Checkout = ({ product }) => {
             <h3>Kart Bilgilerini Giriniz</h3>
           </Modal.Header>
           <Modal.Body>{render}</Modal.Body>
-          <Modal.Footer>
-            <Button
+          <Modal.Footer style={{ margin: "0", paddingTop: "0" }}>
+            <LoadingButton
+              size="medium"
               onClick={() => {
                 setStepper(2);
                 setVisible(false);
                 paymentHandler();
               }}
+              loading={loading}
+              style={{ margin: "1rem 2rem" }}
+              color="primary"
+              variant="contained"
+              disabled={loading}
             >
               Ödemeyi Tamamla
-            </Button>
+            </LoadingButton>
           </Modal.Footer>
         </Modal>
         <Modal
@@ -272,22 +275,11 @@ const Checkout = ({ product }) => {
   );
 };
 
-export async function getStaticPaths() {
+export async function getServerSideProps(context) {
+  const { id } = context.query;
   await db.connect();
-  const products = await Product.find();
-  await db.disconnect();
-  return {
-    paths: products.map((product) => {
-      return {
-        params: { id: JSON.parse(JSON.stringify(product._id)) },
-      };
-    }),
-    fallback: false, // false or 'blocking'
-  };
-}
-export async function getStaticProps({ params }) {
-  await db.connect();
-  const product = await Product.findById(params.id).lean();
+  const product = await Product.findById(id).lean();
+
   await db.disconnect();
   return {
     props: {

@@ -210,7 +210,6 @@ const Nav = ({ color }) => {
     lName,
     email,
     password,
-    phoneNumber,
     passwordConfirm,
   }) => {
     closeSnackbar();
@@ -232,7 +231,6 @@ const Nav = ({ color }) => {
       lowerLast[0],
       lowerLast[0]?.toUpperCase()
     );
-
     const firstName = betterFirst;
     const lastName = betterLast;
     const createdAt = new Date();
@@ -245,7 +243,7 @@ const Nav = ({ color }) => {
         password,
         passwordConfirm,
         signedIn,
-        phoneNumber,
+        phoneNumber: phoneNumber,
         createdAt,
         quantity: [14],
         userType: "Store Owner",
@@ -304,7 +302,7 @@ const Nav = ({ color }) => {
         email,
         password,
         passwordConfirm,
-        phoneNumber,
+        phoneNumber: phoneNumber,
         signedIn,
         createdAt,
         quantity: [14],
