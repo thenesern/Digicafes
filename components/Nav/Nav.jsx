@@ -53,7 +53,9 @@ const Nav = ({ color }) => {
   const [isFetching, setIsFetching] = useState(false);
   const [openMuiLogin, setOpenMuiLogin] = useState(false);
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
-  const [openMuiRegister, setOpenMuiRegister] = useState(false);
+  const [openMuiRegisterBooking, setOpenMuiRegisterBooking] = useState(false);
+  const [openMuiRegisterDigitalMenu, setOpenMuiRegisterDigitalMenu] =
+    useState(false);
   const [openMuiRegisterDefault, setOpenMuiRegisterDefault] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [openMenu, setOpenMenu] = useState(false);
@@ -95,10 +97,14 @@ const Nav = ({ color }) => {
   };
   const handleOpenMuiLogin = () => setOpenMuiLogin(true);
   const handleOpenForgotPassword = () => setOpenForgotPassword(true);
-  const handleOpenMuiRegister = () => setOpenMuiRegister(true);
+  const handleOpenMuiRegisterBooking = () => setOpenMuiRegisterBooking(true);
+  const handleOpenMuiRegisterDigitalMenu = () =>
+    setOpenMuiRegisterDigitalMenu(true);
   const handleOpenMuiRegisterDefault = () => setOpenMuiRegisterDefault(true);
   const handleCloseMuiLogin = () => setOpenMuiLogin(false);
-  const handleCloseMuiRegister = () => setOpenMuiRegister(false);
+  const handleCloseMuiRegisterBooking = () => setOpenMuiRegisterBooking(false);
+  const handleCloseMuiRegisterDigitalMenu = () =>
+    setOpenMuiRegisterDigitalMenu(false);
   const handleCloseMuiRegisterDefault = () => setOpenMuiRegisterDefault(false);
   const handleCloseForgotPassword = () => {
     setOpenForgotPassword(false);
@@ -264,6 +270,125 @@ const Nav = ({ color }) => {
     }, 3000);
   }, [isSentFormWithNotOTP]);
 
+  const registerHandlerBooking = async ({
+    fName,
+    lName,
+    email,
+    password,
+    passwordConfirm,
+  }) => {
+    closeSnackbar();
+    if (OTPResult !== "success") {
+      return setIsSentFormWithNotOTP(true);
+    }
+    if (password !== passwordConfirm) {
+      return enqueueSnackbar(t("nav:passwordError"), { variant: "error" });
+    }
+    const signedIn = new Date();
+    const lowerFirst = fName?.toLowerCase();
+    const betterFirst = lowerFirst?.replace(
+      lowerFirst[0],
+      lowerFirst[0]?.toUpperCase()
+    );
+
+    const lowerLast = lName?.toLowerCase();
+    const betterLast = lowerLast?.replace(
+      lowerLast[0],
+      lowerLast[0]?.toUpperCase()
+    );
+    const firstName = betterFirst;
+    const lastName = betterLast;
+    const createdAt = new Date();
+    try {
+      setIsFetching(true);
+      const { data } = await axios.post("/api/auth/register", {
+        firstName,
+        lastName,
+        email,
+        password,
+        passwordConfirm,
+        signedIn,
+        phoneNumber: phoneNumber,
+        createdAt,
+        from: "Booking",
+        quantity: [14],
+        userType: "Store Owner",
+      });
+      Cookies.remove("userInfo");
+      dispatch({ type: "USER_LOGIN", payload: data });
+      Cookies.set("userInfo", JSON.stringify(data));
+      setIsFetching(false);
+      handleCloseMuiRegisterBooking();
+    } catch (err) {
+      setIsFetching(false);
+      enqueueSnackbar(t("nav:emailError"), { variant: "error" });
+    }
+  };
+  useEffect(() => {
+    setTimeout(() => {
+      setIsSentFormWithNotOTP(false);
+    }, 3000);
+  }, [isSentFormWithNotOTP]);
+  const registerHandlerDigitalMenu = async ({
+    fName,
+    lName,
+    email,
+    password,
+    passwordConfirm,
+  }) => {
+    closeSnackbar();
+    if (OTPResult !== "success") {
+      return setIsSentFormWithNotOTP(true);
+    }
+    if (password !== passwordConfirm) {
+      return enqueueSnackbar(t("nav:passwordError"), { variant: "error" });
+    }
+    const signedIn = new Date();
+    const lowerFirst = fName?.toLowerCase();
+    const betterFirst = lowerFirst?.replace(
+      lowerFirst[0],
+      lowerFirst[0]?.toUpperCase()
+    );
+
+    const lowerLast = lName?.toLowerCase();
+    const betterLast = lowerLast?.replace(
+      lowerLast[0],
+      lowerLast[0]?.toUpperCase()
+    );
+    const firstName = betterFirst;
+    const lastName = betterLast;
+    const createdAt = new Date();
+    try {
+      setIsFetching(true);
+      const { data } = await axios.post("/api/auth/register", {
+        firstName,
+        lastName,
+        email,
+        password,
+        passwordConfirm,
+        signedIn,
+        phoneNumber: phoneNumber,
+        createdAt,
+        from: "Digital Menu",
+        quantity: [14],
+        userType: "Store Owner",
+      });
+      Cookies.remove("userInfo");
+      dispatch({ type: "USER_LOGIN", payload: data });
+      Cookies.set("userInfo", JSON.stringify(data));
+      setIsFetching(false);
+      handleCloseMuiRegisterDigitalMenu();
+    } catch (err) {
+      setIsFetching(false);
+      enqueueSnackbar(t("nav:emailError"), { variant: "error" });
+    }
+  };
+  useEffect(() => {
+    setTimeout(() => {
+      setIsSentFormWithNotOTP(false);
+    }, 3000);
+  }, [isSentFormWithNotOTP]);
+
   const registerHandlerDefault = async ({
     fName,
     lName,
@@ -376,10 +501,10 @@ const Nav = ({ color }) => {
                 onClick={() => {
                   handleCloseMuiLogin();
                   if (router.pathname === "/booking") {
-                    handleOpenMuiRegister();
+                    handleOpenMuiRegisterBooking();
                   }
                   if (router.pathname === "/digital-menu") {
-                    handleOpenMuiRegister();
+                    handleOpenMuiRegisterDigitalMenu();
                   }
                   if (router.pathname === "/") {
                     handleOpenMuiRegisterDefault();
@@ -586,8 +711,8 @@ const Nav = ({ color }) => {
         className={styles.modals}
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={openMuiRegister}
-        onClose={handleCloseMuiRegister}
+        open={openMuiRegisterDigitalMenu}
+        onClose={handleCloseMuiRegisterDigitalMenu}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -596,7 +721,7 @@ const Nav = ({ color }) => {
       >
         <Box className={styles.registerBox}>
           <span
-            onClick={handleCloseMuiRegister}
+            onClick={handleCloseMuiRegisterDigitalMenu}
             style={{
               position: "absolute",
               right: "5%",
@@ -612,7 +737,7 @@ const Nav = ({ color }) => {
             <span
               style={{ fontWeight: "600", cursor: "pointer" }}
               onClick={() => {
-                handleCloseMuiRegister();
+                handleCloseMuiRegisterDigitalMenu();
                 handleOpenMuiLogin();
               }}
             >
@@ -931,7 +1056,365 @@ const Nav = ({ color }) => {
                   color="primary"
                   auto
                   style={{ width: "100%" }}
-                  onClick={handleSubmit(registerHandler)}
+                  onClick={handleSubmit(registerHandlerDigitalMenu)}
+                >
+                  {t("nav:signUp")}
+                </ButtonNext>
+              </ListItem>
+            </List>
+          </form>
+        </Box>
+      </ModalMui>
+      <ModalMui
+        className={styles.modals}
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openMuiRegisterBooking}
+        onClose={handleCloseMuiRegisterBooking}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Box className={styles.registerBox}>
+          <span
+            onClick={handleCloseMuiRegisterBooking}
+            style={{
+              position: "absolute",
+              right: "5%",
+              top: "3%",
+              cursor: "pointer",
+            }}
+          >
+            X
+          </span>
+          <h1 className={styles.title}>{t("nav:signUp")}</h1>
+          <div className={styles.signin}>
+            <p>{t("nav:haveAccount")}</p>
+            <span
+              style={{ fontWeight: "600", cursor: "pointer" }}
+              onClick={() => {
+                handleCloseMuiRegisterBooking();
+                handleOpenMuiLogin();
+              }}
+            >
+              {t("nav:signIn")}
+            </span>
+          </div>
+          <form className={styles.form}>
+            <List>
+              <div style={{ display: "flex" }}>
+                <ListItem>
+                  <Controller
+                    name="fName"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      minLength: 2,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="fName"
+                        label={t("nav:name")}
+                        error={Boolean(errors.fName)}
+                        helperText={
+                          errors.fName
+                            ? errors.fName.type === "minLength"
+                              ? t("nav:validName")
+                              : t("nav:proveName")
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Controller
+                    name="lName"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      minLength: 2,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="lName"
+                        label={t("nav:surName")}
+                        error={Boolean(errors.lName)}
+                        helperText={
+                          errors.lName
+                            ? errors.lName.type === "minLength"
+                              ? t("nav:validSurName")
+                              : t("nav:proveSurName")
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+              </div>
+              <ListItem>
+                <Controller
+                  name="email"
+                  control={control}
+                  defaultValue=""
+                  rules={{
+                    required: true,
+                    pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      variant="outlined"
+                      fullWidth
+                      id="email"
+                      label="Email"
+                      inputProps={{ type: "email" }}
+                      error={Boolean(errors.email)}
+                      onChange={(e) => setEmail(e.target.value)}
+                      helperText={
+                        errors.email
+                          ? errors.email.type === "pattern"
+                            ? t("nav:validEmail")
+                            : t("nav:proveEmail")
+                          : ""
+                      }
+                      {...field}
+                    ></TextField>
+                  )}
+                ></Controller>
+              </ListItem>
+
+              <div style={{ display: "flex" }}>
+                <ListItem>
+                  <Controller
+                    name="password"
+                    control={control}
+                    fullWidth
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      minLength: 6,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        id="password"
+                        fullWidth
+                        label={t("nav:password")}
+                        inputProps={{ type: "password" }}
+                        error={Boolean(errors.password)}
+                        helperText={
+                          errors.password
+                            ? errors.password.type === "minLength"
+                              ? t("nav:passwordMin")
+                              : t("nav:enterAPassword")
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Controller
+                    name="passwordConfirm"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      minLength: 6,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        id="passwordConfirm"
+                        label={t("nav:passwordConfirm")}
+                        inputProps={{ type: "password" }}
+                        error={Boolean(errors.passwordConfirm)}
+                        helperText={
+                          errors.passwordConfirm
+                            ? errors.passwordConfirm.type === "minLength"
+                              ? t("nav:passwordMin")
+                              : t("nav:enterAPassword")
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+              </div>
+              <ListItem
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "2rem",
+                }}
+              >
+                <PhoneInput
+                  country={"tr"}
+                  value={phoneNumber}
+                  onChange={setPhoneNumber}
+                  disabled={OTPResult === "success" ? true : false}
+                  inputStyle={{
+                    height: "3rem",
+                    fontSize: "1rem",
+                    width: "100%",
+                  }}
+                />
+                {isOTPSent ? (
+                  <>
+                    {OTPResult !== "success" ? (
+                      <div
+                        style={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "2rem",
+                        }}
+                      >
+                        <TextField
+                          fullWidth
+                          type="number"
+                          id="otp"
+                          label="Kodu Giriniz"
+                          error={errorOTP}
+                          helperText={
+                            errorOTP ? "Lütfen Onay Kodunu Giriniz" : ""
+                          }
+                          value={enteredOTP}
+                          onChange={(e) => setEnteredOTP(e.target.value)}
+                        ></TextField>
+                        <ButtonNext
+                          bordered
+                          auto
+                          onClick={(e) => {
+                            if (enteredOTP?.toString().length === 4) {
+                              setErrorOTP(false);
+                              handleCheckOTP(e);
+                            } else {
+                              setErrorOTP(true);
+                            }
+                          }}
+                        >
+                          Gönder
+                        </ButtonNext>
+                      </div>
+                    ) : (
+                      <VerifiedIcon color="success" />
+                    )}
+                  </>
+                ) : (
+                  <ButtonNext
+                    bordered
+                    disabled={phoneNumber ? false : true}
+                    onClick={handleSendOTP}
+                    style={{ width: "90%" }}
+                  >
+                    <span>Kod Gönder</span>
+                  </ButtonNext>
+                )}
+              </ListItem>
+              {isSentFormWithNotOTP && (
+                <p
+                  align="center"
+                  style={{ color: "#d90429", fontSize: "14px" }}
+                >
+                  Lütfen Telefon Numaranızı Onaylayınız.
+                </p>
+              )}
+
+              <div className={styles.aggreement}>
+                {router.locale === "tr" ? (
+                  <div className={styles.privacy}>
+                    <p>
+                      Kişisel verileriniz,
+                      <a
+                        href="/gizlilik-politikasi"
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                        target="_blank"
+                      >
+                        Gizlilik Politikası
+                      </a>
+                      kapsamında işlenmektedir. “Üye ol” butonuna basarak
+                      <a
+                        href="/uyelik-sozlesmesi"
+                        target="_blank"
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Üyelik Sözleşmesi
+                      </a>
+                      ’ni, ve
+                      <a
+                        href="/cerez-politikasi"
+                        target="_blank"
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Çerez Politikası
+                      </a>
+                      ’nı okuduğunuzu ve kabul ettiğinizi onaylıyorsunuz.
+                    </p>
+                  </div>
+                ) : (
+                  <p style={{ textAlign: "center" }}>
+                    Click “Sign Up” to agree to Digicafes&apos;
+                    <LinkRouter href="/terms-of-service" passHref>
+                      <span
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Terms of Service
+                      </span>
+                    </LinkRouter>
+                    and acknowledge that Digicafes&apos;
+                    <LinkRouter href="/privacy-policy" passHref>
+                      <span
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Privacy Policy
+                      </span>
+                    </LinkRouter>
+                    applies to you.
+                  </p>
+                )}
+              </div>
+              <ListItem>
+                <ButtonNext
+                  flat
+                  color="primary"
+                  auto
+                  style={{ width: "100%" }}
+                  onClick={handleSubmit(registerHandlerBooking)}
                 >
                   {t("nav:signUp")}
                 </ButtonNext>
@@ -1590,7 +2073,7 @@ const Nav = ({ color }) => {
             {router.pathname === "/digital-menu" && (
               <button
                 className={styles.signUp}
-                onClick={() => handleOpenMuiRegister(true)}
+                onClick={() => handleOpenMuiRegisterDigitalMenu(true)}
               >
                 {t("nav:tryForFree")}
               </button>
@@ -1598,7 +2081,7 @@ const Nav = ({ color }) => {
             {router.pathname === "/booking" && (
               <button
                 className={styles.signUp}
-                onClick={() => handleOpenMuiRegister(true)}
+                onClick={() => handleOpenMuiRegisterBooking(true)}
               >
                 {t("nav:tryForFree")}
               </button>
@@ -1804,17 +2287,26 @@ const Nav = ({ color }) => {
               <button className={styles.signIn} onClick={handleOpenMuiLogin}>
                 {t("nav:signIn")}
               </button>
-              {router.pathname === "/digital-menu" || "/booking" ? (
+              {router.pathname === "/digital-menu" && (
                 <button
                   className={styles.signUp}
-                  onClick={handleOpenMuiRegister}
+                  onClick={() => registerHandlerDigitalMenu(true)}
                 >
                   {t("nav:tryForFree")}
                 </button>
-              ) : (
+              )}
+              {router.pathname === "/booking" && (
                 <button
                   className={styles.signUp}
-                  onClick={handleOpenMuiRegisterDefault}
+                  onClick={() => handleOpenMuiRegisterBooking(true)}
+                >
+                  {t("nav:tryForFree")}
+                </button>
+              )}
+              {router.pathname === "/" && (
+                <button
+                  className={styles.signUp}
+                  onClick={() => handleOpenMuiRegisterDefault(true)}
                 >
                   Üye Ol
                 </button>

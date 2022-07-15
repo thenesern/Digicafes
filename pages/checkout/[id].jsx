@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import Nav from "../../components/Nav/Nav";
 import Product from "../../models/ProductModel";
@@ -10,12 +10,14 @@ import Stack from "@mui/material/Stack";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Check from "@mui/icons-material/Check";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
 import { Modal } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import useCard from "../../components/Card/card";
 import { useContext } from "react";
 import { Store } from "../../redux/store";
@@ -33,9 +35,14 @@ const Checkout = ({ product }) => {
     setVisible(false);
   };
   const [loading, setLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(null);
 
   const paymentHandler = async () => {
     setLoading(true);
+    let signedIn =
+      userInfo.signedIn.split("T")[0] +
+      " " +
+      userInfo.signedIn.split("T")[1].split(".")[0];
     try {
       const connection = await axios.get("/api/remote-address");
       const payment = await axios.post("/api/checkout/payment", {
@@ -66,10 +73,7 @@ const Checkout = ({ product }) => {
           firstName: userInfo.firstName,
           lastName: userInfo.lastName,
           email: userInfo.email,
-          signedIn:
-            userInfo.signedIn.split("T")[0] +
-            " " +
-            userInfo.signedIn.split("T")[1].split(".")[0],
+          userLastLogin: signedIn,
           ip: connection.ip,
         },
         basketItems: [
@@ -82,7 +86,7 @@ const Checkout = ({ product }) => {
           },
         ],
       });
-      console.log(payment);
+      setIsSuccess(payment.data.status);
 
       setLoading(false);
     } catch (err) {
@@ -240,35 +244,72 @@ const Checkout = ({ product }) => {
               </div>
             </div>
           </div>
-          <div className={styles.right}>
-            <div className={styles.summary}>
-              <h1 className={styles.header}>Özet</h1>
-              <div>
-                <p className={styles.SummaryDescription}>
-                  Toplam Tutar: {product.price}₺
-                </p>
+          {isSuccess === null ? (
+            <div className={styles.right}>
+              <div className={styles.summary}>
+                <h1 className={styles.header}>Özet</h1>
+                <div>
+                  <p className={styles.SummaryDescription}>
+                    Toplam Tutar: {product.price}₺
+                  </p>
+                </div>
               </div>
+              {userInfo ? (
+                <div className={styles.footer}>
+                  <Button
+                    className={styles.button}
+                    variant="contained"
+                    type="submit"
+                    onClick={() => {
+                      handler();
+                      setStepper(1);
+                    }}
+                    fullWidth
+                    style={{ backgroundColor: "#264653" }}
+                  >
+                    Siparişi Tamamla
+                  </Button>
+                </div>
+              ) : (
+                <h6>Siparişi tamamlamak için lütfen giriş yapınız.</h6>
+              )}
             </div>
-            {userInfo ? (
-              <div className={styles.footer}>
-                <Button
-                  className={styles.button}
-                  variant="contained"
-                  type="submit"
-                  onClick={() => {
-                    handler();
-                    setStepper(1);
-                  }}
-                  fullWidth
-                  style={{ backgroundColor: "#264653" }}
-                >
-                  Siparişi Tamamla
-                </Button>
-              </div>
-            ) : (
-              <h6>Siparişi tamamlamak için lütfen giriş yapınız.</h6>
-            )}
-          </div>
+          ) : isSuccess === "success" && isSuccess !== null ? (
+            <div
+              className={styles.right}
+              style={{
+                dispaly: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+                gap: "1rem",
+              }}
+            >
+              <h3 style={{ color: "#000814" }} align="center">
+                Satın aldığınız için teşekkür ederiz.
+              </h3>
+              <CheckCircleOutlineIcon
+                color="success"
+                style={{ fontSize: "7rem" }}
+              />
+            </div>
+          ) : (
+            <div
+              className={styles.right}
+              style={{
+                dispaly: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+                gap: "1rem",
+              }}
+            >
+              <h3 style={{ color: "#000814" }} align="center">
+                Ödeme gerçekleştirilemedi.
+              </h3>
+              <ErrorOutlineIcon color="error" style={{ fontSize: "7rem" }} />
+            </div>
+          )}
         </div>
       </div>
     </div>
