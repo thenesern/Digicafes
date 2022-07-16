@@ -7,7 +7,6 @@ const handler = nc();
 
 handler.use(isAuth);
 handler.post(async (req, res) => {
-  console.log(req.body);
   await db.connect();
   const store = await Booking.findOne({ storeName: req.body.storeName });
   res.json({ status: "success", store });

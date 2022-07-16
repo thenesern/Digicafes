@@ -18,6 +18,7 @@ import { useSnackbar } from "notistack";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { v4 as uuidv4 } from "uuid";
 import { DataGrid } from "@mui/x-data-grid";
 import { trTR } from "@mui/x-data-grid";
@@ -34,6 +35,7 @@ const BookingDashboard = ({ userOrder }) => {
   const [file, setFile] = useState(null);
   const [address, setAddress] = useState(store?.address?.address);
   const [countryName, setCountryName] = useState(store?.address?.country);
+  const [tableDate, setTableDate] = useState(new Date());
   const [stateName, setStateName] = useState(store?.address?.state);
   const [cityName, setCityName] = useState(store?.address?.city);
   const [phoneNumber, setPhoneNumber] = useState(
@@ -59,6 +61,7 @@ const BookingDashboard = ({ userOrder }) => {
   const [order, setOrder] = useState([]);
   const [stateCode, setStateCode] = useState("");
   const { t } = useTranslation();
+  console.log(tableDate);
   /*   const [gate, setGate] = useState(store?.bookingSchema.gate || "none");
   const [stage, setStage] = useState(store?.bookingSchema.stage || "none");
   const [columns, setColumns] = useState(store?.bookingSchema.columns || null);
@@ -71,6 +74,8 @@ const BookingDashboard = ({ userOrder }) => {
   const [maxCap, setMaxCap] = useState(null);
   const [remainTables, setRemainTables] = useState(null);
   const [images, setImages] = useState(store?.gallery?.images || []);
+  const [remains, setRemains] = useState(0);
+  const [tableData, setTableData] = useState(store?.bookings || []);
   const [galleryImage, setGalleryImage] = useState(
     store?.gallery?.galleryImage || null
   );
@@ -149,6 +154,13 @@ const BookingDashboard = ({ userOrder }) => {
   const audio = audioRef?.current?.audioEl?.current;
 
   useEffect(() => {
+    let people = 0;
+    store.bookings.map((booking) => (people += booking.people));
+    setRemains(people);
+  }, [store?.bookings]);
+
+  console.log(remains);
+  useEffect(() => {
     retrieveData().finally(() => {
       setTimeout(() => setRefreshToken(Math.random()), 15000);
     });
@@ -175,6 +187,16 @@ const BookingDashboard = ({ userOrder }) => {
     }
   };
   useEffect(() => {
+    setTableData(
+      store?.bookings.filter(
+        (booking) =>
+          new Date(booking?.createdAt).toLocaleDateString() ===
+          new Date(tableDate).toLocaleDateString()
+      )
+    );
+  }, [tableDate, store?.bookings]);
+
+  useEffect(() => {
     if (isNew) {
       enqueueSnackbar("Yeni Rezervasyon", { variant: "success" });
       audio.play();
@@ -192,7 +214,6 @@ const BookingDashboard = ({ userOrder }) => {
       setCopySuccess(false);
     }
   };
-
   useEffect(() => {
     let tables = 0;
     let maxCap = 0;
@@ -684,6 +705,28 @@ const BookingDashboard = ({ userOrder }) => {
             objectFit="contain"
             className={styles.logo}
           />
+          <div className={styles.side}>
+            <h3 className={styles.header} style={{ color: "#fff" }}>
+              Paylaş
+            </h3>
+            <Button
+              className={styles.copy}
+              onClick={(e) =>
+                copyToClipBoard(
+                  `https://www.digicafes.com/booking/${store?.storeName}`
+                )
+              }
+              variant="outlined"
+            >
+              {copySuccess ? (
+                <span>Kopyalandı!</span>
+              ) : (
+                <span style={{ textTransform: "lowercase" }}>
+                  {`https://www.digicafes.com/booking/${store?.storeName}`}
+                </span>
+              )}
+            </Button>
+          </div>
           <div>
             <h3 className={styles.sidebarHeader}>
               <DashboardIcon />
@@ -851,7 +894,7 @@ const BookingDashboard = ({ userOrder }) => {
         <div className={styles.topBar}>
           <div className={styles.side}>
             <h3 className={styles.header}>İşletme Adı</h3>
-            <p className={styles.desc}> {store?.storeName}</p>
+            <p className={styles.desc}>{store?.storeName}</p>
           </div>
           <div className={styles.side}>
             <h3 className={styles.header}>Masa Sayısı</h3>
@@ -862,29 +905,27 @@ const BookingDashboard = ({ userOrder }) => {
             <p className={styles.desc}>{maxCap}</p>
           </div>
           <div className={styles.side}>
-            <h3 className={styles.header}>Link</h3>
-            <Button
-              className={styles.copy}
-              onClick={(e) =>
-                copyToClipBoard(
-                  `https://www.digicafes.com/booking/${store?.storeName}`
-                )
-              }
-              variant="outlined"
-            >
-              {copySuccess ? (
-                <span>Kopyalandı!</span>
-              ) : (
-                <span style={{ textTransform: "lowercase" }}>
-                  {`https://www.digicafes.com/booking/${store?.storeName}`}
-                </span>
-              )}
-            </Button>
+            <h3 className={styles.header}>Kalan Yer (Kişi)</h3>
+            <p className={styles.desc}> {+maxCap - +remains}</p>
+          </div>
+          <div className={styles.side}>
+            <h3 className={styles.header}>Tablo</h3>
+            <TextField
+              id="date"
+              label="Tarih Seçiniz"
+              type="date"
+              defaultValue={tableDate}
+              onChange={(e) => setTableDate(new Date(e.target.value))}
+              sx={{ width: 220 }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
           </div>
         </div>
         <div className={styles.body}>
           <DataGrid
-            rows={store?.bookings}
+            rows={tableData}
             classnName={styles.table}
             density="compact"
             sx={{ padding: "0 1rem" }}
@@ -1752,12 +1793,43 @@ const BookingDashboard = ({ userOrder }) => {
                 flexDirection: "column",
               }}
             >
-              <p>Toplam Masa Sayısı: {store?.tableNum}</p>
-              <p>
-                Kalan Masa Sayısı:
-                {Number(store?.tableNum) - Number(remainTables)}
-              </p>
-              <p>Maksimum Kişi Sayısı: {maxCap}</p>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "1rem",
+                  textAlign: "center",
+                }}
+              >
+                <div>
+                  <h5 align="center">Toplam Masa Sayısı</h5>
+                  <span
+                    align="center"
+                    style={{ width: "100%", textAlign: "center" }}
+                  >
+                    {store?.tableNum}
+                  </span>
+                </div>
+                <div>
+                  <h5 align="center">Kalan Masa Sayısı</h5>
+                  <span
+                    align="center"
+                    style={{ width: "100%", textAlign: "center" }}
+                  >
+                    {Number(store?.tableNum) - Number(remainTables)}
+                  </span>
+                </div>
+                <div>
+                  <h5 align="center">Maksimum Kişi Sayısı</h5>
+                  <span
+                    align="center"
+                    style={{ width: "100%", textAlign: "center" }}
+                  >
+                    {maxCap}
+                  </span>
+                </div>
+              </div>
               <ListItem
                 style={{
                   display: "flex",
@@ -1776,16 +1848,7 @@ const BookingDashboard = ({ userOrder }) => {
                     onClick={() => {
                       setCapacity(capacity.filter((c) => c.id !== table.id));
                     }}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      width: "100%",
-                      height: "7rem",
-                      gap: "2rem",
-                      padding: "0 10px",
-                      border: "1px solid lightgray",
-                    }}
+                    className={styles.cell}
                   >
                     <div>
                       <h5 style={{ margin: "0", padding: "6px 0" }}>
@@ -1803,6 +1866,11 @@ const BookingDashboard = ({ userOrder }) => {
                         {table.tableQuantity}
                       </p>
                     </div>
+                    <DeleteOutlineIcon
+                      color="error"
+                      style={{ display: "none" }}
+                      className={styles.deleteIcon}
+                    />
                   </div>
                 ))}
               </ListItem>
