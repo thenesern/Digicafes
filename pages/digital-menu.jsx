@@ -183,8 +183,8 @@ const DijitalMenu = () => {
                   src={QRMenuMockup}
                   alt=""
                   layout="responsive"
-                  data-aos="fade-right"
                   objectFit="contain"
+                  data-aos="fade-right"
                 />
               ) : (
                 <Image
