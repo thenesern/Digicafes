@@ -61,7 +61,6 @@ const BookingDashboard = ({ userOrder }) => {
   const [order, setOrder] = useState([]);
   const [stateCode, setStateCode] = useState("");
   const { t } = useTranslation();
-  console.log(tableDate);
   /*   const [gate, setGate] = useState(store?.bookingSchema.gate || "none");
   const [stage, setStage] = useState(store?.bookingSchema.stage || "none");
   const [columns, setColumns] = useState(store?.bookingSchema.columns || null);
@@ -74,7 +73,8 @@ const BookingDashboard = ({ userOrder }) => {
   const [maxCap, setMaxCap] = useState(null);
   const [remainTables, setRemainTables] = useState(null);
   const [images, setImages] = useState(store?.gallery?.images || []);
-  const [remains, setRemains] = useState(0);
+  const [reserved, setReserved] = useState(0);
+  const [remains, setRemains] = useState(+maxCap - +reserved || 0);
   const [tableData, setTableData] = useState(store?.bookings || []);
   const [galleryImage, setGalleryImage] = useState(
     store?.gallery?.galleryImage || null
@@ -149,17 +149,26 @@ const BookingDashboard = ({ userOrder }) => {
   const [copySuccess, setCopySuccess] = useState(false);
   const [isNotification, setIsNotification] = useState(false);
   const [refreshToken, setRefreshToken] = useState(Math.random());
-
   const audioRef = useRef();
   const audio = audioRef?.current?.audioEl?.current;
 
   useEffect(() => {
     let people = 0;
-    store.bookings.map((booking) => (people += booking.people));
-    setRemains(people);
-  }, [store?.bookings]);
+    store.bookings
+      .filter(
+        (booking) =>
+          new Date(booking?.createdAt).toLocaleDateString() ===
+          new Date(tableDate).toLocaleDateString()
+      )
+      .map((booking) => (people += booking.people));
 
-  console.log(remains);
+    setReserved(people);
+  }, [store?.bookings, tableDate]);
+
+  useEffect(() => {
+    setRemains(+maxCap - +reserved);
+  }, [reserved, maxCap]);
+
   useEffect(() => {
     retrieveData().finally(() => {
       setTimeout(() => setRefreshToken(Math.random()), 15000);
@@ -906,7 +915,7 @@ const BookingDashboard = ({ userOrder }) => {
           </div>
           <div className={styles.side}>
             <h3 className={styles.header}>Kalan Yer (Kişi)</h3>
-            <p className={styles.desc}> {+maxCap - +remains}</p>
+            <p className={styles.desc}> {remains}</p>
           </div>
           <div className={styles.side}>
             <h3 className={styles.header}>Tablo</h3>
