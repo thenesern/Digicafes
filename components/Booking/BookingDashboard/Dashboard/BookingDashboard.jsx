@@ -296,6 +296,30 @@ const BookingDashboard = ({ userOrder }) => {
       headerName: "Kişi Sayısı",
       flex: 1,
     },
+    {
+      field: "isPaid",
+      headerName: "Kapora",
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <div>
+            {params.row.isPaid === true ? (
+              <p
+                style={{
+                  backgroundColor: "#a3b18a",
+                  padding: "2rem",
+                  minWidth: "8rem",
+                }}
+              >
+                Ödendi
+              </p>
+            ) : (
+              <p style={{ padding: "2rem", minWidth: "8rem" }}>Ödenmedi</p>
+            )}
+          </div>
+        );
+      },
+    },
 
     {
       field: "date",
@@ -534,7 +558,6 @@ const BookingDashboard = ({ userOrder }) => {
       });
     }
   };
-  console.log(isPricesActive);
   const handleUpdatePrices = async (e) => {
     e.preventDefault();
     try {

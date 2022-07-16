@@ -21,10 +21,16 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useSnackbar } from "notistack";
 import axios from "axios";
 import Cookies from "js-cookie";
+import useCard from "../../Card/card";
 const localeMap = {
   en: enLocale,
   tr: trLocale,
 };
+import { Modal, Text } from "@nextui-org/react";
+import { Card } from "@nextui-org/react";
+import nanoid from "../../../utils/nanoid";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const StoreBookingShowcase = ({ store }) => {
   const [locale, setLocale] = useState("tr");
@@ -32,6 +38,7 @@ const StoreBookingShowcase = ({ store }) => {
   const [activeNavBar, setActiveNavBar] = useState("aboutUs");
   const [date, setDate] = useState(new Date());
   const [people, setPeople] = useState(1);
+  const [isSuccess, setIsSuccess] = useState(null);
   const [dayName, setDayName] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
@@ -39,6 +46,7 @@ const StoreBookingShowcase = ({ store }) => {
   const [difference, setDifference] = useState(null);
   const [selectedHour, setSelectedHour] = useState("");
   const [isPeopleValid, setIsPeopleValid] = useState(true);
+  const [hoursError, setHoursError] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const [isDateValid, setIsDateValid] = useState(true);
@@ -47,6 +55,108 @@ const StoreBookingShowcase = ({ store }) => {
   const [remains, setRemains] = useState(0);
   const [reserved, setReserved] = useState(0);
   const [progress, setProgress] = useState(0);
+  const { render, name, number, cvc, expiry } = useCard();
+  const [visible, setVisible] = useState(false);
+
+  let user;
+  if (Cookies.get("userInfo")) {
+    user = JSON.parse(Cookies.get("userInfo"));
+  }
+
+  const handler = () => setVisible(true);
+  const closeHandler = () => {
+    setVisible(false);
+  };
+
+  const paymentHandler = async () => {
+    const createdAt = new Date();
+    setLoading(true);
+    let signedIn =
+      user.signedIn.split("T")[0] +
+      " " +
+      user.signedIn.split("T")[1].split(".")[0];
+    let registered =
+      user.createdAt.split("T")[0] +
+      " " +
+      user.createdAt.split("T")[1].split(".")[0];
+    let phoneNumber = "+" + user?.phoneNumber;
+    try {
+      const connection = await axios.get("/api/remote-address");
+      const payment = await axios.post("/api/checkout/payment", {
+        order: {
+          id: nanoid(),
+        },
+        product: {
+          price: store?.prices?.price,
+          paidPrice: store?.prices?.price,
+        },
+        /*       card: {
+              name,
+            number,
+                expireMonth: expiry.split("/")[0],
+                expireYear: expiry.split("/")[1],
+               cvc,
+                registerCard: 0,
+              }, */
+        card: {
+          name: "Enes Eren",
+          number: "4987490000000002",
+          month: "12",
+          year: "24",
+          cvc: "200",
+        },
+        user: {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          lastLoginDate: signedIn,
+          registrationDate: registered,
+          ip: connection.ip,
+          phoneNumber: +phoneNumber,
+        },
+        basketItems: [
+          {
+            id: store?._id,
+            name: "Deposit",
+            category1: "Store Deposit",
+            itemType: "VIRTUAL",
+            price: store?.prices?.price,
+          },
+        ],
+      });
+      setIsSuccess(payment.data.status);
+
+      if (payment.data.status === "success") {
+        await axios.post(
+          `/api/booking/${store?.storeName}/booking`,
+          {
+            storeName: store?.storeName,
+            bookings: [
+              {
+                createdAt,
+                people: Number(people),
+                date,
+                userName: user.firstName + " " + user.lastName,
+                userEmail: user.email,
+                storeName: store?.storeName,
+                phoneNumber: user?.phoneNumber,
+                isPaid: true,
+              },
+            ],
+            userId: user?.id,
+          },
+          {
+            headers: { authorization: `Bearer ${user.token}` },
+          }
+        );
+      }
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     if (remains === maxCap) {
@@ -63,12 +173,7 @@ const StoreBookingShowcase = ({ store }) => {
       );
     }
   }, [remains]);
-  console.log(remains);
-  console.log(progress);
-  let user;
-  if (Cookies.get("userInfo")) {
-    user = JSON.parse(Cookies.get("userInfo"));
-  }
+
   useEffect(() => {
     let tables = 0;
     let maxCap = 0;
@@ -77,6 +182,12 @@ const StoreBookingShowcase = ({ store }) => {
     );
     setMaxCap(maxCap);
   }, [capacity]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setHoursError(false);
+    }, 3000);
+  }, [hoursError]);
 
   useEffect(() => {
     let people = 0;
@@ -202,6 +313,7 @@ const StoreBookingShowcase = ({ store }) => {
               userEmail: user.email,
               storeName: store?.storeName,
               phoneNumber: user?.phoneNumber,
+              isPaid: false,
             },
           ],
           userId: user?.id,
@@ -222,6 +334,35 @@ const StoreBookingShowcase = ({ store }) => {
 
   return (
     <div className={styles.container}>
+      <Modal
+        closeButton
+        preventClose
+        width="46rem"
+        aria-labelledby="modal-title"
+        open={visible}
+        onClose={closeHandler}
+      >
+        <Modal.Header>
+          <h3>Kart Bilgilerini Giriniz</h3>
+        </Modal.Header>
+        <Modal.Body>{render}</Modal.Body>
+        <Modal.Footer style={{ margin: "0", paddingTop: "0" }}>
+          <LoadingButton
+            size="medium"
+            onClick={() => {
+              setVisible(false);
+              paymentHandler();
+            }}
+            loading={loading}
+            style={{ margin: "1rem 2rem" }}
+            color="primary"
+            variant="contained"
+            disabled={loading}
+          >
+            Ödemeyi Tamamla
+          </LoadingButton>
+        </Modal.Footer>
+      </Modal>
       <div className={styles.app}>
         <div className={styles.left}>
           {store?.storeLogo ? (
@@ -657,21 +798,91 @@ const StoreBookingShowcase = ({ store }) => {
                   )}
                 </Stack>
               </LocalizationProvider>
-              <LoadingButton
-                size="medium"
-                fullWidth
-                onClick={(e) => {
-                  if (isPeopleValid && isDateValid && selectedHour) {
-                    handleSendBooking(e);
-                  }
-                }}
-                loading={loading}
-                color="warning"
-                variant="contained"
-                disabled={loading}
+              {hoursError && (
+                <Text color="error" align="center" style={{ width: "100%" }}>
+                  Lütfen bir saat seçiniz.
+                </Text>
+              )}
+              <Card
+                isHoverable
+                variant="bordered"
+                css={{ mw: "400px", backgroundColor: "#2b2d42" }}
               >
-                Rezervasyon Yap
-              </LoadingButton>
+                <Card.Body>
+                  <Text color="warning">
+                    {store?.prices?.isActive ? (
+                      <p align="center">Ücretli: {store?.prices?.price}₺</p>
+                    ) : (
+                      <p align="center">Ücretsiz</p>
+                    )}
+                  </Text>
+                </Card.Body>
+              </Card>
+
+              {isSuccess === null ? (
+                <LoadingButton
+                  size="medium"
+                  fullWidth
+                  onClick={(e) => {
+                    if (isPeopleValid && isDateValid && selectedHour) {
+                      handler();
+                    }
+                    if (!selectedHour) {
+                      setHoursError(true);
+                    }
+                  }}
+                  loading={loading}
+                  color="warning"
+                  variant="contained"
+                  disabled={loading}
+                >
+                  Rezervasyon Yap
+                </LoadingButton>
+              ) : isSuccess === "success" && isSuccess !== null ? (
+                <div
+                  style={{
+                    dispaly: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    gap: "1rem",
+                  }}
+                >
+                  <h3 style={{ color: "#000814" }} align="center">
+                    Satın aldığınız için teşekkür ederiz.
+                  </h3>
+                  <CheckCircleOutlineIcon
+                    color="success"
+                    style={{
+                      fontSize: "7rem",
+                      width: "100%",
+                      margin: "0 auto",
+                    }}
+                  />
+                </div>
+              ) : (
+                <div
+                  style={{
+                    dispaly: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    gap: "1rem",
+                  }}
+                >
+                  <h3 style={{ color: "#000814" }} align="center">
+                    Ödeme gerçekleştirilemedi.
+                  </h3>
+                  <ErrorOutlineIcon
+                    color="error"
+                    style={{
+                      fontSize: "7rem",
+                      margin: "0 auto",
+                      width: "100%",
+                    }}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
