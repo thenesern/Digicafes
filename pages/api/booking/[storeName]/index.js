@@ -7,12 +7,6 @@ const handler = nc();
 
 handler.use(isAuth);
 
-handler.get(async (req, res) => {
-  await db.connect();
-  const bookings = await Booking.find();
-  res.json({ status: "success", bookings });
-});
-
 handler.post(async (req, res) => {
   await db.connect();
   const newStore = new Booking({

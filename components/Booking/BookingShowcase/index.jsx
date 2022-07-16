@@ -39,7 +39,7 @@ const StoreBookingShowcase = ({ store }) => {
   const [difference, setDifference] = useState(null);
   const [selectedHour, setSelectedHour] = useState("");
   const [isPeopleValid, setIsPeopleValid] = useState(true);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const [isDateValid, setIsDateValid] = useState(true);
   let user;
@@ -209,19 +209,7 @@ const StoreBookingShowcase = ({ store }) => {
             </>
           ) : (
             <div>
-              <h1 className={styles.storeName}>
-                {store?.storeName?.split(" ")[0][0] ===
-                store?.storeName[0][0].toLowerCase()
-                  ? store?.storeName
-                      ?.split(" ")
-                      .map((item) =>
-                        item.replace(
-                          item[0],
-                          item[0].toLowerCase().toUpperCase()
-                        )
-                      )
-                  : store?.storeName}
-              </h1>
+              <h1 className={styles.storeName}>{store?.storeName}</h1>
               <p
                 className={styles.address}
               >{`${store?.address?.city} / ${store?.address?.state}, ${store?.address?.country}`}</p>
@@ -229,7 +217,10 @@ const StoreBookingShowcase = ({ store }) => {
           )}
           <div className={styles.gallery}>
             <Image
-              src={store?.gallery?.galleryImage}
+              src={
+                store?.gallery?.galleryImage ||
+                "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1657981097/uguss8i7czvs44iflxqp.png"
+              }
               className={styles.galleryImage}
               alt={store?.storeName}
               width="100%"
