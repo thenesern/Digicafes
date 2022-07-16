@@ -57,7 +57,7 @@ const StoreCreation = ({ userOrder, booking }) => {
   };
 
   function containsSpecialChars(str) {
-    const specialChars = /[`!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?~]/;
+    const specialChars = /[`@#$%^&*()+\=\[\]{};"\\|<>\/~]/;
     return specialChars.test(str);
   }
 
@@ -115,7 +115,7 @@ const StoreCreation = ({ userOrder, booking }) => {
       const { data } = await axios.post(
         `/api/booking/${storeName}`,
         {
-          storeName: storeName,
+          storeName: storeName?.trim(),
           storeLinkName: storeLinkName,
           tableNum,
           createdAt,
@@ -179,12 +179,23 @@ const StoreCreation = ({ userOrder, booking }) => {
                     variant="outlined"
                     id="brandName"
                     autoFocus="true"
+                    value={storeName}
                     rules={{
                       required: true,
                     }}
                     style={{ width: "100%" }}
                     onChange={(e) => {
-                      setStoreName(e.target.value.trim());
+                      setStoreName(
+                        e.target.value
+                          ?.split(" ")
+                          .map((item) =>
+                            item.replace(
+                              item[0],
+                              item[0]?.toLowerCase().toUpperCase()
+                            )
+                          )
+                          .join(" ")
+                      );
                       setStoreLinkName(
                         e.target.value
                           .trim()
@@ -318,7 +329,7 @@ const StoreCreation = ({ userOrder, booking }) => {
                         name: "Ülke Seçiniz",
                       }}
                     >
-                      {allCountries.length > 0 &&
+                      {allCountries?.length > 0 &&
                         allCountries?.map((country) => (
                           <option key={country.name} value={country.name}>
                             {country.name}
@@ -340,7 +351,7 @@ const StoreCreation = ({ userOrder, booking }) => {
                         name: "Şehir Seçiniz",
                       }}
                     >
-                      {countryStates.length > 0 &&
+                      {countryStates?.length > 0 &&
                         countryStates?.map((state) =>
                           state.name.includes("Province") ? (
                             <option key={state.name} value={state.name}>
@@ -368,7 +379,7 @@ const StoreCreation = ({ userOrder, booking }) => {
                         name: "İlçe Seçiniz",
                       }}
                     >
-                      {stateCities.length > 0 &&
+                      {stateCities?.length > 0 &&
                         stateCities?.map((city) => (
                           <option key={city.name} value={city.name}>
                             {city.name}

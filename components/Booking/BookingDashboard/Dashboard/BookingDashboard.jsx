@@ -38,10 +38,10 @@ const BookingDashboard = ({ userOrder }) => {
   const [store, setStore] = useState(userOrder?.booking);
   const [isFetching, setIsFetching] = useState(false);
   const [file, setFile] = useState(null);
-  const [address, setAddress] = useState(store.address.address);
-  const [countryName, setCountryName] = useState(store.address.country);
-  const [stateName, setStateName] = useState(store.address.state);
-  const [cityName, setCityName] = useState(store.address.city);
+  const [address, setAddress] = useState(store?.address?.address);
+  const [countryName, setCountryName] = useState(store?.address?.country);
+  const [stateName, setStateName] = useState(store?.address?.state);
+  const [cityName, setCityName] = useState(store?.address?.city);
   const [phoneNumber, setPhoneNumber] = useState(
     store?.contact?.phoneNumber || ""
   );
@@ -65,75 +65,75 @@ const BookingDashboard = ({ userOrder }) => {
   const [order, setOrder] = useState([]);
   const [stateCode, setStateCode] = useState("");
   const { t } = useTranslation();
-  /*   const [gate, setGate] = useState(store.bookingSchema.gate || "none");
-  const [stage, setStage] = useState(store.bookingSchema.stage || "none");
-  const [columns, setColumns] = useState(store.bookingSchema.columns || null);
+  /*   const [gate, setGate] = useState(store?.bookingSchema.gate || "none");
+  const [stage, setStage] = useState(store?.bookingSchema.stage || "none");
+  const [columns, setColumns] = useState(store?.bookingSchema.columns || null);
   const [signalToColumns, setSignalToColumns] = useState(false);
   const [signalReturned, setSignalReturned] = useState(false); */
-  const [gallery, setGallery] = useState(store.gallery || null);
+  const [gallery, setGallery] = useState(store?.gallery || null);
   const [openWorkingTimes, setOpenWorkingTimes] = useState(false);
   const [monday, setMonday] = useState(
-    store.workingTimes.monday.isActive || false
+    store?.workingTimes.monday.isActive || false
   );
   const [tuesday, setTuesday] = useState(
-    store.workingTimes.tuesday.isActive || false
+    store?.workingTimes.tuesday.isActive || false
   );
   const [wednesday, setWednesday] = useState(
-    store.workingTimes.wednesday.isActive || false
+    store?.workingTimes.wednesday.isActive || false
   );
   const [thursday, setThursday] = useState(
-    store.workingTimes.thursday.isActive || false
+    store?.workingTimes.thursday.isActive || false
   );
   const [friday, setFriday] = useState(
-    store.workingTimes.friday.isActive || false
+    store?.workingTimes.friday.isActive || false
   );
   const [saturday, setSaturday] = useState(
-    store.workingTimes.saturday.isActive || false
+    store?.workingTimes.saturday.isActive || false
   );
   const [sunday, setSunday] = useState(
-    store.workingTimes.sunday.isActive || false
+    store?.workingTimes.sunday.isActive || false
   );
   const [mondayStarts, setMondayStarts] = useState(
-    store.workingTimes.monday.workingHours.mondayStarts || "09:00"
+    store?.workingTimes.monday.workingHours.mondayStarts || "09:00"
   );
   const [mondayEnds, setMondayEnds] = useState(
-    store.workingTimes.monday.workingHours.mondayEnds || "24:00"
+    store?.workingTimes.monday.workingHours.mondayEnds || "24:00"
   );
   const [tuesdayStarts, setTuesdayStarts] = useState(
-    store.workingTimes.tuesday.workingHours.tuesdayStarts || "09:00"
+    store?.workingTimes.tuesday.workingHours.tuesdayStarts || "09:00"
   );
   const [tuesdayEnds, setTuesdayEnds] = useState(
-    store.workingTimes.tuesday.workingHours.tuesdayEnds || "24:00"
+    store?.workingTimes.tuesday.workingHours.tuesdayEnds || "24:00"
   );
   const [wednesdayStarts, setWednesdayStarts] = useState(
-    store.workingTimes.wednesday.workingHours.wednesdayStarts || "09:00"
+    store?.workingTimes.wednesday.workingHours.wednesdayStarts || "09:00"
   );
   const [wednesdayEnds, setWednesdayEnds] = useState(
-    store.workingTimes.wednesday.workingHours.wednesdayEnds || "24:00"
+    store?.workingTimes.wednesday.workingHours.wednesdayEnds || "24:00"
   );
   const [thursdayStarts, setThursdayStarts] = useState(
-    store.workingTimes.thursday.workingHours.thursdayStarts || "09:00"
+    store?.workingTimes.thursday.workingHours.thursdayStarts || "09:00"
   );
   const [thursdayEnds, setThursdayEnds] = useState(
-    store.workingTimes.thursday.workingHours.thursdayEnds || "24:00"
+    store?.workingTimes.thursday.workingHours.thursdayEnds || "24:00"
   );
   const [fridayStarts, setFridayStarts] = useState(
-    store.workingTimes.friday.workingHours.fridayStarts || "09:00"
+    store?.workingTimes.friday.workingHours.fridayStarts || "09:00"
   );
   const [fridayEnds, setFridayEnds] = useState(
-    store.workingTimes.friday.workingHours.fridayEnds || "24:00"
+    store?.workingTimes.friday.workingHours.fridayEnds || "24:00"
   );
   const [saturdayStarts, setSaturdayStarts] = useState(
-    store.workingTimes.saturday.workingHours.saturdayStarts || "09:00"
+    store?.workingTimes.saturday.workingHours.saturdayStarts || "09:00"
   );
   const [saturdayEnds, setSaturdayEnds] = useState(
-    store.workingTimes.saturday.workingHours.saturdayEnds || "24:00"
+    store?.workingTimes.saturday.workingHours.saturdayEnds || "24:00"
   );
   const [sundayStarts, setSundayStarts] = useState(
-    store.workingTimes.sunday.workingHours.sundayStarts || "09:00"
+    store?.workingTimes.sunday.workingHours.sundayStarts || "09:00"
   );
   const [sundayEnds, setSundayEnds] = useState(
-    store.workingTimes.sunday.workingHours.sundayEnds || "24:00"
+    store?.workingTimes.sunday.workingHours.sundayEnds || "24:00"
   );
 
   const [tableSize, setTableSize] = useState(null);
@@ -237,9 +237,11 @@ const BookingDashboard = ({ userOrder }) => {
   useEffect(() => {
     let tables = 0;
     let maxCap = 0;
-    capacity.map((table) => (maxCap += table.tableSize * table.tableQuantity));
+    capacity?.map(
+      (table) => (maxCap += table?.tableSize * table?.tableQuantity)
+    );
     setMaxCap(maxCap);
-    capacity.map((table) => (tables += table.tableQuantity));
+    capacity?.map((table) => (tables += table?.tableQuantity));
     setRemainTables(tables);
   }, [capacity]);
 
@@ -253,13 +255,13 @@ const BookingDashboard = ({ userOrder }) => {
 
   useEffect(() => {
     setIsMondayValid(
-      Number(mondayStarts.split(":")[0]) > Number(mondayEnds.split(":")[0])
+      Number(mondayStarts?.split(":")[0]) > Number(mondayEnds?.split(":")[0])
     );
   }, [mondayStarts, mondayEnds]);
 
   useEffect(() => {
     setIsTuesdayValid(
-      Number(tuesdayStarts.split(":")[0]) > Number(tuesdayEnds.split(":")[0])
+      Number(tuesdayStarts?.split(":")[0]) > Number(tuesdayEnds?.split(":")[0])
     );
   }, [tuesdayStarts, tuesdayEnds]);
 
@@ -311,14 +313,15 @@ const BookingDashboard = ({ userOrder }) => {
   useEffect(() => {
     if (countryName) {
       setCountryCode(
-        allCountries.filter((country) => country.name === countryName)[0]
+        allCountries?.filter((country) => country?.name === countryName)[0]
           ?.isoCode
       );
     }
   }, [countryName]);
+
   useEffect(() => {
     setStateCode(
-      allStates.filter((state) => state.name === stateName)[0]?.isoCode
+      allStates?.filter((state) => state?.name === stateName)[0]?.isoCode
     );
   }, [stateName]);
 
@@ -655,7 +658,7 @@ const BookingDashboard = ({ userOrder }) => {
     }
   };
 
-  const handleUpdateColumns = async (e) => {
+  /* const handleUpdateColumns = async (e) => {
     e.preventDefault();
     try {
       setIsFetching(true);
@@ -723,7 +726,7 @@ const BookingDashboard = ({ userOrder }) => {
         variant: "error",
       });
     }
-  };
+  }; */
 
   const handleUpdateContact = async () => {
     try {
@@ -1614,7 +1617,7 @@ const BookingDashboard = ({ userOrder }) => {
                 gridTemplateColumns: "1fr 1fr 1fr",
               }}
             >
-              {images.length > 0 ? (
+              {images?.length > 0 ? (
                 images.map((g) => (
                   <img
                     onMouseEnter={(e) => {
@@ -1765,7 +1768,7 @@ const BookingDashboard = ({ userOrder }) => {
                       name: "Ülke Seçiniz",
                     }}
                   >
-                    {allCountries.length > 0 &&
+                    {allCountries?.length > 0 &&
                       allCountries?.map((country) => (
                         <option key={country.name} value={country.name}>
                           {country.name}
@@ -1787,7 +1790,7 @@ const BookingDashboard = ({ userOrder }) => {
                       name: "Şehir Seçiniz",
                     }}
                   >
-                    {countryStates.length > 0 &&
+                    {countryStates?.length > 0 &&
                       countryStates?.map((state) =>
                         state.name.includes("Province") ? (
                           <option key={state.name} value={state.name}>
@@ -1815,7 +1818,7 @@ const BookingDashboard = ({ userOrder }) => {
                       name: "İlçe Seçiniz",
                     }}
                   >
-                    {stateCities.length > 0 &&
+                    {stateCities?.length > 0 &&
                       stateCities?.map((city) => (
                         <option key={city.name} value={city.name}>
                           {city.name}
