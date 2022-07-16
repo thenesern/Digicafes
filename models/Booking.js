@@ -12,6 +12,14 @@ const bookingSchema = new mongoose.Schema(
         type: String,
       },
     },
+    prices: {
+      isActive: {
+        type: Boolean,
+      },
+      price: {
+        type: Number,
+      },
+    },
     capacity: [
       {
         tableSize: {
@@ -41,6 +49,9 @@ const bookingSchema = new mongoose.Schema(
         },
         phoneNumber: {
           type: String,
+        },
+        isPaid: {
+          type: Boolean,
         },
       },
     ],

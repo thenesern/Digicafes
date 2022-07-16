@@ -23,6 +23,7 @@ import { v4 as uuidv4 } from "uuid";
 import { DataGrid } from "@mui/x-data-grid";
 import { trTR } from "@mui/x-data-grid";
 import { InputLabel, NativeSelect, Select, Stack } from "@mui/material";
+import { Switch } from "@nextui-org/react";
 import TextField from "@mui/material/TextField";
 import CallIcon from "@mui/icons-material/Call";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -46,6 +47,7 @@ const BookingDashboard = ({ userOrder }) => {
   );
   const [pageSize, setPageSize] = useState(20);
   const [countryCode, setCountryCode] = useState("");
+  const [openPrices, setOpenPrices] = useState(false);
   const [stateCities, setStateCities] = useState([]);
   const [countryStates, setCountryStates] = useState([]);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -60,6 +62,10 @@ const BookingDashboard = ({ userOrder }) => {
   const [openSavedColumns, setOpenSavedColumns] = useState(false);
   const [order, setOrder] = useState([]);
   const [stateCode, setStateCode] = useState("");
+  const [price, setPrice] = useState(store?.prices?.price || null);
+  const [isPricesActive, setIsPricesActive] = useState(
+    store?.prices?.isActive || false
+  );
   const { t } = useTranslation();
   /*   const [gate, setGate] = useState(store?.bookingSchema.gate || "none");
   const [stage, setStage] = useState(store?.bookingSchema.stage || "none");
@@ -95,7 +101,6 @@ const BookingDashboard = ({ userOrder }) => {
   );
   const [openGallery, setOpenGallery] = useState(false);
   const [openCapacity, setOpenCapacity] = useState(false);
-
   const handleChangeState = (event) => {
     setStateName(event.target.value);
   };
@@ -114,6 +119,12 @@ const BookingDashboard = ({ userOrder }) => {
     setCountryName(store?.address?.country);
     setStateName(store?.address?.state);
     setCityName(store?.address?.city);
+  };
+  const handleOpenPrices = () => setOpenPrices(true);
+  const handleClosePrices = () => {
+    setIsPricesActive(store?.prices?.isActive);
+    setPrice(store?.prices?.price);
+    setOpenPrices(false);
   };
   const handleOpenNavbarColor = () => setOpenNavbarColor(true);
   const handleCloseNavbarColor = () => {
@@ -523,6 +534,39 @@ const BookingDashboard = ({ userOrder }) => {
       });
     }
   };
+  console.log(isPricesActive);
+  const handleUpdatePrices = async (e) => {
+    e.preventDefault();
+    try {
+      setIsFetching(true);
+      const res = await axios.post(
+        `/api/booking/${store?.storeName}/prices`,
+        {
+          storeName: store?.storeName,
+          prices: {
+            isActive: isPricesActive,
+            price,
+          },
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
+      setStore(res.data.store);
+      setIsFetching(false);
+      setOpenPrices(false);
+      enqueueSnackbar("Kapora Fiyatları başarıyla güncellendi.", {
+        variant: "success",
+      });
+    } catch (err) {
+      console.log(err);
+      setOpenPrices(false);
+      setIsFetching(false);
+      enqueueSnackbar("Kapora Fiyatları güncellemesi başarısız.", {
+        variant: "error",
+      });
+    }
+  };
 
   /* const handleUpdateColumns = async (e) => {
     e.preventDefault();
@@ -818,6 +862,17 @@ const BookingDashboard = ({ userOrder }) => {
                   onClick={handleOpenGallery}
                 >
                   {t("panel:gallery")}
+                </Button>
+              </li>
+              <li>
+                <Button
+                  className={styles.actionButtons}
+                  variant="contained"
+                  type="submit"
+                  color="primary"
+                  onClick={handleOpenPrices}
+                >
+                  Kapora
                 </Button>
               </li>
               <li>
@@ -1855,7 +1910,7 @@ const BookingDashboard = ({ userOrder }) => {
                   <div
                     key={i}
                     onClick={() => {
-                      setCapacity(capacity.filter((c) => c.id !== table.id));
+                      setCapacity(capacity.filter((c) => c._id !== table._id));
                     }}
                     className={styles.cell}
                   >
@@ -2046,7 +2101,100 @@ const BookingDashboard = ({ userOrder }) => {
           </form>
         </Box>
       </ModalMui>
+      <ModalMui open={openPrices} onClose={handleClosePrices}>
+        <Box className={styles.modal}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+              justifyContent: "space-between",
+            }}
+          >
+            <h2
+              style={{
+                padding: "1rem",
+                color: "#000814",
+              }}
+            >
+              Kapora
+            </h2>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "10px",
+              }}
+            >
+              <h5>Kapalı</h5>
+              <Switch
+                checked={isPricesActive}
+                onChange={() => setIsPricesActive(!isPricesActive)}
+              />
+              <h5>Açık</h5>
+            </div>
+          </div>
 
+          <form
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: "1rem",
+              justifyContent: "flex-start",
+              flexDirection: "column",
+            }}
+          >
+            <List
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "1rem",
+                justifyContent: "flex-start",
+                flexDirection: "column",
+              }}
+            >
+              <ListItem>
+                <TextField
+                  type="number"
+                  label="Bir Fiyat Giriniz"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                ></TextField>
+              </ListItem>
+            </List>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                width: "92%",
+                justifyContent: "flex-end",
+                gap: "1rem",
+                margin: "1rem",
+              }}
+            >
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleClosePrices}
+              >
+                {t("panel:discard")}
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={(e) => {
+                  if (price) {
+                    handleUpdatePrices(e);
+                  }
+                }}
+              >
+                {t("panel:confirm")}
+              </Button>
+            </div>
+          </form>
+        </Box>
+      </ModalMui>
       <Modal
         style={{
           background: "transparent",
