@@ -42,10 +42,58 @@ const StoreBookingShowcase = ({ store }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const [isDateValid, setIsDateValid] = useState(true);
+  const [maxCap, setMaxCap] = useState(null);
+  const [capacity, setCapacity] = useState(store?.capacity || []);
+  const [remains, setRemains] = useState(0);
+  const [reserved, setReserved] = useState(0);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    if (remains === maxCap) {
+      return setProgress(0);
+    }
+    /*  if (reserved === 0) {
+      return setProgress(0);
+    } */
+    if (remains / maxCap < 1) {
+      return setProgress(
+        Math.abs(
+          (remains / maxCap)?.toString()?.split(".")[1]?.slice(0, 2) - 100
+        )
+      );
+    }
+  }, [remains]);
+  console.log(remains);
+  console.log(progress);
   let user;
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
   }
+  useEffect(() => {
+    let tables = 0;
+    let maxCap = 0;
+    capacity?.map(
+      (table) => (maxCap += table?.tableSize * table?.tableQuantity)
+    );
+    setMaxCap(maxCap);
+  }, [capacity]);
+
+  useEffect(() => {
+    let people = 0;
+    store.bookings
+      .filter(
+        (booking) =>
+          new Date(booking?.createdAt).toLocaleDateString() ===
+          new Date(date).toLocaleDateString()
+      )
+      .map((booking) => (people += booking.people));
+
+    setReserved(people);
+  }, [store?.bookings, date]);
+
+  useEffect(() => {
+    setRemains(+maxCap - +reserved);
+  }, [reserved, maxCap]);
 
   useEffect(() => {
     if (date) {
@@ -500,10 +548,20 @@ const StoreBookingShowcase = ({ store }) => {
           </div>
         </div>
         <div className={styles.right}>
-          <div className={styles.quota}>
-            <h3>Doluluk Oranı</h3>
-            <ProgressBar value={30} />
-          </div>
+          {progress === 0 && (
+            <div className={styles.quota}>
+              <h3>Doluluk Oranı</h3>
+              <ProgressBar value={0} />
+            </div>
+          )}
+          {progress ? (
+            <div className={styles.quota}>
+              <h3>Doluluk Oranı</h3>
+              <ProgressBar value={progress} />
+            </div>
+          ) : (
+            ""
+          )}
           <div style={{ margin: "2rem 0" }}>
             <h3 style={{ margin: "1rem 0 0 0", color: "#001219" }}>
               Yerinizi Ayırtın
