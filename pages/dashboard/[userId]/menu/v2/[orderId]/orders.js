@@ -58,6 +58,7 @@ const StoreOrderPanel = ({ data, order }) => {
       console.log(err);
     }
   }
+
   useEffect(() => {
     if (isNew) {
       enqueueSnackbar(t("panel:newOrder"), { variant: "success" });
