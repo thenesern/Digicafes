@@ -28,7 +28,7 @@ handler.post(async (req, res) => {
       id: req.body.user.id,
       name: req.body.user.firstName,
       surname: req.body.user.lastName,
-      gsmNumber: "+905350000000",
+      gsmNumber: req.body.user.phoneNumber,
       email: req.body.user.email,
       identityNumber: "00000000000",
       lastLoginDate: req.body.lastLoginDate,
