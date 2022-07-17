@@ -562,7 +562,7 @@ const BookingDashboard = ({ userOrder }) => {
               className={styles.copy}
               onClick={(e) =>
                 copyToClipBoard(
-                  `https://www.digicafes.com/booking/${store?.storeName}`
+                  `https://www.digicafes.com/booking/${store?.storeLinkName}`
                 )
               }
               variant="outlined"
@@ -571,7 +571,7 @@ const BookingDashboard = ({ userOrder }) => {
                 <span>Kopyalandı!</span>
               ) : (
                 <span style={{ textTransform: "lowercase" }}>
-                  {`https://www.digicafes.com/booking/${store?.storeName}`}
+                  {`https://www.digicafes.com/booking/${store?.storeLinkName}`}
                 </span>
               )}
             </Button>

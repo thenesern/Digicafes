@@ -8,6 +8,7 @@ import StoreBookingShowcase from "../../../components/Booking/BookingShowcase/in
 
 const StoreBookingProfile = ({ store }) => {
   const color = store?.navbar?.color ? store?.navbar?.color : "#c9184a";
+  console.log(store);
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <Nav color={color} />

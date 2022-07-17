@@ -64,7 +64,6 @@ const StoreBookingShowcase = ({ store }) => {
   const closeHandler = () => {
     setVisible(false);
   };
-
   const paymentHandler = async () => {
     const createdAt = new Date();
     setLoading(true);
@@ -87,20 +86,13 @@ const StoreBookingShowcase = ({ store }) => {
           price: store?.prices?.price,
           paidPrice: store?.prices?.price,
         },
-        /*       card: {
-              name,
-            number,
-                expireMonth: expiry.split("/")[0],
-                expireYear: expiry.split("/")[1],
-               cvc,
-                registerCard: 0,
-              }, */
         card: {
-          name: "Enes Eren",
-          number: "4987490000000002",
-          month: "12",
-          year: "24",
-          cvc: "200",
+          name,
+          number,
+          expireMonth: expiry.split("/")[0],
+          expireYear: expiry.split("/")[1],
+          cvc,
+          registerCard: 0,
         },
         user: {
           id: userInfo.id,
@@ -223,12 +215,12 @@ const StoreBookingShowcase = ({ store }) => {
       );
     }
   }, [selectedHour]);
-
   useEffect(() => {
     let number =
       Number(endTime?.split(":")[0]) - Number(startTime?.split(":")[0]);
     setDifference(number * 2);
   }, [startTime, endTime]);
+
   const handleChange = (newDate) => {
     setDate(newDate);
   };
@@ -242,7 +234,7 @@ const StoreBookingShowcase = ({ store }) => {
   }, [date]);
 
   useEffect(() => {
-    if (dayName) {
+    if (store) {
       setStartTime(
         store?.workingTimes[`${dayName?.toLowerCase()}`]?.workingHours?.starts
       );
@@ -687,6 +679,7 @@ const StoreBookingShowcase = ({ store }) => {
                     sx={{ width: "100%" }}
                     label="Tarih Seçiniz"
                     inputFormat="dd/MM/yyyy"
+                    disablePast
                     value={date}
                     onChange={handleChange}
                     renderInput={(params) => (
@@ -700,9 +693,9 @@ const StoreBookingShowcase = ({ store }) => {
                     )}
                   />
 
-                  {date ? (
+                  {date && hours.length > 0 ? (
                     <div className={styles.hourButtons}>
-                      {hours.map((hour, i) => (
+                      {hours?.map((hour, i) => (
                         <Button
                           key={i}
                           variant={
@@ -741,7 +734,10 @@ const StoreBookingShowcase = ({ store }) => {
                       ))}
                     </div>
                   ) : (
-                    ""
+                    <h5 style={{ color: "#001219" }}>
+                      İşletme bu tarihte açık değil. Lütfen başka bir tarih
+                      seçiniz.
+                    </h5>
                   )}
                 </Stack>
               </LocalizationProvider>
@@ -785,11 +781,19 @@ const StoreBookingShowcase = ({ store }) => {
                   size="medium"
                   fullWidth
                   onClick={(e) => {
-                    if (isPeopleValid && isDateValid && selectedHour) {
+                    if (
+                      isPeopleValid &&
+                      isDateValid &&
+                      selectedHour &&
+                      store?.prices?.isActive
+                    ) {
                       handler();
                     }
                     if (!selectedHour) {
                       setHoursError(true);
+                    }
+                    if (!store?.prices.isActive) {
+                      handleSendBooking(e);
                     }
                   }}
                   loading={loading}
