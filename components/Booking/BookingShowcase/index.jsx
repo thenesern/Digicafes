@@ -792,7 +792,12 @@ const StoreBookingShowcase = ({ store }) => {
                     if (!selectedHour) {
                       setHoursError(true);
                     }
-                    if (!store?.prices.isActive) {
+                    if (
+                      !store?.prices?.isActive &&
+                      isPeopleValid &&
+                      isDateValid &&
+                      selectedHour
+                    ) {
                       handleSendBooking(e);
                     }
                   }}
