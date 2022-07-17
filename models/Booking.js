@@ -50,84 +50,96 @@ const bookingSchema = new mongoose.Schema(
       monday: {
         isActive: {
           type: Boolean,
-          default: false,
+          default: true,
         },
         workingHours: {
           starts: {
             type: String,
+            default: "09:00",
           },
           ends: {
             type: String,
+            default: "24:00",
           },
         },
       },
       tuesday: {
         isActive: {
           type: Boolean,
-          default: false,
+          default: true,
         },
         workingHours: {
           starts: {
             type: String,
+            default: "09:00",
           },
           ends: {
             type: String,
+            default: "24:00",
           },
         },
       },
       wednesday: {
         isActive: {
           type: Boolean,
-          default: false,
+          default: true,
         },
         workingHours: {
           starts: {
             type: String,
+            default: "09:00",
           },
           ends: {
             type: String,
+            default: "24:00",
           },
         },
       },
       thursday: {
         isActive: {
           type: Boolean,
-          default: false,
+          default: true,
         },
         workingHours: {
           starts: {
             type: String,
+            default: "09:00",
           },
           ends: {
             type: String,
+            default: "24:00",
           },
         },
       },
       friday: {
         isActive: {
           type: Boolean,
-          default: false,
+          default: true,
         },
         workingHours: {
           starts: {
             type: String,
+            default: "09:00",
           },
           ends: {
             type: String,
+            default: "24:00",
           },
         },
       },
       saturday: {
         isActive: {
           type: Boolean,
-          default: false,
+          default: true,
         },
         workingHours: {
           starts: {
             type: String,
+            default: "09:00",
           },
           ends: {
             type: String,
+            default: "24:00",
           },
         },
       },
