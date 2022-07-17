@@ -200,6 +200,7 @@ const BookingDashboard = ({ userOrder }) => {
       if (store?.bookings?.length < newStore?.data?.store?.bookings?.length) {
         setIsNew(true);
         setStore(newStore?.data?.store);
+        console.log(newStore?.data?.store);
       }
     } catch (err) {
       console.log(err);
@@ -692,6 +693,10 @@ const BookingDashboard = ({ userOrder }) => {
   };
 
   const handleUpdateAddressInfos = async () => {
+    let newStateName;
+    if (stateName.includes("Province")) {
+      newStateName = stateName.split(" ")[0];
+    }
     try {
       setIsFetching(true);
       await axios.post(
@@ -701,7 +706,7 @@ const BookingDashboard = ({ userOrder }) => {
           address: {
             address,
             country: countryName,
-            state: stateName,
+            state: newStateName,
             city: cityName,
           },
         },
@@ -1752,7 +1757,7 @@ const BookingDashboard = ({ userOrder }) => {
                     Şehir Seçiniz
                   </InputLabel>
                   <NativeSelect
-                    defaultValue={stateName ? stateName : ""}
+                    defaultValue={stateName}
                     disabled={countryName ? false : true}
                     onChange={handleChangeState}
                     inputProps={{
@@ -1780,7 +1785,7 @@ const BookingDashboard = ({ userOrder }) => {
                     İlçe Seçiniz
                   </InputLabel>
                   <NativeSelect
-                    defaultValue={cityName ? cityName : ""}
+                    defaultValue={cityName}
                     disabled={stateName ? false : true}
                     onChange={handleChangeCity}
                     inputProps={{

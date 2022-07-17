@@ -38,6 +38,7 @@ const Search = ({ filter }) => {
     };
     getStores();
   }, []);
+
   return (
     <div className={styles.container}>
       <div className={styles.left}>a</div>

@@ -26,7 +26,7 @@ const SearchBar = () => {
       <div className={styles.app}>
         <div className={styles.search}>
           <h1 className={styles.header}>Masanızı Şimdiden Ayırtın!</h1>
-          <div className={styles.wrapper}>
+          {/*    <div className={styles.wrapper}>
             <div className={styles.layout}>
               <Grid>
                 <Input
@@ -48,7 +48,7 @@ const SearchBar = () => {
                 </IconButton>
               </Grid>
             </div>
-          </div>
+          </div> */}
           <p className={styles.desc}>
             Nerede ne zaman yer var hemen öğrenin, rezervasyonunuzu anında
             yapın.
