@@ -28,7 +28,7 @@ const StoreCreation = ({ userOrder, booking }) => {
   const [countryStates, setCountryStates] = useState([]);
   const allCountries = Country.getAllCountries();
   const [cityName, setCityName] = useState("");
-  const [tableNum, setTableNum] = useState(booking?.tableNum || null);
+  const [capacity, setCapacity] = useState(booking?.capacity || null);
   const [storeLinkName, setStoreLinkName] = useState(
     booking?.storeLinkName || ""
   );
@@ -116,7 +116,7 @@ const StoreCreation = ({ userOrder, booking }) => {
         {
           storeName: storeName?.trim(),
           storeLinkName: storeLinkName,
-          tableNum,
+          capacity,
           createdAt,
           address: {
             country: countryName,
@@ -250,12 +250,12 @@ const StoreCreation = ({ userOrder, booking }) => {
         {secondStep && !thirdStep && (
           <StyleRoot>
             <form className={styles.formFirst} style={animate.fadeInRightBig}>
-              <h2 className={styles.headerFirst}>{t("panel:tableQuantity")}</h2>
+              <h2 className={styles.headerFirst}>Maksimum Kapasite (Kişi)</h2>
               <List className={styles.list}>
                 <ListItem>
                   <TextField
                     variant="outlined"
-                    id="tableNum"
+                    id="capacity"
                     type="number"
                     autoFocus="true"
                     rules={{
@@ -264,20 +264,20 @@ const StoreCreation = ({ userOrder, booking }) => {
                     style={{ width: "100%" }}
                     onChange={(e) => {
                       e.preventDefault();
-                      setTableNum(+e.target.value);
+                      setCapacity(+e.target.value);
                     }}
                     helperText={
-                      tableNum === undefined
-                        ? t("panel:tableQuantity")
-                        : tableNum === 0
-                        ? t("panel:tableZero")
-                        : tableNum < 0
-                        ? t("panel:tableNeg")
-                        : tableNum > 100
-                        ? t("panel:tableNumMax2")
+                      capacity === undefined
+                        ? "Lütfen kapasite sayısı giriniz"
+                        : capacity === 0
+                        ? "Kapatise sıfır olamaz"
+                        : capacity < 0
+                        ? "Kapasite negatif bir değer olamaz"
+                        : capacity > 999
+                        ? "Kapasite 999'dan fazla olamaz"
                         : ""
                     }
-                    label={t("panel:numTable")}
+                    label="Kapasite"
                   ></TextField>
                 </ListItem>
                 <ListItem>
@@ -289,10 +289,10 @@ const StoreCreation = ({ userOrder, booking }) => {
                     onClick={(e) => {
                       e.preventDefault();
                       if (
-                        tableNum !== undefined &&
-                        tableNum < 101 &&
-                        tableNum > 0 &&
-                        tableNum !== 0
+                        capacity !== undefined &&
+                        capacity < 1000 &&
+                        capacity > 0 &&
+                        capacity !== 0
                       ) {
                         setThirdStep(true);
                       }

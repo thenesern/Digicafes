@@ -12,7 +12,7 @@ handler.post(async (req, res) => {
   const newStore = new Booking({
     storeName: req.body.storeName,
     storeLinkName: req.body.storeLinkName,
-    tableNum: req.body.tableNum,
+    capacity: req.body.capacity,
     address: req.body.address,
     createdAt: req.body.createdAt,
     owner: req.body.owner,

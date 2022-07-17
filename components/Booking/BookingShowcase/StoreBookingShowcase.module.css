@@ -198,6 +198,7 @@
 }
 .workingTimesTable {
   padding: 0 3rem;
+  min-width: 20rem;
 }
 
 @media only screen and (max-width: 1280px) {

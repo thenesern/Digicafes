@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import Nav2 from "../../../../components/Nav2/Nav";
+import Nav from "../../../../components/Nav/Nav";
 import styles from "./booking.module.css";
 import Order from "../../../../models/OrderModel";
 import Product from "../../../../models/ProductModel";
@@ -70,7 +70,7 @@ const Booking = (props) => {
   if (isFirst === true) {
     return (
       <div className={styles.container}>
-        <Nav2 />
+        <Nav color={"#c9184a"} />
         <StoreCreation userOrder={userOrder} />
       </div>
     );
@@ -78,7 +78,7 @@ const Booking = (props) => {
   if (isFirst === false) {
     return (
       <div className={styles.container}>
-        <Nav2 />
+        <Nav color={"#c9184a"} />
         <BookingDashboard userOrder={userOrder[0]} />
       </div>
     );
@@ -86,7 +86,7 @@ const Booking = (props) => {
   if (isFirst === null || undefined) {
     return (
       <div className={styles.container}>
-        <Nav2 />
+        <Nav color={"#c9184a"} />
         <div
           style={{
             display: "flex",
