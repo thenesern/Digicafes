@@ -15,7 +15,7 @@ const HomePage = () => {
     Aos.init({ duration: 2000 });
     Aos.refresh();
   }, []);
-
+  console.log(process.env.NEXT_PUBLIC_DATABASE);
   return (
     <div>
       <Nav />
