@@ -56,6 +56,7 @@ const Nav = ({ color }) => {
   const [openMuiRegisterBooking, setOpenMuiRegisterBooking] = useState(false);
   const [openMuiRegisterDigitalMenu, setOpenMuiRegisterDigitalMenu] =
     useState(false);
+  const [isBookingDashboard, setIsBookingDashboard] = useState(false);
   const [openMuiRegisterDefault, setOpenMuiRegisterDefault] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [openMenu, setOpenMenu] = useState(false);
@@ -443,6 +444,14 @@ const Nav = ({ color }) => {
       enqueueSnackbar(t("nav:emailError"), { variant: "error" });
     }
   };
+  useEffect(() => {
+    if (
+      router.pathname.includes("dashboard") &&
+      router.pathname.includes("booking")
+    ) {
+      setIsBookingDashboard(true);
+    }
+  }, []);
   return (
     <navbar
       className={
@@ -450,8 +459,13 @@ const Nav = ({ color }) => {
       }
       style={
         color
-          ? { backgroundColor: color, position: "relative", padding: "0" }
-          : { zIndex: "9999" }
+          ? {
+              backgroundColor: color,
+              position: "relative",
+              padding: "0",
+              height: "7vh",
+            }
+          : { height: "10vh" }
       }
     >
       <Modal
@@ -2086,6 +2100,14 @@ const Nav = ({ color }) => {
                 {t("nav:tryForFree")}
               </button>
             )}
+            {router.pathname === "/booking/[storeLinkName]" && (
+              <button
+                className={styles.signUp}
+                onClick={() => handleOpenMuiRegisterDefault(true)}
+              >
+                Üye Ol
+              </button>
+            )}
             {router.pathname === "/" && (
               <button
                 className={styles.signUp}
@@ -2094,7 +2116,6 @@ const Nav = ({ color }) => {
                 Üye Ol
               </button>
             )}
-
             {locales.map((lng) => {
               if (lng === lang) return null;
               return (

@@ -20,16 +20,6 @@ const bookingSchema = new mongoose.Schema(
         type: Number,
       },
     },
-    capacity: [
-      {
-        tableSize: {
-          type: Number,
-        },
-        tableQuantity: {
-          type: Number,
-        },
-      },
-    ],
     bookings: [
       {
         createdAt: {
@@ -202,21 +192,7 @@ const bookingSchema = new mongoose.Schema(
     storeLogo: {
       type: String,
     },
-    bookingSchema: {
-      stage: {
-        type: String,
-      },
-      columns: {
-        type: Number,
-      },
-      gate: {
-        type: String,
-      },
-      savedColumns: {
-        type: Object,
-      },
-    },
-    tableNum: {
+    capacity: {
       type: Number,
     },
     owner: {

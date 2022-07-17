@@ -10,7 +10,7 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./StoreBookingShowcase.module.css";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CallIcon from "@mui/icons-material/Call";
@@ -31,6 +31,7 @@ import { Card } from "@nextui-org/react";
 import nanoid from "../../../utils/nanoid";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { Store } from "../../../redux/store";
 
 const StoreBookingShowcase = ({ store }) => {
   const [locale, setLocale] = useState("tr");
@@ -50,18 +51,14 @@ const StoreBookingShowcase = ({ store }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const [isDateValid, setIsDateValid] = useState(true);
-  const [maxCap, setMaxCap] = useState(null);
-  const [capacity, setCapacity] = useState(store?.capacity || []);
+  const [capacity, setCapacity] = useState(store?.capacity || null);
   const [remains, setRemains] = useState(0);
   const [reserved, setReserved] = useState(0);
   const [progress, setProgress] = useState(0);
   const { render, name, number, cvc, expiry } = useCard();
   const [visible, setVisible] = useState(false);
-
-  let user;
-  if (Cookies.get("userInfo")) {
-    user = JSON.parse(Cookies.get("userInfo"));
-  }
+  const { state } = useContext(Store);
+  const { userInfo } = state;
 
   const handler = () => setVisible(true);
   const closeHandler = () => {
@@ -72,14 +69,14 @@ const StoreBookingShowcase = ({ store }) => {
     const createdAt = new Date();
     setLoading(true);
     let signedIn =
-      user.signedIn.split("T")[0] +
+      userInfo.signedIn.split("T")[0] +
       " " +
-      user.signedIn.split("T")[1].split(".")[0];
+      userInfo.signedIn.split("T")[1].split(".")[0];
     let registered =
-      user.createdAt.split("T")[0] +
+      userInfo.createdAt.split("T")[0] +
       " " +
-      user.createdAt.split("T")[1].split(".")[0];
-    let phoneNumber = "+" + user?.phoneNumber;
+      userInfo.createdAt.split("T")[1].split(".")[0];
+    let phoneNumber = "+" + userInfo?.phoneNumber;
     try {
       const connection = await axios.get("/api/remote-address");
       const payment = await axios.post("/api/checkout/payment", {
@@ -106,10 +103,10 @@ const StoreBookingShowcase = ({ store }) => {
           cvc: "200",
         },
         user: {
-          id: user.id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
+          id: userInfo.id,
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+          email: userInfo.email,
           lastLoginDate: signedIn,
           registrationDate: registered,
           ip: connection.ip,
@@ -137,17 +134,17 @@ const StoreBookingShowcase = ({ store }) => {
                 createdAt,
                 people: Number(people),
                 date,
-                userName: user.firstName + " " + user.lastName,
-                userEmail: user.email,
+                userName: userInfo.firstName + " " + userInfo.lastName,
+                userEmail: userInfo.email,
                 storeName: store?.storeName,
-                phoneNumber: user?.phoneNumber,
+                phoneNumber: userInfo?.phoneNumber,
                 isPaid: true,
               },
             ],
-            userId: user?.id,
+            userId: userInfo?.id,
           },
           {
-            headers: { authorization: `Bearer ${user.token}` },
+            headers: { authorization: `Bearer ${userInfo.token}` },
           }
         );
       }
@@ -159,29 +156,20 @@ const StoreBookingShowcase = ({ store }) => {
   };
 
   useEffect(() => {
-    if (remains === maxCap) {
+    if (remains === capacity) {
       return setProgress(0);
     }
     /*  if (reserved === 0) {
       return setProgress(0);
     } */
-    if (remains / maxCap < 1) {
+    if (remains / capacity < 1) {
       return setProgress(
         Math.abs(
-          (remains / maxCap)?.toString()?.split(".")[1]?.slice(0, 2) - 100
+          (remains / capacity)?.toString()?.split(".")[1]?.slice(0, 2) - 100
         )
       );
     }
   }, [remains]);
-
-  useEffect(() => {
-    let tables = 0;
-    let maxCap = 0;
-    capacity?.map(
-      (table) => (maxCap += table?.tableSize * table?.tableQuantity)
-    );
-    setMaxCap(maxCap);
-  }, [capacity]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -203,8 +191,8 @@ const StoreBookingShowcase = ({ store }) => {
   }, [store?.bookings, date]);
 
   useEffect(() => {
-    setRemains(+maxCap - +reserved);
-  }, [reserved, maxCap]);
+    setRemains(+capacity - +reserved);
+  }, [reserved, capacity]);
 
   useEffect(() => {
     if (date) {
@@ -256,13 +244,13 @@ const StoreBookingShowcase = ({ store }) => {
   useEffect(() => {
     if (dayName) {
       setStartTime(
-        store?.workingTimes[`${dayName?.toLowerCase()}`]?.workingHours.starts
+        store?.workingTimes[`${dayName?.toLowerCase()}`]?.workingHours?.starts
       );
       setEndTime(
-        store?.workingTimes[`${dayName?.toLowerCase()}`]?.workingHours.ends ===
+        store?.workingTimes[`${dayName?.toLowerCase()}`]?.workingHours?.ends ===
           "00:00"
           ? "24:00"
-          : store?.workingTimes[`${dayName?.toLowerCase()}`]?.workingHours.ends
+          : store?.workingTimes[`${dayName?.toLowerCase()}`]?.workingHours?.ends
       );
     }
   }, [dayName, store]);
@@ -309,17 +297,17 @@ const StoreBookingShowcase = ({ store }) => {
               createdAt,
               people: Number(people),
               date,
-              userName: user.firstName + " " + user.lastName,
-              userEmail: user.email,
+              userName: userInfo.firstName + " " + userInfo.lastName,
+              userEmail: userInfo.email,
               storeName: store?.storeName,
-              phoneNumber: user?.phoneNumber,
+              phoneNumber: userInfo?.phoneNumber,
               isPaid: false,
             },
           ],
-          userId: user?.id,
+          userId: userInfo?.id,
         },
         {
-          headers: { authorization: `Bearer ${user.token}` },
+          headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
 
@@ -351,7 +339,7 @@ const StoreBookingShowcase = ({ store }) => {
                   <h1 className={styles.storeName}>{store?.storeName}</h1>
                   <p
                     className={styles.address}
-                  >{`${store?.address?.city} / ${store?.address?.state}, ${store?.address?.country}`}</p>
+                  >{`${store?.address?.city} / ${store?.address?.state}`}</p>
                 </div>
               </div>
             </>
@@ -360,7 +348,7 @@ const StoreBookingShowcase = ({ store }) => {
               <h1 className={styles.storeName}>{store?.storeName}</h1>
               <p
                 className={styles.address}
-              >{`${store?.address?.city} / ${store?.address?.state}, ${store?.address?.country}`}</p>
+              >{`${store?.address?.city} / ${store?.address?.state}`}</p>
             </div>
           )}
           <div className={styles.gallery}>
@@ -770,15 +758,29 @@ const StoreBookingShowcase = ({ store }) => {
                 <Card.Body>
                   <Text color="warning">
                     {store?.prices?.isActive ? (
-                      <p align="center">Ücretli: {store?.prices?.price}₺</p>
+                      <p align="center">
+                        Kapora Ücreti: {store?.prices?.price}₺
+                      </p>
                     ) : (
-                      <p align="center">Ücretsiz</p>
+                      <p align="center">Rezervasyon Ücretsiz</p>
                     )}
                   </Text>
                 </Card.Body>
               </Card>
 
-              {isSuccess === null ? (
+              {!userInfo ? (
+                <Card
+                  isHoverable
+                  variant="bordered"
+                  css={{ mw: "400px", backgroundColor: "#e5e5e5" }}
+                >
+                  <Card.Body>
+                    <Text style={{ color: "#000814", fontSize: "14px" }}>
+                      Rezervasyon Yapmak için lütfen giriş yapınız.
+                    </Text>
+                  </Card.Body>
+                </Card>
+              ) : isSuccess === null ? (
                 <LoadingButton
                   size="medium"
                   fullWidth
