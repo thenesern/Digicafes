@@ -59,20 +59,13 @@ const Checkout = ({ order }) => {
           price: order.product.price,
           paidPrice: order.product.price,
         },
-        /*       card: {
-              name,
-            number,
-                expireMonth: expiry.split("/")[0],
-                expireYear: expiry.split("/")[1],
-               cvc,
-                registerCard: 0,
-              }, */
         card: {
-          name: "Enes Eren",
-          number: "4987490000000002",
-          month: "12",
-          year: "24",
-          cvc: "200",
+          name,
+          number,
+          expireMonth: expiry.split("/")[0],
+          expireYear: expiry.split("/")[1],
+          cvc,
+          registerCard: 0,
         },
         user: {
           id: order.user._id,
