@@ -12,6 +12,7 @@ const handler = nc();
 
 handler.use(isAuth);
 handler.post(async (req, res) => {
+  console.log(req.body);
   try {
     await db.connect();
     const order = await Order.find({ user: req.body.user })
@@ -26,6 +27,7 @@ handler.post(async (req, res) => {
 
     await db.disconnect();
     res.send({ status: "success", order });
+    console.log(order);
   } catch (err) {
     console.log(err);
   }

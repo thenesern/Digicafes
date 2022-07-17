@@ -165,13 +165,13 @@ const BookingDashboard = ({ userOrder }) => {
 
   useEffect(() => {
     let people = 0;
-    store.bookings
+    store?.bookings
       .filter(
         (booking) =>
-          new Date(booking?.createdAt).toLocaleDateString() ===
+          new Date(booking?.createdAt)?.toLocaleDateString() ===
           new Date(tableDate).toLocaleDateString()
       )
-      .map((booking) => (people += booking.people));
+      .map((booking) => (people += booking?.people));
 
     setReserved(people);
   }, [store?.bookings, tableDate]);
@@ -185,7 +185,6 @@ const BookingDashboard = ({ userOrder }) => {
       setTimeout(() => setRefreshToken(Math.random()), 15000);
     });
   }, [refreshToken]);
-
   const retrieveData = async () => {
     const storeName = store?.storeName;
     try {
@@ -195,7 +194,7 @@ const BookingDashboard = ({ userOrder }) => {
           storeName,
         },
         {
-          headers: { authorization: `Bearer ${user.token}` },
+          headers: { authorization: `Bearer ${user?.token}` },
         }
       );
       if (store?.bookings?.length < newStore?.data?.store?.bookings?.length) {
@@ -208,10 +207,10 @@ const BookingDashboard = ({ userOrder }) => {
   };
   useEffect(() => {
     setTableData(
-      store?.bookings.filter(
+      store?.bookings?.filter(
         (booking) =>
-          new Date(booking?.createdAt).toLocaleDateString() ===
-          new Date(tableDate).toLocaleDateString()
+          new Date(booking?.createdAt)?.toLocaleDateString() ===
+          new Date(tableDate)?.toLocaleDateString()
       )
     );
   }, [tableDate, store?.bookings]);
@@ -1012,7 +1011,7 @@ const BookingDashboard = ({ userOrder }) => {
         </div>
         <div className={styles.body}>
           <DataGrid
-            rows={tableData}
+            rows={tableData || []}
             classnName={styles.table}
             density="compact"
             sx={{ padding: "0 1rem" }}
@@ -1022,7 +1021,7 @@ const BookingDashboard = ({ userOrder }) => {
                 sortModel: [{ field: "createdAt", sort: "desc" }],
               },
             }}
-            getRowId={(row) => row._id}
+            getRowId={(row) => row?._id}
             localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
             disableSelectionOnClick
             pageSize={pageSize}

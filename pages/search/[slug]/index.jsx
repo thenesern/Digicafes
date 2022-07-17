@@ -7,7 +7,7 @@ import Search from "../../../components/Search";
 const SearchPage = () => {
   const router = useRouter();
   const { slug } = router.query;
-  console.log(slug);
+
   return (
     <div style={{ backgroundColor: "#f7f8fa" }}>
       <Nav color="#c9184a" />

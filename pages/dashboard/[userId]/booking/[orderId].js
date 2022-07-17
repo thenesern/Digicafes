@@ -12,27 +12,59 @@ import StoreCreation from "../../../../components/Booking/BookingDashboard/Store
 import BookingDashboard from "../../../../components/Booking/BookingDashboard/Dashboard/BookingDashboard";
 import { Avatar, Skeleton } from "@mui/material";
 import { Store } from "../../../../redux/store";
+import axios from "axios";
 
-const Booking = ({ userOrder }) => {
+const Booking = (props) => {
+  const [userOrder, setUserOrder] = useState(props.userOrder);
   const [isFirst, setIsFirst] = useState(null);
   const { state } = useContext(Store);
   const { storeCreated } = state;
 
+  let user;
+  if (Cookies.get("userInfo")) {
+    user = JSON.parse(Cookies.get("userInfo"));
+  }
+
   useEffect(() => {
     if (storeCreated === true) {
-      setIsFirst(false);
+      getStore();
     }
   }, [storeCreated]);
 
   useEffect(() => {
     if (userOrder) {
-      if (userOrder[0].booking) {
+      if (userOrder[0]?.booking) {
         setIsFirst(false);
       } else {
         setIsFirst(true);
       }
     }
   }, [userOrder]);
+
+  const getStore = async () => {
+    try {
+      axios
+        .post(
+          `/api/order/user`,
+          {
+            user: userOrder[0]?.user?._id,
+          },
+          {
+            headers: { authorization: `Bearer ${user?.token}` },
+          }
+        )
+        .then((result) => {
+          setUserOrder(
+            result.data.order.filter(
+              (order) => order?._id === props.userOrder[0]?._id
+            )
+          );
+          setIsFirst(false);
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   // Rendering
   if (isFirst === true) {

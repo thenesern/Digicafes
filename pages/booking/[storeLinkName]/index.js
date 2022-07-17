@@ -7,6 +7,7 @@ import Footer from "../../../components/Footer/Footer";
 import StoreBookingShowcase from "../../../components/Booking/BookingShowcase/index";
 
 const StoreBookingProfile = ({ store }) => {
+  console.log(store);
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <Nav color={store?.navbar?.color} />
@@ -17,6 +18,7 @@ const StoreBookingProfile = ({ store }) => {
 };
 export async function getServerSideProps(context) {
   const { storeLinkName } = context.query;
+  console.log(storeLinkName);
   await db.connect();
   const store = await Booking.findOne({
     storeLinkName,
