@@ -16,7 +16,6 @@ import { Store } from "../../../../redux/store";
 const StoreCreation = ({ userOrder, booking }) => {
   const [order, setOrder] = useState(userOrder[0] || null);
   const { state, dispatch } = useContext(Store);
-  const [isFirst, setIsFirst] = useState(null);
   const [isFetchingForFirst, setIsFetchingForFirst] = useState(false);
   const [storeName, setStoreName] = useState(booking?.storeName || "");
   const [allStoreNames, setAllStoreNames] = useState([]);
@@ -65,10 +64,10 @@ const StoreCreation = ({ userOrder, booking }) => {
     const getMenus = async () => {
       await axios
         .get("/api/booking", {
-          headers: { authorization: `Bearer ${user.token}` },
+          headers: { authorization: `Bearer ${user?.token}` },
         })
         .then((response) => {
-          setAllStoreNames(response.data.bookings.map((s) => s.storeName));
+          setAllStoreNames(response?.data?.bookings?.map((s) => s?.storeName));
         });
     };
     getMenus();
@@ -89,14 +88,14 @@ const StoreCreation = ({ userOrder, booking }) => {
   useEffect(() => {
     if (countryName) {
       setCountryCode(
-        allCountries.filter((country) => country.name === countryName)[0]
-          .isoCode
+        allCountries?.filter((country) => country?.name === countryName)[0]
+          ?.isoCode
       );
     }
   }, [countryName]);
   useEffect(() => {
     setStateCode(
-      allStates.filter((state) => state.name === stateName)[0]?.isoCode
+      allStates?.filter((state) => state?.name === stateName)[0]?.isoCode
     );
   }, [stateName]);
 
@@ -107,8 +106,8 @@ const StoreCreation = ({ userOrder, booking }) => {
     try {
       setIsFetchingForFirst(true);
       let newStateName;
-      if (stateName.includes("Province")) {
-        newStateName = stateName.split(" ")[0];
+      if (stateName?.includes("Province")) {
+        newStateName = stateName?.split(" ")[0];
       } else {
         newStateName = stateName;
       }
@@ -128,7 +127,7 @@ const StoreCreation = ({ userOrder, booking }) => {
           owner: order?.user?._id,
         },
         {
-          headers: { authorization: `Bearer ${user.token}` },
+          headers: { authorization: `Bearer ${user?.token}` },
         }
       );
       const attachedOrder = await axios.patch(
@@ -144,7 +143,6 @@ const StoreCreation = ({ userOrder, booking }) => {
       );
       setOrder(attachedOrder?.data?.order);
       dispatch({ type: "STORE_CREATED", payload: true });
-      setIsFirst(false);
       setIsFetchingForFirst(false);
     } catch (err) {
       console.log(err);
@@ -189,7 +187,7 @@ const StoreCreation = ({ userOrder, booking }) => {
                         e.target.value
                           ?.split(" ")
                           .map((item) =>
-                            item.replace(
+                            item?.replace(
                               item[0],
                               item[0]?.toLowerCase().toUpperCase()
                             )
@@ -296,7 +294,6 @@ const StoreCreation = ({ userOrder, booking }) => {
                         tableNum > 0 &&
                         tableNum !== 0
                       ) {
-                        /*   firstTimeHandler(e); */
                         setThirdStep(true);
                       }
                     }}
@@ -331,8 +328,8 @@ const StoreCreation = ({ userOrder, booking }) => {
                     >
                       {allCountries?.length > 0 &&
                         allCountries?.map((country) => (
-                          <option key={country.name} value={country.name}>
-                            {country.name}
+                          <option key={country?.name} value={country?.name}>
+                            {country?.name}
                           </option>
                         ))}
                     </NativeSelect>
@@ -353,13 +350,13 @@ const StoreCreation = ({ userOrder, booking }) => {
                     >
                       {countryStates?.length > 0 &&
                         countryStates?.map((state) =>
-                          state.name.includes("Province") ? (
-                            <option key={state.name} value={state.name}>
-                              {state.name.split(" ")[0]}
+                          state?.name?.includes("Province") ? (
+                            <option key={state?.name} value={state?.name}>
+                              {state?.name?.split(" ")[0]}
                             </option>
                           ) : (
-                            <option key={state.name} value={state.name}>
-                              {state.name}
+                            <option key={state?.name} value={state?.name}>
+                              {state?.name}
                             </option>
                           )
                         )}
@@ -381,8 +378,8 @@ const StoreCreation = ({ userOrder, booking }) => {
                     >
                       {stateCities?.length > 0 &&
                         stateCities?.map((city) => (
-                          <option key={city.name} value={city.name}>
-                            {city.name}
+                          <option key={city?.name} value={city?.name}>
+                            {city?.name}
                           </option>
                         ))}
                     </NativeSelect>
@@ -402,17 +399,6 @@ const StoreCreation = ({ userOrder, booking }) => {
                       e.preventDefault();
                       setAddress(e.target.value);
                     }}
-                    /*  helperText={
-                      tableNum === undefined
-                        ? t("panel:tableQuantity")
-                        : tableNum === 0
-                        ? t("panel:tableZero")
-                        : tableNum < 0
-                        ? t("panel:tableNeg")
-                        : tableNum > 100
-                        ? t("panel:tableNumMax2")
-                        : ""
-                    } */
                     label="Açık Adresiniz"
                   ></TextField>
                 </ListItem>

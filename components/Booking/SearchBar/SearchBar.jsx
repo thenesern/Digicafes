@@ -17,7 +17,9 @@ const SearchBar = () => {
     }
   };
   const handleSearch = (event) => {
-    router.push(`/search/${search}`);
+    if (search.trim()) {
+      router.push(`/search/${search.trim()}`);
+    }
   };
   return (
     <div className={styles.container}>

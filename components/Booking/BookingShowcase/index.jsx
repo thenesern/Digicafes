@@ -191,7 +191,7 @@ const StoreBookingShowcase = ({ store }) => {
 
   useEffect(() => {
     let people = 0;
-    store.bookings
+    store?.bookings
       .filter(
         (booking) =>
           new Date(booking?.createdAt).toLocaleDateString() ===
@@ -226,7 +226,7 @@ const StoreBookingShowcase = ({ store }) => {
     if (selectedHour) {
       setDate(
         new Date(
-          date.setHours(
+          date?.setHours(
             selectedHour?.split(":")[0],
             selectedHour?.split(":")[1],
             "00"
@@ -248,7 +248,7 @@ const StoreBookingShowcase = ({ store }) => {
   useEffect(() => {
     if (date) {
       setDayName(
-        date.toLocaleDateString("en-US", { weekday: "long" }).toLowerCase()
+        date?.toLocaleDateString("en-US", { weekday: "long" }).toLowerCase()
       );
     }
   }, [date]);
@@ -271,7 +271,7 @@ const StoreBookingShowcase = ({ store }) => {
     if (startTime) {
       setStartDate(
         new Date(
-          date.setHours(
+          date?.setHours(
             startTime?.split(":")[0],
             startTime?.split(":")[1],
             "00"
@@ -287,7 +287,7 @@ const StoreBookingShowcase = ({ store }) => {
       for (let i = 0; i <= max; i += 30) {
         setHours((oldDate) => [
           ...oldDate,
-          new Date(startDate.getTime() + i * 60000).getHours() +
+          new Date(startDate?.getTime() + i * 60000).getHours() +
             ":" +
             new Date(startDate.getTime() + i * 60000).getMinutes(),
         ]);
@@ -334,35 +334,6 @@ const StoreBookingShowcase = ({ store }) => {
 
   return (
     <div className={styles.container}>
-      <Modal
-        closeButton
-        preventClose
-        width="46rem"
-        aria-labelledby="modal-title"
-        open={visible}
-        onClose={closeHandler}
-      >
-        <Modal.Header>
-          <h3>Kart Bilgilerini Giriniz</h3>
-        </Modal.Header>
-        <Modal.Body>{render}</Modal.Body>
-        <Modal.Footer style={{ margin: "0", paddingTop: "0" }}>
-          <LoadingButton
-            size="medium"
-            onClick={() => {
-              setVisible(false);
-              paymentHandler();
-            }}
-            loading={loading}
-            style={{ margin: "1rem 2rem" }}
-            color="primary"
-            variant="contained"
-            disabled={loading}
-          >
-            Ödemeyi Tamamla
-          </LoadingButton>
-        </Modal.Footer>
-      </Modal>
       <div className={styles.app}>
         <div className={styles.left}>
           {store?.storeLogo ? (
@@ -377,19 +348,7 @@ const StoreBookingShowcase = ({ store }) => {
                   height="70"
                 />
                 <div>
-                  <h1 className={styles.storeName}>
-                    {store?.storeName?.split(" ")[0][0] ===
-                    store?.storeName[0][0].toLowerCase()
-                      ? store?.storeName
-                          ?.split(" ")
-                          .map((item) =>
-                            item.replace(
-                              item[0],
-                              item[0].toLowerCase().toUpperCase()
-                            )
-                          )
-                      : store?.storeName}
-                  </h1>
+                  <h1 className={styles.storeName}>{store?.storeName}</h1>
                   <p
                     className={styles.address}
                   >{`${store?.address?.city} / ${store?.address?.state}, ${store?.address?.country}`}</p>
@@ -887,6 +846,35 @@ const StoreBookingShowcase = ({ store }) => {
           </div>
         </div>
       </div>
+      <Modal
+        closeButton
+        preventClose
+        width="46rem"
+        aria-labelledby="modal-title"
+        open={visible}
+        onClose={closeHandler}
+      >
+        <Modal.Header>
+          <h3>Kart Bilgilerini Giriniz</h3>
+        </Modal.Header>
+        <Modal.Body>{render}</Modal.Body>
+        <Modal.Footer style={{ margin: "0", paddingTop: "0" }}>
+          <LoadingButton
+            size="medium"
+            onClick={() => {
+              setVisible(false);
+              paymentHandler();
+            }}
+            loading={loading}
+            style={{ margin: "1rem 2rem" }}
+            color="primary"
+            variant="contained"
+            disabled={loading}
+          >
+            Ödemeyi Tamamla
+          </LoadingButton>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

@@ -60,6 +60,7 @@ const bookingSchema = new mongoose.Schema(
       monday: {
         isActive: {
           type: Boolean,
+          default: false,
         },
         workingHours: {
           starts: {
@@ -73,6 +74,7 @@ const bookingSchema = new mongoose.Schema(
       tuesday: {
         isActive: {
           type: Boolean,
+          default: false,
         },
         workingHours: {
           starts: {
@@ -86,6 +88,7 @@ const bookingSchema = new mongoose.Schema(
       wednesday: {
         isActive: {
           type: Boolean,
+          default: false,
         },
         workingHours: {
           starts: {
@@ -99,6 +102,7 @@ const bookingSchema = new mongoose.Schema(
       thursday: {
         isActive: {
           type: Boolean,
+          default: false,
         },
         workingHours: {
           starts: {
@@ -112,6 +116,7 @@ const bookingSchema = new mongoose.Schema(
       friday: {
         isActive: {
           type: Boolean,
+          default: false,
         },
         workingHours: {
           starts: {
@@ -125,6 +130,7 @@ const bookingSchema = new mongoose.Schema(
       saturday: {
         isActive: {
           type: Boolean,
+          default: false,
         },
         workingHours: {
           starts: {
@@ -138,6 +144,7 @@ const bookingSchema = new mongoose.Schema(
       sunday: {
         isActive: {
           type: Boolean,
+          default: false,
         },
         workingHours: {
           starts: {
