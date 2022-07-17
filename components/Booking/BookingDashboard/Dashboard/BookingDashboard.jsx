@@ -63,7 +63,7 @@ const BookingDashboard = ({ userOrder }) => {
   const [openWorkingTimes, setOpenWorkingTimes] = useState(false);
   const [images, setImages] = useState(store?.gallery?.images || []);
   const [reserved, setReserved] = useState(0);
-  const [remains, setRemains] = useState(0);
+  const [remains, setRemains] = useState(+capacity - +reserved || 0);
   const [tableData, setTableData] = useState(store?.bookings || []);
   const [galleryImage, setGalleryImage] = useState(
     store?.gallery?.galleryImage || null
@@ -134,6 +134,10 @@ const BookingDashboard = ({ userOrder }) => {
 
     setReserved(people);
   }, [store?.bookings, tableDate]);
+
+  useEffect(() => {
+    setRemains(+capacity - +reserved);
+  }, [capacity, reserved]);
 
   useEffect(() => {
     retrieveData().finally(() => {
@@ -235,6 +239,14 @@ const BookingDashboard = ({ userOrder }) => {
       field: "userEmail",
       headerName: "Email",
       flex: 1,
+    },
+    {
+      field: "phoneNumber",
+      headerName: "Telefon Numarası",
+      flex: 1,
+      renderCell: (params) => {
+        return <div>+90 {params.row.phoneNumber.split("90")[1]}</div>;
+      },
     },
     {
       field: "people",
@@ -689,6 +701,10 @@ const BookingDashboard = ({ userOrder }) => {
           <div className={styles.side}>
             <h3 className={styles.header}>Kalan Yer (Kişi)</h3>
             <p className={styles.desc}> {remains}</p>
+          </div>
+          <div className={styles.side}>
+            <h3 className={styles.header}>Rezerve (Kişi)</h3>
+            <p className={styles.desc}> {reserved}</p>
           </div>
           <div className={styles.side}>
             <h3 className={styles.header}>Tablo</h3>

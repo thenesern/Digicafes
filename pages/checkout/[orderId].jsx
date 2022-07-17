@@ -62,10 +62,9 @@ const Checkout = ({ order }) => {
         card: {
           name,
           number,
-          expireMonth: expiry.split("/")[0],
-          expireYear: expiry.split("/")[1],
+          month: expiry.split("/")[0],
+          year: expiry.split("/")[1],
           cvc,
-          registerCard: 0,
         },
         user: {
           id: order.user._id,

@@ -49,7 +49,7 @@ function useCard() {
             width="100%"
             color="primary"
             size="lg"
-            type="tel"
+            type="number"
             name="number"
             aria-label="number"
             onChange={(e) => setCardNumber(e.target.value)}
@@ -80,6 +80,7 @@ function useCard() {
               width="100%"
               onChange={(e) => setCvc(e.target.value)}
               onFocus={(e) => setFocus(e.target.name)}
+              type="number"
               color="primary"
               size="lg"
               placeholder="CVC"

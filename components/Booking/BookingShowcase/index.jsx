@@ -5,10 +5,7 @@ import trLocale from "date-fns/locale/tr";
 import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./StoreBookingShowcase.module.css";
@@ -55,6 +52,7 @@ const StoreBookingShowcase = ({ store }) => {
   const [remains, setRemains] = useState(0);
   const [reserved, setReserved] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [cardError, setCardError] = useState(false);
   const { render, name, number, cvc, expiry } = useCard();
   const [visible, setVisible] = useState(false);
   const { state } = useContext(Store);
@@ -89,10 +87,9 @@ const StoreBookingShowcase = ({ store }) => {
         card: {
           name,
           number,
-          expireMonth: expiry.split("/")[0],
-          expireYear: expiry.split("/")[1],
+          month: expiry.split("/")[0],
+          year: expiry.split("/")[1],
           cvc,
-          registerCard: 0,
         },
         user: {
           id: userInfo.id,
@@ -195,7 +192,7 @@ const StoreBookingShowcase = ({ store }) => {
   }, [date]);
 
   useEffect(() => {
-    if (!people || people < 1 || people > 99) {
+    if (!people || people < 1 || people > store?.capacity) {
       setIsPeopleValid(false);
     } else {
       setIsPeopleValid(true);
@@ -354,7 +351,7 @@ const StoreBookingShowcase = ({ store }) => {
               width="100%"
               height="60"
               layout="responsive"
-              objectFit="contain"
+              objectFit="cover"
             />
           </div>
           <div className={styles.storeNavBar}>
@@ -869,12 +866,31 @@ const StoreBookingShowcase = ({ store }) => {
           <h3>Kart Bilgilerini Giriniz</h3>
         </Modal.Header>
         <Modal.Body>{render}</Modal.Body>
+        {cardError && (
+          <Text
+            color="error"
+            align="right"
+            style={{ width: "100%", padding: "1rem 3rem" }}
+          >
+            Lütfen kart bilgilerinizi giriniz.
+          </Text>
+        )}
         <Modal.Footer style={{ margin: "0", paddingTop: "0" }}>
           <LoadingButton
             size="medium"
             onClick={() => {
-              setVisible(false);
-              paymentHandler();
+              if (!name || !number || !cvc || !expiry) {
+                setCardError(true);
+              }
+              if (
+                name.trim() !== "" &&
+                number.trim().length === 16 &&
+                cvc.trim().length === 3 &&
+                expiry.trim().length === 5
+              ) {
+                paymentHandler();
+                setVisible(false);
+              }
             }}
             loading={loading}
             style={{ margin: "1rem 2rem" }}
