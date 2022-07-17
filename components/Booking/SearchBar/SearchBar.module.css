@@ -33,6 +33,7 @@
   position: absolute;
   right: 0;
 }
+
 .layout {
   width: 100%;
   padding: 2.2rem 2rem 2rem;
@@ -77,5 +78,51 @@
   }
   .layout {
     padding: 1rem;
+  }
+}
+@media only screen and (max-width: 850px) {
+  .container {
+    height: 90vh;
+  }
+  .header {
+    font-size: 2rem;
+    text-align: center;
+  }
+  .desc {
+    font-size: 16px;
+    text-align: center;
+  }
+  .mockup {
+    display: none;
+  }
+  .app {
+    padding: 10rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .container {
+    height: 100vh;
+  }
+  .mockup {
+    display: none;
+  }
+
+  .header {
+    font-size: 20px;
+    text-align: center;
+  }
+  .desc {
+    font-size: 14px;
+    text-align: center;
+  }
+  .app {
+    padding: 10rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
