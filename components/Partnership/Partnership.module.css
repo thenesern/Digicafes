@@ -45,3 +45,13 @@
     margin: 2rem 0 1rem 0;
   }
 }
+
+@media only screen and (max-width: 500px) {
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 3rem 2rem;
+  }
+}

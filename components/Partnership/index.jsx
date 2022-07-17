@@ -12,6 +12,7 @@ const Partnership = () => {
         alt="partnership"
         width="300"
         height="300"
+        className={styles.image}
       />
       <div>
         <h2 className={styles.header}>İşletmeler için</h2>
