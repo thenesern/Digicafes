@@ -1,8 +1,8 @@
 import nc from "next-connect";
 
 const handler = nc();
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_ACCOUNT_TOKEN;
+const accountSid = process.env.NEXT_PUBLIC_TWILIO_ACCOUNT_SID;
+const authToken = process.env.NEXT_PUBLIC_TWILIO_AUTH_TOKEN;
 const client = require("twilio")(accountSid, authToken);
 
 handler.post(async (req, res) => {
