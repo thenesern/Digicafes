@@ -7,10 +7,19 @@ import { Controller, useForm } from "react-hook-form";
 import Backdrop from "@mui/material/Backdrop";
 import { Link } from "react-scroll";
 import { useRouter } from "next/router";
-import { Loading, Modal, Spacer } from "@nextui-org/react";
+import { Loading, Modal, Spacer, Text } from "@nextui-org/react";
 import ModalMui from "@mui/material/Modal";
 import Image from "next/image";
-import { Divider, Hidden, IconButton, SwipeableDrawer } from "@mui/material";
+import {
+  Divider,
+  FormControlLabel,
+  FormLabel,
+  Hidden,
+  IconButton,
+  Radio,
+  RadioGroup,
+  SwipeableDrawer,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import { Button as ButtonNext } from "@nextui-org/react";
 import { List, ListItem, TextField } from "@material-ui/core";
@@ -63,6 +72,13 @@ const Nav = ({ color }) => {
   const [isOTPSent, setIsOTPSent] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [OTPResult, setOTPResult] = useState(null);
+  const [taxOffice, setTaxOffice] = useState("");
+  const [taxNumber, setTaxNumber] = useState("");
+  const [legalCompanyTitle, setLegalCompanyTitle] = useState("");
+  const [address, setAddress] = useState("");
+  const [IBAN, setIBAN] = useState("");
+  const [subMerchantType, setSubMerchantType] = useState("");
+  const [isSubMerchantTypeError, setIsSubMerchantTypeError] = useState(false);
   const [fix, setFix] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
   const [errorOTP, setErrorOTP] = useState(false);
@@ -155,6 +171,9 @@ const Nav = ({ color }) => {
   };
   const handleSendOTP = async (e) => {
     e.preventDefault();
+    if (!phoneNumber) {
+      return;
+    }
     setIsOTPSent(true);
 
     try {
@@ -277,11 +296,19 @@ const Nav = ({ color }) => {
     email,
     password,
     passwordConfirm,
+    IBAN,
+    legalCompanyTitle,
+    taxNumber,
+    taxOffice,
   }) => {
     closeSnackbar();
+    if (!subMerchantType) {
+      return setIsSubMerchantTypeError(true);
+    }
     if (OTPResult !== "success") {
       return setIsSentFormWithNotOTP(true);
     }
+
     if (password !== passwordConfirm) {
       return enqueueSnackbar(t("nav:passwordError"), { variant: "error" });
     }
@@ -308,6 +335,11 @@ const Nav = ({ color }) => {
         email,
         password,
         passwordConfirm,
+        taxOffice: taxOffice,
+        taxNumber: taxNumber,
+        legalCompanyTitle: legalCompanyTitle,
+        IBAN: IBAN,
+        subMerchantType: subMerchantType,
         signedIn,
         phoneNumber: phoneNumber,
         createdAt,
@@ -1176,6 +1208,122 @@ const Nav = ({ color }) => {
                   ></Controller>
                 </ListItem>
               </div>
+              <div style={{ display: "flex" }}>
+                <ListItem>
+                  <Controller
+                    name="taxOffice"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="taxOffice"
+                        label="Vergi Daireniz"
+                        error={Boolean(errors.taxOffice)}
+                        onChange={(e) => setTaxOffice(e.target.value.trim())}
+                        helperText={
+                          errors.taxOffice
+                            ? "Lütfen Vergi Dairenizi Giriniz"
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Controller
+                    name="taxNumber"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      minLength: 10,
+                      maxLength: 10,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        type="number"
+                        id="taxNumber"
+                        label="Vergi Numarası"
+                        inputProps={{ type: "number" }}
+                        error={Boolean(errors.taxNumber)}
+                        onChange={(e) => setTaxNumber(e.target.value.trim())}
+                        helperText={
+                          errors.taxNumber
+                            ? "Lütfen Vergi Numaranızı Giriniz"
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+              </div>
+              <div style={{ display: "flex" }}>
+                <ListItem>
+                  <Controller
+                    name="legalCompanyTitle"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="legalCompanyTitle"
+                        label="Şirket Unvanı"
+                        inputProps={{ type: "text" }}
+                        error={Boolean(errors.legalCompanyTitle)}
+                        onChange={(e) => setLegalCompanyTitle(e.target.value)}
+                        helperText={
+                          errors.legalCompanyTitle
+                            ? "Lütfen Şirket Unvanınızı Giriniz"
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Controller
+                    name="IBAN"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      minLength: 26,
+                      maxLength: 26,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="legalCompanyTitle"
+                        label="IBAN"
+                        error={Boolean(errors.IBAN)}
+                        onChange={(e) => setIBAN(e.target.value.trim())}
+                        helperText={
+                          errors.IBAN
+                            ? "Lütfen Şirket Unvanı ile Uyumlu bir IBAN Giriniz"
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+              </div>
+
               <ListItem>
                 <Controller
                   name="email"
@@ -1348,7 +1496,48 @@ const Nav = ({ color }) => {
                   Lütfen Telefon Numaranızı Onaylayınız.
                 </p>
               )}
-
+              <ListItem
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <FormLabel
+                  id="demo-row-radio-buttons-group-label"
+                  style={{ padding: "1rem 0 10px 0" }}
+                >
+                  Şirket Türü
+                </FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group"
+                >
+                  <FormControlLabel
+                    id="PRIVATE_COMPANY"
+                    value="PRIVATE_COMPANY"
+                    control={<Radio />}
+                    onChange={() => setSubMerchantType("PRIVATE_COMPANY")}
+                    label="Şahıs Şirketi"
+                  />
+                  <FormControlLabel
+                    id="LIMITED_OR_JOINT_STOCK_COMPANY"
+                    value="LIMITED_OR_JOINT_STOCK_COMPANY"
+                    control={<Radio />}
+                    onChange={() =>
+                      setSubMerchantType("LIMITED_OR_JOINT_STOCK_COMPANY")
+                    }
+                    label="Limited veya Anonim Şirket"
+                  />
+                </RadioGroup>
+                {isSubMerchantTypeError ? (
+                  <Text color="error">Lütfen Şirket Türünü Seçiniz</Text>
+                ) : (
+                  ""
+                )}
+              </ListItem>
               <div className={styles.aggreement}>
                 {router.locale === "tr" ? (
                   <div className={styles.privacy}>

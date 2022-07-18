@@ -5,11 +5,36 @@ import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
   {
+    taxOffice: {
+      type: String,
+      required: true,
+    },
+    taxNumber: {
+      type: Number,
+      required: true,
+      unique: true,
+    },
+    legalCompanyTitle: {
+      type: String,
+      required: true,
+    },
+    IBAN: {
+      type: String,
+      required: true,
+    },
+    subMerchantType: {
+      type: String,
+      required: true,
+    },
     userType: {
       type: String,
       required: true,
     },
     firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
       type: String,
       required: true,
     },
@@ -45,11 +70,6 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
-
-    lastName: {
-      type: String,
-      required: true,
-    },
     email: {
       type: String,
       required: true,
