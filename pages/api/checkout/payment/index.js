@@ -1,4 +1,3 @@
-import { createAPayment } from "../../../../services/iyzico/index.js";
 import nc from "next-connect";
 import nanoid from "../../../../utils/nanoid.js";
 import Iyzipay from "iyzipay";

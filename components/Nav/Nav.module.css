@@ -228,7 +228,7 @@
 
 .registerBox {
   background-color: #ffffff;
-  padding: 2rem;
+  padding: 1rem;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -238,15 +238,7 @@
   width: 600px;
   outline: none;
 }
-.modalRegister {
-  box-shadow: none;
-  width: 34rem;
-  padding: 2rem 0;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  height: 100%;
-}
+
 .signup {
   font-size: 14px;
   display: flex;

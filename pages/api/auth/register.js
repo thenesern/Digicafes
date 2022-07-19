@@ -17,6 +17,7 @@ handler.post(async (req, res) => {
     taxNumber: req.body.taxNumber,
     legalCompanyTitle: req.body.legalCompanyTitle,
     IBAN: req.body.IBAN,
+    identityNumber: req.body.identityNumber,
     subMerchantType: req.body.subMerchantType,
     phoneNumber: req.body.phoneNumber,
     password: req.body.password,
@@ -76,6 +77,12 @@ handler.post(async (req, res) => {
     createdAt: user.createdAt,
     isAdmin: user.isAdmin,
     userType: user?.userType,
+    taxOffice: user.taxOffice,
+    taxNumber: user.taxNumber,
+    legalCompanyTitle: user.legalCompanyTitle,
+    IBAN: user.IBAN,
+    identityNumber: user.identityNumber,
+    subMerchantType: user.subMerchantType,
   });
 });
 

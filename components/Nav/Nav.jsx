@@ -79,6 +79,7 @@ const Nav = ({ color }) => {
   const [legalCompanyTitle, setLegalCompanyTitle] = useState("");
   const [address, setAddress] = useState("");
   const [IBAN, setIBAN] = useState("");
+  const [identityNumber, setIdentityNumber] = useState("");
   const [subMerchantType, setSubMerchantType] = useState("");
   const [isSubMerchantTypeError, setIsSubMerchantTypeError] = useState(false);
   const [fix, setFix] = useState(false);
@@ -236,59 +237,6 @@ const Nav = ({ color }) => {
     window.addEventListener("scroll", setFixed);
   });
 
-  const registerHandler = async ({
-    fName,
-    lName,
-    email,
-    password,
-    passwordConfirm,
-  }) => {
-    closeSnackbar();
-    if (OTPResult !== "success") {
-      return setIsSentFormWithNotOTP(true);
-    }
-    if (password !== passwordConfirm) {
-      return enqueueSnackbar(t("nav:passwordError"), { variant: "error" });
-    }
-    const signedIn = new Date();
-    const lowerFirst = fName?.toLowerCase();
-    const betterFirst = lowerFirst?.replace(
-      lowerFirst[0],
-      lowerFirst[0]?.toUpperCase()
-    );
-
-    const lowerLast = lName?.toLowerCase();
-    const betterLast = lowerLast?.replace(
-      lowerLast[0],
-      lowerLast[0]?.toUpperCase()
-    );
-    const firstName = betterFirst;
-    const lastName = betterLast;
-    const createdAt = new Date();
-    try {
-      setIsFetching(true);
-      const { data } = await axios.post("/api/auth/register", {
-        firstName,
-        lastName,
-        email,
-        password,
-        passwordConfirm,
-        signedIn,
-        phoneNumber: phoneNumber,
-        createdAt,
-        quantity: [14],
-        userType: "Store Owner",
-      });
-      Cookies.remove("userInfo");
-      dispatch({ type: "USER_LOGIN", payload: data });
-      Cookies.set("userInfo", JSON.stringify(data));
-      setIsFetching(false);
-      handleCloseMuiRegister();
-    } catch (err) {
-      setIsFetching(false);
-      enqueueSnackbar(t("nav:emailError"), { variant: "error" });
-    }
-  };
   useEffect(() => {
     setTimeout(() => {
       setIsSentFormWithNotOTP(false);
@@ -301,6 +249,7 @@ const Nav = ({ color }) => {
     email,
     password,
     passwordConfirm,
+    identityNumber,
     IBAN,
     legalCompanyTitle,
     taxNumber,
@@ -342,6 +291,7 @@ const Nav = ({ color }) => {
         passwordConfirm,
         taxOffice: taxOffice,
         taxNumber: taxNumber,
+        identityNumber: identityNumber,
         legalCompanyTitle: legalCompanyTitle,
         IBAN: IBAN,
         subMerchantType: subMerchantType,
@@ -558,6 +508,9 @@ const Nav = ({ color }) => {
                     handleOpenMuiRegisterDigitalMenu();
                   }
                   if (router.pathname === "/") {
+                    handleOpenMuiRegisterDefault();
+                  }
+                  if (router.pathname === "/booking/[storeName]") {
                     handleOpenMuiRegisterDefault();
                   }
                 }}
@@ -1348,38 +1301,67 @@ const Nav = ({ color }) => {
                   ></Controller>
                 </ListItem>
               </div>
-
-              <ListItem>
-                <Controller
-                  name="email"
-                  control={control}
-                  defaultValue=""
-                  rules={{
-                    required: true,
-                    pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                  }}
-                  render={({ field }) => (
-                    <TextField
-                      variant="outlined"
-                      fullWidth
-                      id="email"
-                      label="Email"
-                      inputProps={{ type: "email" }}
-                      error={Boolean(errors.email)}
-                      onChange={(e) => setEmail(e.target.value)}
-                      helperText={
-                        errors.email
-                          ? errors.email.type === "pattern"
-                            ? t("nav:validEmail")
-                            : t("nav:proveEmail")
-                          : ""
-                      }
-                      {...field}
-                    ></TextField>
-                  )}
-                ></Controller>
-              </ListItem>
-
+              <div style={{ display: "flex" }}>
+                <ListItem>
+                  <Controller
+                    name="identityNumber"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      maxLength: 11,
+                      minLength: 11,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="identityNumber"
+                        label="Kimlik Numarası"
+                        inputProps={{ type: "number" }}
+                        error={Boolean(errors.identityNumber)}
+                        onChange={(e) => setIdentityNumber(e.target.value)}
+                        helperText={
+                          errors.email
+                            ? "Lütfen Kimlik Numaranızı Giriniz."
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Controller
+                    name="email"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="email"
+                        label="Email"
+                        inputProps={{ type: "email" }}
+                        error={Boolean(errors.email)}
+                        onChange={(e) => setEmail(e.target.value)}
+                        helperText={
+                          errors.email
+                            ? errors.email.type === "pattern"
+                              ? t("nav:validEmail")
+                              : t("nav:proveEmail")
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+              </div>
               <div style={{ display: "flex" }}>
                 <ListItem>
                   <Controller

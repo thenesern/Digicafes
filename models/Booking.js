@@ -15,7 +15,6 @@ const bookingSchema = new mongoose.Schema(
     subMerchantKey: {
       type: String,
       required: true,
-      unique: true,
     },
     prices: {
       isActive: {

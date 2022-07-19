@@ -36,6 +36,7 @@ const StoreCreation = ({ userOrder, booking }) => {
   const [secondStep, setSecondStep] = useState(false);
   const [thirdStep, setThirdStep] = useState(false);
   const { t } = useTranslation();
+  const { userInfo } = state;
   const animate = {
     fadeInRightBig: {
       animation: "x 2s",
@@ -43,10 +44,6 @@ const StoreCreation = ({ userOrder, booking }) => {
       animationName: Radium.keyframes(fadeInRightBig, "fadeInRightBig"),
     },
   };
-  let user;
-  if (Cookies.get("userInfo")) {
-    user = JSON.parse(Cookies.get("userInfo"));
-  }
 
   const handleChangeState = (event) => {
     setStateName(event.target.value);
@@ -64,7 +61,7 @@ const StoreCreation = ({ userOrder, booking }) => {
     const getMenus = async () => {
       await axios
         .get("/api/booking", {
-          headers: { authorization: `Bearer ${user?.token}` },
+          headers: { authorization: `Bearer ${userInfo?.token}` },
         })
         .then((response) => {
           setAllStoreNames(response?.data?.bookings?.map((s) => s?.storeName));
@@ -111,12 +108,34 @@ const StoreCreation = ({ userOrder, booking }) => {
       } else {
         newStateName = stateName;
       }
+      const company = await axios.post(
+        `/api/booking/iyzico/company/${
+          userInfo?.subMerchantType === "PRIVATE_COMPANY"
+            ? "private"
+            : "limitedOrStock"
+        }`,
+        {
+          orderId: order?._id,
+          address: address,
+          taxOffice: userInfo?.taxOffice,
+          taxNumber: userInfo?.taxNumber,
+          legalCompanyTitle: userInfo?.legalCompanyTitle,
+          email: userInfo?.email,
+          gsmNumber: userInfo?.phoneNumber,
+          name: storeName?.trim(),
+          iban: userInfo?.IBAN,
+          identityNumber: userInfo?.identityNumber,
+        },
+        {
+          headers: { authorization: `Bearer ${userInfo?.token}` },
+        }
+      );
       const { data } = await axios.post(
         `/api/booking/${storeName}`,
         {
           storeName: storeName?.trim(),
           storeLinkName: storeLinkName,
-          capacity,
+          subMerchantKey: company?.data?.subMerchantKey,
           createdAt,
           address: {
             country: countryName,
@@ -127,9 +146,10 @@ const StoreCreation = ({ userOrder, booking }) => {
           owner: order?.user?._id,
         },
         {
-          headers: { authorization: `Bearer ${user?.token}` },
+          headers: { authorization: `Bearer ${userInfo?.token}` },
         }
       );
+
       const attachedOrder = await axios.patch(
         "/api/order/attachBooking",
         {
@@ -138,9 +158,10 @@ const StoreCreation = ({ userOrder, booking }) => {
           orderProduct: order?.product?.name,
         },
         {
-          headers: { authorization: `Bearer ${user?.token}` },
+          headers: { authorization: `Bearer ${userInfo?.token}` },
         }
       );
+
       setOrder(attachedOrder?.data?.order);
       dispatch({ type: "STORE_CREATED", payload: true });
       setIsFetchingForFirst(false);

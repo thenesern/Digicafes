@@ -1,6 +1,6 @@
 // Packages and Dependencies
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Button, Image, Loading, Modal, Spacer } from "@nextui-org/react";
 import Link from "next/link";
 import Stack from "@mui/material/Stack";
@@ -14,24 +14,20 @@ import styles from "./dashboard.module.css";
 import Cookies from "js-cookie";
 // Translationg
 import useTranslation from "next-translate/useTranslation";
+import { Store } from "../../../redux/store";
 
 const Dashboard = () => {
   const router = useRouter();
   const userId = router.query.userId;
   const [isFetching, setIsFetching] = useState(false);
   const [orders, setOrders] = useState(null);
-  const [userToken, setUserToken] = useState(null);
-  const newDate = new Date();
   // Translation
   const { t } = useTranslation();
 
-  useEffect(() => {
-    if (Cookies.get("userInfo")) {
-      const user = JSON.parse(Cookies.get("userInfo"));
-      setUserToken(user?.token);
-    }
-  }, []);
+  const { state } = useContext(Store);
+  const { userInfo } = state;
 
+  // Fetching user's orders
   useEffect(() => {
     const getUserOrder = async () => {
       setIsFetching(true);
@@ -41,7 +37,7 @@ const Dashboard = () => {
           {
             user: userId,
           },
-          { headers: { authorization: `Bearer ${userToken}` } }
+          { headers: { authorization: `Bearer ${userInfo?.token}` } }
         );
         setOrders(userOrder?.data?.order);
         setIsFetching(false);
@@ -51,7 +47,7 @@ const Dashboard = () => {
       }
     };
     getUserOrder();
-  }, [userId, userToken]);
+  }, [userId, userInfo]);
 
   return (
     <div className={styles.container}>
