@@ -55,10 +55,12 @@ import logo from "../../assets/digi_logo.svg";
 import i18nConfig from "../../i18n.json";
 const { locales } = i18nConfig;
 import useTranslation from "next-translate/useTranslation";
+import { LoadingButton } from "@mui/lab";
 
 const Nav = ({ color }) => {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
+  const [loading, setLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [openMuiLogin, setOpenMuiLogin] = useState(false);
   const [openForgotPassword, setOpenForgotPassword] = useState(false);
@@ -159,13 +161,16 @@ const Nav = ({ color }) => {
   const handleCheckOTP = async (e) => {
     e.preventDefault();
     setIsChecking(true);
+    setLoading(true);
     try {
       const result = await axios.post("/api/sms/verify-auth", {
         to: "+" + phoneNumber,
         code: enteredOTP,
       });
       setOTPResult(result.data.status);
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
       console.log(err);
     }
   };
@@ -784,6 +789,8 @@ const Nav = ({ color }) => {
               style={{ fontWeight: "600", cursor: "pointer" }}
               onClick={() => {
                 handleCloseMuiRegisterDigitalMenu();
+                handleCloseMuiRegisterBooking();
+                handleCloseMuiRegisterDefault();
                 handleOpenMuiLogin();
               }}
             >
@@ -925,6 +932,7 @@ const Nav = ({ color }) => {
                       <TextField
                         variant="outlined"
                         id="passwordConfirm"
+                        fullWidth
                         label={t("nav:passwordConfirm")}
                         inputProps={{ type: "password" }}
                         error={Boolean(errors.passwordConfirm)}
@@ -984,9 +992,11 @@ const Nav = ({ color }) => {
                           value={enteredOTP}
                           onChange={(e) => setEnteredOTP(e.target.value)}
                         ></TextField>
-                        <ButtonNext
-                          bordered
-                          auto
+                        <LoadingButton
+                          variant="contained"
+                          loading={loading}
+                          disabled={loading}
+                          style={{ padding: "10px 2rem" }}
                           onClick={(e) => {
                             if (enteredOTP?.toString().length === 4) {
                               setErrorOTP(false);
@@ -997,21 +1007,23 @@ const Nav = ({ color }) => {
                           }}
                         >
                           Gönder
-                        </ButtonNext>
+                        </LoadingButton>
                       </div>
                     ) : (
                       <VerifiedIcon color="success" />
                     )}
                   </>
                 ) : (
-                  <ButtonNext
-                    bordered
-                    disabled={phoneNumber ? false : true}
+                  <Button
+                    variant="outlined"
+                    disabled={
+                      phoneNumber?.toString().length === 12 ? false : true
+                    }
                     onClick={handleSendOTP}
                     style={{ width: "90%" }}
                   >
                     <span>Kod Gönder</span>
-                  </ButtonNext>
+                  </Button>
                 )}
               </ListItem>
               {isSentFormWithNotOTP && (
@@ -1039,7 +1051,20 @@ const Nav = ({ color }) => {
                       >
                         Gizlilik Politikası
                       </a>
-                      kapsamında işlenmektedir. “Üye ol” butonuna basarak
+                      kapsamında işlenmektedir. “Kayıt Ol” butonuna basarak
+                      <a
+                        href="https://www.iyzico.com/pazaryeri-alici-anlasma/"
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Ödeme Hizmeti Sözleşmesi
+                      </a>
+                      ’ni,
                       <a
                         href="/uyelik-sozlesmesi"
                         target="_blank"
@@ -1400,6 +1425,7 @@ const Nav = ({ color }) => {
                         variant="outlined"
                         id="passwordConfirm"
                         label={t("nav:passwordConfirm")}
+                        fullWidth
                         inputProps={{ type: "password" }}
                         error={Boolean(errors.passwordConfirm)}
                         helperText={
@@ -1458,9 +1484,11 @@ const Nav = ({ color }) => {
                           value={enteredOTP}
                           onChange={(e) => setEnteredOTP(e.target.value)}
                         ></TextField>
-                        <ButtonNext
-                          bordered
-                          auto
+                        <LoadingButton
+                          variant="contained"
+                          loading={loading}
+                          disabled={loading}
+                          style={{ padding: "10px 2rem" }}
                           onClick={(e) => {
                             if (enteredOTP?.toString().length === 4) {
                               setErrorOTP(false);
@@ -1471,21 +1499,23 @@ const Nav = ({ color }) => {
                           }}
                         >
                           Gönder
-                        </ButtonNext>
+                        </LoadingButton>
                       </div>
                     ) : (
                       <VerifiedIcon color="success" />
                     )}
                   </>
                 ) : (
-                  <ButtonNext
-                    bordered
-                    disabled={phoneNumber ? false : true}
+                  <Button
+                    variant="outlined"
+                    disabled={
+                      phoneNumber?.toString().length === 12 ? false : true
+                    }
                     onClick={handleSendOTP}
                     style={{ width: "90%" }}
                   >
                     <span>Kod Gönder</span>
-                  </ButtonNext>
+                  </Button>
                 )}
               </ListItem>
               {isSentFormWithNotOTP && (
@@ -1554,7 +1584,20 @@ const Nav = ({ color }) => {
                       >
                         Gizlilik Politikası
                       </a>
-                      kapsamında işlenmektedir. “Üye ol” butonuna basarak
+                      kapsamında işlenmektedir. “Kayıt Ol” butonuna basarak
+                      <a
+                        href="https://www.iyzico.com/pazaryeri-satici-anlasma/"
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Ödeme Hizmeti Sözleşmesi
+                      </a>
+                      ’ni,
                       <a
                         href="/uyelik-sozlesmesi"
                         target="_blank"
@@ -1566,7 +1609,7 @@ const Nav = ({ color }) => {
                       >
                         Üyelik Sözleşmesi
                       </a>
-                      ’ni, ve
+                      ve
                       <a
                         href="/cerez-politikasi"
                         target="_blank"
@@ -1798,6 +1841,7 @@ const Nav = ({ color }) => {
                       <TextField
                         variant="outlined"
                         id="passwordConfirm"
+                        fullWidth
                         label={t("nav:passwordConfirm")}
                         inputProps={{ type: "password" }}
                         error={Boolean(errors.passwordConfirm)}
@@ -1857,9 +1901,11 @@ const Nav = ({ color }) => {
                           value={enteredOTP}
                           onChange={(e) => setEnteredOTP(e.target.value)}
                         ></TextField>
-                        <ButtonNext
-                          bordered
-                          auto
+                        <LoadingButton
+                          variant="contained"
+                          loading={loading}
+                          disabled={loading}
+                          style={{ padding: "10px 2rem" }}
                           onClick={(e) => {
                             if (enteredOTP?.toString().length === 4) {
                               setErrorOTP(false);
@@ -1870,21 +1916,23 @@ const Nav = ({ color }) => {
                           }}
                         >
                           Gönder
-                        </ButtonNext>
+                        </LoadingButton>
                       </div>
                     ) : (
                       <VerifiedIcon color="success" />
                     )}
                   </>
                 ) : (
-                  <ButtonNext
-                    bordered
-                    disabled={phoneNumber ? false : true}
+                  <Button
+                    variant="outlined"
+                    disabled={
+                      phoneNumber?.toString().length === 12 ? false : true
+                    }
                     onClick={handleSendOTP}
                     style={{ width: "90%" }}
                   >
                     <span>Kod Gönder</span>
-                  </ButtonNext>
+                  </Button>
                 )}
               </ListItem>
               {isSentFormWithNotOTP && (
@@ -1912,7 +1960,20 @@ const Nav = ({ color }) => {
                       >
                         Gizlilik Politikası
                       </a>
-                      kapsamında işlenmektedir. “Üye ol” butonuna basarak
+                      kapsamında işlenmektedir. “Kayıt Ol” butonuna basarak
+                      <a
+                        href="https://www.iyzico.com/pazaryeri-alici-anlasma/"
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          margin: "0 4px",
+                        }}
+                      >
+                        Ödeme Hizmeti Sözleşmesi
+                      </a>
+                      ’ni,
                       <a
                         href="/uyelik-sozlesmesi"
                         target="_blank"

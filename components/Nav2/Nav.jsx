@@ -691,7 +691,7 @@ const Nav2 = ({ color }) => {
                       >
                         Gizlilik Politikası
                       </a>
-                      kapsamında işlenmektedir. “Üye ol” butonuna basarak
+                      kapsamında işlenmektedir. “Kayıt Ol” butonuna basarak
                       <a
                         href="/uyelik-sozlesmesi"
                         target="_blank"
