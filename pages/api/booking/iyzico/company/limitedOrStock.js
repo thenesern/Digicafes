@@ -14,7 +14,7 @@ handler.post(async (req, res) => {
     legalCompanyTitle: req.body.legalCompanyTitle,
     email: req.body.email,
     address: req.body.address,
-    iban: req.body.IBAN,
+    iban: req.body.iban,
     identityNumber: req.body.identityNumber,
     subMerchantType: Iyzipay.SUB_MERCHANT_TYPE.LIMITED_OR_JOINT_STOCK_COMPANY,
     subMerchantExternalId: req.body.orderId,

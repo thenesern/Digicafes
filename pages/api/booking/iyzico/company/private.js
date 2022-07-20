@@ -4,6 +4,7 @@ import { createCompany } from "../../../../../services/iyzico/methods/company";
 const handler = nc();
 
 handler.post(async (req, res) => {
+  console.log(req.body);
   const result = await createCompany({
     locale: Iyzipay.LOCALE.TR,
     conversationId: req.body.orderId,
@@ -16,7 +17,7 @@ handler.post(async (req, res) => {
     email: req.body.email,
     gsmNumber: req.body.gsmNumber,
     name: req.body.storeName,
-    iban: req.body.IBAN,
+    iban: req.body.iban,
     identityNumber: req.body.identityNumber,
     currency: Iyzipay.CURRENCY.TRY,
   });

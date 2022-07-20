@@ -1,8 +1,8 @@
-const iyzipay = require("../connection/iyzipay.js");
+const iyzipay = require("../../connection/iyzipay.js");
 
-const createCompany = (data) => {
+const getCompany = (data) => {
   return new Promise((resolve, reject) => {
-    iyzipay.subMerchant.create(data, (err, result) => {
+    iyzipay.subMerchant.retrieve(data, (err, result) => {
       if (err) {
         reject(err);
       } else {
@@ -13,5 +13,5 @@ const createCompany = (data) => {
 };
 
 module.exports = {
-  createCompany,
+  getCompany,
 };
