@@ -6,8 +6,8 @@ const handler = nc();
 handler.post(async (req, res) => {
   const result = await createCompany({
     locale: Iyzipay.LOCALE.TR,
-    conversationId: req.body.storeId,
-    subMerchantExternalId: req.body.storeId,
+    conversationId: req.body.orderId,
+    subMerchantExternalId: req.body.orderId,
     subMerchantType: Iyzipay.SUB_MERCHANT_TYPE.PRIVATE_COMPANY,
     address: req.body.address,
     taxNumber: req.body.taxNumber,
