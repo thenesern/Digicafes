@@ -15,7 +15,8 @@ handler.post(async (req, res) => {
       IBAN: req.body.iban,
     }
   );
-  res.json({ status: "success" });
+  const newUser = await User.findById(req.body.id);
+  res.json({ status: "success", newUser });
   await db.disconnect();
 });
 

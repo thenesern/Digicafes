@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./BookingDashboard.module.css";
 import { Country, State, City } from "country-state-city";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -33,6 +33,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import BookingTable from "./components/BookingTable";
 import IBANModal from "./components/IBANModal";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import { Store } from "../../../../redux/store";
 
 const BookingDashboard = ({ userOrder }) => {
   const [store, setStore] = useState(userOrder?.booking);
@@ -79,10 +80,8 @@ const BookingDashboard = ({ userOrder }) => {
   const allStates = State.getAllStates();
   const [openContact, setOpenContact] = useState(false);
   const [openIBAN, setOpenIBAN] = useState(false);
-  let user;
-  if (Cookies.get("userInfo")) {
-    user = JSON.parse(Cookies.get("userInfo"));
-  }
+  const { state } = useContext(Store);
+  const { userInfo } = state;
   const [storeLogo, setStoreLogo] = useState(
     store?.storeLogo ||
       "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1650137521/uploads/logoDefault_ez8obk.png"
@@ -248,7 +247,7 @@ const BookingDashboard = ({ userOrder }) => {
             },
           },
           {
-            headers: { authorization: `Bearer ${user.token}` },
+            headers: { authorization: `Bearer ${userInfo.token}` },
           }
         );
         setGalleryImage(newGallery?.data?.gallery?.galleryImage);
@@ -265,7 +264,7 @@ const BookingDashboard = ({ userOrder }) => {
             },
           },
           {
-            headers: { authorization: `Bearer ${user.token}` },
+            headers: { authorization: `Bearer ${userInfo.token}` },
           }
         );
         setGalleryImage(newGallery?.data?.gallery?.galleryImage);
@@ -301,7 +300,7 @@ const BookingDashboard = ({ userOrder }) => {
           storeLogo: uploadRes?.data?.url,
         },
         {
-          headers: { authorization: `Bearer ${user.token}` },
+          headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
       setStoreLogo(uploadRes?.data?.url);
@@ -330,7 +329,7 @@ const BookingDashboard = ({ userOrder }) => {
           },
         },
         {
-          headers: { authorization: `Bearer ${user.token}` },
+          headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
 
@@ -362,7 +361,7 @@ const BookingDashboard = ({ userOrder }) => {
           },
         },
         {
-          headers: { authorization: `Bearer ${user.token}` },
+          headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
       setStore(res.data.store);
@@ -391,7 +390,7 @@ const BookingDashboard = ({ userOrder }) => {
           capacity,
         },
         {
-          headers: { authorization: `Bearer ${user.token}` },
+          headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
       setIsFetching(false);
@@ -422,7 +421,7 @@ const BookingDashboard = ({ userOrder }) => {
           },
         },
         {
-          headers: { authorization: `Bearer ${user.token}` },
+          headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
 
@@ -459,7 +458,7 @@ const BookingDashboard = ({ userOrder }) => {
           },
         },
         {
-          headers: { authorization: `Bearer ${user.token}` },
+          headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
 
@@ -663,7 +662,7 @@ const BookingDashboard = ({ userOrder }) => {
           tableData={tableData}
           store={store}
           isFetching={isFetching}
-          user={user}
+          user={userInfo}
           setStore={(data) => {
             setStore(data);
           }}
@@ -735,7 +734,7 @@ const BookingDashboard = ({ userOrder }) => {
       />
       <IBANModal
         openIBAN={openIBAN}
-        user={user}
+        user={userInfo}
         orderId={userOrder?._id}
         store={store}
         setOpenIBAN={(boolean) => setOpenIBAN(boolean)}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Modal from "@mui/material/Modal";
 import { Button, List, ListItem } from "@material-ui/core";
 import { Box, TextField } from "@mui/material";
@@ -6,17 +6,19 @@ import { useSnackbar } from "notistack";
 import useTranslation from "next-translate/useTranslation";
 import styles from "../../BookingDashboard.module.css";
 import axios from "axios";
+import { Store } from "../../../../../../redux/store";
 
 const IBANModal = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation();
+  const { dispatch } = useContext(Store);
   const [IBAN, setIBAN] = useState(props?.user?.IBAN);
 
   const handleUpdateIBAN = async (e) => {
     e.preventDefault();
     try {
       props.setIsFetching(true);
-      await axios.post(
+      const result = await axios.post(
         `/api/user/iban`,
         {
           id: props?.user?.id,
@@ -26,6 +28,7 @@ const IBANModal = (props) => {
           headers: { authorization: `Bearer ${props?.user?.token}` },
         }
       );
+      dispatch({ type: "USER_LOGIN", payload: result?.data?.newUser });
       await axios.post(`/api/booking/iyzico/company/update`, {
         conversationId: props?.orderId,
         subMerchantKey: props?.store?.subMerchantKey,
@@ -54,7 +57,13 @@ const IBANModal = (props) => {
   };
 
   return (
-    <Modal open={props.openIBAN} onClose={() => props.setOpenIBAN(false)}>
+    <Modal
+      open={props.openIBAN}
+      onClose={() => {
+        props.setOpenIBAN(false);
+        setIBAN(props?.user?.IBAN);
+      }}
+    >
       <Box className={styles.modal}>
         <h2 style={{ textAlign: "center", padding: "1rem", color: "#000814" }}>
           IBAN
@@ -101,7 +110,10 @@ const IBANModal = (props) => {
             <Button
               variant="outlined"
               color="primary"
-              onClick={() => props.setOpenIBAN(false)}
+              onClick={() => {
+                props.setOpenIBAN(false);
+                setIBAN(props?.user?.IBAN);
+              }}
             >
               {t("panel:discard")}
             </Button>
