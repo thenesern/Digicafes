@@ -27,7 +27,7 @@
 .sidebar {
   min-width: 11vw;
   height: 93vh;
-  background-color: #264653;
+  background-color: #22223b;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -89,15 +89,49 @@
   justify-content: center;
   flex-direction: column;
 }
+.capacity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  padding: 1rem;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.capacity:hover .editIcon {
+  display: block !important;
+  position: absolute;
+  top: calc(50% - 10px);
+  color: #bc6c25;
+}
+.capacity:hover .capacityHeader {
+  opacity: 0.1;
+}
+.capacity:hover .capacityDesc {
+  opacity: 0.1;
+}
+.capacity:hover {
+  background-color: #ffcad4;
+}
 .side {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 }
+.capacityHeader {
+  margin: 0;
+  padding: 6px 0;
+  font-size: 16px;
+  width: 100%;
+  text-align: center;
+}
 .header {
   margin: 0;
   padding: 6px 0;
+  font-size: 16px;
   width: 100%;
   text-align: center;
 }
@@ -105,19 +139,27 @@
   margin: 0;
   padding: 6px 0;
 }
+.capacityDesc {
+  margin: 0;
+  padding: 6px 0;
+}
 .copy {
-  min-width: 10rem !important;
-  max-width: 10rem !important;
+  min-width: 11rem !important;
+  max-width: 11rem !important;
   overflow: hidden;
   color: #fff !important;
-  border: 1px solid #fff;
+  border: 1px solid #fff !important;
 }
 .buttons {
-  height: 2rem !important;
-  min-width: 11rem !important;
-  font-size: 13px !important;
-  color: #fbeee0 !important;
-  border: 1px solid #fbeee0 !important;
+  color: #edf2f4 !important;
+  margin: 0 10px !important;
+  border: 1px solid #edf2f4 !important;
+}
+.buttonHeader {
+  min-width: 7rem;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
 }
 .topBar {
   width: 100%;
@@ -136,9 +178,23 @@
 .logo {
   border-radius: 50%;
 }
-.actionButtons {
-  min-width: 10rem !important;
-  max-width: 10rem !important;
+.logoDiv {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: center;
+  transition: all 0.3 ease;
+}
+.cameraIcon {
+  transition: all 0.3 ease;
+}
+
+.logoDiv:hover .cameraIcon {
+  display: inline-block !important;
+  position: absolute;
+  top: calc(50% - 10px);
+  color: white;
 }
 
 @media only screen and (max-width: 1280px) {
@@ -147,15 +203,6 @@
   }
   .header {
     font-size: 14px;
-  }
-  .buttons {
-    height: 2rem !important;
-    min-width: 9rem !important;
-    font-size: 12px !important;
-  }
-  .actionButtons {
-    min-width: 8rem !important;
-    max-width: 8rem !important;
   }
   .app {
     width: 87vw;
@@ -178,9 +225,7 @@
   .header {
     font-size: 13px;
   }
-  .buttons {
-    font-size: 11px !important;
-  }
+
   .sidebar {
     min-width: 20vw;
   }

@@ -1,24 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./BookingDashboard.module.css";
 import { Country, State, City } from "country-state-city";
-import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import useTranslation from "next-translate/useTranslation";
-import { Loading, Modal, Spacer } from "@nextui-org/react";
+import { Card, Loading, Modal, Spacer, Text } from "@nextui-org/react";
 import FormControl from "@mui/material/FormControl";
 import { Button, IconButton, Input, List, ListItem } from "@material-ui/core";
 import ModalMui from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import { PhotoCamera } from "@material-ui/icons";
-import ReactAudioPlayer from "react-audio-player";
 import { useSnackbar } from "notistack";
 import axios from "axios";
 import Cookies from "js-cookie";
 import Link from "next/link";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { v4 as uuidv4 } from "uuid";
-import { DataGrid } from "@mui/x-data-grid";
-import { trTR } from "@mui/x-data-grid";
 import { InputLabel, NativeSelect, Select, Stack } from "@mui/material";
 import { Switch } from "@nextui-org/react";
 import TextField from "@mui/material/TextField";
@@ -26,6 +20,17 @@ import CallIcon from "@mui/icons-material/Call";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import Image from "next/image";
 import WorkingTimesModal from "./WorkingTimesModal";
+import { Button as NextButton, Grid } from "@nextui-org/react";
+import RoomIcon from "@mui/icons-material/Room";
+import PhoneIcon from "@mui/icons-material/Phone";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import CollectionsIcon from "@mui/icons-material/Collections";
+import PaymentIcon from "@mui/icons-material/Payment";
+import PaletteIcon from "@mui/icons-material/Palette";
+import StoreIcon from "@mui/icons-material/Store";
+import EditIcon from "@mui/icons-material/Edit";
+import BookingTable from "./BookingTable";
 
 const BookingDashboard = ({ userOrder }) => {
   const [store, setStore] = useState(userOrder?.booking);
@@ -42,7 +47,6 @@ const BookingDashboard = ({ userOrder }) => {
   const [instagramLink, setInstagramLink] = useState(
     store?.contact?.instagramLink || ""
   );
-  const [pageSize, setPageSize] = useState(20);
   const [countryCode, setCountryCode] = useState("");
   const [openPrices, setOpenPrices] = useState(false);
   const [stateCities, setStateCities] = useState([]);
@@ -69,6 +73,7 @@ const BookingDashboard = ({ userOrder }) => {
     store?.gallery?.galleryImage || null
   );
   const allCountries = Country.getAllCountries();
+  const [openCapacity, setOpenCapacity] = useState(false);
   const allStates = State.getAllStates();
   const [openContact, setOpenContact] = useState(false);
   let user;
@@ -86,7 +91,11 @@ const BookingDashboard = ({ userOrder }) => {
   const handleChangeCity = (event) => {
     setCityName(event.target.value);
   };
-
+  const handleOpenCapacity = () => setOpenCapacity(true);
+  const handleCloseCapacity = () => {
+    setCapacity(store?.capacity);
+    setOpenCapacity(false);
+  };
   const handleCloseGallery = () => {
     setOpenGallery(false);
   };
@@ -115,12 +124,9 @@ const BookingDashboard = ({ userOrder }) => {
   const handleOpenContact = () => setOpenContact(true);
 
   const handleCloseContact = () => setOpenContact(false);
-  const [isNew, setIsNew] = useState(false);
+
   const [copySuccess, setCopySuccess] = useState(false);
   const [isNotification, setIsNotification] = useState(false);
-  const [refreshToken, setRefreshToken] = useState(Math.random());
-  const audioRef = useRef();
-  const audio = audioRef?.current?.audioEl?.current;
 
   useEffect(() => {
     let people = 0;
@@ -140,32 +146,6 @@ const BookingDashboard = ({ userOrder }) => {
   }, [capacity, reserved]);
 
   useEffect(() => {
-    retrieveData().finally(() => {
-      setTimeout(() => setRefreshToken(Math.random()), 15000);
-    });
-  }, [refreshToken]);
-
-  const retrieveData = async () => {
-    const storeName = store?.storeName;
-    try {
-      const newStore = await axios.post(
-        `/api/booking/${storeName}/getStore`,
-        {
-          storeName,
-        },
-        {
-          headers: { authorization: `Bearer ${user?.token}` },
-        }
-      );
-      if (store?.bookings?.length < newStore?.data?.store?.bookings?.length) {
-        setIsNew(true);
-        setStore(newStore?.data?.store);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  useEffect(() => {
     setTableData(
       store?.bookings?.filter(
         (booking) =>
@@ -174,16 +154,6 @@ const BookingDashboard = ({ userOrder }) => {
       )
     );
   }, [tableDate, store?.bookings]);
-
-  useEffect(() => {
-    if (isNew) {
-      enqueueSnackbar("Yeni Rezervasyon", { variant: "success" });
-      audio.play();
-      setIsNew(false);
-    } else {
-      return;
-    }
-  }, [isNew]);
 
   const copyToClipBoard = async (copyMe) => {
     try {
@@ -228,86 +198,6 @@ const BookingDashboard = ({ userOrder }) => {
       allStates?.filter((state) => state?.name === stateName)[0]?.isoCode
     );
   }, [stateName]);
-
-  const columns = [
-    {
-      field: "userName",
-      headerName: "Ad Soyad",
-      flex: 1,
-    },
-    {
-      field: "userEmail",
-      headerName: "Email",
-      flex: 1,
-    },
-    {
-      field: "phoneNumber",
-      headerName: "Telefon Numarası",
-      flex: 1,
-      renderCell: (params) => {
-        return <div>+90 {params.row.phoneNumber.split("90")[1]}</div>;
-      },
-    },
-    {
-      field: "people",
-      headerName: "Kişi Sayısı",
-      flex: 1,
-    },
-    {
-      field: "isPaid",
-      headerName: "Kapora",
-      flex: 1,
-      renderCell: (params) => {
-        return (
-          <div>
-            {params.row.isPaid === true ? (
-              <p
-                style={{
-                  backgroundColor: "#a3b18a",
-                  padding: "2rem",
-                  minWidth: "8rem",
-                }}
-              >
-                Ödendi
-              </p>
-            ) : (
-              <p style={{ padding: "2rem", minWidth: "8rem" }}>Ödenmedi</p>
-            )}
-          </div>
-        );
-      },
-    },
-
-    {
-      field: "date",
-      headerName: "Rezervasyon Tarihi",
-      flex: 2,
-      renderCell: (params) => {
-        return (
-          <div
-            style={
-              new Date(params.row.date).toLocaleDateString() ===
-              new Date().toLocaleDateString()
-                ? { backgroundColor: "#f2cc8f", padding: "2rem" }
-                : { backgroundColor: "", padding: "2rem" }
-            }
-          >
-            {new Date(params.row.date).toLocaleString()}
-          </div>
-        );
-      },
-    },
-    {
-      field: "createdAt",
-      headerName: "Oluşturulma Tarihi",
-      hide: false,
-      editable: false,
-      flex: 1,
-      renderCell: (params) => {
-        return <span> {new Date(params.row.createdAt).toLocaleString()}</span>;
-      },
-    },
-  ];
 
   const handleUpdateGallery = async (e) => {
     e.preventDefault();
@@ -485,6 +375,34 @@ const BookingDashboard = ({ userOrder }) => {
       });
     }
   };
+  const handleUpdateCapacity = async (e) => {
+    e.preventDefault();
+    try {
+      setIsFetching(true);
+      await axios.post(
+        `/api/booking/${store?.storeName}/capacity`,
+        {
+          storeName: store?.storeName,
+          capacity,
+        },
+        {
+          headers: { authorization: `Bearer ${user.token}` },
+        }
+      );
+      setIsFetching(false);
+      setOpenCapacity(false);
+      enqueueSnackbar("Kapasite başarıyla güncellendi.", {
+        variant: "success",
+      });
+    } catch (err) {
+      console.log(err);
+      setOpenCapacity(false);
+      setIsFetching(false);
+      enqueueSnackbar("Kapasite güncellemesi başarısız.", {
+        variant: "error",
+      });
+    }
+  };
 
   const handleUpdateContact = async () => {
     try {
@@ -558,14 +476,20 @@ const BookingDashboard = ({ userOrder }) => {
     <div className={styles.container}>
       <div className={styles.sideBar}>
         <div className={styles.sidebar}>
-          <Image
-            src={storeLogo}
-            alt="Logo"
-            width="70"
-            height="70"
-            objectFit="contain"
-            className={styles.logo}
-          />
+          <div className={styles.logoDiv} onClick={handleOpenUploadLogo}>
+            <Image
+              src={storeLogo}
+              alt="Logo"
+              width="70"
+              height="70"
+              objectFit="contain"
+              className={styles.logo}
+            />
+            <PhotoCameraIcon
+              style={{ display: "none" }}
+              className={styles.cameraIcon}
+            />
+          </div>
           <div className={styles.side}>
             <h3 className={styles.header} style={{ color: "#fff" }}>
               Paylaş
@@ -593,96 +517,75 @@ const BookingDashboard = ({ userOrder }) => {
               <DashboardIcon />
             </h3>
             <ul className={styles.sidebarList}>
-              <li className={styles.li}>
-                <Link href={`/booking/${store?.storeLinkName}`} passHref>
-                  <a target="_blank">
-                    <Stack direction="row" spacing={1}>
-                      <Button variant="outlined" className={styles.buttons}>
-                        İşletme Sayfası
-                      </Button>
-                    </Stack>
-                  </a>
-                </Link>
-              </li>
               <li>
-                <Button
-                  variant="outlined"
+                <NextButton
+                  bordered
+                  icon={<RoomIcon />}
                   className={styles.buttons}
-                  type="submit"
                   onClick={handleOpenAddress}
+                  auto
                 >
-                  Adres Bilgileri
-                </Button>
+                  <span className={styles.buttonHeader}>Adres Bilgileri</span>
+                </NextButton>
               </li>
               <li>
-                <Button
-                  variant="outlined"
+                <NextButton
+                  bordered
+                  icon={<PhoneIcon />}
                   className={styles.buttons}
-                  type="submit"
                   onClick={handleOpenContact}
+                  auto
                 >
-                  İletişim Bilgileri
-                </Button>
+                  <span className={styles.buttonHeader}>
+                    İletişim Bilgileri
+                  </span>
+                </NextButton>
               </li>
               <li>
-                <Button
-                  variant="outlined"
+                <NextButton
+                  bordered
+                  icon={<AccessTimeIcon />}
                   className={styles.buttons}
-                  type="submit"
                   onClick={() => setOpenWorkingTimes(true)}
+                  auto
                 >
-                  Çalışma Saatleri
-                </Button>
+                  <span className={styles.buttonHeader}>Çalışma Saatleri</span>
+                </NextButton>
               </li>
               <li>
-                <Button
-                  variant="outlined"
+                <NextButton
+                  bordered
+                  icon={<CollectionsIcon />}
                   className={styles.buttons}
-                  type="submit"
-                  onClick={handleOpenUploadLogo}
-                >
-                  {t("panel:uploadLogo")}
-                </Button>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className={styles.sidebarHeader}>
-              <DashboardCustomizeIcon />
-            </h3>
-            <ul className={styles.sidebarList}>
-              <li>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  className={styles.actionButtons}
-                  color="primary"
                   onClick={handleOpenGallery}
+                  auto
                 >
-                  {t("panel:gallery")}
-                </Button>
+                  <span className={styles.buttonHeader}>
+                    {t("panel:gallery")}
+                  </span>
+                </NextButton>
               </li>
               <li>
-                <Button
-                  className={styles.actionButtons}
-                  variant="contained"
-                  type="submit"
-                  color="primary"
+                <NextButton
+                  bordered
+                  icon={<PaymentIcon />}
+                  className={styles.buttons}
                   onClick={handleOpenPrices}
+                  auto
                 >
-                  Kapora
-                </Button>
+                  <span className={styles.buttonHeader}>Kapora</span>
+                </NextButton>
               </li>
               <li>
-                <Button
-                  className={styles.actionButtons}
-                  variant="contained"
-                  type="submit"
-                  color="primary"
+                <NextButton
+                  bordered
+                  icon={<PaletteIcon />}
+                  className={styles.buttons}
                   onClick={handleOpenNavbarColor}
+                  auto
                 >
-                  Renkler
-                </Button>
+                  <span className={styles.buttonHeader}> Renkler</span>
+                </NextButton>
               </li>
             </ul>
           </div>
@@ -690,14 +593,34 @@ const BookingDashboard = ({ userOrder }) => {
       </div>
       <div className={styles.app}>
         <div className={styles.topBar}>
-          <div className={styles.side}>
-            <h3 className={styles.header}>İşletme Adı</h3>
-            <p className={styles.desc}>{store?.storeName}</p>
+          <Link href={`/booking/${store?.storeLinkName}`} passHref>
+            <a target="_blank">
+              <NextButton
+                bordered
+                icon={<StoreIcon />}
+                style={{ height: "5rem", width: "12rem" }}
+                auto
+              >
+                <div
+                  style={{ display: "flex", flexDirection: "column", gap: "0" }}
+                >
+                  <h4 style={{ margin: "0", padding: "0", height: "26px" }}>
+                    İşletme Adı
+                  </h4>
+                  <p style={{ margin: "0", padding: "0" }}>
+                    {store?.storeName}
+                  </p>
+                </div>
+              </NextButton>
+            </a>
+          </Link>
+          <div style={{ display: "flex", flexDirection: "column" }}></div>
+          <div className={styles.capacity} onClick={handleOpenCapacity}>
+            <h3 className={styles.capacityHeader}>Maksimum Kapasite (Kişi)</h3>
+            <p className={styles.capacityDesc}>{capacity}</p>
+            <EditIcon style={{ display: "none" }} className={styles.editIcon} />
           </div>
-          <div className={styles.side}>
-            <h3 className={styles.header}>Maksimum Kapasite (Kişi)</h3>
-            <p className={styles.desc}>{capacity}</p>
-          </div>
+
           <div className={styles.side}>
             <h3 className={styles.header}>Kalan Yer (Kişi)</h3>
             <p className={styles.desc}> {remains}</p>
@@ -707,7 +630,6 @@ const BookingDashboard = ({ userOrder }) => {
             <p className={styles.desc}> {reserved}</p>
           </div>
           <div className={styles.side}>
-            <h3 className={styles.header}>Tablo</h3>
             <TextField
               id="date"
               label="Tarih Seçiniz"
@@ -721,27 +643,15 @@ const BookingDashboard = ({ userOrder }) => {
             />
           </div>
         </div>
-        <div className={styles.body}>
-          <DataGrid
-            rows={tableData || []}
-            classnName={styles.table}
-            density="compact"
-            sx={{ padding: "0 1rem" }}
-            columns={columns}
-            initialState={{
-              sorting: {
-                sortModel: [{ field: "createdAt", sort: "desc" }],
-              },
-            }}
-            getRowId={(row) => row?._id}
-            localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
-            disableSelectionOnClick
-            pageSize={pageSize}
-            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-            rowsPerPageOptions={[20, 40, 60]}
-            pagination
-          />
-        </div>
+        <BookingTable
+          tableData={tableData}
+          store={store}
+          isFetching={isFetching}
+          user={user}
+          setStore={(data) => {
+            setStore(data);
+          }}
+        />
       </div>
       <ModalMui
         open={openUploadLogo}
@@ -1325,6 +1235,101 @@ const BookingDashboard = ({ userOrder }) => {
           </form>
         </Box>
       </ModalMui>
+      <ModalMui open={openCapacity} onClose={handleCloseCapacity}>
+        <Box className={styles.modal}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+              justifyContent: "center",
+            }}
+          >
+            <h2
+              style={{
+                padding: "1rem",
+                color: "#000814",
+              }}
+            >
+              Maksimum Kapasite (Kişi)
+            </h2>
+          </div>
+          <form
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
+            <List
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "1rem",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
+              <ListItem>
+                <TextField
+                  type="number"
+                  inputProps={{ maxLength: 1 }}
+                  label="Bir Sayı Giriniz"
+                  helperText={
+                    capacity === undefined
+                      ? "Lütfen kapasite sayısı giriniz"
+                      : capacity === 0
+                      ? "Kapatise sıfır olamaz"
+                      : capacity < 0
+                      ? "Kapasite negatif bir değer olamaz"
+                      : capacity > 999
+                      ? "Kapasite 999'dan fazla olamaz"
+                      : ""
+                  }
+                  value={capacity}
+                  onChange={(e) => setCapacity(e.target.value)}
+                ></TextField>
+              </ListItem>
+            </List>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                width: "92%",
+                justifyContent: "flex-end",
+                gap: "1rem",
+                margin: "1rem",
+              }}
+            >
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleCloseCapacity}
+              >
+                {t("panel:discard")}
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={(e) => {
+                  if (
+                    capacity !== undefined &&
+                    capacity < 1000 &&
+                    capacity > 0 &&
+                    capacity !== 0
+                  ) {
+                    handleUpdateCapacity(e);
+                  }
+                }}
+              >
+                {t("panel:confirm")}
+              </Button>
+            </div>
+          </form>
+        </Box>
+      </ModalMui>
       <Modal
         style={{
           background: "transparent",
@@ -1337,12 +1342,6 @@ const BookingDashboard = ({ userOrder }) => {
         <Loading color="white" size="xl" />
         <Spacer />
       </Modal>
-      <div>
-        <ReactAudioPlayer
-          src="https://res.cloudinary.com/dlyjd3mnb/video/upload/v1650899563/orderAlert_ltwbxs.mp3"
-          ref={audioRef}
-        />
-      </div>
     </div>
   );
 };
