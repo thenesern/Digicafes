@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, List, ListItem } from "@material-ui/core";
-import styles from "../BookingDashboard.module.css";
+import styles from "../../BookingDashboard.module.css";
 import {
   Box,
   Checkbox,

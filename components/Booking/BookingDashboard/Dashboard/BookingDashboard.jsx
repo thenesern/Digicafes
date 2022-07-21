@@ -19,7 +19,7 @@ import TextField from "@mui/material/TextField";
 import CallIcon from "@mui/icons-material/Call";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import Image from "next/image";
-import WorkingTimesModal from "./WorkingTimesModal";
+import WorkingTimesModal from "./components/WorkingTimesModal";
 import { Button as NextButton, Grid } from "@nextui-org/react";
 import RoomIcon from "@mui/icons-material/Room";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -30,7 +30,9 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import PaletteIcon from "@mui/icons-material/Palette";
 import StoreIcon from "@mui/icons-material/Store";
 import EditIcon from "@mui/icons-material/Edit";
-import BookingTable from "./BookingTable";
+import BookingTable from "./components/BookingTable";
+import IBANModal from "./components/IBANModal";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 
 const BookingDashboard = ({ userOrder }) => {
   const [store, setStore] = useState(userOrder?.booking);
@@ -76,6 +78,7 @@ const BookingDashboard = ({ userOrder }) => {
   const [openCapacity, setOpenCapacity] = useState(false);
   const allStates = State.getAllStates();
   const [openContact, setOpenContact] = useState(false);
+  const [openIBAN, setOpenIBAN] = useState(false);
   let user;
   if (Cookies.get("userInfo")) {
     user = JSON.parse(Cookies.get("userInfo"));
@@ -85,6 +88,8 @@ const BookingDashboard = ({ userOrder }) => {
       "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1650137521/uploads/logoDefault_ez8obk.png"
   );
   const [openGallery, setOpenGallery] = useState(false);
+  const handleOpenIBAN = () => setOpenIBAN(true);
+  const handleCloseIBAN = () => setOpenIBAN(false);
   const handleChangeState = (event) => {
     setStateName(event.target.value);
   };
@@ -555,6 +560,17 @@ const BookingDashboard = ({ userOrder }) => {
               <li>
                 <NextButton
                   bordered
+                  icon={<PaymentIcon />}
+                  className={styles.buttons}
+                  onClick={() => setOpenIBAN(true)}
+                  auto
+                >
+                  <span className={styles.buttonHeader}>IBAN</span>
+                </NextButton>
+              </li>
+              <li>
+                <NextButton
+                  bordered
                   icon={<CollectionsIcon />}
                   className={styles.buttons}
                   onClick={handleOpenGallery}
@@ -568,7 +584,7 @@ const BookingDashboard = ({ userOrder }) => {
               <li>
                 <NextButton
                   bordered
-                  icon={<PaymentIcon />}
+                  icon={<ShoppingBasketIcon />}
                   className={styles.buttons}
                   onClick={handleOpenPrices}
                   auto
@@ -715,6 +731,14 @@ const BookingDashboard = ({ userOrder }) => {
         store={store}
         openWorkingTimes={openWorkingTimes}
         setOpenWorkingTimes={(boolean) => setOpenWorkingTimes(boolean)}
+        setIsFetching={(boolean) => setIsFetching(boolean)}
+      />
+      <IBANModal
+        openIBAN={openIBAN}
+        user={user}
+        orderId={userOrder?._id}
+        store={store}
+        setOpenIBAN={(boolean) => setOpenIBAN(boolean)}
         setIsFetching={(boolean) => setIsFetching(boolean)}
       />
       <Modal

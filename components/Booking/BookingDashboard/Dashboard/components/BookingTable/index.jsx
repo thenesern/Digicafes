@@ -1,6 +1,6 @@
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useEffect, useRef, useState } from "react";
-import styles from "../BookingDashboard.module.css";
+import styles from "../../BookingDashboard.module.css";
 import { trTR } from "@mui/x-data-grid";
 import axios from "axios";
 import { useSnackbar } from "notistack";
