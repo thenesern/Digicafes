@@ -96,8 +96,8 @@ const DescriptionModal = (props) => {
               variant="outlined"
               color="primary"
               onClick={() => {
-                props.setorderId(false);
                 setDescription(props?.store?.description);
+                props.setOpenDescription(false);
               }}
             >
               {t("panel:discard")}

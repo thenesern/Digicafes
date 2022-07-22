@@ -408,188 +408,197 @@ const StoreBookingShowcase = ({ storeInfo }) => {
           <div className={styles.content}>
             {activeNavBar === "aboutUs" && (
               <div className={styles.aboutUs}>
-                <div className={styles.aboutUs}>
-                  <div style={{ width: "100%" }}>
-                    {store?.contact && (
-                      <div className={styles.storeContact}>
-                        <h3 className={styles.centeredHeader}>İletişim</h3>
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            gap: "2rem",
-                            margin: "6px 0",
-                          }}
-                        >
-                          {store?.contact?.phoneNumber && (
-                            <Button className={styles.buttons}>
-                              <CallIcon color="success" />
+                <div style={{ width: "100%" }}>
+                  {store?.description && (
+                    <p
+                      style={{
+                        width: "100%",
+                        padding: "0 1rem 1rem 0",
+                        color: "#2b2d42",
+                      }}
+                    >
+                      {store?.description}
+                    </p>
+                  )}
+                  {store?.contact && (
+                    <div className={styles.storeContact}>
+                      <h3 className={styles.centeredHeader}>İletişim</h3>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "2rem",
+                          margin: "6px 0",
+                        }}
+                      >
+                        {store?.contact?.phoneNumber && (
+                          <Button className={styles.buttons}>
+                            <CallIcon color="success" />
+                            <p
+                              style={{
+                                color: "#006d77",
+                                fontWeight: "600",
+                              }}
+                            >
+                              {store?.contact?.phoneNumber}
+                            </p>
+                          </Button>
+                        )}
+                        {store?.contact?.instagram && (
+                          <Button className={styles.buttons}>
+                            <InstagramIcon color="secondary" />
+                            <a
+                              href={store?.contact?.instagramLink}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
                               <p
                                 style={{
                                   color: "#006d77",
                                   fontWeight: "600",
                                 }}
                               >
-                                {store?.contact?.phoneNumber}
+                                {store?.contact?.instagramLink?.split("/")[3]}
                               </p>
-                            </Button>
-                          )}
-                          {store?.contact?.instagram && (
-                            <Button className={styles.buttons}>
-                              <InstagramIcon color="secondary" />
-                              <a
-                                href={store?.contact?.instagramLink}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                <p
-                                  style={{
-                                    color: "#006d77",
-                                    fontWeight: "600",
-                                  }}
-                                >
-                                  {store?.contact?.instagramLink?.split("/")[3]}
-                                </p>
-                              </a>
-                            </Button>
-                          )}
-                        </div>
+                            </a>
+                          </Button>
+                        )}
                       </div>
-                    )}
-                    {store?.address?.address && (
-                      <div className={styles.storeAddress}>
-                        <h3 className={styles.centeredHeader}>Adres</h3>
-                        <Button className={styles.buttons}>
-                          <LocationOnIcon color="primary" />
-                          <p
-                            style={{
-                              color: "#006d77",
-                              fontWeight: "600",
-                            }}
-                          >
-                            {store?.address?.address}
-                          </p>
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                  <div className={styles.bodyRight}>
-                    {store?.workingTimes && (
-                      <div className={styles.workingTimesTable}>
-                        <h3 className={styles.workingTimesHeader}>
-                          Çalışma Saatleri
-                        </h3>
-                        <ul style={{ margin: "0", padding: "0" }}>
-                          {store?.workingTimes?.monday?.isActive ? (
-                            <li className={styles.workingTimes}>
-                              <h4 className={styles.day}>Pazartesi</h4>
-                              <span className={styles.hours}>
-                                {`${store?.workingTimes?.monday?.workingHours?.starts}`}
-                                <span> - </span>
-                                {`${store?.workingTimes?.monday?.workingHours?.ends}`}
-                              </span>
-                            </li>
-                          ) : (
-                            <li className={styles.workingTimes}>
-                              <h4 className={styles.dayClose}>Pazartesi</h4>
-                              <span className={styles.hours}> - </span>
-                            </li>
-                          )}
-                          {store?.workingTimes?.tuesday?.isActive ? (
-                            <li className={styles.workingTimes}>
-                              <h4 className={styles.day}>Salı</h4>
-                              <span className={styles.hours}>
-                                {`${store?.workingTimes?.tuesday?.workingHours?.starts}`}
-                                <span> - </span>
-                                {`${store?.workingTimes?.tuesday?.workingHours?.ends}`}
-                              </span>
-                            </li>
-                          ) : (
-                            <li className={styles.workingTimes}>
-                              <h4 className={styles.dayClose}>Salı</h4>
-                              <span className={styles.hours}> - </span>
-                            </li>
-                          )}
-                          {store?.workingTimes?.wednesday?.isActive ? (
-                            <li className={styles.workingTimes}>
-                              <h4 className={styles.day}>Çarşamba</h4>
-                              <span className={styles.hours}>
-                                {`${store?.workingTimes?.wednesday?.workingHours?.starts}`}
-                                <span> - </span>
-                                {`${store?.workingTimes?.wednesday?.workingHours?.ends}`}
-                              </span>
-                            </li>
-                          ) : (
-                            <li className={styles.workingTimes}>
-                              <h4 className={styles.dayClose}>Çarşamba</h4>
-                              <span className={styles.hours}> - </span>
-                            </li>
-                          )}
-                          {store?.workingTimes?.thursday?.isActive ? (
-                            <li className={styles.workingTimes}>
-                              <h4 className={styles.day}>Perşembe</h4>
-                              <span className={styles.hours}>
-                                {`${store?.workingTimes?.thursday?.workingHours?.starts}`}
-                                <span> - </span>
-                                {`${store?.workingTimes?.thursday?.workingHours?.ends}`}
-                              </span>
-                            </li>
-                          ) : (
-                            <li className={styles.workingTimes}>
-                              <h4 className={styles.dayClose}>Perşembe</h4>
-                              <span className={styles.hours}> - </span>
-                            </li>
-                          )}
-                          {store?.workingTimes?.friday?.isActive ? (
-                            <li className={styles.workingTimes}>
-                              <h4 className={styles.day}>Cuma</h4>
-                              <span className={styles.hours}>
-                                {`${store?.workingTimes?.friday?.workingHours?.starts}`}
-                                <span> - </span>
-                                {`${store?.workingTimes?.friday?.workingHours?.ends}`}
-                              </span>
-                            </li>
-                          ) : (
-                            <li className={styles.workingTimes}>
-                              <h4 className={styles.dayClose}>Cuma</h4>
-                              <span className={styles.hours}> - </span>
-                            </li>
-                          )}
-                          {store?.workingTimes?.saturday?.isActive ? (
-                            <li className={styles.workingTimes}>
-                              <h4 className={styles.day}>Cumartesi</h4>
-                              <span className={styles.hours}>
-                                {`${store?.workingTimes?.saturday?.workingHours?.starts}`}
-                                <span> - </span>
-                                {`${store?.workingTimes?.saturday?.workingHours?.ends}`}
-                              </span>
-                            </li>
-                          ) : (
-                            <li className={styles.workingTimes}>
-                              <h4 className={styles.dayClose}>Cumartesi</h4>
-                              <span className={styles.hours}> - </span>
-                            </li>
-                          )}
-                          {store?.workingTimes?.sunday?.isActive ? (
-                            <li className={styles.workingTimes}>
-                              <h4 className={styles.day}>Pazar</h4>
-                              <span className={styles.hours}>
-                                {`${store?.workingTimes?.sunday?.workingHours?.starts}`}
-                                <span> - </span>
-                                {`${store?.workingTimes?.sunday?.workingHours?.ends}`}
-                              </span>
-                            </li>
-                          ) : (
-                            <li className={styles.workingTimes}>
-                              <h4 className={styles.dayClose}>Pazar</h4>
-                              <span className={styles.hours}> - </span>
-                            </li>
-                          )}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
+                  {store?.address?.address && (
+                    <div className={styles.storeAddress}>
+                      <h3 className={styles.centeredHeader}>Adres</h3>
+                      <Button className={styles.buttons}>
+                        <LocationOnIcon color="primary" />
+                        <p
+                          style={{
+                            color: "#006d77",
+                            fontWeight: "600",
+                          }}
+                        >
+                          {store?.address?.address}
+                        </p>
+                      </Button>
+                    </div>
+                  )}
+                </div>
+                <div className={styles.bodyRight}>
+                  {store?.workingTimes && (
+                    <div className={styles.workingTimesTable}>
+                      <h3 className={styles.workingTimesHeader}>
+                        Çalışma Saatleri
+                      </h3>
+                      <ul style={{ margin: "0", padding: "0" }}>
+                        {store?.workingTimes?.monday?.isActive ? (
+                          <li className={styles.workingTimes}>
+                            <h4 className={styles.day}>Pazartesi</h4>
+                            <span className={styles.hours}>
+                              {`${store?.workingTimes?.monday?.workingHours?.starts}`}
+                              <span> - </span>
+                              {`${store?.workingTimes?.monday?.workingHours?.ends}`}
+                            </span>
+                          </li>
+                        ) : (
+                          <li className={styles.workingTimes}>
+                            <h4 className={styles.dayClose}>Pazartesi</h4>
+                            <span className={styles.hours}> - </span>
+                          </li>
+                        )}
+                        {store?.workingTimes?.tuesday?.isActive ? (
+                          <li className={styles.workingTimes}>
+                            <h4 className={styles.day}>Salı</h4>
+                            <span className={styles.hours}>
+                              {`${store?.workingTimes?.tuesday?.workingHours?.starts}`}
+                              <span> - </span>
+                              {`${store?.workingTimes?.tuesday?.workingHours?.ends}`}
+                            </span>
+                          </li>
+                        ) : (
+                          <li className={styles.workingTimes}>
+                            <h4 className={styles.dayClose}>Salı</h4>
+                            <span className={styles.hours}> - </span>
+                          </li>
+                        )}
+                        {store?.workingTimes?.wednesday?.isActive ? (
+                          <li className={styles.workingTimes}>
+                            <h4 className={styles.day}>Çarşamba</h4>
+                            <span className={styles.hours}>
+                              {`${store?.workingTimes?.wednesday?.workingHours?.starts}`}
+                              <span> - </span>
+                              {`${store?.workingTimes?.wednesday?.workingHours?.ends}`}
+                            </span>
+                          </li>
+                        ) : (
+                          <li className={styles.workingTimes}>
+                            <h4 className={styles.dayClose}>Çarşamba</h4>
+                            <span className={styles.hours}> - </span>
+                          </li>
+                        )}
+                        {store?.workingTimes?.thursday?.isActive ? (
+                          <li className={styles.workingTimes}>
+                            <h4 className={styles.day}>Perşembe</h4>
+                            <span className={styles.hours}>
+                              {`${store?.workingTimes?.thursday?.workingHours?.starts}`}
+                              <span> - </span>
+                              {`${store?.workingTimes?.thursday?.workingHours?.ends}`}
+                            </span>
+                          </li>
+                        ) : (
+                          <li className={styles.workingTimes}>
+                            <h4 className={styles.dayClose}>Perşembe</h4>
+                            <span className={styles.hours}> - </span>
+                          </li>
+                        )}
+                        {store?.workingTimes?.friday?.isActive ? (
+                          <li className={styles.workingTimes}>
+                            <h4 className={styles.day}>Cuma</h4>
+                            <span className={styles.hours}>
+                              {`${store?.workingTimes?.friday?.workingHours?.starts}`}
+                              <span> - </span>
+                              {`${store?.workingTimes?.friday?.workingHours?.ends}`}
+                            </span>
+                          </li>
+                        ) : (
+                          <li className={styles.workingTimes}>
+                            <h4 className={styles.dayClose}>Cuma</h4>
+                            <span className={styles.hours}> - </span>
+                          </li>
+                        )}
+                        {store?.workingTimes?.saturday?.isActive ? (
+                          <li className={styles.workingTimes}>
+                            <h4 className={styles.day}>Cumartesi</h4>
+                            <span className={styles.hours}>
+                              {`${store?.workingTimes?.saturday?.workingHours?.starts}`}
+                              <span> - </span>
+                              {`${store?.workingTimes?.saturday?.workingHours?.ends}`}
+                            </span>
+                          </li>
+                        ) : (
+                          <li className={styles.workingTimes}>
+                            <h4 className={styles.dayClose}>Cumartesi</h4>
+                            <span className={styles.hours}> - </span>
+                          </li>
+                        )}
+                        {store?.workingTimes?.sunday?.isActive ? (
+                          <li className={styles.workingTimes}>
+                            <h4 className={styles.day}>Pazar</h4>
+                            <span className={styles.hours}>
+                              {`${store?.workingTimes?.sunday?.workingHours?.starts}`}
+                              <span> - </span>
+                              {`${store?.workingTimes?.sunday?.workingHours?.ends}`}
+                            </span>
+                          </li>
+                        ) : (
+                          <li className={styles.workingTimes}>
+                            <h4 className={styles.dayClose}>Pazar</h4>
+                            <span className={styles.hours}> - </span>
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
