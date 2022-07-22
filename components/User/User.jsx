@@ -1,7 +1,7 @@
 // Packages and Dependencies
 import List from "./List";
 import { TextField } from "@material-ui/core";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import { Loading } from "@nextui-org/react";
 import Skeleton from "@mui/material/Skeleton";
@@ -13,6 +13,7 @@ import styles from "./User.module.css";
 // Translation
 import useTranslation from "next-translate/useTranslation";
 import UserBookings from "./UserBookings";
+import { Store } from "../../redux/store";
 
 const User = ({ orders, isFetching, bookings, user }) => {
   // States
@@ -25,7 +26,7 @@ const User = ({ orders, isFetching, bookings, user }) => {
   const [isChanged, setIsChanged] = useState(false);
   // Translation
   const { t } = useTranslation();
-
+  const { dispatch } = useContext(Store);
   const firstNameChangeHandler = (e) => {
     setFirstName(e.target.value);
   };
@@ -47,9 +48,7 @@ const User = ({ orders, isFetching, bookings, user }) => {
         headers: { authorization: `Bearer ${profile.token}` },
       }
     );
-    Cookies.remove("userInfo");
-
-    Cookies.set("userInfo", JSON.stringify(user.data));
+    dispatch({ type: "USER_LOGIN", payload: user?.data });
   };
 
   const formHandler = (e) => {
@@ -119,7 +118,7 @@ const User = ({ orders, isFetching, bookings, user }) => {
         </div>
       ) : (
         <div className={styles.right}>
-          <h1 className={styles.title}>{t("account:orders")}</h1>
+          <h1 className={styles.title}>Rezervasyonlar</h1>
           {!isFetching && bookings?.length > 0 ? (
             bookings?.length > 0 ? (
               <UserBookings bookings={bookings} style={{ height: "12rem" }} />

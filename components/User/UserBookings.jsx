@@ -1,5 +1,5 @@
 // Packages and Dependencies
-import React, { useState } from "react";
+import React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,8 +9,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 // Translation
 import useTranslation from "next-translate/useTranslation";
-// Styles
-import styles from "./List.module.css";
 
 const UserBookings = ({ bookings }) => {
   // Translation
@@ -21,7 +19,8 @@ const UserBookings = ({ bookings }) => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Rezervasyon Numarası</TableCell>
+            <TableCell>Mekan / İşletme Adı</TableCell>
+            <TableCell>Kapora</TableCell>
             <TableCell>Kaç Kişilik</TableCell>
             <TableCell>Rezervasyon Tarihi</TableCell>
             <TableCell>Oluşturulma Tarihi</TableCell>
@@ -33,7 +32,10 @@ const UserBookings = ({ bookings }) => {
               key={row._id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell>{row._id}</TableCell>
+              <TableCell>{row.storeName}</TableCell>
+              <TableCell>
+                {row.isPaid ? row.isPaid + "₺" : "Ücretsiz"}
+              </TableCell>
               <TableCell>{row.people}</TableCell>
               <TableCell>{new Date(row.date).toLocaleString()}</TableCell>
               <TableCell>{new Date(row.createdAt).toLocaleString()}</TableCell>

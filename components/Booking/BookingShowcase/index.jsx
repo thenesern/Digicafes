@@ -41,6 +41,7 @@ const StoreBookingShowcase = ({ storeInfo }) => {
   const [dayName, setDayName] = useState("");
   const [startTime, setStartTime] = useState("");
   const [isFull, setIsFull] = useState(false);
+  const [isStoreOwner, setIsStoreOwner] = useState(false);
   const [endTime, setEndTime] = useState("");
   const [startDate, setStartDate] = useState("");
   const [difference, setDifference] = useState(null);
@@ -189,8 +190,8 @@ const StoreBookingShowcase = ({ storeInfo }) => {
           new Date(date).toLocaleString()
       )
       .map((booking) => (people += booking?.people));
-
     setReserved(people);
+    setIsLoading(false);
   }, [store?.bookings, date]);
 
   useEffect(() => {
@@ -685,6 +686,7 @@ const StoreBookingShowcase = ({ storeInfo }) => {
                         {hours?.map((hour, i) => (
                           <Button
                             key={i}
+                            disabled={isLoading}
                             variant={
                               (hour?.split(":")[0].length === 1
                                 ? "0" + `${hour?.split(":")[0]}`
@@ -699,6 +701,9 @@ const StoreBookingShowcase = ({ storeInfo }) => {
                             }
                             color="primary"
                             onClick={(e) => {
+                              if (isLoading) {
+                                return;
+                              }
                               setIsLoading(true);
                               setSelectedHour(
                                 (hour?.split(":")[0].length === 1
@@ -741,6 +746,12 @@ const StoreBookingShowcase = ({ storeInfo }) => {
                   Lütfen bir saat seçiniz.
                 </Text>
               )}
+              {isStoreOwner && (
+                <Text color="error" align="center" style={{ width: "100%" }}>
+                  İşletme hesapları rezervasyon yapamaz. Lütfen kullanıcı hesabı
+                  açınız.
+                </Text>
+              )}
               <Card
                 isHoverable
                 variant="bordered"
@@ -767,7 +778,7 @@ const StoreBookingShowcase = ({ storeInfo }) => {
                 >
                   <Card.Body>
                     <Text style={{ color: "#000814", fontSize: "14px" }}>
-                      Rezervasyon Yapmak için lütfen giriş yapınız.
+                      Rezervasyon yapmak için lütfen giriş yapınız.
                     </Text>
                   </Card.Body>
                 </Card>
@@ -776,6 +787,9 @@ const StoreBookingShowcase = ({ storeInfo }) => {
                   size="medium"
                   fullWidth
                   onClick={(e) => {
+                    if (userInfo?.userType === "Store Owner") {
+                      return setIsStoreOwner(true);
+                    }
                     if (
                       !isFull &&
                       isPeopleValid &&
