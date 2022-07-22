@@ -22,7 +22,7 @@ const localeMap = {
   en: enLocale,
   tr: trLocale,
 };
-import { Modal, Text } from "@nextui-org/react";
+import { Loading, Modal, Text } from "@nextui-org/react";
 import { Card } from "@nextui-org/react";
 import nanoid from "../../../utils/nanoid";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
@@ -36,6 +36,7 @@ const StoreBookingShowcase = ({ storeInfo }) => {
   const [activeNavBar, setActiveNavBar] = useState("aboutUs");
   const [date, setDate] = useState(new Date());
   const [people, setPeople] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(null);
   const [dayName, setDayName] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -147,14 +148,17 @@ const StoreBookingShowcase = ({ storeInfo }) => {
   useEffect(() => {
     if (+reserved >= +capacity) {
       setIsFull(true);
+      setIsLoading(false);
       return setProgress(100);
     }
     if (+reserved === 0) {
       setIsFull(false);
+      setIsLoading(false);
       return setProgress(0);
     }
     if (+reserved < +capacity) {
       setIsFull(false);
+      setIsLoading(false);
       return setProgress(
         100 - Math.abs(((capacity - reserved) / capacity) * 100)
       );
@@ -184,7 +188,7 @@ const StoreBookingShowcase = ({ storeInfo }) => {
           new Date(booking?.date).toLocaleString() ===
           new Date(date).toLocaleString()
       )
-      .map((booking) => (people += booking.people));
+      .map((booking) => (people += booking?.people));
 
     setReserved(people);
   }, [store?.bookings, date]);
@@ -671,44 +675,58 @@ const StoreBookingShowcase = ({ storeInfo }) => {
                   />
 
                   {date && hours.length > 0 ? (
-                    <div className={styles.hourButtons}>
-                      {hours?.map((hour, i) => (
-                        <Button
-                          key={i}
-                          variant={
-                            (hour?.split(":")[0].length === 1
-                              ? "0" + `${hour?.split(":")[0]}`
-                              : hour?.split(":")[0]) +
-                              ":" +
-                              (hour?.split(":")[1].length === 1
-                                ? "0" + `${hour?.split(":")[1]}`
-                                : hour?.split(":")[1]) ===
-                            selectedHour
-                              ? "contained"
-                              : "outlined"
-                          }
-                          color="primary"
-                          onClick={(e) =>
-                            setSelectedHour(
+                    <div style={{ position: "relative" }}>
+                      <div
+                        className={styles.hourButtons}
+                        style={
+                          isLoading ? { opacity: "0.3" } : { opacity: "1" }
+                        }
+                      >
+                        {hours?.map((hour, i) => (
+                          <Button
+                            key={i}
+                            variant={
                               (hour?.split(":")[0].length === 1
                                 ? "0" + `${hour?.split(":")[0]}`
                                 : hour?.split(":")[0]) +
                                 ":" +
                                 (hour?.split(":")[1].length === 1
                                   ? "0" + `${hour?.split(":")[1]}`
-                                  : hour?.split(":")[1])
-                            )
-                          }
-                        >
-                          {hour?.split(":")[0].length === 1
-                            ? "0" + `${hour?.split(":")[0]}`
-                            : hour?.split(":")[0]}
-                          <span> : </span>
-                          {hour?.split(":")[1].length === 1
-                            ? "0" + `${hour?.split(":")[1]}`
-                            : hour?.split(":")[1]}
-                        </Button>
-                      ))}
+                                  : hour?.split(":")[1]) ===
+                              selectedHour
+                                ? "contained"
+                                : "outlined"
+                            }
+                            color="primary"
+                            onClick={(e) => {
+                              setIsLoading(true);
+                              setSelectedHour(
+                                (hour?.split(":")[0].length === 1
+                                  ? "0" + `${hour?.split(":")[0]}`
+                                  : hour?.split(":")[0]) +
+                                  ":" +
+                                  (hour?.split(":")[1].length === 1
+                                    ? "0" + `${hour?.split(":")[1]}`
+                                    : hour?.split(":")[1])
+                              );
+                            }}
+                          >
+                            {hour?.split(":")[0].length === 1
+                              ? "0" + `${hour?.split(":")[0]}`
+                              : hour?.split(":")[0]}
+                            <span> : </span>
+                            {hour?.split(":")[1].length === 1
+                              ? "0" + `${hour?.split(":")[1]}`
+                              : hour?.split(":")[1]}
+                          </Button>
+                        ))}
+                      </div>
+                      {isLoading && (
+                        <Loading
+                          style={{ display: "block" }}
+                          className={styles.loading}
+                        />
+                      )}
                     </div>
                   ) : (
                     <h5 style={{ color: "#001219" }}>

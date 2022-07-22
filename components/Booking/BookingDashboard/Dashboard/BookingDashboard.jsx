@@ -71,6 +71,7 @@ const BookingDashboard = ({ userOrder }) => {
   const [images, setImages] = useState(store?.gallery?.images || []);
   const [reserved, setReserved] = useState(0);
   const [remains, setRemains] = useState(+capacity - +reserved || 0);
+  const [selectedHour, setSelectedHour] = useState(null);
   const [tableData, setTableData] = useState(store?.bookings || []);
   const [galleryImage, setGalleryImage] = useState(
     store?.gallery?.galleryImage || null
@@ -133,27 +134,56 @@ const BookingDashboard = ({ userOrder }) => {
   const [isNotification, setIsNotification] = useState(false);
 
   useEffect(() => {
-    let people = 0;
-    store?.bookings
-      .filter(
-        (booking) =>
-          new Date(booking?.createdAt)?.toLocaleDateString() ===
-          new Date(tableDate).toLocaleDateString()
-      )
-      .map((booking) => (people += booking?.people));
+    if (selectedHour) {
+      setTableDate(
+        new Date(
+          tableDate?.setHours(
+            selectedHour?.split(":")[0],
+            selectedHour?.split(":")[1],
+            "00"
+          )
+        )
+      );
+    }
+  }, [selectedHour]);
 
+  useEffect(() => {
+    let people = 0;
+    if (tableDate && selectedHour) {
+      store?.bookings
+        .filter(
+          (booking) =>
+            new Date(booking?.date).toLocaleString() ===
+            new Date(tableDate).toLocaleString()
+        )
+        .map((booking) => (people += booking?.people));
+    }
+    if (tableDate && !selectedHour) {
+      store?.bookings
+        .filter(
+          (booking) =>
+            new Date(booking?.date).toLocaleDateString() ===
+            new Date(tableDate).toLocaleDateString()
+        )
+        .map((booking) => (people += booking?.people));
+    }
     setReserved(people);
   }, [store?.bookings, tableDate]);
 
   useEffect(() => {
-    setRemains(+capacity - +reserved);
+    if (tableDate && selectedHour) {
+      setRemains(+capacity - +reserved);
+    }
+    if (tableDate && !selectedHour) {
+      setRemains("*");
+    }
   }, [capacity, reserved]);
 
   useEffect(() => {
     setTableData(
       store?.bookings?.filter(
         (booking) =>
-          new Date(booking?.createdAt)?.toLocaleDateString() ===
+          new Date(booking?.date)?.toLocaleDateString() ===
           new Date(tableDate)?.toLocaleDateString()
       )
     );
@@ -643,7 +673,20 @@ const BookingDashboard = ({ userOrder }) => {
             <h3 className={styles.header}>Rezerve (Kişi)</h3>
             <p className={styles.desc}> {reserved}</p>
           </div>
-          <div className={styles.side}>
+          <div
+            className={styles.side}
+            style={{ flexDirection: "row", gap: "1rem" }}
+          >
+            <TextField
+              id="time"
+              label="Saat Seçiniz"
+              type="time"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              sx={{ width: 120 }}
+              onChange={(e) => setSelectedHour(e.target.value)}
+            />
             <TextField
               id="date"
               label="Tarih Seçiniz"

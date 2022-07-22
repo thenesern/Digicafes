@@ -147,7 +147,7 @@ const BookingTable = (props) => {
         columns={columns}
         initialState={{
           sorting: {
-            sortModel: [{ field: "createdAt", sort: "desc" }],
+            sortModel: [{ field: "date", sort: "desc" }],
           },
         }}
         getRowId={(row) => row?._id}
