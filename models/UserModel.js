@@ -7,24 +7,19 @@ const userSchema = new mongoose.Schema(
   {
     taxOffice: {
       type: String,
-      required: true,
     },
     taxNumber: {
       type: Number,
-      required: true,
       unique: true,
     },
     legalCompanyTitle: {
       type: String,
-      required: true,
     },
     IBAN: {
       type: String,
-      required: true,
     },
     subMerchantType: {
       type: String,
-      required: true,
     },
     userType: {
       type: String,
@@ -40,7 +35,6 @@ const userSchema = new mongoose.Schema(
     },
     identityNumber: {
       type: Number,
-      required: true,
     },
     phoneNumber: {
       type: Number,

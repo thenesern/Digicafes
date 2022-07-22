@@ -28,12 +28,14 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import PaymentIcon from "@mui/icons-material/Payment";
 import PaletteIcon from "@mui/icons-material/Palette";
+import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import StoreIcon from "@mui/icons-material/Store";
 import EditIcon from "@mui/icons-material/Edit";
 import BookingTable from "./components/BookingTable";
 import IBANModal from "./components/IBANModal";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { Store } from "../../../../redux/store";
+import DescriptionModal from "./components/DescriptionModal";
 
 const BookingDashboard = ({ userOrder }) => {
   const [store, setStore] = useState(userOrder?.booking);
@@ -61,6 +63,7 @@ const BookingDashboard = ({ userOrder }) => {
   const [openAddress, setOpenAddress] = useState(false);
   const [openNavbarColor, setOpenNavbarColor] = useState(false);
   const [stateCode, setStateCode] = useState("");
+  const [openDescription, setOpenDescription] = useState(false);
   const [price, setPrice] = useState(store?.prices?.price || null);
   const [isPricesActive, setIsPricesActive] = useState(
     store?.prices?.isActive || false
@@ -90,6 +93,8 @@ const BookingDashboard = ({ userOrder }) => {
   const [openGallery, setOpenGallery] = useState(false);
   const handleOpenIBAN = () => setOpenIBAN(true);
   const handleCloseIBAN = () => setOpenIBAN(false);
+  const handleOpenDescription = () => setOpenDescription(true);
+  const handleCloseDescription = () => setOpenDescription(false);
   const handleChangeState = (event) => {
     setStateName(event.target.value);
   };
@@ -623,12 +628,23 @@ const BookingDashboard = ({ userOrder }) => {
               <li>
                 <NextButton
                   bordered
+                  icon={<TextSnippetIcon />}
+                  className={styles.buttons}
+                  onClick={handleOpenDescription}
+                  auto
+                >
+                  <span className={styles.buttonHeader}>Hakkımızda</span>
+                </NextButton>
+              </li>
+              <li>
+                <NextButton
+                  bordered
                   icon={<PaletteIcon />}
                   className={styles.buttons}
                   onClick={handleOpenNavbarColor}
                   auto
                 >
-                  <span className={styles.buttonHeader}> Renkler</span>
+                  <span className={styles.buttonHeader}>Renkler</span>
                 </NextButton>
               </li>
             </ul>
@@ -780,6 +796,13 @@ const BookingDashboard = ({ userOrder }) => {
         orderId={userOrder?._id}
         store={store}
         setOpenIBAN={(boolean) => setOpenIBAN(boolean)}
+        setIsFetching={(boolean) => setIsFetching(boolean)}
+      />
+      <DescriptionModal
+        openDescription={openDescription}
+        user={userInfo}
+        store={store}
+        setOpenDescription={(boolean) => setOpenDescription(boolean)}
         setIsFetching={(boolean) => setIsFetching(boolean)}
       />
       <Modal

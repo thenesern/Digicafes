@@ -7,6 +7,9 @@ const bookingSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    description: {
+      type: String,
+    },
     navbar: {
       color: {
         type: String,
