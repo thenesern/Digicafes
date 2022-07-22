@@ -21,7 +21,8 @@ handler.post(async (req, res) => {
       $push: { bookings: req.body.bookings },
     }
   );
-  res.json({ status: "success" });
+  const store = await Booking.findById(req.body.id);
+  res.json({ status: "success", store });
   await db.disconnect();
 });
 

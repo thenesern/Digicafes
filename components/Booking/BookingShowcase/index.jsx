@@ -6,7 +6,6 @@ import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
-import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./StoreBookingShowcase.module.css";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -30,7 +29,8 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { Store } from "../../../redux/store";
 
-const StoreBookingShowcase = ({ store }) => {
+const StoreBookingShowcase = ({ storeInfo }) => {
+  const [store, setStore] = useState(storeInfo);
   const [locale, setLocale] = useState("tr");
   const [hours, setHours] = useState([]);
   const [activeNavBar, setActiveNavBar] = useState("aboutUs");
@@ -39,6 +39,7 @@ const StoreBookingShowcase = ({ store }) => {
   const [isSuccess, setIsSuccess] = useState(null);
   const [dayName, setDayName] = useState("");
   const [startTime, setStartTime] = useState("");
+  const [isFull, setIsFull] = useState(false);
   const [endTime, setEndTime] = useState("");
   const [startDate, setStartDate] = useState("");
   const [difference, setDifference] = useState(null);
@@ -48,8 +49,7 @@ const StoreBookingShowcase = ({ store }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const [isDateValid, setIsDateValid] = useState(true);
-  const [capacity, setCapacity] = useState(store?.capacity || null);
-  const [remains, setRemains] = useState(0);
+  const [capacity, setCapacity] = useState(store?.capacity);
   const [reserved, setReserved] = useState(0);
   const [progress, setProgress] = useState(0);
   const [cardError, setCardError] = useState(false);
@@ -145,20 +145,21 @@ const StoreBookingShowcase = ({ store }) => {
   };
 
   useEffect(() => {
-    if (remains === capacity) {
+    if (+reserved >= +capacity) {
+      setIsFull(true);
+      return setProgress(100);
+    }
+    if (+reserved === 0) {
+      setIsFull(false);
       return setProgress(0);
     }
-    /*  if (reserved === 0) {
-      return setProgress(0);
-    } */
-    if (remains / capacity < 1) {
+    if (+reserved < +capacity) {
+      setIsFull(false);
       return setProgress(
-        Math.abs(
-          (remains / capacity)?.toString()?.split(".")[1]?.slice(0, 2) - 100
-        )
+        100 - Math.abs(((capacity - reserved) / capacity) * 100)
       );
     }
-  }, [remains]);
+  }, [capacity, reserved]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -167,21 +168,26 @@ const StoreBookingShowcase = ({ store }) => {
   }, [hoursError]);
 
   useEffect(() => {
+    if (+people + +reserved > +capacity) {
+      setIsFull(true);
+    }
+    if (+people + +reserved <= +capacity) {
+      setIsFull(false);
+    }
+  }, [people, capacity, reserved]);
+
+  useEffect(() => {
     let people = 0;
     store?.bookings
       .filter(
         (booking) =>
-          new Date(booking?.createdAt).toLocaleDateString() ===
-          new Date(date).toLocaleDateString()
+          new Date(booking?.date).toLocaleString() ===
+          new Date(date).toLocaleString()
       )
       .map((booking) => (people += booking.people));
 
     setReserved(people);
   }, [store?.bookings, date]);
-
-  useEffect(() => {
-    setRemains(+capacity - +reserved);
-  }, [reserved, capacity]);
 
   useEffect(() => {
     if (date) {
@@ -192,12 +198,12 @@ const StoreBookingShowcase = ({ store }) => {
   }, [date]);
 
   useEffect(() => {
-    if (!people || people < 1 || people > store?.capacity) {
+    if (!people || people < 1 || people > capacity) {
       setIsPeopleValid(false);
     } else {
       setIsPeopleValid(true);
     }
-  }, [people]);
+  }, [people, capacity]);
 
   useEffect(() => {
     if (selectedHour) {
@@ -212,6 +218,7 @@ const StoreBookingShowcase = ({ store }) => {
       );
     }
   }, [selectedHour]);
+
   useEffect(() => {
     let number =
       Number(endTime?.split(":")[0]) - Number(startTime?.split(":")[0]);
@@ -277,10 +284,11 @@ const StoreBookingShowcase = ({ store }) => {
     const createdAt = new Date();
     try {
       setLoading(true);
-      await axios.post(
+      const result = await axios.post(
         `/api/booking/${store?.storeName}/booking`,
         {
           storeName: store?.storeName,
+          id: store?._id,
           bookings: [
             {
               createdAt,
@@ -299,6 +307,7 @@ const StoreBookingShowcase = ({ store }) => {
           headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
+      setStore(result?.data?.store);
 
       setLoading(false);
       enqueueSnackbar("Rezervasyon başarılı.", { variant: "success" });
@@ -396,7 +405,7 @@ const StoreBookingShowcase = ({ store }) => {
               <div className={styles.aboutUs}>
                 <div className={styles.aboutUs}>
                   <div style={{ width: "100%" }}>
-                    {store?.contact?.phoneNumber && (
+                    {store?.contact && (
                       <div className={styles.storeContact}>
                         <h3 className={styles.centeredHeader}>İletişim</h3>
                         <div
@@ -408,34 +417,38 @@ const StoreBookingShowcase = ({ store }) => {
                             margin: "6px 0",
                           }}
                         >
-                          <Button className={styles.buttons}>
-                            <CallIcon color="success" />
-                            <p
-                              style={{
-                                color: "#006d77",
-                                fontWeight: "600",
-                              }}
-                            >
-                              {store?.contact?.phoneNumber}
-                            </p>
-                          </Button>
-                          <Button className={styles.buttons}>
-                            <InstagramIcon color="secondary" />
-                            <a
-                              href={store?.contact?.instagramLink}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
+                          {store?.contact?.phoneNumber && (
+                            <Button className={styles.buttons}>
+                              <CallIcon color="success" />
                               <p
                                 style={{
                                   color: "#006d77",
                                   fontWeight: "600",
                                 }}
                               >
-                                {store?.contact?.instagramLink?.split("/")[3]}
+                                {store?.contact?.phoneNumber}
                               </p>
-                            </a>
-                          </Button>
+                            </Button>
+                          )}
+                          {store?.contact?.instagram && (
+                            <Button className={styles.buttons}>
+                              <InstagramIcon color="secondary" />
+                              <a
+                                href={store?.contact?.instagramLink}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                <p
+                                  style={{
+                                    color: "#006d77",
+                                    fontWeight: "600",
+                                  }}
+                                >
+                                  {store?.contact?.instagramLink?.split("/")[3]}
+                                </p>
+                              </a>
+                            </Button>
+                          )}
                         </div>
                       </div>
                     )}
@@ -475,12 +488,7 @@ const StoreBookingShowcase = ({ store }) => {
                           ) : (
                             <li className={styles.workingTimes}>
                               <h4 className={styles.dayClose}>Pazartesi</h4>
-                              <span className={styles.hoursClose}>
-                                <span align="center" style={{ width: "100%" }}>
-                                  {" "}
-                                  -{" "}
-                                </span>
-                              </span>
+                              <span className={styles.hours}> - </span>
                             </li>
                           )}
                           {store?.workingTimes?.tuesday?.isActive ? (
@@ -495,12 +503,7 @@ const StoreBookingShowcase = ({ store }) => {
                           ) : (
                             <li className={styles.workingTimes}>
                               <h4 className={styles.dayClose}>Salı</h4>
-                              <span className={styles.hoursClose}>
-                                <span align="center" style={{ width: "100%" }}>
-                                  {" "}
-                                  -{" "}
-                                </span>
-                              </span>
+                              <span className={styles.hours}> - </span>
                             </li>
                           )}
                           {store?.workingTimes?.wednesday?.isActive ? (
@@ -515,12 +518,7 @@ const StoreBookingShowcase = ({ store }) => {
                           ) : (
                             <li className={styles.workingTimes}>
                               <h4 className={styles.dayClose}>Çarşamba</h4>
-                              <span className={styles.hoursClose}>
-                                <span align="center" style={{ width: "100%" }}>
-                                  {" "}
-                                  -{" "}
-                                </span>
-                              </span>
+                              <span className={styles.hours}> - </span>
                             </li>
                           )}
                           {store?.workingTimes?.thursday?.isActive ? (
@@ -533,7 +531,10 @@ const StoreBookingShowcase = ({ store }) => {
                               </span>
                             </li>
                           ) : (
-                            ""
+                            <li className={styles.workingTimes}>
+                              <h4 className={styles.dayClose}>Perşembe</h4>
+                              <span className={styles.hours}> - </span>
+                            </li>
                           )}
                           {store?.workingTimes?.friday?.isActive ? (
                             <li className={styles.workingTimes}>
@@ -547,12 +548,7 @@ const StoreBookingShowcase = ({ store }) => {
                           ) : (
                             <li className={styles.workingTimes}>
                               <h4 className={styles.dayClose}>Cuma</h4>
-                              <span className={styles.hoursClose}>
-                                <span align="center" style={{ width: "100%" }}>
-                                  {" "}
-                                  -{" "}
-                                </span>
-                              </span>
+                              <span className={styles.hours}> - </span>
                             </li>
                           )}
                           {store?.workingTimes?.saturday?.isActive ? (
@@ -567,12 +563,7 @@ const StoreBookingShowcase = ({ store }) => {
                           ) : (
                             <li className={styles.workingTimes}>
                               <h4 className={styles.dayClose}>Cumartesi</h4>
-                              <span className={styles.hoursClose}>
-                                <span align="center" style={{ width: "100%" }}>
-                                  {" "}
-                                  -{" "}
-                                </span>
-                              </span>
+                              <span className={styles.hours}> - </span>
                             </li>
                           )}
                           {store?.workingTimes?.sunday?.isActive ? (
@@ -587,12 +578,7 @@ const StoreBookingShowcase = ({ store }) => {
                           ) : (
                             <li className={styles.workingTimes}>
                               <h4 className={styles.dayClose}>Pazar</h4>
-                              <span className={styles.hoursClose}>
-                                <span align="center" style={{ width: "100%" }}>
-                                  {" "}
-                                  -{" "}
-                                </span>
-                              </span>
+                              <span className={styles.hours}> - </span>
                             </li>
                           )}
                         </ul>
@@ -625,20 +611,10 @@ const StoreBookingShowcase = ({ store }) => {
           </div>
         </div>
         <div className={styles.right}>
-          {progress === 0 && (
-            <div className={styles.quota}>
-              <h3>Doluluk Oranı</h3>
-              <ProgressBar value={0} />
-            </div>
-          )}
-          {progress ? (
-            <div className={styles.quota}>
-              <h3>Doluluk Oranı</h3>
-              <ProgressBar value={progress} />
-            </div>
-          ) : (
-            ""
-          )}
+          <div className={styles.quota}>
+            <h3>Doluluk Oranı</h3>
+            <ProgressBar value={progress} />
+          </div>
           <div style={{ margin: "2rem 0" }}>
             <h3 style={{ margin: "1rem 0 0 0", color: "#001219" }}>
               Yerinizi Ayırtın
@@ -657,9 +633,13 @@ const StoreBookingShowcase = ({ store }) => {
                 id="standard-basic"
                 label="Kişi Sayısı"
                 type="number"
-                error={!isPeopleValid}
+                error={!isPeopleValid || isFull}
                 helperText={
-                  !isPeopleValid ? "Lütfen geçerli bir sayı giriniz." : ""
+                  isFull
+                    ? "Sınırın üzerinde rezervasyon yapamazsınız. Farklı bir saat ya da gün seçerek deneyiniz."
+                    : !isPeopleValid
+                    ? "Lütfen geçerli bir sayı giriniz."
+                    : ""
                 }
                 defaultValue={people}
                 sx={{ width: "100%" }}
@@ -779,12 +759,13 @@ const StoreBookingShowcase = ({ store }) => {
                   fullWidth
                   onClick={(e) => {
                     if (
+                      !isFull &&
                       isPeopleValid &&
                       isDateValid &&
                       selectedHour &&
                       store?.prices?.isActive
                     ) {
-                      handler();
+                      handler(e);
                     }
                     if (!selectedHour) {
                       setHoursError(true);
@@ -793,7 +774,8 @@ const StoreBookingShowcase = ({ store }) => {
                       !store?.prices?.isActive &&
                       isPeopleValid &&
                       isDateValid &&
-                      selectedHour
+                      selectedHour &&
+                      !isFull
                     ) {
                       handleSendBooking(e);
                     }
@@ -801,7 +783,7 @@ const StoreBookingShowcase = ({ store }) => {
                   loading={loading}
                   color="warning"
                   variant="contained"
-                  disabled={loading}
+                  disabled={loading || isFull}
                 >
                   Rezervasyon Yap
                 </LoadingButton>

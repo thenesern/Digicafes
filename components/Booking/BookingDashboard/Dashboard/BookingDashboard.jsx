@@ -242,7 +242,7 @@ const BookingDashboard = ({ userOrder }) => {
           {
             storeName,
             gallery: {
-              images,
+              images: images,
               galleryImage: uploadImage,
             },
           },
@@ -260,7 +260,6 @@ const BookingDashboard = ({ userOrder }) => {
             gallery: {
               images,
               galleryImage,
-              isActive: isGalleryActive,
             },
           },
           {

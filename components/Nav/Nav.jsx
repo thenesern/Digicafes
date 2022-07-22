@@ -1194,6 +1194,7 @@ const Nav = ({ color }) => {
                     defaultValue=""
                     rules={{
                       required: true,
+                      minLength: 5,
                     }}
                     render={({ field }) => (
                       <TextField
@@ -1280,7 +1281,6 @@ const Nav = ({ color }) => {
                     rules={{
                       required: true,
                       minLength: 26,
-                      maxLength: 26,
                     }}
                     render={({ field }) => (
                       <TextField
