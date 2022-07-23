@@ -474,10 +474,6 @@ const BookingDashboard = ({ userOrder }) => {
   };
 
   const handleUpdateAddressInfos = async () => {
-    let newStateName;
-    if (stateName.includes("Province")) {
-      newStateName = stateName.split(" ")[0];
-    }
     try {
       setIsFetching(true);
       await axios.post(
@@ -487,7 +483,7 @@ const BookingDashboard = ({ userOrder }) => {
           address: {
             address,
             country: countryName,
-            state: newStateName,
+            state: stateName,
             city: cityName,
           },
         },

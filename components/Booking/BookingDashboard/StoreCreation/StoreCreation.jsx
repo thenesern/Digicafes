@@ -115,7 +115,7 @@ const StoreCreation = ({ userOrder, booking }) => {
             : "limitedOrStock"
         }`,
         {
-          orderId: order?._id,
+          orderId: order?._id + "1",
           address: address,
           taxOffice: userInfo?.taxOffice,
           taxNumber: userInfo?.taxNumber,
@@ -134,6 +134,7 @@ const StoreCreation = ({ userOrder, booking }) => {
         `/api/booking/${storeName}`,
         {
           storeName: storeName?.trim(),
+          capacity: capacity,
           storeLinkName: storeLinkName,
           subMerchantKey: company?.data?.subMerchantKey,
           createdAt,

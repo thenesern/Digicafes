@@ -340,18 +340,40 @@ const StoreBookingShowcase = ({ storeInfo }) => {
                 />
                 <div>
                   <h1 className={styles.storeName}>{store?.storeName}</h1>
-                  <p
-                    className={styles.address}
-                  >{`${store?.address?.city} / ${store?.address?.state}`}</p>
+                  <p className={styles.address}>{`${store?.address?.city} / ${
+                    store?.address?.state?.toLowerCase().includes("province")
+                      ? store?.address?.state
+                          ?.toLowerCase()
+                          .split("province")
+                          .map((item) =>
+                            item?.replace(
+                              item[0],
+                              item[0]?.toLowerCase().toUpperCase()
+                            )
+                          )
+                          .join("")
+                      : store?.address?.state
+                  }`}</p>
                 </div>
               </div>
             </>
           ) : (
             <div>
               <h1 className={styles.storeName}>{store?.storeName}</h1>
-              <p
-                className={styles.address}
-              >{`${store?.address?.city} / ${store?.address?.state}`}</p>
+              <p className={styles.address}>{`${store?.address?.city} / ${
+                store?.address?.state?.toLowerCase().includes("province")
+                  ? store?.address?.state
+                      ?.toLowerCase()
+                      .split("province")
+                      .map((item) =>
+                        item?.replace(
+                          item[0],
+                          item[0]?.toLowerCase().toUpperCase()
+                        )
+                      )
+                      .join("")
+                  : store?.address?.state
+              }`}</p>
             </div>
           )}
           <div className={styles.gallery}>
