@@ -10,6 +10,25 @@ const bookingSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    events: [
+      {
+        name: {
+          type: String,
+        },
+        image: {
+          type: String,
+        },
+        description: {
+          type: String,
+        },
+        date: {
+          type: String,
+        },
+        isActive: {
+          type: Boolean,
+        },
+      },
+    ],
     navbar: {
       color: {
         type: String,

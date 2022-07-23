@@ -121,6 +121,12 @@
   justify-content: center;
   flex-direction: column;
 }
+.delete:hover {
+  opacity: 1 !important;
+}
+.delete {
+  opacity: 0.3 !important;
+}
 .capacityHeader {
   margin: 0;
   padding: 6px 0;

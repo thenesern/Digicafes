@@ -73,7 +73,6 @@ const createAPayment = async (req, res) => {
 /* createAPayment(); */
 
 const initializeThreeDSPayments = async (data) => {
-  console.log(data);
   PaymentsThreeDS.initializePayment({
     locale: Iyzipay.LOCALE.TR,
     conversationId: nanoid(),

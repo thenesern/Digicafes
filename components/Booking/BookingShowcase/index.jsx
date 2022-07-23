@@ -59,6 +59,16 @@ const StoreBookingShowcase = ({ storeInfo }) => {
   const [visible, setVisible] = useState(false);
   const { state } = useContext(Store);
   const { userInfo } = state;
+  const events = store?.events
+    ?.filter(
+      (event) =>
+        new Date(event?.date)?.toLocaleDateString() >=
+        new Date().toLocaleDateString()
+    )
+    .filter((event) => event?.isActive === true)
+    .sort(
+      (a, b) => new Date(a?.date)?.getTime() - new Date(b?.date)?.getTime()
+    );
 
   const handler = () => setVisible(true);
   const closeHandler = () => {
@@ -382,7 +392,6 @@ const StoreBookingShowcase = ({ storeInfo }) => {
                 store?.gallery?.galleryImage ||
                 "https://res.cloudinary.com/dlyjd3mnb/image/upload/v1657981097/uguss8i7czvs44iflxqp.png"
               }
-              className={styles.galleryImage}
               alt={store?.storeName}
               width="100%"
               height="60"
@@ -403,7 +412,20 @@ const StoreBookingShowcase = ({ storeInfo }) => {
                   Hakkımızda
                 </Button>
               </li>
-              <li className={styles.li}>
+              {events?.length > 0 && (
+                <li className={styles.li}>
+                  <Button
+                    href=""
+                    variant={activeNavBar === "events" ? "contained" : ""}
+                    color="primary"
+                    className={styles.menuButtons}
+                    onClick={() => setActiveNavBar("events")}
+                  >
+                    Etkinlikler
+                  </Button>
+                </li>
+              )}
+              {/*   <li className={styles.li}>
                 <Button
                   variant={activeNavBar === "menu" ? "contained" : ""}
                   href=""
@@ -413,7 +435,7 @@ const StoreBookingShowcase = ({ storeInfo }) => {
                 >
                   Menü
                 </Button>
-              </li>
+              </li> */}
               <li className={styles.li}>
                 <Button
                   variant={activeNavBar === "photos" ? "contained" : ""}
@@ -622,6 +644,40 @@ const StoreBookingShowcase = ({ storeInfo }) => {
                     </div>
                   )}
                 </div>
+              </div>
+            )}
+            {activeNavBar === "events" && (
+              <div className={styles.menu}>
+                {events?.map((event) => (
+                  <div key={event?._id} style={{ width: "100%" }}>
+                    <div className={styles.gallery}>
+                      <Image
+                        src={event?.image}
+                        alt={event?.name}
+                        width="100%"
+                        height="60"
+                        layout="responsive"
+                        objectFit="cover"
+                      />
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        width: "100%",
+                      }}
+                    >
+                      <h2 className={styles.eventName}>{event?.name}</h2>
+                      <span className={styles.eventDate}>
+                        {new Date(event?.date).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <p className={styles.eventDescription}>
+                      {event?.description}
+                    </p>
+                  </div>
+                ))}
               </div>
             )}
             {activeNavBar === "menu" && <div className={styles.menu}></div>}
