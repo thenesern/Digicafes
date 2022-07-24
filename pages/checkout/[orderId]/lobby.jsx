@@ -18,6 +18,7 @@ const Lobby = (props) => {
   const [conversationData, setConversationData] = useState("");
   const { state } = useContext(Store);
   const { userInfo } = state;
+
   const handleCompletePayment = async () => {
     try {
       const payment = await axios.post("/api/checkout/payment/complete-3ds", {
@@ -25,7 +26,6 @@ const Lobby = (props) => {
         paymentId: paymentId,
         conversationData: conversationData,
       });
-      console.log(payment);
       if (payment?.data?.status === "success") {
         setIsSuccess(true);
         await axios.patch(
@@ -104,7 +104,7 @@ const Lobby = (props) => {
         >
           <Loading color="default" size="xl" />
         </div>
-      ) : isSuccess === "success" && isSuccess !== null ? (
+      ) : isSuccess && isSuccess !== null ? (
         <div
           className={styles.right}
           style={{
@@ -122,7 +122,7 @@ const Lobby = (props) => {
             style={{ fontSize: "7rem" }}
           />
         </div>
-      ) : isSuccess !== "success" && isSuccess !== null ? (
+      ) : isSuccess === "false" && isSuccess !== null ? (
         <div
           className={styles.right}
           style={{
@@ -150,7 +150,6 @@ export async function getServerSideProps(context) {
   await db.connect();
   const order = await Order.findOne({ _id: orderId });
   await db.disconnect();
-  console.log(order);
   const body = await getRawBody(req);
   return {
     props: {
