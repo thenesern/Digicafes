@@ -31,7 +31,6 @@ const Checkout = ({ order }) => {
   const { userInfo } = state;
   const [loader, setLoader] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [modal, setModal] = useState(false);
   const [paymentId, setPaymentId] = useState("");
   const handler = () => setVisible(true);
   const [stepper, setStepper] = useState(0);
@@ -118,7 +117,7 @@ const Checkout = ({ order }) => {
         }
       );
       if (
-        result?.order?.payments?.filter(
+        result?.data?.order?.payments?.filter(
           (payment) => payment?.paymentId === paymentId
         )[0]?.status === "success"
       ) {
@@ -126,7 +125,7 @@ const Checkout = ({ order }) => {
         setIsSuccess(true);
       }
       if (
-        result?.order?.payments?.filter(
+        result?.data?.order?.payments?.filter(
           (payment) => payment?.paymentId === paymentId
         )[0]?.status === "fail"
       ) {
@@ -341,11 +340,11 @@ const Checkout = ({ order }) => {
                 <h6>Siparişi tamamlamak için lütfen giriş yapınız.</h6>
               )}
             </div>
-          ) : isSuccess === "success" && isSuccess !== null ? (
+          ) : isSuccess === true && isSuccess !== null ? (
             <div
               className={styles.right}
               style={{
-                dispaly: "flex",
+                display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 flexDirection: "column",
@@ -364,7 +363,7 @@ const Checkout = ({ order }) => {
             <div
               className={styles.right}
               style={{
-                dispaly: "flex",
+                display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 flexDirection: "column",

@@ -41,7 +41,7 @@ const Lobby = (props) => {
             ),
           },
           {
-            headers: { authorization: `Bearer ${userInfo.token}` },
+            headers: { authorization: `Bearer ${userInfo?.token}` },
           }
         );
         setIsSuccess(true);
@@ -112,15 +112,16 @@ const Lobby = (props) => {
             alignItems: "center",
             justifyContent: "center",
             gap: "1rem",
+            height: "100vh",
           }}
         >
-          <h3 style={{ color: "#000814" }} align="center">
-            Satın aldığınız için teşekkür ederiz.
-          </h3>
           <CheckCircleOutlineIcon
             color="success"
             style={{ fontSize: "7rem" }}
           />
+          <h3 style={{ color: "#000814" }} align="center">
+            Satın aldığınız için teşekkür ederiz.
+          </h3>
         </div>
       ) : isSuccess === "false" && isSuccess !== null ? (
         <div
@@ -130,12 +131,13 @@ const Lobby = (props) => {
             alignItems: "center",
             justifyContent: "center",
             gap: "1rem",
+            height: "100vh",
           }}
         >
+          <ErrorOutlineIcon color="error" style={{ fontSize: "7rem" }} />
           <h3 style={{ color: "#000814" }} align="center">
             Ödeme gerçekleştirilemedi.
           </h3>
-          <ErrorOutlineIcon color="error" style={{ fontSize: "7rem" }} />
         </div>
       ) : (
         ""
