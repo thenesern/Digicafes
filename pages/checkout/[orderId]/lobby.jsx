@@ -25,7 +25,7 @@ const Lobby = (props) => {
       });
 
       if (payment?.data?.status === "success") {
-        const order = await axios.patch("/api/order", {
+        await axios.patch("/api/order", {
           id: order?._id,
           quantity: 365,
           payment: payment?.data,
