@@ -7,7 +7,7 @@ const handler = nc();
 handler.post(async (req, res) => {
   const result = await initializePayment({
     locale: Iyzipay.LOCALE.TR,
-    callbackUrl: `http://localhost:3000/checkout/${req.body.order.id}/lobby`,
+    callbackUrl: `https://www.digicafes.com/checkout/${req.body.order.id}/lobby`,
     conversationId: nanoid(),
     price: req.body.product.price,
     paidPrice: req.body.product.paidPrice,
