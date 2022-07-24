@@ -7,6 +7,7 @@ const orderSchema = new mongoose.Schema(
       ref: "Product",
       required: true,
     },
+    payments: [],
     expiry: {
       type: Date,
       required: true,
@@ -32,33 +33,7 @@ const orderSchema = new mongoose.Schema(
     createdAt: {
       type: Date,
       required: true,
-    } /*
-    price: {
-      type: Number,
-      required: true,
     },
-    paidPrice: {
-      type: Number,
-      required: true,
-    },
-    conversationId: {
-      type: String,
-      required: true,
-    },
-    paymentId: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    status: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-    log: {
-      type: mongoose.Schema.Types.Mixed,
-      required: true,
-    }, */,
   },
   { timestamps: true }
 );

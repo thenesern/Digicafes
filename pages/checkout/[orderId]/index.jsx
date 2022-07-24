@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import axios from "axios";
-import Nav from "../../components/Nav/Nav";
-import db from "../../utils/db";
+import Nav from "../../../components/Nav/Nav";
+import db from "../../../utils/db";
 import styles from "./checkout.module.css";
 import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
@@ -15,31 +15,35 @@ import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
 import { Modal } from "@nextui-org/react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import useCard from "../../components/Card/card";
+import useCard from "../../../components/Card/card";
 import { useContext } from "react";
-import { Store } from "../../redux/store";
+import { Store } from "../../../redux/store";
 import { LoadingButton } from "@mui/lab";
-import Order from "../../models/OrderModel";
-import Product from "../../models/ProductModel";
-import User from "../../models/UserModel";
+import Order from "../../../models/OrderModel";
+import Product from "../../../models/ProductModel";
+import User from "../../../models/UserModel";
+const base64 = require("base-64");
 
 const Checkout = ({ order }) => {
   const { state } = useContext(Store);
   const { userInfo } = state;
+  const [loader, setLoader] = useState(false);
   const [visible, setVisible] = useState(false);
   const [modal, setModal] = useState(false);
+  const [paymentId, setPaymentId] = useState("");
   const handler = () => setVisible(true);
   const [stepper, setStepper] = useState(0);
   const { render, name, number, cvc, expiry } = useCard();
+  const [is3DsModal, setIs3DsModal] = useState(false);
+  const [html, setHTML] = useState("");
   const closeHandler = () => {
     setVisible(false);
   };
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(null);
-
-  const paymentHandler = async () => {
+  const paymentHandler = async (res) => {
     setLoading(true);
     let signedIn =
       order.user.signedIn.split("T")[0] +
@@ -51,9 +55,9 @@ const Checkout = ({ order }) => {
       order.user.createdAt.split("T")[1].split(".")[0];
     try {
       const connection = await axios.get("/api/remote-address");
-      const payment = await axios.post("/api/checkout/payment", {
+      const payment = await axios.post("/api/checkout/payment/init-3ds", {
         order: {
-          id: order._id,
+          id: order?._id,
         },
         product: {
           price: order.product.price,
@@ -71,6 +75,7 @@ const Checkout = ({ order }) => {
           firstName: order.user.firstName,
           lastName: order.user.lastName,
           email: order.user.email,
+          identityNumber: order.user.identityNumber,
           lastLoginDate: signedIn,
           registrationDate: registered,
           ip: connection.ip,
@@ -85,30 +90,59 @@ const Checkout = ({ order }) => {
           },
         ],
       });
-      setIsSuccess(payment.data.status);
-      if (payment.data.status === "success") {
-        await axios.patch(
-          "/api/order",
-          {
-            id: order._id,
-            quantity: 365,
-            expiry: new Date(
-              new Date(order.expiry)?.setDate(
-                new Date(order.expiry)?.getDate() + 360
-              )
-            ),
-          },
-          {
-            headers: { authorization: `Bearer ${userInfo.token}` },
-          }
-        );
+      /*  4609580003198478 */
+      if (payment?.data?.status === "success") {
+        setPaymentId(payment?.data?.paymentId);
+        setIs3DsModal(true);
+        let form;
+        form = base64.decode(payment?.data["threeDSHtmlContent"]);
+        setHTML(form);
       }
       setLoading(false);
+      console.log(res);
     } catch (err) {
       setLoading(false);
       console.log(err);
     }
   };
+  const [refreshToken, setRefreshToken] = useState(Math.random());
+
+  const retrieveData = async () => {
+    try {
+      const result = await axios.post(
+        "/api/order/findById",
+        {
+          id: order?._id,
+        },
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      if (
+        result?.order?.payments?.filter(
+          (payment) => payment?.paymentId === paymentId
+        )[0]?.status === "success"
+      ) {
+        setIs3DsModal(false);
+        setIsSuccess(true);
+      }
+      if (
+        result?.order?.payments?.filter(
+          (payment) => payment?.paymentId === paymentId
+        )[0]?.status === "fail"
+      ) {
+        setIs3DsModal(false);
+        setIsSuccess(false);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    retrieveData().finally(() => {
+      setTimeout(() => setRefreshToken(Math.random()), 3000);
+    });
+  }, [refreshToken]);
 
   const steps = ["Siparişi Gözden Geçir", "Ödemeyi Tamamla", "Sonuç"];
   const QontoConnector = styled(StepConnector)(({ theme }) => ({
@@ -220,12 +254,26 @@ const Checkout = ({ order }) => {
         </Modal>
         <Modal
           preventClose
-          width="46rem"
-          height="46rem"
           aria-labelledby="modal-title"
-          open={modal}
-          onClose={() => setModal(false)}
-        ></Modal>
+          open={is3DsModal}
+          onClose={() => setIs3DsModal(false)}
+        >
+          <iframe
+            onSubmit={() => setIs3DsModal(false)}
+            srcDoc={html}
+            style={{
+              minHeight: "36rem",
+              minwidth: "12rem",
+              padding: "2rem 1rem",
+              display: "flex",
+              alignItems: "center",
+              justifyItems: "center",
+            }}
+            frameBorder="0"
+            scrolling="yes"
+          ></iframe>
+        </Modal>
+
         <Stack sx={{ width: "100%" }} spacing={4} className={styles.stepper}>
           <Stepper
             alternativeLabel
@@ -271,19 +319,24 @@ const Checkout = ({ order }) => {
               </div>
               {userInfo ? (
                 <div className={styles.footer}>
-                  <Button
-                    className={styles.button}
+                  <LoadingButton
+                    style={{ backgroundColor: "#264653" }}
+                    size="medium"
                     variant="contained"
                     type="submit"
                     onClick={() => {
+                      setLoader(true);
                       handler();
                       setStepper(1);
                     }}
                     fullWidth
-                    style={{ backgroundColor: "#264653" }}
+                    loading={loader}
+                    className={styles.button}
+                    color="primary"
+                    disabled={loader}
                   >
                     Siparişi Tamamla
-                  </Button>
+                  </LoadingButton>
                 </div>
               ) : (
                 <h6>Siparişi tamamlamak için lütfen giriş yapınız.</h6>
@@ -332,7 +385,7 @@ const Checkout = ({ order }) => {
 };
 
 export async function getServerSideProps(context) {
-  const { orderId } = context.query;
+  const { orderId, req, res } = context.query;
   await db.connect();
   const order = await Order.findById(orderId)
     .populate({

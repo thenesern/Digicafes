@@ -99,6 +99,7 @@ const userSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    payments: [],
     isAdmin: {
       type: Boolean,
       default: false,

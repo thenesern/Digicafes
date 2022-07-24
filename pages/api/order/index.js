@@ -49,10 +49,19 @@ handler.post(async (req, res) => {
 handler.patch(async (req, res) => {
   try {
     await db.connect();
-    await Order.findByIdAndUpdate(req.body.id, {
-      expiry: req.body.expiry,
-      $push: { quantity: req.body.quantity },
-    });
+    if (req.body.payment) {
+      await Order.findByIdAndUpdate(req.body.id, {
+        expiry: req.body.expiry,
+        $push: { quantity: req.body.quantity },
+        $push: { payments: req.body.payment },
+      });
+    }
+    if (!req.body.payment) {
+      await Order.findByIdAndUpdate(req.body.id, {
+        expiry: req.body.expiry,
+        $push: { quantity: req.body.quantity },
+      });
+    }
     const orders = await Order.find()
       .populate({
         path: "product",

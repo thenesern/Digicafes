@@ -1,12 +1,13 @@
 import nc from "next-connect";
 import nanoid from "../../../../utils/nanoid.js";
 import Iyzipay from "iyzipay";
-import { createPayment } from "../../../../services/iyzico/methods/payment.js";
+import { initializePayment } from "../../../../services/iyzico/methods/threeds-payments.js";
 const handler = nc();
 
 handler.post(async (req, res) => {
-  const result = await createPayment({
+  const result = await initializePayment({
     locale: Iyzipay.LOCALE.TR,
+    callbackUrl: `http://localhost:3000/checkout/${req.body.order.id}/lobby`,
     conversationId: nanoid(),
     price: req.body.product.price,
     paidPrice: req.body.product.paidPrice,
@@ -49,6 +50,7 @@ handler.post(async (req, res) => {
   });
 
   res.json(result);
+  res.json(res);
 });
 
 export default handler;
