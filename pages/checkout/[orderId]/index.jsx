@@ -31,7 +31,7 @@ const Checkout = ({ order }) => {
   const { userInfo } = state;
   const [loader, setLoader] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [paymentId, setPaymentId] = useState("");
+  const [conversationId, setConversationId] = useState("");
   const handler = () => setVisible(true);
   const [stepper, setStepper] = useState(0);
   const { render, name, number, cvc, expiry } = useCard();
@@ -91,7 +91,7 @@ const Checkout = ({ order }) => {
       });
 
       if (payment?.data?.status === "success") {
-        setPaymentId(payment?.data?.paymentId);
+        setConversationId(payment?.data?.conversationId);
         setIs3DsModal(true);
         let form;
         form = base64.decode(payment?.data["threeDSHtmlContent"]);
@@ -103,6 +103,7 @@ const Checkout = ({ order }) => {
       console.log(err);
     }
   };
+
   const [refreshToken, setRefreshToken] = useState(Math.random());
 
   const retrieveData = async () => {
@@ -113,12 +114,12 @@ const Checkout = ({ order }) => {
           id: order?._id,
         },
         {
-          headers: { authorization: `Bearer ${userInfo.token}` },
+          headers: { authorization: `Bearer ${userInfo?.token}` },
         }
       );
       if (
         result?.data?.order?.payments?.filter(
-          (payment) => payment?.paymentId === paymentId
+          (payment) => payment?.conversationId === conversationId
         )[0]?.status === "success"
       ) {
         setIs3DsModal(false);
@@ -126,7 +127,7 @@ const Checkout = ({ order }) => {
       }
       if (
         result?.data?.order?.payments?.filter(
-          (payment) => payment?.paymentId === paymentId
+          (payment) => payment?.conversationId === conversationId
         )[0]?.status === "fail"
       ) {
         setIs3DsModal(false);

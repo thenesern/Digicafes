@@ -49,7 +49,7 @@ handler.post(async (req, res) => {
     basketItems: req.body.basketItems,
   });
 
-  res.json(result);
+  res.send(result);
 });
 
 export default handler;

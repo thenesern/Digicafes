@@ -6,7 +6,6 @@ import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import styles from "./checkout.module.css";
 import axios from "axios";
 import { Store } from "../../../redux/store";
-import { useRouter } from "next/router";
 import db from "../../../utils/db";
 import Order from "../../../models/OrderModel";
 
@@ -16,8 +15,6 @@ const Lobby = (props) => {
   const [conversationId, setConversationId] = useState("");
   const [paymentId, setPaymentId] = useState("");
   const [conversationData, setConversationData] = useState("");
-  const { state } = useContext(Store);
-  const { userInfo } = state;
 
   const handleCompletePayment = async () => {
     try {
@@ -26,24 +23,18 @@ const Lobby = (props) => {
         paymentId: paymentId,
         conversationData: conversationData,
       });
+
       if (payment?.data?.status === "success") {
-        setIsSuccess(true);
-        await axios.patch(
-          "/api/order",
-          {
-            id: order?._id,
-            quantity: 365,
-            payment: payment?.data,
-            expiry: new Date(
-              new Date(order?.expiry)?.setDate(
-                new Date(order?.expiry)?.getDate() + 360
-              )
-            ),
-          },
-          {
-            headers: { authorization: `Bearer ${userInfo?.token}` },
-          }
-        );
+        const order = await axios.patch("/api/order", {
+          id: order?._id,
+          quantity: 365,
+          payment: payment?.data,
+          expiry: new Date(
+            new Date(order?.expiry)?.setDate(
+              new Date(order?.expiry)?.getDate() + 360
+            )
+          ),
+        });
         setIsSuccess(true);
       }
     } catch (err) {
