@@ -91,6 +91,7 @@ const Checkout = ({ order }) => {
         ],
       });
       /*  4609580003198478 */
+      console.log(payment);
       if (payment?.data?.status === "success") {
         setPaymentId(payment?.data?.paymentId);
         setIs3DsModal(true);

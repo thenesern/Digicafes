@@ -50,7 +50,6 @@ handler.post(async (req, res) => {
   });
 
   res.json(result);
-  res.json(res);
 });
 
 export default handler;
