@@ -15,7 +15,7 @@ const PricingTable = () => {
                 <div className={styles.priceCircle}>
                   <span className={styles.priceTitle}>
                     <small>₺</small>
-                    <span>5000</span>
+                    <span>7000</span>
                   </span>
                   <span className={styles.info}>/ Yıl</span>
                 </div>
@@ -41,13 +41,13 @@ const PricingTable = () => {
                 <div className={styles.priceCircle}>
                   <span className={styles.priceTitle}>
                     <small>₺</small>
-                    <span>5500</span>
+                    <span>7500</span>
                   </span>
                   <span className={styles.info}>/ Yıl</span>
                 </div>
               </div>
               <div className={styles.badgeBox}>
-                <span>%8 Daha Avantajlı</span>
+                <span>%6 Daha Avantajlı</span>
               </div>
               <ul style={{ padding: "0 10px" }}>
                 <li>Digicafes altında işletmenize özel web sayfası</li>
@@ -71,13 +71,13 @@ const PricingTable = () => {
                 <div className={styles.priceCircle}>
                   <span className={styles.priceTitle}>
                     <small>₺</small>
-                    <span>6500</span>
+                    <span>8500</span>
                   </span>
                   <span className={styles.info}>/ Yıl</span>
                 </div>
               </div>
               <div className={styles.badgeBox}>
-                <span>%18 Daha Avantajlı</span>
+                <span>%15 Daha Avantajlı</span>
               </div>
               <ul style={{ padding: "0 10px" }}>
                 <li>Digicafes altında işletmenize özel web sayfası</li>

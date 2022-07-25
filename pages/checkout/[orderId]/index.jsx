@@ -42,6 +42,7 @@ const Checkout = ({ order }) => {
   };
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(null);
+
   const paymentHandler = async (res) => {
     setLoading(true);
     let signedIn =
