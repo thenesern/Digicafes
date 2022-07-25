@@ -4,10 +4,9 @@ import { Loading, Modal, Spacer, Button as ButtonMui } from "@nextui-org/react";
 import Radium, { StyleRoot } from "radium";
 import { Button, List, ListItem, TextField } from "@material-ui/core";
 import styles from "./StoreCreation.module.css";
-import { fadeInRightBig } from "react-animations";
+import { fadeInRight } from "react-animations";
 import useTranslation from "next-translate/useTranslation";
 import axios from "axios";
-import Cookies from "js-cookie";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
@@ -38,10 +37,10 @@ const StoreCreation = ({ userOrder, booking }) => {
   const { t } = useTranslation();
   const { userInfo } = state;
   const animate = {
-    fadeInRightBig: {
+    fadeInRight: {
       animation: "x 2s",
-      animationName: Radium.keyframes(fadeInRightBig, "fadeInRightBig"),
-      animationName: Radium.keyframes(fadeInRightBig, "fadeInRightBig"),
+      animationName: Radium.keyframes(fadeInRight, "fadeInRight"),
+      animationName: Radium.keyframes(fadeInRight, "fadeInRight"),
     },
   };
 
@@ -102,12 +101,6 @@ const StoreCreation = ({ userOrder, booking }) => {
 
     try {
       setIsFetchingForFirst(true);
-      let newStateName;
-      if (stateName?.includes("Province")) {
-        newStateName = stateName?.split(" ")[0];
-      } else {
-        newStateName = stateName;
-      }
       const company = await axios.post(
         `/api/booking/iyzico/company/${
           userInfo?.subMerchantType === "PRIVATE_COMPANY"
@@ -140,7 +133,7 @@ const StoreCreation = ({ userOrder, booking }) => {
           createdAt,
           address: {
             country: countryName,
-            state: newStateName,
+            state: stateName,
             city: cityName,
             address: address,
           },
@@ -189,7 +182,7 @@ const StoreCreation = ({ userOrder, booking }) => {
         </Modal>
         {!secondStep && (
           <StyleRoot>
-            <form className={styles.formFirst} style={animate.fadeInRightBig}>
+            <form className={styles.formFirst} style={animate.fadeInRight}>
               <h2 className={styles.headerFirst}>
                 {t("panel:enterStoreName")}
               </h2>
@@ -271,7 +264,7 @@ const StoreCreation = ({ userOrder, booking }) => {
         )}
         {secondStep && !thirdStep && (
           <StyleRoot>
-            <form className={styles.formFirst} style={animate.fadeInRightBig}>
+            <form className={styles.formFirst} style={animate.fadeInRight}>
               <h2 className={styles.headerFirst}>Maksimum Kapasite (Kişi)</h2>
               <List className={styles.list}>
                 <ListItem>
@@ -329,7 +322,7 @@ const StoreCreation = ({ userOrder, booking }) => {
         )}
         {thirdStep && (
           <StyleRoot>
-            <form className={styles.formFirst} style={animate.fadeInRightBig}>
+            <form className={styles.formFirst} style={animate.fadeInRight}>
               <h2 className={styles.headerFirst}>
                 İşletmenizin Adresini Giriniz
               </h2>

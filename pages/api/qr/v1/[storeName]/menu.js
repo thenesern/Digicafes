@@ -20,6 +20,7 @@ handler.post(async (req, res) => {
     storeLinkName: req.body.storeLinkName,
     createdAt: req.body.createdAt,
     categories: req.body.categories,
+    address: req.body.address,
     owner: req.body.owner,
     listType: req.body.listType,
     subCategory: req.body.subCategory,

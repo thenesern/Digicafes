@@ -19,6 +19,7 @@ handler.post(async (req, res) => {
     storeName: req.body.storeName,
     storeLinkName: req.body.storeLinkName,
     tableNum: req.body.tableNum,
+    address: req.body.address,
     createdAt: req.body.createdAt,
     categories: req.body.categories,
     owner: req.body.owner,

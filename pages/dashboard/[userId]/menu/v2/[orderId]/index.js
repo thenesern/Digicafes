@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 // Components
 import Nav2 from "../../../../../../components/Nav2/Nav";
-import UserDashboard from "../../../../../../components/UserDashboard/UserDashboard";
+import DigitalMenuDashboard from "../../../../../../components/DigitalMenu/DigitalMenuDashboard/DigitalMenuDashboard";
 // Utils
 import Order from "../../../../../../models/OrderModel";
 import Product from "../../../../../../models/ProductModel";
@@ -17,7 +17,7 @@ const DashboardMenuv2 = ({ userOrder, userId }) => {
   return (
     <div>
       <Nav2 />
-      <UserDashboard userOrder={userOrder} userId={userId} />
+      <DigitalMenuDashboard userOrder={userOrder} userId={userId} />
     </div>
   );
 };

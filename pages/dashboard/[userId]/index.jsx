@@ -1,31 +1,44 @@
-// Packages and Dependencies
-import axios from "axios";
+// Dependencies
 import React, { useState, useEffect, useContext } from "react";
-import { Button, Image, Loading, Modal, Spacer } from "@nextui-org/react";
-import Link from "next/link";
-import Stack from "@mui/material/Stack";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import axios from "axios";
+import { Button, Image, Loading, Modal, Spacer } from "@nextui-org/react";
+import Stack from "@mui/material/Stack";
+import Skeleton from "@mui/material/Skeleton";
+import Popover from "@mui/material/Popover";
 // Components
 import Nav2 from "../../../components/Nav2/Nav";
 // Styles
-import Skeleton from "@mui/material/Skeleton";
 import styles from "./dashboard.module.css";
-// Cookies
-import Cookies from "js-cookie";
-// Translationg
+// Translation
 import useTranslation from "next-translate/useTranslation";
 import { Store } from "../../../redux/store";
+import { Typography } from "@mui/material";
 
 const Dashboard = () => {
-  const router = useRouter();
-  const userId = router.query.userId;
-  const [isFetching, setIsFetching] = useState(false);
-  const [orders, setOrders] = useState(null);
   // Translation
   const { t } = useTranslation();
-
+  // Context
   const { state } = useContext(Store);
   const { userInfo } = state;
+  // Router
+  const router = useRouter();
+  const userId = router.query.userId;
+
+  const [isFetching, setIsFetching] = useState(false);
+  const [orders, setOrders] = useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
 
   // Fetching user's orders
   useEffect(() => {
@@ -59,7 +72,6 @@ const Dashboard = () => {
             boxShadow: "none",
           }}
           preventClose
-          aria-labelledby="modal-title"
           open={isFetching}
         >
           <Modal.Body>
@@ -264,10 +276,39 @@ const Dashboard = () => {
                             )
                           </p>
                           <Link href={`/checkout/${order._id}`} passHref>
-                            <Button bordered size="sm">
+                            <Button
+                              bordered
+                              size="sm"
+                              aria-owns={
+                                open ? "mouse-over-popover" : undefined
+                              }
+                              aria-haspopup="true"
+                              onMouseEnter={handlePopoverOpen}
+                              onMouseLeave={handlePopoverClose}
+                            >
                               Yükselt
                             </Button>
                           </Link>
+                          <Popover
+                            id="mouse-over-popover"
+                            sx={{
+                              pointerEvents: "none",
+                            }}
+                            open={open}
+                            anchorEl={anchorEl}
+                            anchorOrigin={{
+                              vertical: "bottom",
+                              horizontal: "center",
+                            }}
+                            transformOrigin={{
+                              vertical: "top",
+                              horizontal: "center",
+                            }}
+                            onClose={handlePopoverClose}
+                            disableRestoreFocus
+                          >
+                            <Typography sx={{ p: 1 }}>a</Typography>
+                          </Popover>
                         </div>
                       </div>
                     </div>
@@ -344,7 +385,7 @@ const Dashboard = () => {
               width="160"
               height="200"
               alt="Order not found"
-              src="https://img.icons8.com/cotton/452/shopping-cart--v1.png"
+              src="https://res.cloudinary.com/dlyjd3mnb/image/upload/v1658762833/jdmsx78vs7eksq1jyrno.png"
             />
             <h4>Sipariş bulunamadı.</h4>
             <p className={styles.info}>

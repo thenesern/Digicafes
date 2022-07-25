@@ -13,7 +13,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { DataGrid, trTR, enUS } from "@mui/x-data-grid";
 import QRCode from "qrcode";
-import { fadeInRightBig } from "react-animations";
+
 import Radium, { StyleRoot } from "radium";
 import Box from "@mui/material/Box";
 import { Loading, Modal, Spacer, Button as ButtonMui } from "@nextui-org/react";
@@ -30,21 +30,24 @@ import Stack from "@mui/material/Stack";
 import JSZip from "jszip";
 import { useRouter } from "next/router";
 import FileSaver from "file-saver";
+import NativeSelect from "@mui/material/NativeSelect";
 import { useSnackbar } from "notistack";
 // Styles
-import styles from "./UserDashboard.module.css";
+import styles from "./DigitalMenuDashboard.module.css";
 // Icons
 import { PhotoCamera } from "@material-ui/icons";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import DashboardCustomizeIcon from "@mui/icons-material/DashboardCustomize";
 import ViewListIcon from "@mui/icons-material/ViewList";
+import { Country, State, City } from "country-state-city";
 // Translation
 import useTranslation from "next-translate/useTranslation";
 // Cookies
 import Cookies from "js-cookie";
 import { Rating } from "@mui/material";
-
+import DigitalMenuCreation from "../DigitalMenuCreation/DigitalMenuCreation";
+import { fadeInRightBig } from "react-animations";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -56,7 +59,7 @@ const MenuProps = {
   },
 };
 
-const UserDashboard = ({ userOrder, userId }) => {
+const DigitalMenuDashboard = ({ userOrder, userId }) => {
   // States
   const [order, setOrder] = useState(userOrder[0] || null);
   const [menu, setMenu] = useState(order?.menuv1 || order?.menuv2 || "");
@@ -75,6 +78,51 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [tasteRating, setTasteRating] = useState(null);
   const [speedRating, setSpeedRating] = useState(null);
   const [serviceRating, setServiceRating] = useState(null);
+
+  const [allStoreNames, setAllStoreNames] = useState([]);
+  const [stateName, setStateName] = useState("");
+  const [countryCode, setCountryCode] = useState("");
+  const [countryName, setCountryName] = useState("");
+  const allStates = State.getAllStates();
+  const [address, setAddress] = useState("");
+  const [stateCities, setStateCities] = useState([]);
+  const [countryStates, setCountryStates] = useState([]);
+  const allCountries = Country.getAllCountries();
+  const [cityName, setCityName] = useState("");
+  const [stateCode, setStateCode] = useState("");
+
+  const handleChangeState = (event) => {
+    setStateName(event.target.value);
+  };
+  const handleChangeCity = (event) => {
+    setCityName(event.target.value);
+  };
+  useEffect(() => {
+    if ((countryCode, stateCode)) {
+      setStateCities(City.getCitiesOfState(countryCode, stateCode));
+    }
+  }, [countryCode, stateCode]);
+
+  useEffect(() => {
+    if (countryCode) {
+      setCountryStates(State.getStatesOfCountry(countryCode));
+    }
+  }, [countryCode]);
+
+  useEffect(() => {
+    if (countryName) {
+      setCountryCode(
+        allCountries?.filter((country) => country?.name === countryName)[0]
+          ?.isoCode
+      );
+    }
+  }, [countryName]);
+  useEffect(() => {
+    setStateCode(
+      allStates?.filter((state) => state?.name === stateName)[0]?.isoCode
+    );
+  }, [stateName]);
+
   useEffect(() => {
     if (taste?.length > 0) {
       let sum = 0;
@@ -142,11 +190,10 @@ const UserDashboard = ({ userOrder, userId }) => {
   const [src, setSrc] = useState("");
   const [updateProductCategory, setUpdateProductCategory] = useState();
   const [isFetching, setIsFetching] = useState(false);
-  const [isFetchingForFirst, setIsFetchingForFirst] = useState(false);
   const [isFirst, setIsFirst] = useState(false);
   const [addCategory, setAddCategory] = useState("");
   const [deleteId, setDeleteId] = useState("");
-  const [secondStep, setSecondStep] = useState(false);
+
   const [category, setCategory] = useState([]);
   const [menusv1, setMenusv1] = useState([]);
   const [menusv2, setMenusv2] = useState([]);
@@ -175,7 +222,6 @@ const UserDashboard = ({ userOrder, userId }) => {
   let user;
   // Translation
   const { t } = useTranslation();
-  // Animation
   const animate = {
     fadeInRightBig: {
       animation: "x 2s",
@@ -234,6 +280,7 @@ const UserDashboard = ({ userOrder, userId }) => {
       opts
     ).then(setSrc);
   }, [menu?.storeLinkName, version, storeLinkName]);
+
   useEffect(() => {
     var opts = {
       errorCorrectionLevel: "H",
@@ -339,46 +386,6 @@ const UserDashboard = ({ userOrder, userId }) => {
     );
   };
 
-  const firstTimeHandler = async (e) => {
-    e.preventDefault();
-    const createdAt = new Date();
-
-    try {
-      setIsFetchingForFirst(true);
-      const { data } = await axios.post(
-        `/api/qr/${version}/${storeName}/menu`,
-        {
-          storeName: storeName,
-          storeLinkName: storeLinkName,
-          tableNum,
-          listType: "text",
-          createdAt,
-          gallery,
-          owner: order?.user?._id,
-        },
-        {
-          headers: { authorization: `Bearer ${user.token}` },
-        }
-      );
-      const attachedOrder = await axios.patch(
-        "/api/order/attachMenu",
-        {
-          orderId: order?._id,
-          menuId: data?.menu?._id,
-          orderProduct: order?.product?.name,
-        },
-        {
-          headers: { authorization: `Bearer ${user?.token}` },
-        }
-      );
-      setOrder(attachedOrder?.data?.order);
-      setIsFirst(false);
-      setIsFetchingForFirst(false);
-    } catch (err) {
-      console.log(err);
-      setIsFetchingForFirst(false);
-    }
-  };
   const handleZip = async (e) => {
     e.preventDefault();
     const zip = new JSZip();
@@ -908,11 +915,6 @@ const UserDashboard = ({ userOrder, userId }) => {
     }
   };
 
-  function containsSpecialChars(str) {
-    const specialChars = /[`!@#$%^&*()+\=\[\]{};':"\\|,.<>\/?~]/;
-    return specialChars.test(str);
-  }
-
   const uploadLogoHandler = async (e) => {
     e.preventDefault();
     const data = new FormData();
@@ -1119,159 +1121,22 @@ const UserDashboard = ({ userOrder, userId }) => {
   return (
     <>
       {isFirst && (
-        <div className={styles.firstContainer}>
-          <Modal
-            style={{
-              background: "transparent",
-              boxShadow: "none",
-            }}
-            preventClose
-            aria-labelledby="modal-title"
-            open={isFetchingForFirst}
-          >
-            <Loading color="white" size="xl" />
-            <Spacer />
-          </Modal>
-          {!secondStep && (
-            <StyleRoot>
-              <form className={styles.formFirst} style={animate.fadeInRightBig}>
-                <h2 className={styles.headerFirst}>
-                  {t("panel:enterStoreName")}
-                </h2>
-                <List className={styles.list}>
-                  <ListItem>
-                    <TextField
-                      variant="outlined"
-                      disabled={isFirst ? false : true}
-                      id="brandName"
-                      autoFocus="true"
-                      rules={{
-                        required: true,
-                      }}
-                      style={{ width: "100%" }}
-                      onChange={(e) => {
-                        setStoreName(e.target.value.trim());
-                        setStoreLinkName(
-                          e.target.value
-                            .trim()
-                            .toLowerCase()
-                            .replaceAll(" ", "-")
-                            .replaceAll("ç", "c")
-                            .replaceAll("ı", "i")
-                            .replaceAll("ü", "u")
-                            .replaceAll("ğ", "g")
-                            .replaceAll("ö", "o")
-                            .replaceAll("ş", "s")
-                        );
-                      }}
-                      label={t("panel:storeName")}
-                      helperText={
-                        storeName?.length === 0
-                          ? t("panel:proveName")
-                          : storeName?.length < 3
-                          ? t("panel:minLength")
-                          : containsSpecialChars(storeName) === true
-                          ? t("panel:notSpecial")
-                          : menusv1.filter((s) => s.storeName === storeName)
-                              .length > 0 ||
-                            menusv2.filter((s) => s.storeName === storeName)
-                              .length > 0
-                          ? t("panel:nameIsInUse")
-                          : ""
-                      }
-                    ></TextField>
-                  </ListItem>
-                  {isFirst && (
-                    <ListItem>
-                      <Button
-                        variant="contained"
-                        type="submit"
-                        fullWidth
-                        color="primary"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          if (
-                            storeName?.length > 2 &&
-                            !containsSpecialChars(storeName) &&
-                            menusv1.filter((s) => s.storeName === storeName)
-                              .length === 0 &&
-                            menusv2.filter((s) => s.storeName === storeName)
-                              .length === 0
-                          ) {
-                            setSecondStep(true);
-                          }
-                        }}
-                      >
-                        {t("panel:next")}
-                      </Button>
-                    </ListItem>
-                  )}
-                </List>
-              </form>
-            </StyleRoot>
-          )}
-          {secondStep && (
-            <StyleRoot>
-              <form className={styles.formFirst} style={animate.fadeInRightBig}>
-                <h2 className={styles.headerFirst}>
-                  {t("panel:enterTableNum")}
-                </h2>
-                <List className={styles.list}>
-                  <ListItem>
-                    <TextField
-                      variant="outlined"
-                      disabled={isFirst ? false : true}
-                      id="tableNum"
-                      type="number"
-                      autoFocus="true"
-                      rules={{
-                        required: true,
-                      }}
-                      style={{ width: "100%" }}
-                      onChange={(e) => {
-                        e.preventDefault();
-                        setTableNum(+e.target.value);
-                      }}
-                      helperText={
-                        tableNum === undefined
-                          ? t("panel:enterTableNum")
-                          : tableNum === 0
-                          ? t("panel:tableZero")
-                          : tableNum < 0
-                          ? t("panel:tableNeg")
-                          : tableNum > 200
-                          ? t("panel:tableNumMax")
-                          : ""
-                      }
-                      label={t("panel:numTable")}
-                    ></TextField>
-                  </ListItem>
-                  <ListItem>
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      fullWidth
-                      color="primary"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (
-                          tableNum !== undefined &&
-                          tableNum < 201 &&
-                          tableNum > 0 &&
-                          tableNum !== 0
-                        ) {
-                          firstTimeHandler(e);
-                        }
-                      }}
-                    >
-                      {t("panel:save")}
-                    </Button>
-                  </ListItem>
-                </List>
-              </form>
-            </StyleRoot>
-          )}
-        </div>
+        <DigitalMenuCreation
+          isFirst={isFirst}
+          storeName={storeName}
+          storeLinkName={storeLinkName}
+          menusv1={menusv1}
+          menusv2={menusv2}
+          version={version}
+          user={user}
+          order={order}
+          tableNum={tableNum}
+          setIsFirst={(bool) => setIsFirst(bool)}
+          setStoreName={(string) => setStoreName(string)}
+          setStoreLinkName={(string) => setStoreLinkName(string)}
+          setOrder={(order) => setOrder(order)}
+          setTableNum={(number) => setTableNum(number)}
+        />
       )}
 
       {!isFirst && (
@@ -2848,4 +2713,4 @@ const UserDashboard = ({ userOrder, userId }) => {
   );
 };
 
-export default UserDashboard;
+export default DigitalMenuDashboard;

@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 // Components
 import Nav2 from "../../../../../components/Nav2/Nav";
-import UserDashboard from "../../../../../components/UserDashboard/UserDashboard";
+import DigitalMenuDashboard from "../../../../../components/DigitalMenu/DigitalMenuDashboard/DigitalMenuDashboard";
 // Utils
 import Order from "../../../../../models/OrderModel";
 import Product from "../../../../../models/ProductModel";
@@ -11,13 +11,12 @@ import QRMenu from "../../../../../models/QRMenu1Model";
 import User from "../../../../../models/UserModel";
 import db from "../../../../../utils/db";
 // Cookies
-import Cookies from "js-cookie";
 
 const DashboardMenuv1 = ({ userOrder }) => {
   return (
     <div>
       <Nav2 />
-      <UserDashboard userOrder={userOrder} />
+      <DigitalMenuDashboard userOrder={userOrder} />
     </div>
   );
 };

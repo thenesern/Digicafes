@@ -7,6 +7,24 @@ const QRMenuSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    address: {
+      country: {
+        type: String,
+        required: true,
+      },
+      state: {
+        type: String,
+        required: true,
+      },
+      city: {
+        type: String,
+        required: true,
+      },
+      address: {
+        type: String,
+        required: true,
+      },
+    },
     storeLinkName: {
       type: String,
       required: true,

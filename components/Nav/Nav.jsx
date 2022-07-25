@@ -11,7 +11,6 @@ import { Loading, Modal, Spacer, Text } from "@nextui-org/react";
 import ModalMui from "@mui/material/Modal";
 import Image from "next/image";
 import {
-  Divider,
   FormControlLabel,
   FormLabel,
   Hidden,
@@ -29,9 +28,7 @@ import Grow from "@mui/material/Grow";
 import Paper from "@mui/material/Paper";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import Popper from "@mui/material/Popper";
-import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
-import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
@@ -321,6 +318,7 @@ const Nav = ({ color }) => {
     fName,
     lName,
     email,
+    identityNumber,
     password,
     passwordConfirm,
   }) => {
@@ -352,6 +350,7 @@ const Nav = ({ color }) => {
         firstName,
         lastName,
         email,
+        identityNumber: identityNumber,
         password,
         passwordConfirm,
         signedIn,
@@ -810,36 +809,67 @@ const Nav = ({ color }) => {
                   ></Controller>
                 </ListItem>
               </div>
-              <ListItem>
-                <Controller
-                  name="email"
-                  control={control}
-                  defaultValue=""
-                  rules={{
-                    required: true,
-                    pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                  }}
-                  render={({ field }) => (
-                    <TextField
-                      variant="outlined"
-                      fullWidth
-                      id="email"
-                      label="Email"
-                      inputProps={{ type: "email" }}
-                      error={Boolean(errors.email)}
-                      onChange={(e) => setEmail(e.target.value)}
-                      helperText={
-                        errors.email
-                          ? errors.email.type === "pattern"
-                            ? t("nav:validEmail")
-                            : t("nav:proveEmail")
-                          : ""
-                      }
-                      {...field}
-                    ></TextField>
-                  )}
-                ></Controller>
-              </ListItem>
+              <div style={{ display: "flex" }}>
+                <ListItem>
+                  <Controller
+                    name="identityNumber"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      maxLength: 11,
+                      minLength: 11,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="identityNumber"
+                        label="Kimlik Numarası"
+                        inputProps={{ type: "number" }}
+                        error={Boolean(errors.identityNumber)}
+                        onChange={(e) => setIdentityNumber(e.target.value)}
+                        helperText={
+                          errors.email
+                            ? "Lütfen Kimlik Numaranızı Giriniz."
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+                <ListItem>
+                  <Controller
+                    name="email"
+                    control={control}
+                    defaultValue=""
+                    rules={{
+                      required: true,
+                      pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        id="email"
+                        label="Email"
+                        inputProps={{ type: "email" }}
+                        error={Boolean(errors.email)}
+                        onChange={(e) => setEmail(e.target.value)}
+                        helperText={
+                          errors.email
+                            ? errors.email.type === "pattern"
+                              ? t("nav:validEmail")
+                              : t("nav:proveEmail")
+                            : ""
+                        }
+                        {...field}
+                      ></TextField>
+                    )}
+                  ></Controller>
+                </ListItem>
+              </div>
 
               <div style={{ display: "flex" }}>
                 <ListItem>

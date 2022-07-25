@@ -96,7 +96,7 @@
   "proveName": "Lütfen bir İşletme Adı yazınız.",
   "notSpecial": "İşletme Adınız Özel Karakter İçermemelidir!",
   "nameIsInUse": "Bu iş yeri adı kullanılmaktadır. Lütfen başka bir ad giriniz.",
-  "enterTableNum": "Lütfen İşletmenizdeki Masa / Oda Sayısını Giriniz",
+  "enterTableNum": "Lütfen İşletmenizdeki Masa ya da Oda Sayısını Giriniz",
   "tableQuantity": "Lütfen İşletmenizdeki Masa Sayısını Giriniz",
   "tableZero": "Masa Sayısı sıfır olamaz!",
   "tableNeg": "Masa Sayısı Negatif bir değer olamaz!",
