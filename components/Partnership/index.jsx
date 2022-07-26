@@ -26,9 +26,9 @@ const Partnership = () => {
             </em>
             ve{" "}
             <em style={{ color: "#003049", fontWeight: "500" }}>
-              rezervasyonları yönetmenize yardımcı olan
+              işletmenizi yönetmenize yardımcı olan
             </em>{" "}
-            rezervasyon uygulamamızla tanışın.
+            uygulamamızla tanışın.
           </p>
           <p classnName={styles.desc}>
             Hemen aramıza katılabilir ve muhteşem avantajlara sahip iş
