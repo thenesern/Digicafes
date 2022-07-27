@@ -7,23 +7,27 @@ import db from "../../../../utils/db";
 const handler = nc();
 
 handler.use(isAuth);
+
 handler.post(async (req, res) => {
   await db.connect();
+
   await Booking.findOneAndUpdate(
     { storeName: req.body.storeName },
     {
       $push: { bookings: req.body.bookings },
     }
   );
+
   await User.findOneAndUpdate(
     { _id: req.body.userId },
     {
       $push: { bookings: req.body.bookings },
     }
   );
-  const store = await Booking.findById(req.body.id);
-  res.json({ status: "success", store });
+
   await db.disconnect();
+
+  res.json({ status: "success" });
 });
 
 export default handler;

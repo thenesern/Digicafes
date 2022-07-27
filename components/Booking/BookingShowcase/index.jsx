@@ -28,9 +28,10 @@ import nanoid from "../../../utils/nanoid";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { Store } from "../../../redux/store";
+const base64 = require("base-64");
 
-const StoreBookingShowcase = ({ storeInfo }) => {
-  const [store, setStore] = useState(storeInfo);
+const StoreBookingShowcase = ({ order }) => {
+  const [store, setStore] = useState(order?.booking);
   const [locale, setLocale] = useState("tr");
   const [hours, setHours] = useState([]);
   const [activeNavBar, setActiveNavBar] = useState("aboutUs");
@@ -57,8 +58,11 @@ const StoreBookingShowcase = ({ storeInfo }) => {
   const [cardError, setCardError] = useState(false);
   const { render, name, number, cvc, expiry } = useCard();
   const [visible, setVisible] = useState(false);
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const { userInfo } = state;
+  const [is3DsModal, setIs3DsModal] = useState(false);
+  const [html, setHTML] = useState("");
+  const [conversationId, setConversationId] = useState("");
   const events = store?.events
     ?.filter(
       (event) =>
@@ -71,11 +75,12 @@ const StoreBookingShowcase = ({ storeInfo }) => {
     );
 
   const handler = () => setVisible(true);
+
   const closeHandler = () => {
     setVisible(false);
   };
+
   const paymentHandler = async () => {
-    const createdAt = new Date();
     setLoading(true);
     let signedIn =
       userInfo.signedIn.split("T")[0] +
@@ -88,44 +93,78 @@ const StoreBookingShowcase = ({ storeInfo }) => {
     let phoneNumber = "+" + userInfo?.phoneNumber;
     try {
       const connection = await axios.get("/api/remote-address");
-      const payment = await axios.post("/api/checkout/payment", {
-        order: {
-          id: nanoid(),
-        },
-        product: {
-          price: store?.prices?.price,
-          paidPrice: store?.prices?.price,
-        },
-        card: {
-          name,
-          number,
-          month: expiry.split("/")[0],
-          year: expiry.split("/")[1],
-          cvc,
-        },
-        user: {
-          id: userInfo.id,
-          firstName: userInfo.firstName,
-          lastName: userInfo.lastName,
-          email: userInfo.email,
-          lastLoginDate: signedIn,
-          registrationDate: registered,
-          ip: connection.ip,
-          phoneNumber: +phoneNumber,
-        },
-        basketItems: [
-          {
-            id: store?._id,
-            name: "Deposit",
-            category1: "Store Deposit",
-            itemType: "VIRTUAL",
-            price: store?.prices?.price,
+      const payment = await axios.post(
+        "/api/checkout/payment/deposit/init-3ds",
+        {
+          order: {
+            id: order?._id,
           },
-        ],
-      });
-      setIsSuccess(payment.data.status);
+          product: {
+            price: store?.prices?.price,
+            paidPrice: store?.prices?.price,
+          },
+          card: {
+            name,
+            number,
+            month: expiry.split("/")[0],
+            year: expiry.split("/")[1],
+            cvc,
+          },
+          user: {
+            id: userInfo.id,
+            firstName: userInfo.firstName,
+            lastName: userInfo.lastName,
+            email: userInfo.email,
+            lastLoginDate: signedIn,
+            registrationDate: registered,
+            identityNumber: "00000000000",
+            ip: connection.ip,
+            phoneNumber: +phoneNumber,
+          },
+          basketItems: [
+            {
+              id: store?._id,
+              name: "Deposit",
+              category1: "Store Deposit",
+              itemType: "VIRTUAL",
+              price: store?.prices?.price,
+              subMerchantKey: order?.booking?.subMerchantKey,
+              subMerchantPrice: store?.prices?.price,
+            },
+          ],
+        }
+      );
 
-      if (payment.data.status === "success") {
+      if (payment?.data?.status === "success") {
+        setConversationId(payment?.data?.conversationId);
+        setIs3DsModal(true);
+        let form;
+        form = base64.decode(payment?.data["threeDSHtmlContent"]);
+        setHTML(form);
+      }
+    } catch (err) {
+      setLoading(false);
+      console.log(err);
+    }
+  };
+  const [refreshToken, setRefreshToken] = useState(Math.random());
+  const retrieveData = async () => {
+    const createdAt = new Date();
+    try {
+      const result = await axios.post(
+        "/api/user/findById",
+        {
+          id: userInfo?.id,
+        },
+        {
+          headers: { authorization: `Bearer ${userInfo?.token}` },
+        }
+      );
+      if (
+        result?.data?.user?.payments?.filter(
+          (payment) => payment?.payment?.conversationId === conversationId
+        )[0]?.payment?.status === "success"
+      ) {
         await axios.post(
           `/api/booking/${store?.storeName}/booking`,
           {
@@ -139,7 +178,7 @@ const StoreBookingShowcase = ({ storeInfo }) => {
                 userEmail: userInfo.email,
                 storeName: store?.storeName,
                 phoneNumber: userInfo?.phoneNumber,
-                isPaid: true,
+                isPaid: store?.price,
               },
             ],
             userId: userInfo?.id,
@@ -148,13 +187,41 @@ const StoreBookingShowcase = ({ storeInfo }) => {
             headers: { authorization: `Bearer ${userInfo.token}` },
           }
         );
+        const newUser = await axios.post(
+          "/api/user/findById",
+          {
+            id: userInfo?.id,
+          },
+          {
+            headers: { authorization: `Bearer ${userInfo?.token}` },
+          }
+        );
+
+        dispatch({ type: "USER_LOGIN", payload: newUser?.data?.user });
+        setLoading(false);
+        setIs3DsModal(false);
+        setIsSuccess("success");
       }
-      setLoading(false);
+      if (
+        result?.data?.order?.payments?.filter(
+          (payment) => payment?.payment?.conversationId === conversationId
+        )[0]?.payment?.status === "failure"
+      ) {
+        setLoading(false);
+        setIs3DsModal(false);
+        setIsSuccess(false);
+      }
     } catch (err) {
-      setLoading(false);
       console.log(err);
     }
   };
+  useEffect(() => {
+    if (is3DsModal) {
+      retrieveData().finally(() => {
+        setTimeout(() => setRefreshToken(Math.random()), 3000);
+      });
+    }
+  }, [refreshToken]);
 
   useEffect(() => {
     if (+reserved >= +capacity) {
@@ -884,10 +951,10 @@ const StoreBookingShowcase = ({ storeInfo }) => {
                       selectedHour &&
                       store?.prices?.isActive
                     ) {
-                      handler(e);
+                      return handler(e);
                     }
                     if (!selectedHour) {
-                      setHoursError(true);
+                      return setHoursError(true);
                     }
                     if (
                       !store?.prices?.isActive &&
@@ -896,7 +963,7 @@ const StoreBookingShowcase = ({ storeInfo }) => {
                       selectedHour &&
                       !isFull
                     ) {
-                      handleSendBooking(e);
+                      return handleSendBooking(e);
                     }
                   }}
                   loading={loading}
@@ -1002,6 +1069,27 @@ const StoreBookingShowcase = ({ storeInfo }) => {
             Ödemeyi Tamamla
           </LoadingButton>
         </Modal.Footer>
+      </Modal>
+      <Modal
+        preventClose
+        aria-labelledby="modal-title"
+        open={is3DsModal}
+        onClose={() => setIs3DsModal(false)}
+      >
+        <iframe
+          onSubmit={() => setIs3DsModal(false)}
+          srcDoc={html}
+          style={{
+            minHeight: "36rem",
+            minwidth: "12rem",
+            padding: "2rem 1rem",
+            display: "flex",
+            alignItems: "center",
+            justifyItems: "center",
+          }}
+          frameBorder="0"
+          scrolling="yes"
+        ></iframe>
       </Modal>
     </div>
   );

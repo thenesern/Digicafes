@@ -5,9 +5,9 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import styles from "./checkout.module.css";
 import axios from "axios";
-import { Store } from "../../../redux/store";
-import db from "../../../utils/db";
-import Order from "../../../models/OrderModel";
+import { Store } from "../../../../redux/store";
+import db from "../../../../utils/db";
+import Order from "../../../../models/OrderModel";
 
 const Lobby = (props) => {
   const [order, setOrder] = useState(props?.order);
@@ -23,7 +23,6 @@ const Lobby = (props) => {
         paymentId: paymentId,
         conversationData: conversationData,
       });
-
       if (payment?.data?.status === "success") {
         await axios.patch("/api/order", {
           id: order?._id,

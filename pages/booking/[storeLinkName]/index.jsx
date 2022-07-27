@@ -5,14 +5,17 @@ import db from "../../../utils/db";
 import Nav from "../../../components/Nav/Nav";
 import Footer from "../../../components/Footer/Footer";
 import StoreBookingShowcase from "../../../components/Booking/BookingShowcase/index";
+import User from "../../../models/UserModel";
 
-const StoreBookingProfile = ({ store }) => {
-  const color = store?.navbar?.color ? store?.navbar?.color : "#c9184a";
+const StoreBookingProfile = ({ order }) => {
+  const color = order?.booking?.navbar?.color
+    ? store?.navbar?.color
+    : "#c9184a";
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <Nav color={color} />
-      <StoreBookingShowcase storeInfo={store} />
+      <StoreBookingShowcase order={order} />
       <Footer />
     </div>
   );
@@ -24,7 +27,12 @@ export async function getServerSideProps(context) {
     storeLinkName,
   });
 
-  const order = await Order.findOne({ booking: store?._id });
+  const order = await Order.findOne({ booking: store?._id })
+    .populate({
+      path: "booking",
+      model: Booking,
+    })
+    .populate({ path: "user", model: User });
   const newDate = new Date();
   if (
     new Date(order?.expiry?.toString()).getTime() > newDate.getTime() ===
@@ -41,7 +49,7 @@ export async function getServerSideProps(context) {
   await db.disconnect();
   return {
     props: {
-      store: JSON.parse(JSON.stringify(store)),
+      order: JSON.parse(JSON.stringify(order)),
     },
   };
 }
