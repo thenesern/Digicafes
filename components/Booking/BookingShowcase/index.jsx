@@ -93,47 +93,44 @@ const StoreBookingShowcase = ({ order }) => {
     let phoneNumber = "+" + userInfo?.phoneNumber;
     try {
       const connection = await axios.get("/api/remote-address");
-      const payment = await axios.post(
-        "/api/checkout/payment/deposit/init-3ds",
-        {
-          order: {
-            id: order?._id,
-          },
-          product: {
+      const payment = await axios.post("/api/checkout/deposit/init-3ds", {
+        order: {
+          id: order?._id,
+        },
+        product: {
+          price: store?.prices?.price,
+          paidPrice: store?.prices?.price,
+        },
+        card: {
+          name,
+          number,
+          month: expiry.split("/")[0],
+          year: expiry.split("/")[1],
+          cvc,
+        },
+        user: {
+          id: userInfo.id,
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+          email: userInfo.email,
+          lastLoginDate: signedIn,
+          registrationDate: registered,
+          identityNumber: "00000000000",
+          ip: connection.ip,
+          phoneNumber: +phoneNumber,
+        },
+        basketItems: [
+          {
+            id: store?._id,
+            name: "Deposit",
+            category1: "Store Deposit",
+            itemType: "VIRTUAL",
             price: store?.prices?.price,
-            paidPrice: store?.prices?.price,
+            subMerchantKey: order?.booking?.subMerchantKey,
+            subMerchantPrice: store?.prices?.price,
           },
-          card: {
-            name,
-            number,
-            month: expiry.split("/")[0],
-            year: expiry.split("/")[1],
-            cvc,
-          },
-          user: {
-            id: userInfo.id,
-            firstName: userInfo.firstName,
-            lastName: userInfo.lastName,
-            email: userInfo.email,
-            lastLoginDate: signedIn,
-            registrationDate: registered,
-            identityNumber: "00000000000",
-            ip: connection.ip,
-            phoneNumber: +phoneNumber,
-          },
-          basketItems: [
-            {
-              id: store?._id,
-              name: "Deposit",
-              category1: "Store Deposit",
-              itemType: "VIRTUAL",
-              price: store?.prices?.price,
-              subMerchantKey: order?.booking?.subMerchantKey,
-              subMerchantPrice: store?.prices?.price,
-            },
-          ],
-        }
-      );
+        ],
+      });
 
       if (payment?.data?.status === "success") {
         setConversationId(payment?.data?.conversationId);
