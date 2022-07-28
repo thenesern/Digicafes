@@ -729,8 +729,10 @@ const BookingDashboard = ({ userOrder }) => {
         </div>
         <BookingTable
           tableData={tableData}
-          store={store}
+          payments={store?.payments}
+          storeId={store?._id}
           isFetching={isFetching}
+          setIsFetching={(boolean) => setIsFetching(boolean)}
           user={userInfo}
           setStore={(data) => {
             setStore(data);

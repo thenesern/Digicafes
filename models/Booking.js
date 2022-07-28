@@ -67,11 +67,20 @@ const bookingSchema = new mongoose.Schema(
           type: String,
         },
         isPaid: {
-          type: Boolean,
+          type: mongoose.Mixed,
+        },
+        user: {
+          type: String,
+        },
+        conversationId: {
+          type: String,
+        },
+        status: {
+          type: String,
         },
       },
     ],
-
+    payments: [],
     workingTimes: {
       monday: {
         isActive: {

@@ -63,6 +63,7 @@ const StoreBookingShowcase = ({ order }) => {
   const [is3DsModal, setIs3DsModal] = useState(false);
   const [html, setHTML] = useState("");
   const [conversationId, setConversationId] = useState("");
+
   const events = store?.events
     ?.filter(
       (event) =>
@@ -93,44 +94,47 @@ const StoreBookingShowcase = ({ order }) => {
     let phoneNumber = "+" + userInfo?.phoneNumber;
     try {
       const connection = await axios.get("/api/remote-address");
-      const payment = await axios.post("/api/checkout/deposit/init-3ds", {
-        order: {
-          id: order?._id,
-        },
-        product: {
-          price: store?.prices?.price,
-          paidPrice: store?.prices?.price,
-        },
-        card: {
-          name,
-          number,
-          month: expiry.split("/")[0],
-          year: expiry.split("/")[1],
-          cvc,
-        },
-        user: {
-          id: userInfo.id,
-          firstName: userInfo.firstName,
-          lastName: userInfo.lastName,
-          email: userInfo.email,
-          lastLoginDate: signedIn,
-          registrationDate: registered,
-          identityNumber: "00000000000",
-          ip: connection.ip,
-          phoneNumber: +phoneNumber,
-        },
-        basketItems: [
-          {
-            id: store?._id,
-            name: "Deposit",
-            category1: "Store Deposit",
-            itemType: "VIRTUAL",
-            price: store?.prices?.price,
-            subMerchantKey: order?.booking?.subMerchantKey,
-            subMerchantPrice: store?.prices?.price,
+      const payment = await axios.post(
+        "/api/checkout/payment/deposit/init-3ds",
+        {
+          order: {
+            id: order?._id,
           },
-        ],
-      });
+          product: {
+            price: store?.prices?.price,
+            paidPrice: Number(store?.prices?.price) * Number(people),
+          },
+          card: {
+            name,
+            number,
+            month: expiry.split("/")[0],
+            year: expiry.split("/")[1],
+            cvc,
+          },
+          user: {
+            id: userInfo.id,
+            firstName: userInfo.firstName,
+            lastName: userInfo.lastName,
+            email: userInfo.email,
+            lastLoginDate: signedIn,
+            registrationDate: registered,
+            identityNumber: "00000000000",
+            ip: connection.ip,
+            phoneNumber: +phoneNumber,
+          },
+          basketItems: [
+            {
+              id: store?._id,
+              name: "Deposit",
+              category1: "Store Deposit",
+              itemType: "VIRTUAL",
+              price: store?.prices?.price,
+              subMerchantKey: order?.booking?.subMerchantKey,
+              subMerchantPrice: store?.prices?.price,
+            },
+          ],
+        }
+      );
 
       if (payment?.data?.status === "success") {
         setConversationId(payment?.data?.conversationId);
@@ -144,8 +148,9 @@ const StoreBookingShowcase = ({ order }) => {
       console.log(err);
     }
   };
+
   const [refreshToken, setRefreshToken] = useState(Math.random());
-  const retrieveData = async () => {
+  async function retrieveData() {
     const createdAt = new Date();
     try {
       const result = await axios.post(
@@ -160,7 +165,8 @@ const StoreBookingShowcase = ({ order }) => {
       if (
         result?.data?.user?.payments?.filter(
           (payment) => payment?.payment?.conversationId === conversationId
-        )[0]?.payment?.status === "success"
+        )[0]?.payment?.status === "success" &&
+        is3DsModal
       ) {
         await axios.post(
           `/api/booking/${store?.storeName}/booking`,
@@ -175,7 +181,13 @@ const StoreBookingShowcase = ({ order }) => {
                 userEmail: userInfo.email,
                 storeName: store?.storeName,
                 phoneNumber: userInfo?.phoneNumber,
-                isPaid: store?.price,
+                isPaid: store?.prices?.price,
+                user: userInfo?.id,
+                status: "Waiting",
+                conversationId: result?.data?.user?.payments?.filter(
+                  (payment) =>
+                    payment?.payment?.conversationId === conversationId
+                )[0]?.payment?.conversationId,
               },
             ],
             userId: userInfo?.id,
@@ -202,7 +214,8 @@ const StoreBookingShowcase = ({ order }) => {
       if (
         result?.data?.order?.payments?.filter(
           (payment) => payment?.payment?.conversationId === conversationId
-        )[0]?.payment?.status === "failure"
+        )[0]?.payment?.status === "failure" &&
+        is3DsModal
       ) {
         setLoading(false);
         setIs3DsModal(false);
@@ -211,13 +224,10 @@ const StoreBookingShowcase = ({ order }) => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }
   useEffect(() => {
-    if (is3DsModal) {
-      retrieveData().finally(() => {
-        setTimeout(() => setRefreshToken(Math.random()), 3000);
-      });
-    }
+    retrieveData();
+    setTimeout(() => setRefreshToken(Math.random()), 3000);
   }, [refreshToken]);
 
   useEffect(() => {
@@ -911,9 +921,15 @@ const StoreBookingShowcase = ({ order }) => {
                 <Card.Body>
                   <Text color="warning">
                     {store?.prices?.isActive ? (
-                      <p align="center">
-                        Kapora Ücreti: {store?.prices?.price}₺
-                      </p>
+                      <>
+                        <p align="center">
+                          Kapora Ücreti: {store?.prices?.price}₺
+                        </p>
+                        <p align="center">
+                          Toplam:{" "}
+                          {Number(store?.prices?.price) * Number(people)}₺
+                        </p>
+                      </>
                     ) : (
                       <p align="center">Rezervasyon Ücretsiz</p>
                     )}

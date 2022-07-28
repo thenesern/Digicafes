@@ -31,6 +31,13 @@ const Lobby = (props) => {
           payment: payment?.data,
           storeName: order?.booking?.storeName,
         });
+        await axios.patch("/api/booking/payment", {
+          id: order?.booking?._id,
+          payment: {
+            ...payment?.data,
+            user: user?._id,
+          },
+        });
         setIsSuccess(true);
       }
     } catch (err) {

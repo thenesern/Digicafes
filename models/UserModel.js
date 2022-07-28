@@ -66,6 +66,9 @@ const userSchema = new mongoose.Schema(
         isPaid: {
           type: Boolean,
         },
+        status: {
+          type: String,
+        },
       },
     ],
     email: {
