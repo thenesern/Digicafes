@@ -3,7 +3,7 @@ import { Loading } from "@nextui-org/react";
 import getRawBody from "raw-body";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import styles from "./checkout.module.css";
+import styles from "../checkout.module.css";
 import axios from "axios";
 import { Store } from "../../../../redux/store";
 import db from "../../../../utils/db";
