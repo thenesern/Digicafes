@@ -39,7 +39,7 @@ const BookingTable = (props) => {
 
   const handleConfirmBooking = async (e) => {
     props?.setIsFetching(true);
-    bookings.filter(
+    props.allBookings.filter(
       (booking) => booking?.conversationId === selectedConversationId
     )[0].status = "Confirm";
     try {
@@ -50,8 +50,8 @@ const BookingTable = (props) => {
             ?.paymentTransactionId,
       });
 
-      const updatedStore = await axios.patch("/api/booking/bookings", {
-        bookings: bookings,
+      await axios.patch("/api/booking/bookings", {
+        bookings: props.allBookings,
         id: props?.storeId,
       });
       handleCloseConfirmModal();
@@ -64,7 +64,7 @@ const BookingTable = (props) => {
 
   const handleCancelBooking = async (e) => {
     props?.setIsFetching(true);
-    bookings.filter(
+    props.allBookings.filter(
       (booking) => booking?.conversationId === selectedConversationId
     )[0].status = "Cancel";
     try {
@@ -74,9 +74,8 @@ const BookingTable = (props) => {
           selectedUserPayment?.payment?.itemTransactions[0]
             ?.paymentTransactionId,
       });
-
-      const updatedStore = await axios.patch("/api/booking/bookings", {
-        bookings: bookings,
+      await axios.patch("/api/booking/bookings", {
+        bookings: props.allBookings,
         id: props?.storeId,
       });
       handleCloseCancelModal();
@@ -86,6 +85,10 @@ const BookingTable = (props) => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    setBookings(props.tableData);
+  }, [props.tableData]);
 
   useEffect(() => {
     setSelectedUserInfos(
@@ -164,28 +167,34 @@ const BookingTable = (props) => {
     },
     {
       field: "people",
-      headerName: "Kişi Sayısı",
-      flex: 1,
+      headerName: "Kişi",
+      width: 80,
     },
     {
       field: "isPaid",
       headerName: "Kapora",
-      flex: 1,
+      width: 100,
       renderCell: (params) => {
         return (
           <div>
             {params.row.isPaid ? (
               <p
+                align="left"
                 style={{
                   backgroundColor: "#cfe1b9",
-                  padding: "2rem",
-                  minWidth: "8rem",
+                  padding: "2rem 1rem",
+                  minWidth: "7rem",
                 }}
               >
                 {params.row.isPaid}₺
               </p>
             ) : (
-              <p style={{ padding: "2rem", minWidth: "8rem" }}>Ücretsiz</p>
+              <p
+                align="left"
+                style={{ padding: "2rem 1rem", minWidth: "7rem" }}
+              >
+                Ücretsiz
+              </p>
             )}
           </div>
         );
@@ -194,7 +203,7 @@ const BookingTable = (props) => {
     {
       field: "date",
       headerName: "Rezervasyon Tarihi",
-      flex: 2,
+      flex: 1,
       renderCell: (params) => {
         return (
           <div
@@ -223,7 +232,7 @@ const BookingTable = (props) => {
     {
       field: "status",
       headerName: "Durum",
-      width: 150,
+      width: 120,
       renderCell: (params) => {
         return (
           <>
@@ -233,7 +242,7 @@ const BookingTable = (props) => {
                 style={{
                   backgroundColor: "#e5e5e5",
                   padding: "2rem 1rem",
-                  minWidth: "8rem",
+                  minWidth: "7rem",
                 }}
               >
                 Beklemede
@@ -245,7 +254,7 @@ const BookingTable = (props) => {
                 style={{
                   backgroundColor: "#cfe1b9",
                   padding: "2rem 1rem",
-                  minWidth: "8rem",
+                  minWidth: "7rem",
                 }}
               >
                 Onaylandı
@@ -257,7 +266,7 @@ const BookingTable = (props) => {
                 style={{
                   backgroundColor: "#e39695",
                   padding: "2rem 1rem",
-                  minWidth: "8rem",
+                  minWidth: "7rem",
                 }}
               >
                 İptal Edildi
@@ -335,6 +344,7 @@ const BookingTable = (props) => {
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         rowsPerPageOptions={[20, 40, 60]}
         pagination
+        className={styles.dataGrid}
       />
       <div>
         <ReactAudioPlayer

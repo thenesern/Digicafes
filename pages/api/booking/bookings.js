@@ -8,10 +8,10 @@ handler.patch(async (req, res) => {
   try {
     await db.connect();
     const store = await Booking.findByIdAndUpdate(req.body.id, {
-      payments: req.body.payments,
+      bookings: req.body.bookings,
     });
     await db.disconnect();
-    res.send({
+    res.json({
       status: "success",
       store,
     });

@@ -77,7 +77,7 @@ const BookingDashboard = ({ userOrder }) => {
   const [images, setImages] = useState(store?.gallery?.images || []);
   const [reserved, setReserved] = useState(0);
   const [remains, setRemains] = useState(+capacity - +reserved || 0);
-  const [selectedHour, setSelectedHour] = useState(null);
+  const [selectedHour, setSelectedHour] = useState("");
   const [tableData, setTableData] = useState(store?.bookings || []);
   const [galleryImage, setGalleryImage] = useState(
     store?.gallery?.galleryImage || null
@@ -180,22 +180,29 @@ const BookingDashboard = ({ userOrder }) => {
   }, [store?.bookings, tableDate]);
 
   useEffect(() => {
-    if (tableDate && selectedHour) {
+    if (tableDate) {
       setRemains(+capacity - +reserved);
     }
-    if (tableDate && !selectedHour) {
-      setRemains("*");
-    }
-  }, [capacity, reserved]);
+  }, [capacity, reserved, tableDate]);
 
   useEffect(() => {
-    setTableData(
-      store?.bookings?.filter(
-        (booking) =>
-          new Date(booking?.date)?.toLocaleDateString() ===
-          new Date(tableDate)?.toLocaleDateString()
-      )
-    );
+    if (selectedHour) {
+      setTableData(
+        store?.bookings?.filter(
+          (booking) =>
+            new Date(booking?.date)?.toLocaleString() ===
+            new Date(tableDate)?.toLocaleString()
+        )
+      );
+    } else {
+      setTableData(
+        store?.bookings?.filter(
+          (booking) =>
+            new Date(booking?.date)?.toLocaleDateString() ===
+            new Date(tableDate)?.toLocaleDateString()
+        )
+      );
+    }
   }, [tableDate, store?.bookings]);
 
   const copyToClipBoard = async (copyMe) => {
@@ -669,7 +676,7 @@ const BookingDashboard = ({ userOrder }) => {
               <NextButton
                 bordered
                 icon={<StoreIcon />}
-                style={{ height: "5rem", width: "12rem" }}
+                style={{ height: "5rem", width: "10rem" }}
                 auto
               >
                 <div
@@ -687,17 +694,17 @@ const BookingDashboard = ({ userOrder }) => {
           </Link>
           <div style={{ display: "flex", flexDirection: "column" }}></div>
           <div className={styles.capacity} onClick={handleOpenCapacity}>
-            <h3 className={styles.capacityHeader}>Maksimum Kapasite (Kişi)</h3>
+            <h3 className={styles.header}>Maksimum Kapasite</h3>
             <p className={styles.capacityDesc}>{capacity}</p>
             <EditIcon style={{ display: "none" }} className={styles.editIcon} />
           </div>
 
           <div className={styles.side}>
-            <h3 className={styles.header}>Kalan Yer (Kişi)</h3>
+            <h3 className={styles.header}>Kalan Yer</h3>
             <p className={styles.desc}> {remains}</p>
           </div>
           <div className={styles.side}>
-            <h3 className={styles.header}>Rezerve (Kişi)</h3>
+            <h3 className={styles.header}>Rezerve</h3>
             <p className={styles.desc}> {reserved}</p>
           </div>
           <div
@@ -708,6 +715,7 @@ const BookingDashboard = ({ userOrder }) => {
               id="time"
               label="Saat Seçiniz"
               type="time"
+              value={selectedHour}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -719,7 +727,10 @@ const BookingDashboard = ({ userOrder }) => {
               label="Tarih Seçiniz"
               type="date"
               defaultValue={tableDate}
-              onChange={(e) => setTableDate(new Date(e.target.value))}
+              onChange={(e) => {
+                setTableDate(new Date(e.target.value));
+                setSelectedHour("");
+              }}
               sx={{ width: 220 }}
               InputLabelProps={{
                 shrink: true,
@@ -731,6 +742,7 @@ const BookingDashboard = ({ userOrder }) => {
           tableData={tableData}
           payments={store?.payments}
           storeId={store?._id}
+          allBookings={store?.bookings}
           isFetching={isFetching}
           setIsFetching={(boolean) => setIsFetching(boolean)}
           user={userInfo}

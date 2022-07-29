@@ -213,6 +213,12 @@
   .app {
     width: 87vw;
   }
+  .topBar {
+    padding: 1rem;
+  }
+  .dataGrid {
+    font-size: 13px;
+  }
 }
 
 @media only screen and (max-width: 900px) {
