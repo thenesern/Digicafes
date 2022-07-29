@@ -41,6 +41,7 @@ const StoreBookingShowcase = ({ order }) => {
   const [isSuccess, setIsSuccess] = useState(null);
   const [dayName, setDayName] = useState("");
   const [startTime, setStartTime] = useState("");
+  const [isSent, setIsSent] = useState(false);
   const [isFull, setIsFull] = useState(false);
   const [isStoreOwner, setIsStoreOwner] = useState(false);
   const [endTime, setEndTime] = useState("");
@@ -151,6 +152,9 @@ const StoreBookingShowcase = ({ order }) => {
 
   const [refreshToken, setRefreshToken] = useState(Math.random());
   async function retrieveData() {
+    if (isSent) {
+      return;
+    }
     const createdAt = new Date();
     try {
       const result = await axios.post(
@@ -196,6 +200,13 @@ const StoreBookingShowcase = ({ order }) => {
             headers: { authorization: `Bearer ${userInfo.token}` },
           }
         );
+        await axios.post("/api/booking/email", {
+          email: userInfo.email,
+          storeName: store?.storeName,
+          address: store?.address?.address,
+          date: date,
+          people: people,
+        });
         const newUser = await axios.post(
           "/api/user/findById",
           {
@@ -208,6 +219,7 @@ const StoreBookingShowcase = ({ order }) => {
 
         dispatch({ type: "USER_LOGIN", payload: newUser?.data?.user });
         setLoading(false);
+        setIsSent(true);
         setIs3DsModal(false);
         setIsSuccess("success");
       }

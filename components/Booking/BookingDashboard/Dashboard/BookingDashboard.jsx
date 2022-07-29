@@ -743,6 +743,7 @@ const BookingDashboard = ({ userOrder }) => {
           payments={store?.payments}
           storeId={store?._id}
           allBookings={store?.bookings}
+          storeName={store?.storeName}
           isFetching={isFetching}
           setIsFetching={(boolean) => setIsFetching(boolean)}
           user={userInfo}

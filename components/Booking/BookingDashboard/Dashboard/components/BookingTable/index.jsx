@@ -121,15 +121,14 @@ const BookingTable = (props) => {
   }, [isNew]);
 
   const retrieveData = async () => {
-    const storeName = props.store?.storeName;
     if (props?.isFetching) {
       return;
     }
     try {
       const newStore = await axios.post(
-        `/api/booking/${storeName}/getStore`,
+        `/api/booking/${props.storeName}/getStore`,
         {
-          storeName,
+          storeName: props.storeName,
         },
         {
           headers: { authorization: `Bearer ${props?.user?.token}` },
@@ -293,9 +292,23 @@ const BookingTable = (props) => {
             <NextButton
               flat
               rounded
+              disabled={
+                new Date().getTime() >= new Date(params.row.date).getTime() ||
+                params.row.status === "Confirm" ||
+                params.row.status === "Cancel"
+              }
               color="success"
               auto
-              style={{ height: "2rem", padding: "1rem" }}
+              style={{
+                height: "2rem",
+                padding: "1rem",
+                opacity:
+                  new Date().getTime() >= new Date(params.row.date).getTime() ||
+                  params.row.status === "Confirm" ||
+                  params.row.status === "Cancel"
+                    ? "0.3"
+                    : "",
+              }}
               onClick={() => {
                 setSelectedConversationId(params.row.conversationId);
                 setSelectedUser(params.row.user);
@@ -307,9 +320,21 @@ const BookingTable = (props) => {
             <NextButton
               flat
               rounded
+              disabled={
+                new Date().getTime() >= new Date(params.row.date).getTime() ||
+                params.row.status === "Cancel"
+              }
               color="error"
+              style={{
+                height: "2rem",
+                padding: "1rem",
+                opacity:
+                  new Date().getTime() >= new Date(params.row.date).getTime() ||
+                  params.row.status === "Cancel"
+                    ? "0.3"
+                    : "",
+              }}
               auto
-              style={{ height: "2rem", padding: "1rem" }}
               onClick={() => {
                 setSelectedConversationId(params.row.conversationId);
                 setSelectedUser(params.row.user);
